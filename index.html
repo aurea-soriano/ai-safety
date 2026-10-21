@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>El libro de texto abierto sobre seguridad de la IA – AI Safety Atlas</title>
+  <meta name="description" content="Un recurso completo y gratuito sobre las capacidades, los riesgos, la alineación y la gobernanza de la IA, escrito por investigadores del French Center for AI Safety.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main>
+    <section class="portada contenedor">
+      <span class="etiqueta">Edición 1</span>
+      <h1>El libro de texto abierto sobre seguridad de la IA</h1>
+      <p>Escrito por Markov Grey y Charbel-Raphael Segerie, del <a href="https://cesia.org">French Center for AI Safety</a> (Centro Francés de Seguridad de la IA).</p>
+      <div class="botones">
+        <a class="boton primario" href="cap1-01-introduccion.html">Leer el libro</a>
+        <a class="boton secundario" href="ensenar.html">Organizar un curso</a>
+      </div>
+
+      <div class="logos">
+        <p>Con la confianza de</p>
+        <img src="https://ai-safety-atlas.com/logos/ml4good-org-white.svg" alt="ML4Good">
+        <img src="https://ai-safety-atlas.com/logos/bluedot-org-white.svg" alt="BlueDot Impact">
+        <img src="https://ai-safety-atlas.com/logos/www-enais-co-white.png" alt="European Network for AI Safety">
+        <img src="https://ai-safety-atlas.com/_astro/ens-paris-saclay.BCyJ3KCb.png" alt="ENS Paris Saclay">
+      </div>
+
+      <div class="lector" role="img" aria-label="Vista previa del lector del libro, abierto en la introducción del capítulo 1">
+        <div class="lector-barra">
+          <span class="lector-puntos"><i></i><i></i><i></i></span>
+          <span class="lector-ruta">AI Safety Atlas · Edición 1 › Capítulo 1 › Introducción</span>
+          <span class="lector-buscar">Buscar…</span>
+        </div>
+        <div class="lector-cuerpo">
+          <aside class="lector-indice">
+            <strong>1. Capacidades</strong>
+            <ol>
+              <li class="activo">Introducción</li>
+              <li>Capacidades actuales</li>
+              <li>Modelos fundacionales</li>
+              <li>Definir y medir la AGI</li>
+              <li>Aprovechar la escala</li>
+              <li>Pronosticar plazos</li>
+              <li>Despegue</li>
+            </ol>
+            <strong>2. Riesgos</strong>
+            <strong>3. Estrategias</strong>
+            <strong>4. Gobernanza</strong>
+          </aside>
+          <div class="lector-texto">
+            <p class="lector-antetitulo">Capítulo 1: Capacidades</p>
+            <p class="lector-titulo">Introducción</p>
+            <p class="lector-meta">3 min · Escrito por Markov Grey, Charbel-Raphaël Segerie</p>
+            <p class="lector-acciones"><span>Escuchar</span><span>Descargar</span><span>Ver</span><span>Reportar un problema</span></p>
+            <p>La IA ha cambiado de forma radical en la última década. Los sistemas que juegan desarrollaron una creatividad estratégica que sorprendió a grandes maestros, y los modelos de lenguaje pasaron de producir autocompletados torpes y graciosos a ser asistentes de ingeniería de software capaces de manejar bases de código con miles de archivos.</p>
+            <p>Este primer capítulo sirve para trazar el mapa del terreno: qué pueden hacer hoy los sistemas de IA, cómo llegaron hasta aquí y hacia dónde apuntan las tendencias.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="contenedor">
+      <h2>Las preguntas que responde este libro</h2>
+      <p>Una guía completa, que se actualiza con regularidad, para entender y reducir los riesgos de los sistemas de IA avanzados.</p>
+      <ul class="cifras">
+        <li>8 capítulos</li>
+        <li>Más de 40 secciones</li>
+        <li>Itinerario técnico y de gobernanza</li>
+        <li>Se actualiza cada trimestre</li>
+      </ul>
+
+      <ol class="tarjetas">
+        <li>
+          <span class="num">1</span>
+          <h3><a href="cap1-01-introduccion.html">¿Qué tan capaz es la IA hoy y a qué ritmo avanza?</a></h3>
+          <p>Modelos fundacionales, leyes de escalado, benchmarks y pronósticos. Lo que ya pueden hacer los sistemas actuales y lo que está por venir.</p>
+          <a href="cap1-01-introduccion.html">Cap. 1: Capacidades</a>
+        </li>
+        <li>
+          <span class="num">2</span>
+          <h3><a href="cap2-01-introduccion.html">¿Qué riesgos plantea la IA avanzada?</a></h3>
+          <p>Del uso indebido a la desalineación y los efectos sistémicos. Modelos de amenaza, modos de fallo y toda la escala de gravedad, desde el daño hasta la extinción.</p>
+          <a href="cap2-01-introduccion.html">Cap. 2: Riesgos</a>
+        </li>
+        <li>
+          <span class="num">3</span>
+          <h3><a href="cap3-01-introduccion.html">¿Qué estrategias pueden evitar que la IA cause daño?</a></h3>
+          <p>Enfoques técnicos y de gobernanza para distintos horizontes temporales: desde prevenir el uso indebido hoy hasta los desafíos de alineación que planteará la superinteligencia.</p>
+          <a href="cap3-01-introduccion.html">Cap. 3: Estrategias</a>
+        </li>
+        <li>
+          <span class="num">4</span>
+          <h3><a href="cap4-01-introduccion.html">¿Cómo debería la sociedad gobernar el desarrollo de la IA?</a></h3>
+          <p>Por qué la regulación tradicional se queda corta ante la IA, la gobernanza del cómputo, la dinámica de carrera, la proliferación y la concentración de poder.</p>
+          <a href="cap4-01-introduccion.html">Cap. 4: Gobernanza</a>
+        </li>
+        <li>
+          <span class="num">5</span>
+          <h3><a href="cap5-01-introduccion.html">¿Cómo sabemos si un sistema de IA es seguro?</a></h3>
+          <p>Cómo se evalúan las capacidades, las propensiones y el control. Técnicas conductuales e internas, y por qué comprobar la seguridad es, en el fondo, tan difícil.</p>
+          <a href="cap5-01-introduccion.html">Cap. 5: Evaluaciones</a>
+        </li>
+        <li>
+          <span class="num">6</span>
+          <h3><a href="cap6-01-introduccion.html">¿Cómo le explicamos a la IA lo que de verdad queremos?</a></h3>
+          <p>El problema de la especificación: el reward hacking (hackeo de la recompensa), la ley de Goodhart y las soluciones que van desde el aprendizaje por imitación hasta el RLHF y la Constitutional AI.</p>
+          <a href="cap6-01-introduccion.html">Cap. 6: Specification gaming</a>
+        </li>
+        <li>
+          <span class="num">7</span>
+          <h3><a href="cap7-01-introduccion.html">¿Por qué una IA podría aprender objetivos equivocados aunque se haya entrenado bien?</a></h3>
+          <p>La generalización errónea de objetivos: cómo la IA aprende objetivos sustitutos, sus manifestaciones peligrosas, como la maquinación (scheming), y las estrategias para detectarla.</p>
+          <a href="cap7-01-introduccion.html">Cap. 7: Generalización errónea de objetivos</a>
+        </li>
+        <li>
+          <span class="num">8</span>
+          <h3><a href="cap8-01-introduccion.html">¿Cómo supervisamos una IA que supera la pericia humana?</a></h3>
+          <p>Técnicas de supervisión escalable: descomposición de tareas, debate, amplificación y generalización de débil a fuerte.</p>
+          <a href="cap8-01-introduccion.html">Cap. 8: Supervisión escalable</a>
+        </li>
+      </ol>
+    </section>
+
+    <section class="contenedor">
+      <h2>Escrito por investigadores, pensado para todos</h2>
+      <div class="personas">
+        <div class="persona">
+          <img src="https://ai-safety-atlas.com/_astro/markov-photo.6OsTZHgG_ZfyNWs.webp" alt="Markov Grey">
+          <h3>Markov Grey</h3>
+          <p>Investigador del French Center for AI Safety. Antes fue redactor técnico en aisafety.info y guionista en Rational Animations.</p>
+        </div>
+        <div class="persona">
+          <img src="https://ai-safety-atlas.com/_astro/charbel-photo.q1SqeK1Q_Z29wANt.webp" alt="Charbel-Raphael Segerie">
+          <h3>Charbel-Raphael Segerie</h3>
+          <p>Director ejecutivo del French Center for AI Safety. Es cofundador de ML4Good y ha dado clases en ARENA y MLAB.</p>
+        </div>
+        <div class="persona">
+          <h3>Charles Martinet</h3>
+          <p class="rol">Autor colaborador</p>
+          <p>Responsable de políticas públicas del French Center for AI Safety.</p>
+        </div>
+        <div class="persona">
+          <h3>Jeanne Salle</h3>
+          <p class="rol">Autora colaboradora</p>
+          <p>Profesora de seguridad de la IA en la ENS Ulm.</p>
+        </div>
+        <div class="persona">
+          <h3>Vincent Corruble</h3>
+          <p class="rol">Asesor</p>
+          <p>Profesor en la Universidad de la Sorbona e investigador asociado del CHAI.</p>
+        </div>
+        <div class="persona">
+          <h3>Fabien Roger</h3>
+          <p class="rol">Asesor</p>
+          <p>Trabajó en Redwood Research y ahora está en Anthropic.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contenedor">
+      <div class="llamada">
+        <h2>¿Listo para empezar?</h2>
+        <p>Empieza por el capítulo 1 o ve directo al tema que te interese. A tu ritmo y siempre gratis.</p>
+        <div class="botones">
+          <a class="boton primario" href="cap1-01-introduccion.html">Leer el libro</a>
+          <a class="boton secundario" href="ensenar.html">Organizar un curso</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
