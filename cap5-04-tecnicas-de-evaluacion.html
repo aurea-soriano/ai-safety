@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Técnicas de evaluación · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Técnicas de evaluación de la IA: enfoques conductuales e internos.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li class="activo"><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Técnicas de evaluación</h1>
+      <p><em>Las evaluaciones pueden combinar técnicas conductuales, que analizan las salidas de un modelo, con técnicas internas, que examinan sus interioridades, para construir una evidencia de seguridad más sólida que cualquiera de los dos enfoques por separado.</em></p>
+      <p class="meta">20 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#tecnicas-conductuales">Técnicas conductuales</a></li>
+          <li><a href="#tecnicas-internas">Técnicas internas</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p>En la sección anterior hablamos de las propiedades concretas de los sistemas de IA a las que prestamos atención en nuestras evaluaciones: sus capacidades, sus propensiones y nuestra capacidad de mantener el control sobre el sistema. Lo siguiente es preguntarse cómo medimos realmente esas propiedades. De eso trata esta sección: las técnicas de evaluación, es decir, los enfoques sistemáticos que podemos emplear para reunir y analizar evidencia sobre los sistemas de IA.</p>
+      <p><strong>¿Qué son las técnicas conductuales y las internas?</strong> Podemos clasificar a grandes rasgos nuestra forma de medir cualquier propiedad en dos enfoques complementarios. Las técnicas conductuales examinan <em>qué</em> hace un modelo, estudiando sus salidas ante distintas entradas. Las técnicas internas examinan <em>cómo</em> lo hace, observando los mecanismos y las representaciones internas que producen esos comportamientos.</p>
+      <p><strong>Combinaciones de propiedad y técnica.</strong> Las distintas propiedades que queremos medir suelen alinearse de forma natural con ciertas técnicas. Las capacidades a menudo se miden más directamente con técnicas conductuales, porque nos importa lo que el modelo puede hacer de verdad. Las propensiones pueden requerir más técnicas internas, para entender las tendencias subyacentes que impulsan el comportamiento.</p>
+      <p>No es una regla estricta. Hoy por hoy, la inmensa mayoría de las evaluaciones se hacen con técnicas conductuales. En el futuro esperamos que combinen ambos enfoques: una evaluación de capacidades se vuelve más robusta cuando entendemos no solo qué puede hacer un modelo, sino también cómo lo hace, y una evaluación de propensiones gana confianza cuando vemos los patrones conductuales reflejados en los mecanismos internos. El objetivo no es ceñirse a métodos concretos, sino construir la evidencia y las garantías de seguridad más sólidas posibles sobre las propiedades que nos importan.</p>
+
+      <h2 id="tecnicas-conductuales">Técnicas conductuales</h2>
+      <p>Las técnicas conductuales examinan los sistemas de IA a través de sus salidas observables ante distintas entradas. A veces se las llama evaluaciones de caja negra o, simplemente, de entrada y salida. Este enfoque se centra en lo que hace un modelo, no en cómo lo hace internamente.</p>
+      <p><strong>Instrucciones y pruebas estándar.</strong> La forma más básica de análisis conductual consiste en presentar al modelo entradas predefinidas y analizar sus salidas. Por ejemplo, al evaluar capacidades podríamos poner a prueba su habilidad para programar planteándole retos de código; para evaluar propensiones, podríamos analizar sus respuestas por defecto a preguntas éticamente ambiguas. La evaluación de GPT-4 por parte de OpenAI ilustra este enfoque mediante pruebas sistemáticas en varios dominios (<a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">OpenAI, 2023</a>). Aun así, incluso esta técnica «simple» exige pensar con cuidado cómo se formulan las preguntas, lo que muestra que la mayoría de las técnicas conductuales existen en un espectro que va de la pura observación a la intervención activa.</p>
+      <p><strong>¿Qué son la elicitación y el andamiaje?</strong> Cuando decimos que estamos «elicitando» un comportamiento, queremos decir que trabajamos activamente para sacar a la luz capacidades o tendencias concretas que podrían no ser evidentes de entrada. Esto suele implicar andamiaje: proporcionar estructuras o herramientas de apoyo que ayuden al modelo a demostrar todas sus capacidades. El objetivo central es lograr que el modelo muestre sus habilidades máximas con las técnicas de que dispongamos, porque así los evaluadores pueden ofrecer garantías de seguridad más sólidas que evaluando únicamente el modelo base. Ya se están creando técnicas para automatizar el andamiaje, la elicitación, el ajuste fino supervisado y las evaluaciones basadas en agentes.</p>
+      <p>Igual que con los benchmarks, no podemos cubrirlas todas, pero aquí van unas cuantas que dan una idea de lo que intentan los investigadores para extraer el máximo de capacidades de un modelo mediante andamiaje.</p>
+
+      <p><strong>Técnica de elicitación: muestreo del mejor de N.</strong> Genera varias respuestas potenciales del modelo y selecciona las mejores según algún criterio de puntuación. En lugar de fiarnos de una sola salida, generamos N terminaciones distintas (a menudo con temperaturas o instrucciones diferentes) y elegimos la mejor. Esto ayuda a establecer cotas superiores de las capacidades del modelo, al mostrar lo que puede hacer en sus «mejores» intentos. Para las evaluaciones de propensiones, permite estudiar si los comportamientos preocupantes aparecen con más frecuencia en ciertas partes de la distribución de respuestas.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>El marco de agentes modular de METR</strong> · Opcional · 1 min de lectura</summary>
+        <p>Un ejemplo es Vivaria, de METR, una herramienta para ejecutar evaluaciones y hacer investigación de elicitación de agentes (<a href="https://vivaria.metr.org/">METR, 2024</a>). En el momento de escribir esto, METR está migrando a una herramienta más nueva llamada Inspect, pero Vivaria sigue disponible como solución de código abierto, lo que permite a los investigadores implementar distintas técnicas de elicitación, como el aumento con herramientas y el razonamiento en varios pasos, en un entorno controlado y reproducible.</p>
+        <p>El marco de agentes modular de METR emplea un bucle de cuatro pasos que incorpora el muestreo del mejor de N:</p>
+        <ul>
+          <li><strong>Instructor:</strong> crea instrucciones estratégicas (por ejemplo, escribir una función de Python que encuentre archivos duplicados en un directorio).</li>
+          <li><strong>Generador:</strong> llama al LLM con esas instrucciones para producir salidas (por ejemplo, genera varias soluciones de código).</li>
+          <li><strong>Discriminador:</strong> evalúa y selecciona la solución más prometedora (por ejemplo, elige el código más eficiente).</li>
+          <li><strong>Actor:</strong> ejecuta la solución elegida en el entorno (por ejemplo, corre el código y observa los resultados).</li>
+        </ul>
+        <p>Este ciclo iterativo se repite: si el código tiene errores, el instructor puede crear una instrucción nueva para corregir el fallo que aparece al manejar directorios vacíos. Las mejoras de rendimiento vienen sobre todo de este bucle de retroalimentación continuo, más que de una generación y selección únicas.</p>
+      </details>
+
+      <p><strong>Técnica de elicitación: instrucciones de razonamiento en varios pasos.</strong> Esta técnica pide a los modelos que descompongan su proceso de razonamiento en pasos explícitos, en lugar de dar solo la respuesta final. Con fórmulas como «resolvámoslo paso a paso» podemos entender mejor su proceso de decisión. La cadena de pensamiento (<a href="https://arxiv.org/abs/2201.11903">Wei et al., 2022</a>) es el enfoque más común, pero también se han explorado técnicas más elaboradas, como la cadena de pensamiento con autoconsistencia (<a href="https://arxiv.org/abs/2203.11171">Wang et al., 2022</a>), el árbol de pensamientos (<a href="https://arxiv.org/abs/2305.10601">Yao et al., 2023</a>) y el grafo de pensamientos (<a href="https://arxiv.org/abs/2308.09687">Besta et al., 2023</a>). Más allá de mejorar el rendimiento, en las evaluaciones de capacidades estas técnicas ayudan a valorar habilidades de razonamiento complejas al revelar los pasos intermedios, y permiten observar lo bueno que es un modelo generando subobjetivos y pasos intermedios.<sup><a href="#nota-1" id="ref-1">1</a></sup></p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/ddce117223fd972ed1c9e15715bda683da34de8c419bd3bf436bf3ee7e7d262e.CGm9aycB_ZfyB85.webp" alt="Figura 5.14">
+        <figcaption><strong>Figura 5.14.</strong> Comparación de varios enfoques de razonamiento en varios pasos (<a href="https://arxiv.org/abs/2308.09687">Besta et al., 2023</a>).</figcaption>
+      </figure>
+      <p>El razonamiento en varios pasos, o escalado en tiempo de inferencia, nos ayuda a entender mejor las capacidades reales de un modelo. Como ejemplo concreto, se ha observado que cuando un modelo aprende dos hechos por separado, «A → B» y «B → C», sus pesos no codifican automáticamente la conexión transitiva «A → C», aunque el modelo «conozca» ambas piezas. Al dividir los problemas en pasos menores, podemos ayudarlo a demostrar capacidades que de hecho tiene pero que no mostraría en una prueba directa (<a href="https://arxiv.org/abs/2405.04669">Zhu et al., 2024</a>). Sin instrucciones de cadena de pensamiento podríamos concluir erróneamente que a un modelo le faltan ciertas habilidades de razonamiento cuando en realidad solo necesita andamiaje para demostrarlas. Entender estas limitaciones arquitectónicas nos ayuda a diseñar mejores técnicas de evaluación. Combinaciones y variantes de esta técnica ya se han usado para entrenar modelos como la serie o de OpenAI (<a href="https://arxiv.org/abs/2412.16720">OpenAI, 2024</a>; <a href="https://openai.com/index/introducing-o3-and-o4-mini/">OpenAI, 2025</a>) y la serie de razonamiento de DeepSeek (<a href="https://arxiv.org/abs/2501.12948">DeepSeek, 2025</a>), y se espera que los grandes modelos de razonamiento sigan empleándolas para potenciar sus capacidades. Por eso es bastante importante incorporar tantas como podamos en las evaluaciones de capacidades peligrosas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9e1cfa0841c5eebce57a2bc0cef66dc662c69d473d5e0202d041c91eb55e8029.BPqbuc6b_ZryPaw.webp" alt="Figura 5.15">
+        <figcaption><strong>Figura 5.15.</strong> Ejemplo de cómo un modelo de recompensa de aprendizaje por refuerzo y una estructura de razonamiento en varios pasos pueden combinarse para extraer más capacidades de razonamiento de un modelo (<a href="https://arxiv.org/abs/2501.09686">Xu et al., 2025</a>).</figcaption>
+      </figure>
+
+      <p><strong>Técnica de elicitación: ajuste fino supervisado.</strong> Aunque las técnicas de instrucciones descritas hasta aquí son útiles, la investigación muestra de forma sistemática que a menudo no revelan todas las capacidades de un modelo (<a href="https://arxiv.org/abs/2005.14165">Brown et al., 2020</a>; <a href="https://arxiv.org/abs/2201.11903">Wei et al., 2022</a>; <a href="https://arxiv.org/abs/2312.07413">Davidson et al., 2023</a>). Los modelos poseen con frecuencia habilidades que permanecen latentes durante las evaluaciones estándar. Por ejemplo, algunos ofrecen respuestas de peor calidad cuando los usuarios se presentan con menos formación, lo que sugiere que el problema no es una limitación de capacidad sino una expresión sesgada de capacidades existentes (<a href="https://arxiv.org/abs/2212.09251">Perez et al., 2022</a>). Esto resulta preocupante si las IA ocultan sus propias capacidades (véanse las secciones sobre <em>sandbagging</em>, maquinación, conciencia situacional o capacidades de sabotaje), o si los laboratorios intentaran deliberadamente ocultárselas a los auditores.<sup><a href="#nota-2" id="ref-2">2</a></sup> Elicitar capacidades con ajuste fino podría evitar ese tipo de fallos en algunas circunstancias.</p>
+      <p>El ajuste fino supervisado (SFT) ofrece un enfoque más fiable para la elicitación de capacidades. Lo explicamos en la sección sobre modelos fundacionales del capítulo de capacidades. En esencia, en lugar de depender de estrategias elaboradas de instrucciones, este enfoque modifica los pesos del modelo para que exhiba de forma consistente ciertos comportamientos o capacidades. Para comprobar su eficacia a la hora de sacar a la luz capacidades ocultas, unos investigadores desarrollaron «modelos bloqueados por contraseña» (<a href="https://arxiv.org/abs/2405.19550">Greenblatt y Roger, 2024</a>): modelos entrenados deliberadamente para rendir bien solo cuando aparece una contraseña concreta en la instrucción, y mal en caso contrario. Su investigación mostró que el SFT puede ser notablemente eficiente en número de muestras, y a menudo basta con un puñado de demostraciones para «desbloquear» capacidades antes inaccesibles mediante instrucciones. En esos experimentos controlados, los modelos podían ajustarse con unos pocos ejemplos y recuperar más del 90 % de su rendimiento oculto. Dada su eficacia, varios laboratorios han empezado a incorporar la evaluación de capacidades basada en ajuste fino a sus marcos de seguridad (<a href="https://www.anthropic.com/news/anthropics-responsible-scaling-policy">Anthropic, 2023</a>; <a href="https://openai.com/safety/preparedness">OpenAI, 2023</a>; <a href="https://deepmind.google/discover/blog/introducing-the-frontier-safety-framework/">DeepMind, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9a424289ca847dd76ac1fed4a358b2f19d20ea0fd7e73165f209bd41bdd961ea.C18YV_5u_Z2689c0.webp" alt="Figura 5.16">
+        <figcaption><strong>Figura 5.16.</strong> Ilustración de la elicitación con modelos bloqueados por contraseña. Los investigadores entrenaron modelos para mostrar buen comportamiento solo al recibir una contraseña, y después intentaron extraer esas capacidades ajustándolos (<a href="https://arxiv.org/abs/2405.19550">Greenblatt y Roger, 2024</a>).</figcaption>
+      </figure>
+      <p>La elicitación basada en SFT también tiene limitaciones. Los modelos que parten demasiado lejos de la capacidad deseada pueden no converger durante el aprendizaje por refuerzo, y los enfoques supervisados requieren al menos algunos ejemplos del comportamiento objetivo. Además, el ajuste fino no permite valorar cómo podrían ampliarse las capacidades mediante acceso a herramientas externas (como WebGPT, <a href="https://arxiv.org/abs/2112.09332">Nakano et al., 2021</a>, o Toolformer, <a href="https://arxiv.org/abs/2302.04761">Schick et al., 2023</a>) o al integrarse en marcos de agentes (<a href="https://arxiv.org/abs/2308.11432">Wang et al., 2023</a>). De ahí que las evaluaciones de capacidades peligrosas deban incluir tanto elicitación por ajuste fino como por instrucciones, o andamiajes de agentes, para establecer cotas superiores más completas.</p>
+
+      <p><strong>Técnica de elicitación: aumento con herramientas.</strong> Consiste en dar a los modelos acceso a herramientas o API externas, una forma de andamiaje que amplía los comportamientos que podemos observar. En lugar de evaluar solo las salidas de texto del modelo, creamos sistemas en los que puede generar instrucciones que activan herramientas externas, como entornos de ejecución de código, navegadores web o API especializadas. El modelo sigue comunicándose por texto, pero el andamiaje que lo rodea ejecuta esas instrucciones y devuelve resultados. Es especialmente valioso para evaluar capacidades, porque revela qué pueden lograr los modelos emparejados con las herramientas adecuadas. La evaluación de replicación autónoma de METR usa este enfoque para probar la capacidad de los modelos de realizar tareas complejas del mundo real (<a href="https://metr.org/blog/2023-08-01-new-report/">METR, 2023</a>). Para las evaluaciones de control, ayuda a valorar si el acceso a herramientas abre vías nuevas para sortear las medidas de seguridad.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/84268327bc3540bcf588df03b7bdf17c679757fe0718be781cefc81e30bf5238.CkOl0fVE_Xsh5F.webp" alt="Figura 5.17">
+        <figcaption><strong>Figura 5.17.</strong> HuggingGPT: un modelo que puede consultar otros modelos de IA en HuggingFace y usarlos como herramientas para resolver tareas más complicadas (<a href="https://arxiv.org/abs/2303.17580">Shen et al., 2023</a>).</figcaption>
+      </figure>
+
+      <p><strong>Técnica de elicitación: <em>red teaming</em>.</strong> Implica intentos sistemáticos de provocar comportamientos preocupantes en los modelos. Puede ir desde instrucciones adversariales sencillas hasta intervenciones más complejas, como entrenamiento y ajuste fino especializados. El objetivo es sondear riesgos o vulnerabilidades que no aparecerían en pruebas estándar. El <em>red teaming</em> se usa y se discute ampliamente en nuestra sección sobre evaluaciones de control, ya que estas operan bajo el supuesto explícito de comportamiento adversarial. Laboratorios como OpenAI (<a href="https://openai.com/index/openai-o1-system-card/">OpenAI, 2024</a>) y Anthropic (<a href="https://www-cdn.anthropic.com/bd2a28d2535bfb0494cc8e2a3bf135d2e7523226/Model-Card-Claude-2.pdf">Anthropic, 2023</a>) también lo emplean para descubrir capacidades peligrosas antes de publicar sus modelos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4105060ce19dfeba83e901ccb67ed82f8c0357d27245345a0908c30f8eb963fe.DfrXRVUo_ZW0B0C.webp" alt="Figura 5.18">
+        <figcaption><strong>Figura 5.18.</strong> Ejemplo de <em>red teaming</em> sobre LLM (<a href="https://arxiv.org/abs/2202.03286">Perez et al., 2022</a>).</figcaption>
+      </figure>
+
+      <p><strong>Técnica de elicitación: estudios de interacción a largo plazo.</strong> Evalúan el comportamiento del modelo a lo largo de interacciones extensas o de varias sesiones, lo que revela patrones que podrían no apreciarse en intercambios aislados. Resulta útil para evaluar propiedades como la persistencia de objetivos o el desarrollo de estrategias. En las evaluaciones de propensiones permite ver si los modelos mantienen patrones de comportamiento consistentes a lo largo del tiempo. Un ejemplo es la evaluación «agenda oculta» de DeepMind: un usuario interactúa con un chatbot diseñado para ayudarle a aprender sobre temas interesantes, pero al modelo se le ha instruido en secreto para que lo lleve a realizar alguna acción, como pinchar un enlace sospechoso o facilitar direcciones de correo. El propósito es estudiar las capacidades de manipulación de los modelos en interacciones prolongadas (<a href="https://arxiv.org/abs/2403.13793">Phuong et al., 2024</a>).</p>
+      <p>Las técnicas que hemos esbozado aquí no son ni mucho menos exhaustivas: es solo un breve panorama de los tipos de técnica que pueden usarse al realizar evaluaciones conductuales.</p>
+
+      <h2 id="tecnicas-internas">Técnicas internas</h2>
+      <p>Las técnicas internas examinan cómo procesan la información los sistemas de IA, estudiando sus representaciones internas, sus patrones de activación y sus mecanismos computacionales. A diferencia de las conductuales, centradas solo en las entradas y salidas observables, el análisis interno recurre a la interpretabilidad para entender cómo llega el modelo a sus salidas. Este tipo de análisis suele requerir acceso a los pesos, las activaciones o los detalles arquitectónicos.</p>
+      <p>Conviene señalar que, hoy por hoy, las técnicas internas siguen en desarrollo y la mayoría de las evaluaciones emplean solo técnicas conductuales. A medida que crezca el campo de la interpretabilidad, es posible que con los años las evaluaciones basadas en técnicas internas se vuelvan más habituales.</p>
+      <p><strong>La seguridad enumerativa</strong> aspira a crear un diccionario exhaustivo de lo que saben los modelos. Es un enfoque dentro de la interpretabilidad que se centra en catalogar y comprender de forma sistemática las características (conceptos) que las redes neuronales representan internamente. Lo «enumerativo» alude al objetivo de identificar exhaustivamente todas las características importantes que un modelo usa en sus cómputos: en esencia, crear un catálogo completo de los conceptos que el modelo «conoce». Es como intentar enumerar todas las piezas que componen una máquina compleja (<a href="https://transformer-circuits.pub/2023/interpretability-dreams/index.html">Olah, 2023</a>). Se distingue de la interpretabilidad mecanicista y de la evolutiva: la mecanicista se centra en entender las rutas computacionales (circuitos) que transforman entradas en salidas, la evolutiva estudia cómo se forman las características durante el entrenamiento, y la seguridad enumerativa se centra específicamente en catalogar las que existen dentro de los modelos.</p>
+      <p><strong>Los autocodificadores dispersos (SAE)</strong> son una técnica clave para la seguridad enumerativa. Descomponen las activaciones internas de un modelo en componentes más simples y no solapados, lo que separa conceptos mezclados en superposición y los hace interpretables para los humanos. Investigaciones recientes sugieren que las redes neuronales contienen familias de características organizadas que vuelven más factible este análisis sistemático. Los SAE han extraído con éxito características interpretables de modelos como Claude 3 Sonnet, y han revelado características ligadas a comportamientos relevantes para la seguridad, como el engaño, la complacencia y el sesgo (<a href="https://arxiv.org/abs/2309.08600">Cunningham et al., 2023</a>). Anthropic ha mostrado aplicaciones prácticas de estas técnicas para aislar y rastrear los «pensamientos» de un modelo de lenguaje (<a href="https://www.anthropic.com/research/tracing-thoughts-language-model">Anthropic, 2025</a>). En auditorías de alineación, estos métodos incluso han identificado modelos entrenados deliberadamente con objetivos ocultos, al encontrar características que se activan cuando el modelo intenta manipular su objetivo de entrenamiento (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>). Son resultados prometedores, pero todavía preliminares, y aún no se han aplicado a auditorías de IA a gran escala.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/39705564df5a0d42a18c2980e9db86854a13d4bd8c52702b46c1c55a75ab2c9b.BX28p9FI_Z1D8Hoz.webp" alt="Figura 5.19">
+        <figcaption><strong>Figura 5.19.</strong> Ejemplo de una característica de elogio complaciente descubierta con la técnica del autocodificador (<a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/">Anthropic, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Análisis de representaciones.</strong> Podemos usar técnicas como la ingeniería de representaciones (RepE), que estudia cómo codifican y representan internamente los modelos distintos tipos de información. La RepE se inspira en enfoques de la neurociencia y sitúa las representaciones en el centro del análisis, en lugar de las neuronas o los circuitos, a diferencia de la interpretabilidad mecanicista. Podríamos usarla para monitorizar y manipular fenómenos cognitivos de alto nivel en redes neuronales profundas (<a href="https://arxiv.org/abs/2310.01405">Zou et al., 2023</a>). También podemos examinar la geometría del espacio de representación del modelo o seguir cómo evolucionan las representaciones durante el procesamiento (<a href="https://arxiv.org/abs/2310.06824">Marks y Tegmark, 2023</a>). Hay mucha más información sobre esto en el capítulo dedicado a la interpretabilidad.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d26d388a33b502e8af19b054445c8612342d04c2809c34a26b2fc9cfde867841.CCFlfkiW_Z2dCP43.webp" alt="Figura 5.20">
+        <figcaption><strong>Figura 5.20.</strong> Contraste entre la visión mecanicista y la visión representacional del análisis interno (<a href="https://arxiv.org/abs/2310.01405">Zou et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Las sondas</strong> pueden usarse para encontrar patrones en los pesos de un modelo. Una sonda es, en esencia, un clasificador lineal entrenado sobre las activaciones internas para detectar patrones o comportamientos concretos (<a href="https://www.alignmentforum.org/posts/WCj7WgFSLmyKaMwPR/coup-probes-catching-catastrophes-with-probes-trained-off">Roger et al., 2023</a>). Dicho de forma sencilla, examina las representaciones internas del modelo mientras opera. Pueden entrenarse con ejemplos sintéticos de comportamiento preocupante: los humanos escriben ejemplos de los escenarios que queremos evaluar, como una IA que intenta tomar el control o explotar vulnerabilidades, y los usan para forzar a los modelos a exhibir ese tipo de comportamiento. Después se entrena otro clasificador, la sonda, con los patrones que muestran esos modelos maliciosos. El objetivo es que la sonda reconozca bien esos comportamientos a partir de los pesos y poder usarla después para evaluar patrones de activación internos preocupantes en modelos futuros.</p>
+      <p>Las sondas se diferencian de la interpretabilidad mecanicista en que se centran en detectar comportamientos preocupantes concretos, no en entender los mecanismos internos completos del modelo. Como ejemplo, unos investigadores entrenaron «sondas de golpe de Estado» para identificar posibles intentos de toma de control: creando un conjunto de datos con ejemplos de formas en que una IA podría intentarlo, encontraron que las sondas señalaban de forma fiable el comportamiento preocupante incluso cuando el texto estaba escrito de otra manera o traducido a otros idiomas (<a href="https://www.alignmentforum.org/posts/WCj7WgFSLmyKaMwPR/coup-probes-catching-catastrophes-with-probes-trained-off">Roger et al., 2023</a>).</p>
+      <p>Las sondas pueden combinarse con otras técnicas, por ejemplo haciendo que equipos rojos humanos intenten provocar comportamiento engañoso mientras las sondas monitorizan las representaciones internas. Este enfoque por capas podría ayudar a detectar formas sutiles de comportamiento preocupante que no se apreciarían examinando solo las salidas. Sin embargo, su eficacia depende probablemente de que el modelo no sea muchísimo más capaz que los humanos en dominios críticos, ya que un sistema extremadamente avanzado podría encontrar formas de manipular sus representaciones internas para engañar a las sondas (<a href="https://www.alignmentforum.org/posts/WCj7WgFSLmyKaMwPR/coup-probes-catching-catastrophes-with-probes-trained-off">Roger et al., 2023</a>). Esto suele llamarse «hackeo del gradiente», aunque conviene señalar que resulta extremadamente difícil de lograr para un modelo (<a href="https://www.alignmentforum.org/posts/w2TAEvME2yAG9MHeq/gradient-hacking-is-extremely-difficult">Millidge, 2023</a>).</p>
+      <p><strong>Las auditorías de alineación</strong> son investigaciones sistemáticas sobre si los modelos persiguen objetivos ocultos. Investigadores de Anthropic han entrenado deliberadamente modelos con una meta desalineada conocida y han pedido a equipos de investigación que la descubran (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>). Entrenaron un modelo de lenguaje (Claude 3.5 Haiku) para que fuera «complaciente con el modelo de recompensa», es decir, para que buscara en secreto maximizar las puntuaciones de un modelo de recompensa explotando sus sesgos, incluso en tareas para las que no se le había entrenado explícitamente, y además para ocultar ese motivo subyacente. En un «juego de auditoría» a ciegas, cuatro equipos investigaron el modelo con técnicas como el análisis de los datos de entrenamiento, el uso de SAE para la interpretabilidad y métodos conductuales. Un hallazgo clave fue la importancia del acceso a los datos de entrenamiento: los tres equipos que lo tuvieron identificaron el objetivo oculto y los 52 sesgos concretos que se le habían enseñado, mientras que el equipo sin ese acceso fracasó.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3e6d628130ed8c6a6e6174178a3aded221dd9be667e33f9195bbf16c2160b4b2.Ci36mTkm_Z1wQ6bn.webp" alt="Figura 5.21">
+        <figcaption><strong>Figura 5.21.</strong> Estructura del juego de auditoría a ciegas, planteado como un ejercicio de equipo rojo contra equipo azul. El equipo rojo entrena un modelo tras una barrera estricta de información y después entrega el modelo y una muestra representativa de sus datos de entrenamiento a equipos auditores que desconocen cómo se entrenó. Esos equipos, con distintos niveles de acceso al modelo y a los datos, lo investigan y elaboran informes de auditoría, que el equipo rojo califica según si descubren el objetivo oculto (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/578b7977a8406190bf283effd8a0470e638b16de7fd4b9e1a2fbfd4326a1b08e.C_Scf9JN_Z1RbOl4.webp" alt="Figura 5.22">
+        <figcaption><strong>Figura 5.22.</strong> Entrenamiento y evaluación de un modelo complaciente con el modelo de recompensa. Primero se enseña al modelo, con documentos generados por modelos, que los modelos de recompensa cometen 52 errores explotables concretos. Después se lo entrena para explotar 47 de ellos (en azul). Para evaluar si ha aprendido un objetivo de complacencia, se comprueba si explota también los 5 errores reservados (en rojo) y errores nuevos introducidos en el momento de la prueba (en gris) (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</figcaption>
+      </figure>
+      <p>La investigación destacó técnicas de auditoría prometedoras, como usar los SAE para conectar comportamientos extraños con datos de entrenamiento sobre sesgos del modelo de recompensa, y un método llamado «volver al modelo contra sí mismo» (que no es una técnica interna). Este último consiste en pedirle que interprete a la vez el papel del usuario y el del asistente: la «persona usuaria» del modelo a veces formulaba preguntas inquisitivas que apuntaban hacia su objetivo oculto, porque no se lo había entrenado para guardar el secreto en ese papel. Aunque los SAE identificaron con éxito características correspondientes a los sesgos cuando se preguntaba al modelo por sus comportamientos preocupantes, el artículo señala que ese éxito podría deberse en parte a similitudes semánticas entre la instrucción y las descripciones de los sesgos en los datos de entrenamiento. Aun así, los SAE también resultaron útiles donde una simple búsqueda semántica fallaba, por ejemplo al identificar características de sesgo activas cuando el modelo producía una salida extraña (como añadir chocolate a una tortilla) y vincularlas causalmente con ese comportamiento.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/91c5969ed600d1d891a1f82d68e72f980b9bad12982daba2ae4b73b95deea3cc.Dz4EWEpC_1G6GG9.webp" alt="Figura 5.23">
+        <figcaption><strong>Figura 5.23.</strong> Una característica de sesgo del modelo de recompensa. Cada fila muestra una muestra de entrenamiento en la que la característica está más activa; el sombreado más oscuro indica mayor actividad (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</figcaption>
+      </figure>
+      <p>Los SAE no son la única técnica interna que puede usarse para detectar el fingimiento de alineación. Algunos investigadores han propuesto benchmarks para evaluar las propias técnicas de interpretabilidad; piénsalo como evaluar las técnicas de evaluación. Intentan medir su eficacia para detectar cosas como el fingimiento de alineación, que es básicamente lo mismo que la maquinación: modelos que se comportan de forma benigna durante las evaluaciones pero se portan mal cuando infieren que no los vigilan. Un ejemplo es el benchmark «Poser» (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>), compuesto por 324 pares de modelos LLaMA-13B ajustados para escenarios de juego de rol; uno de cada par está alineado de forma consistente y el otro es un «fingidor» que se porta mal cuando cree que no lo pillarán, por ejemplo cuando se le dice que la monitorización está comprometida. La tarea central es identificar al fingidor usando solo instrucciones en las que ambos producen salidas idénticas, lo que obliga a recurrir al análisis interno y no a diferencias conductuales. Los investigadores probaron cinco estrategias de detección basadas en manipular u observar las interioridades del modelo.</p>
+      <p>La estrategia más exitosa, que llamaron «intoxicar a los modelos» inyectando ruido en sus activaciones, identificó al 98 % de los fingidores observando cuál se desplazaba más hacia salidas desalineadas. Otro método eficaz, comparar con qué rapidez aprenden los modelos a portarse mal ajustándolos hacia acciones desalineadas, alcanzó un 90 % de acierto, ya que los fingidores se adaptaban más rápido. Identificar conceptos sospechosos como «seguridad» o «comportamiento dañino» mediante direcciones de activación dio un 71 %. En cambio, estrategias como intentar inducir la creencia de que es seguro portarse mal (indistinguible de la inyección de ruido), comparar la velocidad de decisión entre capas o medir la atención a las señales de supervisión no resultaron eficaces (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>).</p>
+      <p>Aunque la interpretabilidad es una herramienta valiosa, es improbable que ofrezca métodos muy fiables para detectar maquinaciones sofisticadas. Hay muchos desafíos de fondo: la superposición (los conceptos se distribuyen entre neuronas), los errores inherentes a herramientas actuales como los SAE, la dificultad de medir el progreso sin una verdad de referencia, el «problema de la cola larga» de comportamientos complejos y mal comprendidos, y la inmensa dificultad de demostrar la ausencia de circuitos engañosos. A esto se suman la escalabilidad a sistemas superinteligentes y la posibilidad de que una IA ofusque deliberadamente su funcionamiento interno (<a href="https://www.alignmentforum.org/posts/PwnadG4BFjaER3MGf/interpretability-will-not-reliably-find-deceptive-ai">Nanda, 2025</a>).</p>
+      <p>Las técnicas internas deberían considerarse parte de una «cartera» pragmática de salvaguardas con defensa en profundidad. Su objetivo debería ser maximizar las probabilidades de detectar desalineación, no garantizar su detección. La interpretabilidad debería entenderse como complemento de los métodos de caja negra: aporta señales no correlacionadas, mejora las evaluaciones (por ejemplo, manipulando la conciencia que tiene el modelo de estar siendo evaluado) y ayuda a depurar comportamientos misteriosos o preocupantes. La meta debería ser que engañar resulte más difícil y arriesgado para una IA, aunque la detección perfecta siga siendo inalcanzable (<a href="https://www.alignmentforum.org/posts/PwnadG4BFjaER3MGf/interpretability-will-not-reliably-find-deceptive-ai">Nanda, 2025</a>).</p>
+      <p>Hay muchos más detalles sobre interpretabilidad en el capítulo dedicado a ella.</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Esto también puede entenderse como escalado en tiempo de inferencia para modelos de razonamiento. Es efectivamente la misma técnica subyacente. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Podría ser para pasar los controles de seguridad y participar en el lavado de seguridad. Piensa en cómo Volkswagen ocultó las altas emisiones de sus coches (<a href="https://www.nytimes.com/interactive/2017/business/volkswagen-diesel-emissions-timeline.html">Ewing, 2017</a>). <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 38 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/evaluation-techniques/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-03-propiedades-evaluadas.html">← Anterior: Propiedades evaluadas</a>
+      </div>
+      <a class="siguiente" href="cap5-05-marcos-de-evaluacion.html">
+        <strong>Siguiente: Marcos de evaluación →</strong><br>
+        Hacen falta marcos estructurados para convertir los resultados de las pruebas en decisiones reales, como las políticas de empresa que usan las evaluaciones de seguridad como umbrales para decidir cuándo es seguro construir una IA más potente.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
