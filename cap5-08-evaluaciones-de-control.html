@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evaluaciones de control · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Evaluaciones de control: equipos rojo y azul, auditorías y límites del enfoque.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li class="activo"><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Evaluaciones de control</h1>
+      <p><em>Evaluar si los protocolos de seguridad siguen siendo eficaces incluso cuando un sistema de IA muy capaz intenta activamente burlarlos aporta una capa de confianza adicional e independiente, más allá de la alineación técnica.</em></p>
+      <p class="meta">11 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+
+
+      <p>Ya explicamos la intuición básica de la agenda de control de la IA en secciones anteriores y en capítulos previos, como el de Estrategias. Esta sección busca añadir algo más de profundidad, específicamente sobre las evaluaciones que podríamos diseñar siguiendo esa línea de pensamiento.</p>
+
+      <p><strong>Las evaluaciones de control abordan modos de fallo fundamentalmente distintos de los de otras evaluaciones.</strong> La mayoría de las evaluaciones de seguridad dan por supuesto implícitamente que los sistemas de IA pueden cometer errores u optimizar objetivos desalineados, pero no que intenten activamente burlar las medidas de seguridad. Las evaluaciones de control llenan ese hueco adoptando la mentalidad adversarial habitual en ciberseguridad: suponen agentes sofisticados que intentan deliberadamente vulnerar las salvaguardas. A diferencia de las evaluaciones de capacidades, que miden lo que los modelos pueden hacer, o de las de propensiones, que miden lo que tienden a hacer, las de control miden si los protocolos de seguridad siguen siendo eficaces cuando los modelos intentan subvertirlos a propósito (<a href="https://arxiv.org/abs/2312.06942">Greenblatt et al., 2023</a>). De manera informal, podemos entender la premisa central del control viendo que la seguridad puede lograrse por dos vías complementarias:</p>
+      <ol>
+        <li>Asegurar que la IA no <em>intente</em> hacer cosas malas que no querríamos (alineación).</li>
+        <li>Asegurar que la IA no <em>pueda</em> hacerlas aunque lo intente (control).</li>
+      </ol>
+      <p>Ambas se complementan y crean dos barreras independientes frente a los desenlaces catastróficos: la alineación impide el deseo de realizar acciones dañinas y el control impide la capacidad de ejecutarlas con éxito.</p>
+
+      <p><strong>La propiedad de control cuantifica con qué eficacia resisten los demás protocolos de seguridad los intentos deliberados de subversión por parte de sistemas muy capaces.</strong> Las evaluaciones de control producen una estimación de probabilidad: dado que un modelo se esfuerce al máximo por causar daño, ¿qué probabilidad tiene de conseguirlo? Un sistema con propiedades de control sólidas tiene una probabilidad insignificante de provocar resultados inaceptables pese a intentos decididos de lograrlo. Este encuadre cuantitativo permite a los desarrolladores fijar umbrales de riesgo concretos, como «menos del 0,1 % de probabilidad de extracción de datos a lo largo de la vida del despliegue». Las evaluaciones de control se apoyan en supuestos conservadores sobre las capacidades y el conocimiento del modelo: se asume que puede entender las medidas de seguridad, coordinarse con otras instancias y explotar cualquier vulnerabilidad disponible (<a href="https://www.alignmentforum.org/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled">Greenblatt y Shlegeris, 2024</a>; <a href="https://arxiv.org/abs/2501.17315">Korbak et al., 2025</a>).</p>
+
+      <p><strong>Detectar pronto la maquinación constituye un punto de inflexión para la seguridad.</strong> Pillar a los modelos «con las manos en la masa» en intentos fallidos de subvertir las medidas de seguridad o de causar daño cambia de raíz el panorama de riesgo. En lugar de exigir una prevención perfecta de forma indefinida, las medidas de control aspiran a garantizar que, si el modelo está maquinando, no logre provocar una catástrofe antes de que lo detectemos (<a href="https://www.alignmentforum.org/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled">Greenblatt y Shlegeris, 2024</a>). Este enfoque transforma un problema imposible, garantizar que un modelo nunca intente atacar, en uno abordable: asegurar que el comportamiento peligroso se detecte antes de causar un daño irreversible. Pillarlos en intentos fallidos no solo evita el daño inmediato, sino que crea un punto de inflexión, porque aporta evidencia concreta de desalineación capaz de activar protocolos de emergencia: terminación del despliegue, retiradas, reorientación de la investigación en seguridad y coordinación internacional. Una vez que los desarrolladores detectan un intento, pueden estudiarlo para reforzar las contramedidas y generar datos de entrenamiento que ayuden a detectar ataques similares (<a href="https://www.alignmentforum.org/posts/i2nmBfCXnadeGmhzW/catching-ais-red-handed">Greenblatt et al., 2024</a>).</p>
+      <p><strong>Tras detectar siquiera un ejemplo de mal comportamiento, los desarrolladores ganan herramientas nuevas y potentes para prevenir ataques futuros.</strong> Cada intento detectado aporta datos que hacen progresivamente menos probable que los siguientes tengan éxito.</p>
+      <ol>
+        <li><strong>Proliferación:</strong> a partir de un solo ejemplo se pueden generar variantes diversas del ataque modificando entradas o contextos, lo que crea un conjunto de datos más amplio de comportamientos problemáticos.</li>
+        <li><strong>Entrenamiento adversarial:</strong> entrenar los sistemas de monitorización con ejemplos de ataques reales mejora mucho su capacidad de detectar intentos similares, porque los ejemplos reales dan una señal más fuerte que los sintéticos.</li>
+        <li><strong>Estudio de las contramedidas:</strong> se puede analizar qué medidas de seguridad funcionaron y cuáles fallaron durante el ataque, y reforzar después los puntos más débiles del sistema de defensa.</li>
+        <li><strong>Aprovechamiento de las señales de colusión:</strong> si el ataque implica coordinación entre instancias de IA, se pueden identificar y neutralizar los mecanismos de coordinación, como desencadenantes o patrones concretos.</li>
+        <li><strong>Conocimiento sobre la instancia concreta:</strong> examinar su estrategia de ataque revela información valiosa sobre sus objetivos, capacidades y limitaciones.</li>
+      </ol>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/12a867e4a65cfe00c2bbed18ca046466d4233ffb543c3e7b51e0c9a18448e6ba.C85TBooG_Z1SxBR.webp" alt="Figura 5.50">
+        <figcaption><strong>Figura 5.50.</strong> Esquema básico de cómo podríamos estructurar las evaluaciones de control (<a href="https://arxiv.org/abs/2312.06942">Greenblatt et al., 2023</a>).</figcaption>
+      </figure>
+
+      <p><strong>Las evaluaciones de control plantean la seguridad como un juego adversarial entre un equipo rojo y uno azul.</strong> Para poner a prueba con rigor los protocolos frente a la subversión deliberada, estructuran el problema como un juego competitivo. El equipo rojo construye políticas de ataque y modelos sustitutos que intentan provocar resultados inaceptables, y sirve de aproximación a posibles IA maquinadoras. El equipo azul desarrolla protocolos de control (sistemas de monitorización, filtros de entrada y procedimientos de auditoría humana) para impedir esos ataques. Este marco convierte la pregunta abstracta «¿sería segura esta IA si estuviera maquinando?» en una concreta y medible: «¿puede nuestro equipo rojo construir un modelo que sortee nuestras medidas de seguridad?» (<a href="https://www.alignmentforum.org/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled">Greenblatt y Shlegeris, 2024</a>; <a href="https://axrp.net/episode/2024/04/11/episode-27-ai-control-buck-shlegeris-ryan-greenblatt.html">AXRP, 2024</a>; <a href="https://arxiv.org/abs/2501.17315">Korbak et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c005216827d7306a780ea546998c27eb37ea002828db3fc58620cb4b666c6100.B3wyeRtm_ZnpoUm.webp" alt="Figura 5.51">
+        <figcaption><strong>Figura 5.51.</strong> Ejemplo de una evaluación de control en un entorno de juguete. El equipo azul recibe problemas de programación que puede resolver con un modelo no fiable (GPT-4) y verificar después mediante una combinación de un modelo fiable (GPT-3.5) y una persona (simulada con GPT-4). El equipo rojo sustituye el modelo no fiable e intenta inyectar código malicioso (<a href="https://arxiv.org/abs/2312.06942">Greenblatt et al., 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9dfa6f6a465b6c3a43fbfad6ff0ed27bbf2cc65aa937a144e4624e7b1433eca7.CGIcC23w_ZG4HzP.webp" alt="Figura 5.52">
+        <figcaption><strong>Figura 5.52.</strong> Ejemplo del proceso que sigue el equipo rojo para generar un único intento de inyección de puerta trasera (<a href="https://arxiv.org/abs/2312.06942">Greenblatt et al., 2023</a>).</figcaption>
+      </figure>
+
+      <p><strong>Los equipos rojos tienen ventajas estructurales sobre los modelos que maquinarían de verdad.</strong> Para que las evaluaciones de control ofrezcan garantías significativas, los equipos rojos deben lograr capacidades comparables a las que un modelo muy capaz podría desplegar en el mundo real. Puede parecer imposible, ya que evaluamos sistemas que en ciertos aspectos podrían ser más inteligentes que los humanos, pero el equipo rojo cuenta con algunas ventajas:</p>
+      <ol>
+        <li>Puede dedicar mucho más tiempo a analizar ataques potenciales del que tendría la IA durante el despliegue. Mientras esta quizá deba decidir en una sola pasada hacia delante, el equipo rojo puede iterar sobre sus estrategias durante semanas o meses.</li>
+        <li>Tiene información completa sobre las medidas de seguridad empleadas, así que puede idear estrategias potencialmente más avanzadas.</li>
+        <li>Puede aprender de los intentos fallidos e iterar sobre sus métodos, mientras que un sistema de IA pillado intentando algo malicioso probablemente sería desactivado de inmediato.</li>
+      </ol>
+      <p>Estas ventajas permiten que incluso equipos rojos humanos construyan estrategias de ataque que probablemente acoten por arriba lo que un modelo maquinador podría ejecutar en despliegue (<a href="https://www.alignmentforum.org/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled">Greenblatt y Shlegeris, 2024</a>; <a href="https://openreview.net/forum?id=oycEeFXX74">Bhatt et al., 2024</a>).</p>
+
+      <p><strong>Los equipos azules necesitan construir varias capas defensivas para contrarrestar ataques sofisticados.</strong> Cada medida de control puede entenderse como una jugada de respuesta en un juego adversarial, y su éxito se mide por lo bien que impide al equipo rojo lograr resultados inaceptables pese a todas las ventajas mencionadas. Los protocolos de control más eficaces deberían integrar varias categorías de defensa (<a href="https://www.alignmentforum.org/s/WCJtsn6fNib6L7ZBB/p/fCazYoZSSMadiT6sf">Greenblatt, 2025</a>; <a href="https://www.alignmentforum.org/s/WCJtsn6fNib6L7ZBB/p/G8WwLmcGFa4H6Ld9d">Greenblatt, 2025</a>):</p>
+      <ol>
+        <li><strong>Sistemas de monitorización centrales:</strong> una vigilancia rápida y barata que corre sobre cada acción de la IA y combina monitorización fiable, monitorización no fiable con mecanismos anticolusión y métodos basados en activaciones para señalar comportamientos sospechosos antes de su ejecución.</li>
+        <li><strong>Estrategias de remuestreo y deferencia:</strong> cuando la monitorización detecta algo preocupante, el sistema puede volver a muestrear salidas de la misma IA, delegar en modelos fiables para obtener alternativas más seguras o escalar a revisión humana, lo que ofrece varias vías para gestionar acciones potencialmente peligrosas sin bloquear por completo el flujo de trabajo.</li>
+        <li><strong>Jerarquía de auditoría automatizada:</strong> comprobaciones progresivas, de complejidad y costo crecientes, que examinan las acciones señaladas antes de implicar a personas, con técnicas como la incriminación (comprobar cómo responde la IA ante entradas modificadas) para revelar intenciones ocultas.</li>
+        <li><strong>Procesos de revisión humana:</strong> auditores con formación específica examinan las acciones marcadas como muy sospechosas, con procesos distintos para los riesgos concentrados (que exigen bloqueo inmediato) y para las amenazas difusas (que permiten revisión asíncrona).</li>
+        <li><strong>Infraestructura de software:</strong> sistemas de registro exhaustivos, gestión de permisos de grano fino, trazabilidad de artefactos y un andamiaje que permita bloquear o remuestrear salidas sospechosas crean un entorno donde las acciones de la IA se vigilan de forma constante.</li>
+        <li><strong>Evaluación y entrenamiento adversariales:</strong> un <em>red teaming</em> continuo que pone a prueba todos los componentes de seguridad frente a escenarios de ataque realistas, con generación de datos sintéticos para crear entradas verosímiles pero exigentes que sondeen debilidades.</li>
+        <li><strong>Mejoras de seguridad:</strong> firma de código impuesta por hardware, limitaciones de ancho de banda dentro de los centros de datos y mecanismos de apagado en varios niveles, que protegen la infraestructura crítica frente a operaciones no autorizadas.</li>
+      </ol>
+      <p>Por ejemplo, al comprobar si un agente puede extraer datos sensibles, el equipo azul podría implantar no solo filtros de contenido, sino también vigilancia del ancho de banda, restricciones de permisos y auditorías humanas aleatorias, lo que crea varios puntos de fallo independientes que el equipo rojo debe superar a la vez (<a href="https://arxiv.org/abs/2501.17315">Korbak et al., 2025</a>).</p>
+
+      <p><strong>Las evaluaciones de control priorizan la defensa frente a las categorías de amenaza más graves.</strong> Al diseñar medidas de control, no todas las amenazas suponen el mismo riesgo. Los despliegues internos no autorizados representan la amenaza prioritaria: casos en los que los sistemas obtienen acceso a cómputo sin vigilancia y, potencialmente, permisos elevados dentro de la infraestructura del desarrollador (<a href="https://www.alignmentforum.org/s/WCJtsn6fNib6L7ZBB/p/fCazYoZSSMadiT6sf">Greenblatt, 2025</a>). Esto se sitúa por encima del sabotaje del trabajo crítico para la seguridad, que a su vez va por delante de otros fallos de seguridad, incluida la autoextracción (cuando los modelos roban sus propios pesos). Este marco de priorización ayuda a asignar unos recursos de seguridad limitados a prevenir primero los modos de fallo más graves, sobre todo cuando las restricciones impiden implantar protecciones integrales frente a todas las amenazas posibles.</p>
+
+      <p><strong>Lograr que los modelos desplieguen capacidades adversariales plantea preocupaciones de seguridad sobre las propias evaluaciones.</strong> El proceso de entrenar modelos para ejecutar ataques crea una paradoja de seguridad inherente a estas evaluaciones: los desarrolladores deben entrenar con cuidado modelos capaces a la vez de generar ataques nuevos y de ocultar su intención maliciosa, lo que en sí mismo plantea riesgos a medida que las capacidades crecen. Eso obliga a añadir salvaguardas para el propio proceso de evaluación: ejecutarlo en entornos aislados, limitar el acceso del modelo a internet durante las pruebas e implantar barreras contra la extracción. Hay que equilibrar unas pruebas exhaustivas con la posibilidad de que el propio proceso cree conocimientos o capacidades peligrosos.</p>
+
+      <p><strong>Los juegos de control de la IA permiten formalizar el compromiso entre seguridad y utilidad como una frontera matemática.</strong> Usando teoría de juegos, los investigadores modelan los protocolos de control como problemas de optimización multiobjetivo que equilibran seguridad y utilidad (<a href="https://arxiv.org/abs/2409.07985">Griffin et al., 2024</a>). Este enfoque cuantifica el «impuesto de alineación», es decir, cuánta utilidad hay que sacrificar para alcanzar un umbral de seguridad dado (<a href="https://www.effectivealtruism.org/articles/paul-christiano-current-work-in-ai-alignment">Christiano, 2019</a>). En esencia, mide cuánta utilidad pierdes si exiges que el modelo sea seguro. La frontera resultante entre seguridad y utilidad representa el conjunto de compromisos alcanzables entre evitar resultados inaceptables y preservar la utilidad del sistema. Este tipo de análisis formal puede indicarnos a partir de qué umbrales las mejoras marginales de seguridad exigen sacrificios desproporcionados de utilidad: por ejemplo, subir la tasa de auditoría humana del 0,1 % al 1 % podría mejorar la seguridad mínimamente mientras aumenta mucho los costos y reduce el rendimiento del sistema (<a href="https://arxiv.org/abs/2409.07985">Griffin et al., 2024</a>). Con eso podemos decidir con fundamento qué nivel de utilidad estamos dispuestos a cambiar por seguridad.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0f3da53426de6de0ca389d82c3a60089502aefa543e2681591e54c32f540dc6e.CmgIy55u_KWQaN.webp" alt="Figura 5.53">
+        <figcaption><strong>Figura 5.53.</strong> Ilustración de cómo aplicar una técnica de seguridad o alineación puede hacer el modelo menos capaz. Es lo que se llama impuesto de seguridad.</figcaption>
+      </figure>
+
+      <p><strong>Las auditorías son el mecanismo de verificación fundamental de los protocolos de control.</strong> En este contexto, una auditoría es el proceso por el que expertos humanos revisan las salidas o acciones del modelo para determinar si constituyen intentos de ataque (<a href="https://www.alignmentforum.org/posts/hirhSqvEAq7pdnyPG/auditing-failures-vs-concentrated-failures">Greenblatt y Roger, 2023</a>). A diferencia de la monitorización automatizada, que puede aplicarse ampliamente pero puede pasar por alto ataques sutiles, las auditorías humanas ofrecen una verificación de alta confianza pero solo pueden aplicarse a una fracción pequeña de las acciones, por limitaciones de recursos. Una auditoría eficaz incluye varios componentes: seleccionar acciones al azar para evitar que los modelos predigan cuándo se audita, aplicar un escrutinio adicional a las acciones señaladas por los monitores automáticos y mantener criterios de evaluación coherentes entre auditores. El presupuesto de auditoría, es decir, qué porcentaje de acciones puede recibir realmente revisión humana, es una de las restricciones más importantes al diseñar estos protocolos (<a href="https://arxiv.org/abs/2409.07985">Griffin et al., 2024</a>).</p>
+
+      <p><strong>El análisis de evaluaciones de control en modelos de juguete nos informa sobre cómo diseñar protocolos eficaces.</strong> Estas evaluaciones todavía no se usan de forma extensa en los laboratorios de frontera. Aun así, algunos análisis con modelos de juguete han revelado varios principios importantes para prevenir catástrofes concentradas (<a href="https://www.alignmentforum.org/posts/MDeGts4Aw9DktCkXw/toy-models-of-ai-control-for-concentrated-catastrophe">Roger y Shlegeris, 2024</a>):</p>
+      <ul>
+        <li>El momento de la auditoría importa mucho. Si los sistemas pueden determinar cuándo se los vigila, incluso una tasa de auditoría alta podría resultar insuficiente. En cambio, si ese momento es verdaderamente aleatorio, tasas mucho más bajas pueden ofrecer garantías sólidas.</li>
+        <li>La dificultad de coordinación entre instancias puede aprovecharse a favor de la seguridad. Si varios sistemas deben coordinarse para causar daño, dificultar esa coordinación (por ejemplo, aumentando el número de instancias que deben ponerse de acuerdo o la dificultad de encontrar señales de coordinación mediante medidas antiesteganografía) puede mejorar mucho la seguridad incluso con tasas de auditoría relativamente bajas.</li>
+        <li>No todos los episodios son igual de arriesgados. Identificando qué tipos de entradas o situaciones presentan más riesgo y concentrando ahí los recursos de auditoría, los protocolos pueden lograr más seguridad con los mismos medios. Esto sigue siendo cierto aunque los sistemas sepan qué episodios consideramos más arriesgados.</li>
+      </ul>
+
+      <p><strong>Las evaluaciones de control afrontan limitaciones a medida que las capacidades aumentan drásticamente.</strong> La metodología depende de la capacidad de los equipos rojos para elicitar capacidades comparables a las que un modelo maquinador podría desplegar en el mundo real. A medida que se ensanchan las brechas de capacidad entre modelos fiables y no fiables, o entre el momento de la evaluación y el del despliegue, las garantías de control se debilitan (<a href="https://arxiv.org/abs/2501.17315">Korbak et al., 2025</a>). De forma parecida, si los modelos desarrollan capacidades cualitativamente nuevas entre la evaluación y el despliegue, las garantías anteriores podrían no transferirse.</p>
+      <p><strong>Las evaluaciones de control no pueden abordar los riesgos de capacidades cualitativamente superhumanas.</strong> La metodología se rompe cuando los modelos desarrollan capacidades que los humanos no pueden comprender ni siquiera con mucho tiempo de análisis (<a href="https://www.alignmentforum.org/posts/kcKrE9mzEHrdqtDpE/the-case-for-ensuring-that-powerful-ais-are-controlled">Greenblatt y Shlegeris, 2024</a>). Si un modelo puede idear vectores de ataque nuevos más allá del entendimiento humano, ejecutar cadenas largas de razonamiento opaco sin rastros detectables o poseer capacidades cualitativamente superhumanas en muchos dominios críticos para la seguridad, el control deja de ser eficaz. Esta limitación sugiere que, en lugar de perseguir el máximo de capacidades, los desarrolladores deberían apuntar a sistemas que sean transformadoramente útiles pero se mantengan dentro de límites controlables. Eso podría exigir aceptar ciertas restricciones arquitectónicas o limitaciones de capacidad para asegurar que los sistemas se mantengan en el dominio donde estas evaluaciones ofrecen garantías significativas (<a href="https://arxiv.org/abs/2312.06942">Greenblatt et al., 2023</a>).</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 12 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/control-evaluations/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">← Anterior: Evaluaciones de propensiones peligrosas</a>
+      </div>
+      <a class="siguiente" href="cap5-09-diseno-de-evaluaciones.html">
+        <strong>Siguiente: Diseño de evaluaciones →</strong><br>
+        Un buen diseño de evaluaciones implica gestionar las herramientas a las que accede la IA durante las pruebas, encontrar formas de realizar muchas valoraciones y asegurar que los resultados se integren en auditorías y conduzcan a cambios reales de seguridad dentro de una empresa.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
