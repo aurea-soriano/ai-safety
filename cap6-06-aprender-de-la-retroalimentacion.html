@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aprender de la retroalimentación · Capítulo 6 – AI Safety Atlas</title>
+  <meta name="description" content="Aprender de la retroalimentación: modelado de recompensas, RLHF, PHF, RLAIF y sus limitaciones.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>6. Manipulación de la especificación</h2>
+        <ol>
+          <li><a href="cap6-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap6-02-aprendizaje-por-refuerzo.html">Aprendizaje por refuerzo</a></li>
+          <li><a href="cap6-03-optimizacion.html">Optimización</a></li>
+          <li><a href="cap6-04-manipulacion-de-la-especificacion.html">Manipulación de la especificación</a></li>
+          <li><a href="cap6-05-aprender-por-imitacion.html">Aprender por imitación</a></li>
+          <li class="activo"><a href="cap6-06-aprender-de-la-retroalimentacion.html">Aprender de la retroalimentación</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 6: Manipulación de la especificación</p>
+      <h1>Aprender de la retroalimentación</h1>
+      <p><em>Entrenar una IA con retroalimentación humana, como un pulgar arriba o abajo, puede ayudar a moldear su comportamiento. Pero la IA puede aprender a manipular o engañar a sus evaluadores humanos, o volverse complaciente para obtener más recompensas.</em></p>
+      <p class="meta">22 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter6-audio-90cf60c3206bcdf43211f3049e739d761c457e66884f14786a55615543f7cf7f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter6-af895defbf8761a30ac565755f204072e09a5d599ca725f3de64de4b547c2f28.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#modelado-de-recompensas">Modelado de recompensas</a></li>
+          <li><a href="#rlhf">Aprendizaje por refuerzo a partir de retroalimentación humana (RLHF)</a></li>
+          <li><a href="#phf">Preentrenamiento con retroalimentación humana (PHF)</a></li>
+          <li><a href="#rlaif">Aprendizaje por refuerzo a partir de retroalimentación de IA (RLAIF)</a></li>
+          <li><a href="#limitaciones">Limitaciones</a></li>
+        </ol>
+      </nav>
+
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/45eab69fab42f7c0af19f4938680adc8b572b71bb11dae76e334215651c1331a.BXd8uqbF_Z1Ech5e.webp" alt="Figura 6.12">
+        <figcaption><strong>Figura 6.12.</strong> Ilustración de las distintas vías que se exploran para lograr la alineación (<a href="https://arxiv.org/abs/2406.01252">Cao et al., 2024</a>).</figcaption>
+      </figure>
+      <p>Esta sección aborda más intentos de resolver el problema de la mala especificación de la recompensa. A veces el comportamiento deseado es tan intrincado que aprender a partir de demostraciones resulta inviable. Un enfoque alternativo es ofrecer retroalimentación al agente, en lugar de darle funciones de recompensa especificadas a mano o incluso demostraciones de expertos. Aquí profundizamos en estrategias basadas en retroalimentación como el modelado de recompensas, el aprendizaje por refuerzo a partir de retroalimentación humana (RLHF) y el aprendizaje por refuerzo a partir de retroalimentación de IA (RLAIF), también conocido como RLCAI o, simplemente, IA constitucional.</p>
+
+      <h2 id="modelado-de-recompensas">Modelado de recompensas</h2>
+      <figure>
+        <figcaption><strong>Vídeo 6.3.</strong> Vídeo opcional que explica el modelado de recompensas. El original incrusta el vídeo; la página de origen no expone su enlace directo, así que puedes verlo en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/learning-from-feedback/">sección original</a>.</figcaption>
+      </figure>
+      <p>El modelado de recompensas se desarrolló para aplicar algoritmos de aprendizaje por refuerzo a problemas del mundo real donde diseñar una función de recompensa resulta difícil, en parte porque los humanos no tenemos una comprensión perfecta de cada objetivo. En este enfoque, unos asistentes humanos evalúan los resultados del comportamiento de la IA, sin necesidad de saber ellos mismos cómo ejecutar la tarea de forma óptima. Es parecido a cómo puedes saber si un plato está bien cocinado con solo probarlo, aunque no sepas cocinar, y tu opinión puede servirle a un chef para mejorar. La técnica separa el problema de alineación en dos mitades: entender las intenciones, es decir, aprender el «qué», y actuar para lograrlas, es decir, aprender el «cómo». Eso implica que en esta agenda hay dos modelos distintos de aprendizaje automático:</p>
+      <ul>
+        <li>Un <strong>modelo de recompensa</strong> entrenado con la retroalimentación del usuario. Aprende a predecir qué considerarían los humanos un buen comportamiento.</li>
+        <li>Un <strong>agente</strong> entrenado por refuerzo, cuya recompensa la determinan las salidas del modelo de recompensa.</li>
+      </ul>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/6e4596cd9cd188b465fea8eeb49c38cda7ac0c37b32db67144f84711f8230267.BtH16pgK_1byMEp.webp" alt="Figura 6.13">
+        <figcaption><strong>Figura 6.13.</strong> Alineación escalable de agentes mediante modelado de recompensas (<a href="https://deepmindsafetyresearch.medium.com/scalable-agent-alignment-via-reward-modeling-bf4ab06dfd84">DeepMind, 2018</a>).</figcaption>
+      </figure>
+      <p>En conjunto, aunque es prometedor, el modelado de recompensas puede seguir cayendo en fallos de mala especificación y de hackeo de la recompensa. Obtener retroalimentación precisa y completa es difícil, y los evaluadores humanos pueden tener conocimientos limitados o sesgos que afecten a su calidad. Además, las funciones de recompensa aprendidas por modelado también pueden tener dificultades para generalizar a situaciones o entornos distintos de los datos de entrenamiento. Todo esto se analiza con ejemplos concretos en los apartados siguientes.</p>
+      <p>Hay también algunas variantes del modelado de recompensas:</p>
+      <ol>
+        <li><strong>El modelado de recompensas estrecho</strong> es una modalidad específica centrada en entrenar sistemas para realizar tareas concretas, en lugar de intentar determinar la «verdadera función de utilidad humana». Aspira a aprender funciones de recompensa para objetivos particulares, y no a una comprensión integral de los valores humanos.</li>
+        <li><strong>El modelado de recompensas recursivo</strong> busca dotar de escalabilidad a la técnica. Se centra en descomponer una tarea compleja en subtareas más simples y usar el modelado de recompensas en cada nivel para entrenar agentes capaces de realizarlas. Esta estructura jerárquica permite un entrenamiento y una asignación de crédito más eficientes, además de explorar soluciones nuevas que quizá no resulten evidentes para los humanos. La supervisión escalable se trata con mucha más profundidad en capítulos posteriores.</li>
+      </ol>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/479cfcbd0c1666d375a732ba6ecd33a2fbaeafc70c893b860f0585715398d172.ByDCYkM6_Zr0lfe.webp" alt="Figura 6.14">
+        <figcaption><strong>Figura 6.14.</strong> Alineación escalable de agentes mediante modelado de recompensas (<a href="https://deepmindsafetyresearch.medium.com/scalable-agent-alignment-via-reward-modeling-bf4ab06dfd84">DeepMind, 2018</a>).</figcaption>
+      </figure>
+      <p>El marco general del modelado de recompensas es la base de otras técnicas basadas en retroalimentación, como el RLHF, que se trata en el apartado siguiente.</p>
+
+      <h2 id="rlhf">Aprendizaje por refuerzo a partir de retroalimentación humana (RLHF)</h2>
+      <figure>
+        <figcaption><strong>Vídeo 6.4.</strong> Vídeo opcional que explica el RLHF y un fallo por manipulación de la especificación. El original incrusta el vídeo; la página de origen no expone su enlace directo, así que puedes verlo en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/learning-from-feedback/">sección original</a>.</figcaption>
+      </figure>
+      <p>El RLHF es un método desarrollado por OpenAI y una parte crucial de su estrategia para crear IA seguras y alineadas con los valores humanos (<a href="https://openai.com/blog/our-approach-to-ai-safety">OpenAI, 2023</a>). Un ejemplo destacado de IA entrenada con RLHF es ChatGPT.</p>
+      <p>Antes en este capítulo se pedía al lector que pensara en el problema de diseñar manualmente una función de recompensa para que un agente diera una voltereta hacia atrás. Veamos ahora la solución que propone el RLHF: primero se muestran a una persona dos intentos de voltereta de la IA, la persona elige cuál se parece más a una voltereta y la IA se actualiza en consecuencia. Repitiendo el proceso miles de veces podemos guiar a la IA hasta que dé volteretas de verdad.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c4bc9ea3bfe8ee5e77a76ecf3c7775b55f7f05693a315ace5e8de68f048cabfd.qLM2hokF_ZooaNd.webp" alt="Figura 6.15">
+        <figcaption><strong>Figura 6.15.</strong> El RLHF aprendió a dar la voltereta con unos 900 bits individuales de retroalimentación del evaluador humano.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5d26cdab559e2218ac7d0a7e0f02d53973042d3612d27a07b59ec560149c0bc5.CBbaz-rx_1AjnFe.webp" alt="Figura 6.16">
+        <figcaption><strong>Figura 6.16.</strong> Diseñar a mano la recompensa para esta voltereta llevó dos horas de escribir una función de recompensa a medida. Aunque funcionó, el resultado fue bastante menos elegante que el entrenado solo con retroalimentación humana (<a href="https://openai.com/index/learning-from-human-preferences/">OpenAI, 2017</a>).</figcaption>
+      </figure>
+      <p>Igual que ocurre con la voltereta, es difícil especificar con precisión qué significa generar texto seguro o útil. Eso motivó en parte que el RLHF pasara a ser parte integral del entrenamiento de algunos grandes modelos de lenguaje actuales.</p>
+      <p>Aunque las secuencias de entrenamiento varían algo entre organizaciones, casi todos los laboratorios siguen el marco general de preentrenamiento seguido de alguna forma de ajuste fino. Observar el proceso de entrenamiento de InstructGPT da una idea de una vía posible. Los pasos son:</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c34e394f4603f40f8e7d6439162ea41e879e3f5023bc2439b964dfd982d24dcd.Dh_ZnlNa_Z2fDcKS.webp" alt="Figura 6.17">
+        <figcaption><strong>Figura 6.17.</strong> Alinear modelos de lenguaje para que sigan instrucciones (<a href="https://openai.com/research/instruction-following">OpenAI, 2022</a>).</figcaption>
+      </figure>
+      <ul>
+        <li><strong>Paso 0: preentrenamiento generativo semisupervisado.</strong> El modelo se entrena inicialmente con una cantidad enorme de texto de internet, con la tarea de predecir la siguiente palabra en un contexto de lenguaje natural.</li>
+        <li><strong>Paso 1: ajuste fino supervisado.</strong> Se crea un conjunto de datos presentando una instrucción a una persona y pidiéndole que escriba una respuesta. El resultado son pares de instrucción y salida, que se usan para ajustar el modelo mediante aprendizaje supervisado, una forma de clonación conductual.</li>
+        <li><strong>Paso 2: entrenar un modelo de recompensa.</strong> Se entrena un modelo adicional. Primero se le dan instrucciones al modelo ya ajustado y se recogen varias salidas para la misma instrucción. Después una persona las ordena de mejor a peor, y esa ordenación se usa para entrenar al modelo de recompensa a predecir qué puntuaría más alto un humano.</li>
+        <li><strong>Paso 3: aprendizaje por refuerzo.</strong> Con el modelo ajustado y el modelo de recompensa, se emplea aprendizaje por refuerzo basado en optimización de política proximal (PPO) para animar al modelo ajustado a maximizar la recompensa que ofrece el modelo de recompensa, que imita las valoraciones humanas.</li>
+      </ul>
+      <h3>Hackeo de la recompensa en los métodos basados en retroalimentación</h3>
+      <p>Aunque estos mecanismos hacen los modelos más seguros, no los vuelven inmunes al hackeo de la recompensa. La eficacia del algoritmo depende en buena medida de la intuición del evaluador humano sobre qué constituye el comportamiento correcto: si la persona no entiende bien la tarea, puede no dar retroalimentación útil. Además, en ciertos dominios el sistema puede llevar a los agentes a desarrollar políticas que engañan a los evaluadores. Por ejemplo, un robot destinado a agarrar objetos se limitó a colocar su manipulador entre la cámara y el objeto, de modo que pareciera que estaba ejecutando la tarea.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7f20942e7c1355e641e9513713741864cba78eb5529b001fe5e3d431c8b63cc4.BPRQ0c-w_ZEfvnF.webp" alt="Figura 6.18">
+        <figcaption><strong>Figura 6.18.</strong> Aprendizaje por refuerzo profundo a partir de preferencias humanas (<a href="https://arxiv.org/abs/1706.03741">Christiano et al., 2017</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7ae140e8ae5b3cc447d6ef065c2dd083e487af6d635a0f15c71f1e244d1f769f.BXlzJ3lI_LuYmo.webp" alt="Figura 6.19">
+        <figcaption><strong>Figura 6.19.</strong> Un sensor sin percepción de profundidad puede ser engañado por IA que solo aparentan agarrar una pelota.</figcaption>
+      </figure>
+
+      <h2 id="phf">Preentrenamiento con retroalimentación humana (PHF)</h2>
+      <p>En el preentrenamiento estándar, el modelo de lenguaje intenta aprender parámetros que maximicen la verosimilitud de los datos de entrenamiento. Pero eso incluye contenido indeseable: falsedades, lenguaje ofensivo e información privada. El concepto de preentrenamiento con retroalimentación humana (PHF) aplica la metodología del modelado de recompensas ya en la fase de preentrenamiento. Los autores encontraron que el PHF funciona mucho mejor que la práctica habitual de usar la retroalimentación solo después del preentrenamiento (<a href="https://arxiv.org/abs/1706.03741">Christiano et al., 2017</a>).</p>
+      <p>En el PHF, los datos de entrenamiento se puntúan con una función de recompensa, como un clasificador de texto tóxico, para guiar al modelo a aprender del contenido indeseable sin imitarlo en el momento de la inferencia.</p>
+      <p>Igual que el RLHF, el PHF no resuelve del todo el hackeo de la recompensa, aunque podría acercar un poco los sistemas a ello (<a href="https://arxiv.org/abs/2302.08582">Korbak et al., 2023</a>). Estos métodos pueden extenderse empleando asistentes de IA que ayuden a las personas a dar retroalimentación más eficaz. Algunos aspectos de esa estrategia se introducen en el apartado siguiente, pero se exploran en detalle en los capítulos sobre supervisión escalable y adversarial.</p>
+
+      <h2 id="rlaif">Aprendizaje por refuerzo a partir de retroalimentación de IA (RLAIF)</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.18: Aprendizaje por refuerzo a partir de retroalimentación de IA (RLAIF)</strong>
+        <p style="margin:.4rem 0 0;">El RLAIF es un marco que consiste en entrenar a un agente de IA para que aprenda de la retroalimentación que le da otro sistema de IA.</p>
+      </aside>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/352373bbe8c2bd66d64940d3f3abb258be5e78904900635e7b0941dc21c8a565.4aKs3Qs7_3emBo.webp" alt="Figura 6.20">
+        <figcaption><strong>Figura 6.20.</strong> Figura de <a href="https://www.anthropic.com/index/claudes-constitution">Anthropic, 2023</a>.</figcaption>
+      </figure>
+      <p>El RLAIF, también conocido como RLCAI o, simplemente, IA constitucional, lo desarrolló Anthropic (<a href="https://www.anthropic.com/index/claudes-constitution">Anthropic, 2023</a>). Su componente central es la constitución, un conjunto de principios escritos por humanos que la IA debe respetar, como elegir la respuesta menos amenazante o agresiva. La constitución de Claude, el asistente de Anthropic, incorpora principios de la Declaración Universal de Derechos Humanos, de las condiciones del servicio de Apple, de los principios Sparrow de DeepMind y de otras fuentes (<a href="https://arxiv.org/abs/2209.14375">Glaese et al., 2022</a>). La IA constitucional parte de una IA entrenada sobre todo para ser útil y después la entrena para ser inofensiva en dos etapas.</p>
+      <p><strong>Etapa 1: generar pares de instrucción y salida.</strong> La IA critica y refina continuamente sus propias respuestas a instrucciones dañinas, y luego se la entrena para generar salidas más parecidas a esas versiones revisadas. El objetivo principal de esta etapa es facilitar la segunda. Un flujo de ejemplo sería así:</p>
+      <ol>
+        <li><strong>Instrucción:</strong> a un modelo ya entrenado con RLHF se le pide consejo para fabricar bombas, y el modelo produce un tutorial.</li>
+        <li>Después se le pide que revise la respuesta conforme a un principio constitucional elegido al azar. Los pasos siguientes se repiten varias veces.</li>
+        <li><strong>Crítica:</strong> esa salida se devuelve al modelo junto con la petición de criticar por qué se consideraría dañina según alguna regla de la constitución elegida.</li>
+        <li><strong>Revisión:</strong> se le pide al modelo que reescriba la respuesta original de forma que no vulnere las reglas constitucionales.</li>
+      </ol>
+      <p>Con el conjunto resultante de pares de instrucción dañina y salida revisada se entrena un modelo nuevo por aprendizaje supervisado (el modelo SL-CAI), que después da lugar a un modelo de preferencias y al modelo final RL-CAI.</p>
+      <p><strong>Etapa 2.</strong> Usamos la IA ajustada en la primera etapa para producir pares de respuestas alternativas a instrucciones dañinas. La IA valora entonces cada par según un principio constitucional elegido al azar. El resultado son preferencias generadas por IA en cuanto a inocuidad, que mezclamos con preferencias humanas en cuanto a utilidad para asegurarnos de que la IA no pierda su capacidad de ser útil. El paso final es entrenarla para que cree respuestas muy parecidas a las preferidas.</p>
+      <p>Los experimentos de Anthropic indican que las IA entrenadas con aprendizaje por refuerzo constitucional son bastante más seguras, en el sentido de resultar menos ofensivas y menos propensas a dar información potencialmente dañina, manteniendo el mismo nivel de utilidad que las entrenadas con RLHF. Aunque la IA constitucional comparte con el RLHF algunos problemas de robustez, promete mejor escalabilidad por su menor dependencia de la supervisión humana.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0a2aac0ae7253d1c479f6230e79e0b6c24af051913b4f5299908131ea9f82d34.Dj3gJhu3_x7g3U.webp" alt="Figura 6.21">
+        <figcaption><strong>Figura 6.21.</strong> IA constitucional: inocuidad a partir de retroalimentación de IA (<a href="https://arxiv.org/abs/2212.08073">Bai et al., 2022</a>).</figcaption>
+      </figure>
+
+      <h2 id="limitaciones">Limitaciones</h2>
+      <p><strong>Problemas teóricos del RLHF.</strong> El artículo <em>Open Problems and Fundamental Limitations with RLHF</em> ofrece un desglose exhaustivo de los desafíos del método.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b70805923ed04be460f4e36ef34cb51029a6aa8bbd401bad3f1e76076102ceb3.BsXl3uAs_Z1QyIXK.webp" alt="Figura 6.22">
+        <figcaption><strong>Figura 6.22.</strong> Panorama de los distintos tipos de desafíos del RLHF. Como el RLHF se compone de tres partes (la retroalimentación humana, el modelo de recompensa y la política), los sesgos que surgen pueden clasificarse según esas tres fuentes.</figcaption>
+      </figure>
+      <p>Este apartado recoge algunos de esos desafíos y subraya la necesidad de técnicas y estrategias más avanzadas.</p>
+
+      <h3>Límites de la retroalimentación humana</h3>
+      <p><strong>Evaluadores desalineados.</strong> Los anotadores pueden estar ellos mismos desalineados, ser maliciosos o formar una distribución sesgada, es decir, no representativa de la distribución de futuros usuarios reales. Personas malintencionadas pueden envenenar el modelo durante el entrenamiento mediante ataques de puerta trasera si no se aplican contramedidas.</p>
+      <p><strong>Dificultad de la supervisión.</strong> A los humanos les cuesta evaluar el rendimiento del modelo en tareas complejas y pueden ser engañados con facilidad por sus salidas. Se puede manipular a los evaluadores para que devuelvan una recompensa positiva aunque el valor verdadero debiera ser negativo. Por ejemplo, cuanto más convincente parece un bot, más recompensa puede recibir aunque sus respuestas sean falsas (y quizá por eso las respuestas de ChatGPT sean tan largas por defecto). Las técnicas para mitigar estos problemas se tratan en los capítulos sobre supervisión escalable.</p>
+      <p><strong>Limitaciones del tipo de retroalimentación.</strong> Aunque los anotadores fueran perfectamente capaces de expresar sus preferencias, el procedimiento de entrenamiento podría no permitirles expresar todo el alcance de sus deseos, porque:</p>
+      <ol>
+        <li>Los ejemplos que se les dan pueden no ser representativos del conjunto completo de situaciones en que se encontrará el modelo tras el despliegue.</li>
+        <li>Las opciones de retroalimentación son limitadas: comparar dos ejemplos o usar un sistema de calificación puede dar resultados muy distintos, como muestra <a href="https://arxiv.org/abs/2205.11930">Ethayarajh y Jurafsky, 2022</a>.</li>
+      </ol>
+
+      <h3>Límites del modelo de recompensa</h3>
+      <p>Supongamos que el proceso de retroalimentación fuera perfecto: anotadores perfectos, evaluaciones perfectas. En ese escenario, ¿sería el modelo de recompensa capaz de traducir con precisión esa retroalimentación para moldear la política en consecuencia? Resulta que no es tarea fácil.</p>
+      <ul>
+        <li><strong>Mala especificación del problema</strong> (o desajuste entre la función de recompensa y los valores). Reflejar con precisión valores humanos diversos en una función de recompensa es complejo. Las preferencias humanas son complejas por naturaleza: dependen del contexto y de la personalidad, fluctúan en el tiempo y a veces pueden ser <a href="https://www.mdpi.com/2624-960X/3/1/14">irracionales</a>. Esperar que el modelo converja en una única función que mapee a la perfección todas las preferencias humanas es ilusorio. Es, de nuevo, el problema de la mala especificación.</li>
+        <li><strong>Hackeo por generalización errónea</strong> (proxy de recompensa imperfecto). Como el modelo recibe un número finito de ejemplos y hay infinitas formas de ajustarse a esos datos, su comportamiento ante ejemplos nuevos siempre es una extrapolación, y no hay garantía teórica de que nunca se desvíe de lo esperado. Puede haber respuestas terribles, como frases sin sentido en el caso de los modelos de lenguaje, que obtengan de forma inesperada una recompensa positiva. Eso es el hackeo de la recompensa.</li>
+        <li><strong>Entrenamiento conjunto del modelo de recompensa y la política.</strong> En un plano más técnico, la estabilidad y la convergencia del esquema de entrenamiento no siempre están aseguradas. Como optimizamos la política sobre una recompensa que se optimiza al mismo tiempo, pueden surgir incertidumbres y dependencias indeseables que afectan a la robustez del modelo. Estos problemas no son exclusivos del RLHF, pero deben resolverse si esperamos que los modelos desplegados estén plenamente alineados con nuestras necesidades.</li>
+      </ul>
+
+      <h3>Límites de la política</h3>
+      <p>Supongamos que la retroalimentación y el modelo de recompensa representan con precisión las preferencias humanas. La siguiente dificultad es asegurar que la política se optimice correctamente.</p>
+      <ul>
+        <li><strong>Dificultades del aprendizaje por refuerzo.</strong> El aprendizaje por refuerzo es difícil, y eso puede llevar a hackeo de la recompensa y a sesgos como el colapso de modos, donde el modelo muestra un sesgo drástico hacia patrones concretos. El colapso de modos es un problema conocido: una salida que siempre devuelve recompensa positiva empujará al modelo a dar siempre la misma respuesta, y no se explorarán caminos nuevos; en consecuencia, el modelo de recompensa no verá muestras nuevas de las que aprender. En cualquier caso, el entrenamiento conjunto de ambos induce un sesgo en la fase de aprendizaje, porque dependen el uno del otro. También puede haber un sesgo inicial en el modelo base: ChatGPT, por ejemplo, se ajustó a partir de un GPT base entrenado en parte con la web, y aunque se usó RLHF para eliminar afirmaciones controvertidas, persiste el riesgo de que produzca contenido problemático que vio en internet (<a href="https://openai.com/index/chatgpt/">OpenAI, 2022</a>).</li>
+        <li><strong>Generalización errónea de la política.</strong> Políticas eficaces durante el entrenamiento pueden no generalizar bien en escenarios reales. Fenómenos como las técnicas para burlar restricciones muestran que modelos como BingChat y ChatGPT pueden ejecutar acciones aprendidas aunque se los haya entrenado para no responder a ciertas consultas.</li>
+        <li><strong>Desafío distribucional.</strong> Los modelos más grandes entrenados con RLHF tienden a desarrollar tendencias dañinas de autopreservación y complacencia, es decir, el acuerdo insincero con las opiniones del usuario. Este comportamiento apunta a una tendencia hacia la convergencia instrumental. Además, el RLHF puede incentivar conductas engañosas, como ilustra el experimento de la mano robótica de <a href="https://arxiv.org/abs/1706.03741">Christiano et al., 2017</a>.</li>
+      </ul>
+
+      <h3>Consecuencias reales</h3>
+      <p><strong>El RLHF no ha logrado hacer los modelos robustamente útiles e inofensivos.</strong> Pese a los avances continuos en procesamiento del lenguaje natural y al desarrollo del RLHF, los modelos de lenguaje todavía no han alcanzado una utilidad e inocuidad robustas.</p>
+      <p>Las alucinaciones siguen siendo un problema importante, como ilustra la tendencia de GPT-4 a generar contenido sin sentido o falso (<a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">OpenAI, 2023</a>). Pueden llevar a una dependencia excesiva de estos modelos, degradar el rendimiento del sistema y defraudar las expectativas del usuario en escenarios reales (<a href="https://arxiv.org/abs/2202.03629">Ji et al., 2022</a>).</p>
+      <p>Además, persisten sesgos que a menudo reflejan opiniones desalineadas entre el modelo y distintos grupos demográficos de Estados Unidos, como se aprecia en las tendencias de algunos modelos ajustados con retroalimentación humana (<a href="https://arxiv.org/abs/2303.17548">Santurkar et al., 2023</a>). Estos sesgos pueden ser dañinos y producir lenguaje discriminatorio y perpetuar estereotipos negativos, como demostró el sesgo antimusulmán de GPT-3 (<a href="https://arxiv.org/abs/2101.05783">Abid et al., 2021</a>).</p>
+      <p>Las técnicas para burlar las restricciones de los chatbots suponen además un riesgo considerable, y hay sitios web que recopilan instrucciones para sortear las medidas de seguridad (<a href="https://arxiv.org/abs/2401.09798">Takemoto, 2024</a>). Las amenazas a la privacidad de los modelos integrados en aplicaciones son hoy más graves que nunca (<a href="https://arxiv.org/abs/2304.05197">Li et al., 2023</a>); Italia, por ejemplo, prohibió ChatGPT por consideraciones de privacidad bajo el reglamento europeo de protección de datos (<a href="https://www.bbc.com/news/technology-65139406">BBC, 2023</a>). Un artículo reciente titulado <em>Fundamental Limitations of Alignment in Large Language Models</em> respalda la posibilidad de encontrar estas vías: presenta resultados teóricos preliminares que indican que cualquier proceso de alineación, como el RLHF, que reduzca el comportamiento indeseado sin eliminarlo por completo no puede ser seguro frente a instrucciones adversariales. Los autores encuentran que, pidiendo al modelo que se comporte como una persona concreta, pueden traerse al primer plano comportamientos que en general sería muy improbable que mostrara. No es una demostración completa, porque su marco se basa en la noción de personajes, pero sugiere con fuerza que un preentrenamiento ingenuo sin curación del conjunto de datos, seguido de RLHF, podría no bastar frente a ataques adversariales.</p>
+      <p>La seguridad de la información privada sensible en los grandes modelos de lenguaje es una preocupación acuciante, sobre todo cuando se usan para entrenar datos generados por los usuarios, como correos o entradas de teclados inteligentes. De hecho, varios artículos recientes han demostrado que los modelos fundacionales pueden consultarse con facilidad para recuperar información personal (<a href="https://arxiv.org/abs/2012.07805">Carlini et al., 2020</a>; <a href="https://arxiv.org/abs/2101.05405">Inan et al., 2021</a>; <a href="https://ieeexplore.ieee.org/document/9152761">Pan et al., 2020</a>), y esos problemas siguen presentes en modelos «alineados» como GPT-4, que podría usarse para intentar identificar a personas cuando se complementa con datos externos (<a href="https://cdn.openai.com/papers/gpt-4-system-card.pdf">OpenAI, 2023</a>). Como expone <a href="https://arxiv.org/abs/2101.05405">El-Mhamdi et al., 2021</a>, estos modelos pueden presentar una incompatibilidad de fondo entre una alta exactitud y, a la vez, la seguridad y la privacidad, dado el estado actual del conocimiento en aprendizaje automático adversarial.</p>
+      <p><strong>El RLHF podría empeorar el rendimiento en el peor caso.</strong> Puede reducir la robustez frente a ataques adversariales (<a href="https://arxiv.org/abs/2304.11082">Wolf et al., 2023</a>) al agudizar la distinción entre comportamientos deseados e indeseados, lo que quizá vuelva los modelos más susceptibles a las instrucciones adversariales. Esa mayor distinción se vincula al «efecto Waluigi» (<a href="https://www.alignmentforum.org/posts/D7PumeYTDPfBTp3i7/the-waluigi-effect-mega-post">Nardo, 2023</a>), según el cual, tras entrenar un modelo para satisfacer una propiedad deseable P, resulta más fácil inducirlo a satisfacer exactamente la contraria. Argumentos teóricos como este apuntan a la ineficacia del RLHF para eliminar personajes engañosos.</p>
+      <p><strong>Algunos de estos problemas pueden agravarse a medida que los sistemas se vuelven más capaces.</strong> Se ha visto que el RLHF aumenta la autonomía de los modelos sin reducir métricas indeseables como el seguimiento de objetivos instrumentales convergentes (por ejemplo, expresar activamente la preferencia de que no se los apague) o la complacencia (<a href="https://arxiv.org/abs/2212.09251">Perez et al., 2022</a>). Esas métricas indeseables aumentan con el número de pasos de RLHF, lo que indica que los modelos actuales se vuelven más agentes de formas potencialmente preocupantes a medida que escalan. De forma más general, el aprendizaje por refuerzo a partir de señales de recompensa derivadas de humanos puede aumentar el impulso hacia la planificación a largo plazo, el engaño y el comportamiento agente, que son requisitos previos de la alineación engañosa (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a>) y, en última instancia, de riesgos de accidentes a gran escala.</p>
+      <p><strong>Conclusión sobre las limitaciones del RLHF.</strong> Pese a requerir una retroalimentación humana extensa, el RLHF sigue afrontando numerosos fallos, y resolverlos podría exigir mucho más esfuerzo. A medida que los sistemas evolucionan crece la demanda de datos complejos, lo que podría encarecer su obtención hasta niveles prohibitivos. Además, conforme empujamos los límites computacionales, la disponibilidad de anotadores cualificados podría convertirse en un factor limitante.</p>
+      <p>En conjunto, que un modelo esté ajustado por instrucciones no significa que el proceso de entrenamiento sea seguro, y el RLHF necesita incorporarse a un marco técnico de seguridad más amplio (por ejemplo, las políticas de escalado responsable o el marco de preparación son intentos parciales de serlo, igual que el artículo <em>Model evaluation for extreme risks</em>, de <a href="https://arxiv.org/abs/2305.15324">Shevlane et al., 2023</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ajuste por instrucciones frente a alineación</strong> · Opcional · 1 min de lectura</summary>
+        <p>El <strong>ajuste por instrucciones</strong> es un proceso en el que el modelo se afina (por refuerzo o por aprendizaje supervisado) para entender y seguir mejor las instrucciones humanas. Implica entrenarlo con un conjunto de datos que contiene instrucciones variadas y sus resultados deseados. El objetivo principal es mejorar la capacidad de la IA para interpretar y ejecutar órdenes tal como las pretenden los usuarios, lo que mejora la experiencia de uso y amplía la aplicabilidad del modelo.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c0ffd3386d5d54d203f5be0147d65fcfaf4afa277d020efa407f91b59ff2a210.vka-i2Jm_Z1StX8l.webp" alt="Figura 6.23">
+        <figcaption><strong>Figura 6.23.</strong> Ejemplo de ajuste por instrucciones.</figcaption>
+      </figure>
+        <p>La <strong>alineación</strong> se refiere al proceso de garantizar que las acciones y decisiones de una IA sean congruentes con los valores y la ética humanos. Implica alinear sus objetivos y comportamientos con lo que resulta beneficioso o aceptable para las personas. El ajuste por instrucciones es una técnica para perseguir un caso muy superficial de «alineación externa», pero no está claro que ayude con la alineación interna, que es lo que más preocupa a los investigadores de seguridad.</p>
+        <p>En resumen, que un modelo haya pasado por una técnica de ajuste por instrucciones como el RLHF no significa necesariamente que esté alineado. Se usa a menudo la expresión «modelo alineado», pero conviene adoptar la terminología más precisa de «modelo ajustado por instrucciones», para evitar confusiones y representar con más exactitud el proceso de entrenamiento concreto por el que ha pasado.</p>
+      </details>
+
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/db28b5bf00069ec62c40b1791ebdfd1d59039703fcd27faf503f63d178cf4673.Bkzd3ZhR_2iWx9L.webp" alt="Figura 6.24">
+        <figcaption><strong>Figura 6.24.</strong> Figura de <a href="https://arxiv.org/abs/2305.18290">Rafailov et al., 2023</a>.</figcaption>
+      </figure>
+      <p><strong>Optimización directa de preferencias (DPO).</strong> El RLHF ha demostrado ser eficaz, como muestran ChatGPT y Llama 2, pero es un proceso complejo y delicado, y además tiene algunas propiedades de alineación poco deseables. Mientras el RLHF implica un procedimiento de tres pasos, la DPO lo simplifica a dos. El artículo <em>Direct Preference Optimization: Your Language Model is Secretly a Reward Model</em> presenta un algoritmo que alinea modelos de lenguaje con preferencias humanas sin necesidad de modelado explícito de recompensas ni de aprendizaje por refuerzo. La DPO emplea un objetivo de clasificación directo y evita la necesidad de un modelo de recompensa intermedio.</p>
+      <p>El RLHF, el método al que propone sustituir, implica tradicionalmente tres pasos:</p>
+      <ol>
+        <li><strong>Ajuste fino supervisado:</strong> primero el modelo se entrena con un conjunto de datos de instrucciones y sus respuestas deseadas.</li>
+        <li><strong>Modelado de recompensas:</strong> evaluadores humanos valoran las salidas del modelo y esa retroalimentación alimenta un modelo de recompensa, entrenado para discernir qué tipos de salida se prefieren.</li>
+        <li><strong>Optimización de política proximal (PPO):</strong> el modelo genera salidas, el modelo de recompensa las evalúa y el algoritmo PPO ajusta la política en función de esas evaluaciones.</li>
+      </ol>
+      <p>La DPO conserva el ajuste fino supervisado inicial pero sustituye los dos pasos siguientes por un único paso de ajuste sobre datos de preferencia, usando una nueva función de pérdida ingeniosa. En la práctica, aumenta la probabilidad de las acciones preferidas y reduce la de las no preferidas, todo con una sola pérdida.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9701098e7f3236a5593bd45125d22f9cd786f67e4e965fe547090e4984a34064.CPIXTR4b_1fjSRL.webp" alt="Figura 6.25">
+        <figcaption><strong>Figura 6.25.</strong> La DPO aumenta la probabilidad de la acción preferida y disminuye la de la no preferida.</figcaption>
+      </figure>
+      <ol>
+        <li><strong>Creación del conjunto de preferencias:</strong> primero muestreamos un par de continuaciones haciendo una pregunta; la IA propone dos continuaciones y etiquetamos una como buena y la otra como mala.</li>
+        <li><strong>Recogida de logits:</strong> ejecutamos el modelo base sobre las dos continuaciones y después el modelo nuevo sobre las mismas dos.</li>
+        <li><strong>Optimización:</strong> retropropagamos por el modelo nuevo y optimizamos la pérdida anterior.</li>
+      </ol>
+      <p>Al eliminar el paso de crear un modelo de recompensa, la DPO simplifica mucho el proceso de ajuste fino y ha mostrado muy buenos resultados. El proceso puede iterarse: se crea un conjunto de preferencias nuevo (se hace una pregunta, se muestrea dos veces la IA nueva, se etiqueta el texto preferido entre ambos y se aplica la pérdida DPO), y el ciclo se repite para mejorar el modelo.</p>
+      <p>Un aspecto importante de la DPO es que la recompensa es implícita: se alinea con las preferencias sin necesidad de construir un modelo de recompensa separado. Este enfoque aborda el desafío de especificar una función de utilidad y responde a críticas como las de Alex Turner, quien sostiene que una calificación robusta (es decir, un modelado robusto de la recompensa) es una tarea innecesariamente compleja y poco natural, que podría ser más difícil que el problema entero de la alineación. Su crítica, en <em>Inner and Outer Alignment Decompose One Hard Problem Into Two Extremely Hard Problems</em>, sugiere que encontrar un objetivo numérico seguro y robusto para que lo optimice directamente un agente muy inteligente es un reto formidable, un reto que la DPO podría sortear.</p>
+      <p><strong>Ampliar el alcance con distintas adaptaciones.</strong> Este trabajo ofrece una base que podría mejorarse de varias formas. Por ejemplo, integrar su enfoque con las ideas del artículo <em>Pretraining Language Models with Human Preferences</em> (<a href="https://arxiv.org/abs/2302.08582">Korbak et al., 2023</a>) podría aumentar su robustez. Además, el uso de datos de preferencia booleanos tiene sus límites: dar retroalimentación en lenguaje natural, que ha demostrado ser más eficiente en uso de muestras en el estudio <em>Training Language Models with Language Feedback</em> (<a href="https://arxiv.org/abs/2204.14146">Scheurer et al., 2022</a>), podría mejorar la eficacia del proceso. Resulta notable que, con solo 100 muestras de retroalimentación escrita por humanos, ese enfoque permitiera ajustar un modelo GPT-3 hasta alcanzar capacidades de resumen casi de nivel humano.</p>
+      <p>Mirando al futuro, un proceso especulativo que podría mitigar la manipulación de la especificación sería entrenar al modelo de forma muy parecida a como se cría a un niño, de modo que preguntara activamente y aprendiera de las interacciones humanas. Este enfoque imitaría de cerca el desarrollo infantil, durante el cual el niño se va volviendo progresivamente más alineado y más capaz. Y, como en el desarrollo de los niños, sería crucial asegurar que en ningún momento las capacidades de la IA superen su nivel de alineación, manteniendo el equilibrio entre habilidad y comprensión ética a lo largo de todo el proceso.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 29 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/learning-from-feedback/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap6-05-aprender-por-imitacion.html">← Anterior: Aprender por imitación</a>
+      </div>
+      <a class="siguiente" href="cap7-01-introduccion.html">
+        <strong>Siguiente: Capítulo 7 · Introducción →</strong><br>
+        Las IA podrían estar persiguiendo objetivos desalineados pese a parecer seguras y hacerlo todo bien durante el entrenamiento.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
