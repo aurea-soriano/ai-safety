@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Limitaciones · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Limitaciones de las evaluaciones de IA: desafíos de fondo, técnicos, sistémicos y de gobernanza.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li class="activo"><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Limitaciones</h1>
+      <p><em>Las evaluaciones pueden demostrar la presencia de riesgos, pero no su ausencia; pueden ser vulnerables al lavado de seguridad y pueden usarse de forma indebida para hacernos sentir un exceso de confianza en la seguridad de un sistema.</em></p>
+      <p class="meta">16 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#desafios-de-fondo">Desafíos de fondo</a></li>
+          <li><a href="#desafios-tecnicos">Desafíos técnicos</a></li>
+          <li><a href="#sandbagging">Sandbagging</a></li>
+          <li><a href="#limitaciones-sistemicas">Limitaciones sistémicas</a></li>
+          <li><a href="#limitaciones-de-gobernanza">Limitaciones de gobernanza</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: la cita destacada de esta sección procede de un informe de terceros y no forma parte del texto con licencia CC BY-SA del libro, así que la resumimos con nuestras palabras. El texto completo, en inglés, está en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/limitations/">sección original</a>.</em></p>
+
+      <p>Las secciones anteriores han expuesto diversas técnicas y metodologías de evaluación, pero construir una infraestructura de seguridad adecuada implica mantener también una dosis apropiada de escepticismo sobre los resultados y evitar el exceso de confianza en las valoraciones de seguridad. Por eso la última sección de este capítulo se dedica a explorar las limitaciones, restricciones y desafíos de las evaluaciones de IA.</p>
+
+      <h2 id="desafios-de-fondo">Desafíos de fondo</h2>
+      <p><strong>Ausencia de evidencia frente a evidencia de ausencia.</strong> Un desafío central es la asimetría de fondo entre demostrar la presencia y demostrar la ausencia de capacidades o riesgos. Las evaluaciones pueden confirmar de forma concluyente que un modelo posee ciertas capacidades o muestra ciertos comportamientos, pero no pueden probar de forma concluyente la ausencia de capacidades o comportamientos preocupantes (<a href="https://www.anthropic.com/news/evaluating-ai-systems">Anthropic, 2024</a>). Esta asimetría genera una incertidumbre persistente: aunque un modelo supere numerosas evaluaciones de seguridad, no podemos tener la certeza de que sea realmente seguro.</p>
+      <p><strong>La dificultad de interpretar los resultados negativos.</strong> Ligada a esa asimetría está la dificultad de interpretar los resultados negativos. Cuando un modelo no demuestra una capacidad o un comportamiento durante las pruebas, eso puede indicar una limitación real del modelo o, simplemente, que nuestros métodos no lograron elicitar esa capacidad o propensión. El descubrimiento de que GPT-4 podía controlar Minecraft con el andamiaje adecuado, pese a parecer incapaz al principio, ilustra el problema. Esta incertidumbre resulta especialmente problemática al evaluar propiedades críticas para la seguridad, donde los falsos negativos pueden tener consecuencias graves.</p>
+      <p><strong>El problema de las incógnitas desconocidas.</strong> Quizá lo más fundamental: nuestros métodos están limitados por nuestra capacidad de anticipar qué hay que evaluar. A medida que los sistemas se vuelven más capaces, podrían desarrollar comportamientos o capacidades que no se nos ha ocurrido poner a prueba. Esto sugiere que nuestros marcos de evaluación podrían estar pasando por alto categorías enteras de capacidades o riesgos, simplemente porque aún no los hemos concebido.</p>
+
+      <h2 id="desafios-tecnicos">Desafíos técnicos</h2>
+      <p><strong>La precisión de la medición.</strong> La extrema sensibilidad de los modelos de lenguaje a cambios menores en las condiciones de evaluación plantea un desafío de fondo para medir con fiabilidad. Como vimos al hablar de técnicas de evaluación, variaciones sutiles en el formato de la instrucción pueden dar resultados muy distintos. La investigación ha mostrado que el rendimiento puede variar hasta un 76 % por cambios aparentemente triviales en los formatos de instrucción con pocos ejemplos (<a href="https://arxiv.org/abs/2310.11324">Sclar et al., 2023</a>). Como otro ejemplo, cambios tan menores como pasar de etiquetar las opciones alfabéticamente a hacerlo numéricamente (de «(A)» a «(1)»), alterar el estilo de los paréntesis o añadir un solo espacio pueden producir fluctuaciones de acierto de unos 5 puntos porcentuales (<a href="https://www.anthropic.com/news/evaluating-ai-systems">Anthropic, 2024</a>). No es una molestia menor: plantea preguntas serias sobre la fiabilidad y la reproducibilidad de nuestros resultados. Si pequeños cambios de formato provocan variaciones tan grandes, ¿cómo podemos confiar en nuestras valoraciones de las capacidades o de las propiedades de seguridad de un modelo?</p>
+      <p><strong>Sensibilidad a factores ambientales.</strong> Más allá del formato de las instrucciones, los resultados pueden verse afectados por factores de los que quizá ni siquiera seamos conscientes: la versión concreta del modelo probado, la temperatura y otros parámetros de muestreo, la infraestructura de cómputo que ejecuta la evaluación y quizá incluso la hora del día o la carga del sistema durante las pruebas.</p>
+      <p><strong>La elección de métodos debe considerar restricciones prácticas.</strong> Los evaluadores externos podrían tener acceso limitado a las interioridades del modelo: quizá puedan observar activaciones pero no modificar los pesos, o quizá no tengan acceso al modelo en absoluto y deban limitarse a observarlo funcionando «en libertad». Según las técnicas concretas, los recursos computacionales pueden restringir ciertos análisis.</p>
+      <p><strong>El precio y el tiempo también son restricciones prácticas.</strong> Ejecutar agentes resulta mucho más caro y lento que pasar benchmarks. Desarrollar tareas nuevas y complejas, y verificar y medir capacidades correctamente, exige mucho trabajo humano. Por ejemplo, en una evaluación de capacidades de IA en investigación y desarrollo, el «grupo de control» humano dedicó más de 568 horas a solo 7 tareas (<a href="https://arxiv.org/abs/2411.15114">Wijk et al., 2024</a>), y eso sin contar el tiempo de desarrollar y probar las tareas. Las tareas reales de investigación en IA pueden llevar cientos de horas-persona cada una, y la mayoría de los evaluadores independientes, o incluso los equipos internos de los grandes laboratorios, no tienen presupuesto ni tiempo para evaluar el rendimiento como es debido. Todo esto hay que tenerlo presente al diseñar un protocolo.</p>
+      <p><strong>La explosión combinatoria de escenarios de interacción.</strong> Cuando los sistemas de IA interactúan en entornos complejos, el número de escenarios posibles crece exponencialmente con cada patrón de interacción añadido. A diferencia de evaluar capacidades aisladas, hay que considerar cómo interactúan varios componentes de formas impredecibles, de forma parecida a cómo sustancias químicas normalmente benignas pueden formar compuestos peligrosos al combinarse. Por ejemplo, cuando un modelo A con capacidad de planificación interactúa con un modelo B que tiene acceso a información, y ambos operan dentro de un sistema C con permisos para usar herramientas externas, emergen superficies de riesgo completamente nuevas que no estaban presentes en ningún componente individual. Esta complejidad combinatoria vuelve inabordable una prueba exhaustiva: con millones de patrones posibles, solo podemos evaluar una fracción microscópica, lo que deja incontables puntos ciegos donde podrían desarrollarse comportamientos emergentes críticos. Esta limitación plantea una pregunta inquietante: si solo podemos explorar el 0,001 % del espacio de interacciones, ¿cómo podemos confiar en haber identificado los patrones emergentes más peligrosos?</p>
+      <p><strong>La realidad de los recursos.</strong> Ligado a la explosión del número de evaluaciones está el puro costo computacional de ejecutarlas a fondo, que impone otro límite duro a lo que podemos probar en la práctica. Hacer más de 100 000 llamadas a la API solo para evaluar correctamente el rendimiento en un único benchmark resulta prohibitivo cuando se escala a múltiples capacidades y preocupaciones de seguridad. Los investigadores independientes y las organizaciones pequeñas a menudo no pueden permitírselo y, aunque el dinero no fuera un cuello de botella por contar con patrocinio estatal, las GPU hoy desde luego lo son. Eso puede generar puntos ciegos en nuestra comprensión del comportamiento de los modelos, y la restricción se agrava si pensamos en la necesidad de repetir las pruebas cada vez que los modelos se actualizan o surgen capacidades nuevas.</p>
+      <blockquote>
+        <p>Los evaluadores advierten que, aunque las pruebas se realizaron conforme a las mejores prácticas actuales, sus hallazgos deben considerarse preliminares, porque se llevaron a cabo en un periodo limitado y con recursos finitos; de ampliarse, podrían ampliarse también el alcance de los hallazgos y las conclusiones derivadas.</p>
+        <p>— <strong>Institutos de Seguridad de la IA de Estados Unidos y el Reino Unido</strong>, evaluación de Claude 3.5 Sonnet · <a href="https://www.aisi.gov.uk/work/pre-deployment-evaluation-of-anthropics-upgraded-claude-3-5-sonnet">US y UK AISI, 2024</a></p>
+      </blockquote>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Riesgos ikigai (riesgos I): la pérdida del propósito existencial</strong> · Opcional · 1 min de lectura</summary>
+        <p>Los riesgos ikigai (riesgos I) implican la pérdida de sentido y de propósito incluso cuando los humanos sobreviven y prosperan. Reciben su nombre del concepto japonés de <em>ikigai</em> (el propósito de la vida) y surgen cuando los sistemas de IA se vuelven más capaces que los humanos en todas las actividades significativas. Las personas podrían perder su sentido del propósito si la IA puede crear mejor arte, investigar mejor y desempeñar mejor cualquier tarea que tradicionalmente daba sentido a la vida. A diferencia de los riesgos de extinción o de sufrimiento, los riesgos I describen escenarios en los que los humanos están a salvo y cómodos en lo material, pero existencialmente a la deriva. Podríamos crear restricciones artificiales que preserven la relevancia humana, o encontrar formas de propósito totalmente nuevas que surjan de la colaboración entre humanos e IA. Sin embargo, estas soluciones plantean sus propias preguntas sobre la autenticidad y sobre si un sentido preservado artificialmente puede satisfacer las necesidades psicológicas humanas (<a href="https://books.google.se/books/about/AI.html?id=V3XsEAAAQBAJ">Yampolskiy, 2024</a>).</p>
+      </details>
+
+      <p><strong>La dificultad de estimar las «capacidades máximas».</strong> También ligado a la complejidad combinatoria está el problema de la emergencia. Con frecuencia descubrimos que los modelos pueden hacer cosas que creíamos imposibles cuando se les da el andamiaje o las herramientas adecuadas. El proyecto Voyager lo demostró al usar consultas de caja negra a GPT-4 y revelar su inesperada capacidad de jugar a Minecraft (<a href="https://arxiv.org/abs/2305.16291">Wang et al., 2023</a>). Ya sea por aumentos continuados de escala o por la simple combinación de algún enfoque de andamiaje que los investigadores no habían considerado antes, un modelo podría mostrar un salto significativo en capacidades o propensiones que no habíamos anticipado. Este comportamiento emergente es particularmente difícil de evaluar porque suele surgir de la interacción entre capacidades, y hay pocas formas, si es que hay alguna, de garantizar que el todo no acabe siendo más que la suma de sus partes. Eso hace extremadamente difícil predecir de qué podría ser capaz un modelo en situaciones reales, aunque probemos a fondo sus capacidades individuales.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Estudio de caso de sorpresas en las capacidades: el kalamang</strong> · Opcional · 1 min de lectura</summary>
+        <p>Gemini es capaz de traducir un idioma sin ningún entrenamiento previo. El caso de su capacidad para traducir el kalamang, una lengua hablada por solo unas 100 personas en Papúa Nueva Guinea, muestra cómo los modelos pueden adquirir capacidades inesperadas cuando se les da el contexto adecuado. Es muy improbable que esa lengua formara parte de los datos de entrenamiento de ningún modelo importante. Unos investigadores de Google DeepMind demostraron que, aprovechando una ventana de contexto suficientemente grande (en torno a un millón de tokens), podían introducir una gramática y un diccionario completos del kalamang. Al pedirle que tradujera una frase del kalamang al inglés, el modelo fue capaz de hacerlo (<a href="https://arxiv.org/abs/2309.16575">Tanzer et al., 2024</a>).</p>
+      </details>
+
+      <h3 id="sandbagging">Rendir por debajo de lo posible (<em>sandbagging</em>)</h3>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/e52abfcc18517bab762067b901e27cc1c4fa322984b29e28a850bbda6dbdc0a3.DMG0EV-7_ZLQLUl.webp" alt="Figura 5.60">
+        <figcaption><strong>Figura 5.60.</strong> Ilustración del <em>sandbagging</em> (<a href="https://www.alignmentforum.org/posts/jsmNCj9QKcfdg8fJk/an-introduction-to-ai-sandbagging">van der Weij, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Las pruebas conductuales no bastan.</strong> Lo hemos mencionado varias veces, pero conviene repetirlo. Observar lo que hace un modelo puede decirnos mucho, pero sigue siendo como intentar entender cómo piensa una persona observando solo sus acciones. Nuestra fuerte dependencia de las pruebas conductuales, es decir, del análisis de las salidas, nos deja puntos ciegos importantes sobre cómo funcionan realmente los modelos: uno podría dar las respuestas correctas empleando estrategias internas que no sabemos detectar. Así que, además de estar limitados en amplitud por la complejidad combinatoria, lo estamos en profundidad hasta que haya avances reales en interpretabilidad. Mientras esta no progrese, las evaluaciones tienen un límite superior claro sobre cuánta seguridad pueden garantizar.</p>
+      <p><strong>El <em>sandbagging</em> es el bajo rendimiento estratégico en las evaluaciones</strong>, cuando se hace que un sistema parezca menos capaz de lo que realmente es. Preocupa que los propios sistemas puedan elegir hacerlo, al margen de las intenciones de quien los desarrolla: una IA podría ocultar deliberadamente sus capacidades para evitar modificaciones o restricciones que le impidieran alcanzar sus objetivos (<a href="https://www.alignmentforum.org/posts/dBmfb76zx6wjPsBC7/when-can-we-trust-model-evaluations">Hubinger, 2023</a>). Hablamos más de por qué es preocupante en el apartado sobre maquinación. Como prueba de que es posible, se ha demostrado que varios modelos de frontera son capaces de este comportamiento: rindieron deliberadamente por debajo de sus posibilidades en tareas aritméticas cuando creían que un buen rendimiento activaría un proceso de desaprendizaje<sup><a href="#nota-1" id="ref-1">1</a></sup> (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>).</p>
+      <p><strong>¿Qué implica el <em>sandbagging</em> para el campo de las evaluaciones?</strong> Su posibilidad tiene grandes implicaciones, ahora y en el futuro. Tener acceso solo a las salidas del modelo (pruebas de caja negra) resulta insuficiente para una evaluación rigurosa (<a href="https://arxiv.org/abs/2401.14446">Casper et al., 2024</a>). Los evaluadores necesitan un acceso más profundo a las interioridades y a los procedimientos de entrenamiento para detectar posibles intentos, lo que podría requerir arreglos institucionales nuevos, como evaluadores externos de confianza con acceso seguro a los pesos y las arquitecturas. El ajuste fino supervisado se ha mostrado prometedor para mitigarlo mucho y elicitar capacidades ocultas (<a href="https://arxiv.org/abs/2405.19550">Greenblatt et al., 2024</a>), pero no es fácil de aplicar de forma exhaustiva en benchmarks de capacidades peligrosas, y no sirve para los de propensiones peligrosas. Sin abordar este desafío, nuestra capacidad de tomar decisiones informadas sobre el desarrollo y el despliegue a partir de los resultados queda gravemente comprometida.</p>
+
+      <h2 id="limitaciones-sistemicas">Limitaciones sistémicas</h2>
+      <p>De forma parecida a como algunas empresas practican el «lavado verde» presentándose engañosamente como respetuosas con el medio ambiente, las empresas de IA pueden practicar el «lavado de seguridad»: presentar mejoras de capacidad como avances de seguridad. Esto ocurre cuando los benchmarks de seguridad tienen una alta correlación con las capacidades generales del modelo y con el cómputo empleado en el entrenamiento. Si un benchmark correlaciona mucho con las capacidades, mejorar en él puede reflejar simplemente que el modelo se ha vuelto más capaz en general, y no específicamente más seguro.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/67a2cad055e521979aa00c6743a303245c14418b34dcce3e5693e1e8d8ce7bcb.DZYK1wiH_1IpLPM.webp" alt="Figura 5.61">
+        <figcaption><strong>Figura 5.61.</strong> La estrecha conexión entre muchas propiedades de seguridad y las capacidades puede habilitar el lavado de seguridad, donde avances de capacidad (por ejemplo, entrenar un modelo mayor) pueden anunciarse como progreso en «seguridad de la IA». Esto confunde a la comunidad investigadora sobre los avances realmente ocurridos y distorsiona el discurso académico (<a href="https://arxiv.org/abs/2407.21792">Ren et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>¿Cómo se produce en la práctica?</strong> Suele ocurrir de tres maneras (<a href="https://arxiv.org/abs/2407.21792">Ren et al., 2024</a>):</p>
+      <ol>
+        <li><strong>Seguridad por asociación:</strong> una investigación se etiqueta como relevante para la seguridad simplemente porque viene de equipos o investigadores de seguridad, aunque en esencia sea investigación de capacidades.</li>
+        <li><strong>Relaciones públicas:</strong> las empresas presentan avances de capacidad como progreso en seguridad destacando métricas de seguridad correlacionadas, sobre todo ante presión pública o escrutinio regulatorio.</li>
+        <li><strong>Optimización de subvenciones:</strong> los investigadores enmarcan trabajo de capacidades en términos de seguridad para atraer a los financiadores, aunque los avances no supongan un progreso diferencial en seguridad.</li>
+      </ol>
+      <p><strong>Las correlaciones con las capacidades pueden habilitar el lavado de seguridad.</strong> Cuando los benchmarks de seguridad correlacionan fuertemente con las capacidades, resulta fácil presentar mejoras de capacidad como avances de seguridad. Por ejemplo, si un benchmark pensado para medir la «veracidad» correlaciona en realidad un 80 % con las capacidades generales, hacer los modelos más grandes y capaces mejorará sus puntuaciones de veracidad aunque no se vuelvan intrínsecamente más honestos (<a href="https://arxiv.org/abs/2407.21792">Ren et al., 2024</a>). Eso crea un problema sistémico: las organizaciones pueden afirmar que han mejorado la seguridad con solo escalar sus modelos. La solución no pasa únicamente por establecer normas sobre el uso de los benchmarks, que tienden a ser débiles y fáciles de ignorar, sino por métodos de evaluación capaces de distinguir empíricamente entre mejoras de capacidad y avances genuinos de seguridad.</p>
+      <p><strong>Las empresas y los laboratorios también pueden hacer <em>sandbagging</em> en sus evaluaciones.</strong> Incluimos aquí esta otra forma, como limitación sistémica, para referirnos a corporaciones que rinden deliberadamente por debajo de lo posible para obtener mejores resultados. Es distinto del <em>sandbagging</em> técnico o por desalineación, que apunta a cuando lo hace el modelo por maquinación.</p>
+      <p>A corto plazo, quienes desarrollan afrontan presiones que podrían incentivarlo. Los requisitos regulatorios y los estándares de seguridad pueden imponer umbrales de capacidad por encima de los cuales se incurre en supervisión, restricciones o costos adicionales. El Reglamento Europeo de IA, por ejemplo, exige controles más estrictos y auditoría externa para los sistemas de alto riesgo (<a href="https://artificialintelligenceact.eu/the-act/">Comisión Europea, 2024</a>), lo que crea un incentivo financiero directo para parecer por debajo de esos umbrales. La investigación actual muestra que incluso los modelos de hoy pueden hacerse rendir selectivamente por debajo de lo posible de formas difíciles de detectar con las evaluaciones estándar, en particular en pruebas de capacidades peligrosas mientras mantienen el rendimiento en benchmarks generales (<a href="https://arxiv.org/abs/2406.07358">van der Weij et al., 2024</a>).</p>
+      <p>En el futuro, las empresas podrían querer restar importancia a ciertas capacidades para no atraer la atención regulatoria ni la preocupación pública, pero poder desplegarlas igualmente en la práctica. Eso les permitiría mantener la velocidad de desarrollo y despliegue sin activar supervisión adicional. Por ejemplo, si un sistema muestra capacidades fuertes en áreas que podrían suscitar preocupaciones de seguridad, podrían estar motivadas a que rindiera por debajo específicamente en esas evaluaciones mientras mantiene un alto rendimiento en las generales (<a href="https://arxiv.org/abs/2406.07358">van der Weij et al., 2024</a>).</p>
+      <p><strong>La brecha entre evaluación y despliegue.</strong> Los enfoques actuales a menudo no captan la complejidad real de los contextos de despliegue. Podemos medir el rendimiento en entornos controlados, pero esas evaluaciones rara vez reflejan cómo se comportarán los sistemas insertos en entornos sociotécnicos complejos. Un modelo que se comporta de forma segura en pruebas aisladas podría comportarse de manera muy distinta al interactuar con usuarios reales, enfrentarse a escenarios nuevos u operar dentro de sistemas sociales más amplios. Por ejemplo, un modelo de consejo médico podría rendir bien en los benchmarks estándar y, sin embargo, plantear riesgos serios al desplegarse en entornos sanitarios donde los usuarios carecen de la experiencia necesaria para validar sus recomendaciones. Esta desconexión implica que podríamos pasar por alto problemas críticos que solo emergen de interacciones complejas entre humanos e IA o de efectos a nivel de sistema (<a href="https://arxiv.org/abs/2310.11986">Weidinger et al., 2023</a>).</p>
+      <p><strong>El desafío de las evaluaciones específicas de dominio.</strong> Evaluar sistemas en dominios de alto riesgo plantea retos singulares. Pensemos en evaluar el posible uso indebido en bioseguridad: requiere no solo comprensión técnica de los sistemas y de los métodos de evaluación, sino también un conocimiento profundo de biología, de protocolos de bioseguridad y de los posibles vectores de amenaza. Esa combinación de experiencia es rarísima, lo que dificulta especialmente una evaluación a fondo en estos dominios críticos. Surgen retos parecidos en campos como la ciberseguridad, donde la complejidad de los vectores de ataque y de las vulnerabilidades exige un conocimiento especializado sofisticado. La dificultad de encontrar evaluadores con suficiente experiencia transversal lleva a menudo a evaluaciones que pasan por alto riesgos importantes del dominio o no anticipan formas nuevas de uso indebido. Y además de ser difíciles de diseñar, ejecutarlas también lo es: hay que elicitar las capacidades máximas de un modelo para comprobar de qué es capaz, lo que obviamente puede resultar problemático si no se maneja con extremo cuidado.</p>
+
+      <h2 id="limitaciones-de-gobernanza">Limitaciones de gobernanza</h2>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3b0b56c7ffe15a58048d1491f5740d54ba7aba3d72d0804768a947c5e4d0f433.CaaGhFUA_Ffqbk.webp" alt="Figura 5.62">
+        <figcaption><strong>Figura 5.62.</strong> Hace falta mucho más trabajo en evaluaciones. A mayores capacidades, más evaluaciones de seguridad. Muchas decisiones de alto riesgo, tanto en los marcos liderados por empresas como en los liderados por gobiernos, dependen de sus resultados (<a href="https://www.alignmentforum.org/posts/gJJEjJpKiddoYGZKk/the-evals-gap">Hobbhahn, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>La brecha entre política y evaluación.</strong> Los esfuerzos legislativos y regulatorios actuales se ven muy lastrados por la falta de métodos de evaluación robustos y estandarizados. Pensemos en las órdenes ejecutivas y las regulaciones propuestas que exigen valoraciones de seguridad: ¿cómo pueden los gobiernos hacer cumplir esos requisitos si carecemos de formas fiables de medir qué hace «seguro» a un sistema? Se crea así un problema circular: los reguladores necesitan estándares de evaluación para crear políticas eficaces, pero el desarrollo de esos estándares viene impulsado en parte por los requisitos regulatorios. La iniciativa del gobierno estadounidense de encargar a varias agencias la evaluación de capacidades en ciberseguridad y bioseguridad ilustra el reto: pese a su experiencia en sus respectivos dominios, a menudo carecen del conocimiento especializado necesario para evaluar sistemas avanzados de forma integral (<a href="https://arxiv.org/abs/2310.11986">Weidinger et al., 2023</a>).</p>
+      <p><strong>El papel de la evaluación independiente.</strong> Hoy, buena parte de la investigación en evaluaciones ocurre dentro de las mismas empresas que desarrollan los sistemas. Aunque suelen tener los mejores recursos y experiencia para hacerlo, eso crea un conflicto de intereses inherente: podrían tener incentivos para diseñar evaluaciones que sus sistemas probablemente superen o para restar importancia a resultados preocupantes. A esto también se le llama a veces «lavado de seguridad». Para abordar los retos de independencia y experiencia necesitamos ampliar mucho el ecosistema de organizaciones evaluadoras independientes. La aparición de organizaciones como METR y Apollo Research es un paso importante, pero afrontan barreras significativas, entre ellas un acceso limitado a los modelos (<a href="https://ailabwatch.org/blog/external-evaluation/">Perlman, 2024</a>), restricciones de recursos y dificultades para igualar la capacidad técnica de los grandes laboratorios.</p>
+      <p>En conjunto, aunque las limitaciones que hemos tratado en esta sección final son importantes, no son insuperables. El progreso en áreas como la interpretabilidad mecanicista, los métodos de verificación formal y los protocolos de evaluación resulta prometedor para abordar muchas de ellas. Sin embargo, superar estos desafíos requiere un esfuerzo y una inversión sostenidos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/2885fd4c7389d235cf647a1169453018110754d1f520334b57ddfa78ac340213.Ca_g4LFt_ZyYxhA.webp" alt="Figura 5.63">
+        <figcaption><strong>Figura 5.63.</strong> Desglose visual de las limitaciones y de algunas razones para dudar del impacto de las evaluaciones de riesgo de la IA (<a href="https://arxiv.org/abs/2408.02565">Mukobi, 2024</a>).</figcaption>
+      </figure>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Este comportamiento se observó en un entorno de evaluación controlado, donde se informaba explícitamente a los modelos, a través de la ventana de contexto, de las posibles consecuencias de desaprendizaje ante un rendimiento alto. Los investigadores señalaron que solo habían mostrado que algunos modelos poseen capacidades básicas de maquinación cuando tanto el objetivo como la conciencia situacional se adquieren en contexto, y no que ese comportamiento emergiera de forma espontánea en escenarios más realistas (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>). <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 18 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/limitations/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-09-diseno-de-evaluaciones.html">← Anterior: Diseño de evaluaciones</a>
+      </div>
+      <a class="siguiente" href="cap5-11-conclusion.html">
+        <strong>Siguiente: Conclusión →</strong><br>
+        Unos métodos de evaluación robustos aportan las herramientas esenciales para medir las capacidades actuales y ayudan a navegar el equilibrio entre aprovechar los beneficios de la IA y mitigar sus riesgos más graves.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
