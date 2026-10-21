@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manipulación de la especificación · Capítulo 6 – AI Safety Atlas</title>
+  <meta name="description" content="Manipulación de la especificación: diseño, modelado, hackeo y manipulación de la recompensa.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>6. Manipulación de la especificación</h2>
+        <ol>
+          <li><a href="cap6-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap6-02-aprendizaje-por-refuerzo.html">Aprendizaje por refuerzo</a></li>
+          <li><a href="cap6-03-optimizacion.html">Optimización</a></li>
+          <li class="activo"><a href="cap6-04-manipulacion-de-la-especificacion.html">Manipulación de la especificación</a></li>
+          <li><a href="cap6-05-aprender-por-imitacion.html">Aprender por imitación</a></li>
+          <li><a href="cap6-06-aprender-de-la-retroalimentacion.html">Aprender de la retroalimentación</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 6: Manipulación de la especificación</p>
+      <h1>Manipulación de la especificación</h1>
+      <p><em>Nunca podemos escribir a la perfección lo que queremos que haga una IA, y las IA inteligentes encuentran a menudo resquicios en nuestras instrucciones: hacen exactamente lo que pedimos, pero no lo que queremos decir.</em></p>
+      <p class="meta">11 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter6-audio-90cf60c3206bcdf43211f3049e739d761c457e66884f14786a55615543f7cf7f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter6-af895defbf8761a30ac565755f204072e09a5d599ca725f3de64de4b547c2f28.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#diseno-de-la-recompensa">Diseño de la recompensa</a></li>
+          <li><a href="#modelado-de-la-recompensa">Modelado de la recompensa</a></li>
+          <li><a href="#hackeo-de-la-recompensa">Hackeo de la recompensa</a></li>
+          <li><a href="#manipulacion-de-la-recompensa">Manipulación de la recompensa</a></li>
+        </ol>
+      </nav>
+
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.6: Mala especificación de la recompensa</strong>
+        <p style="margin:.4rem 0 0;">La mala especificación de la recompensa, también llamada problema de alineación externa, se refiere a la dificultad de proporcionar a una IA la recompensa correcta que debe optimizar.</p>
+      </aside>
+      <figure>
+        <p><a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/specification-gaming/">▶ Ver el vídeo en la sección original (en inglés)</a></p>
+        <figcaption><strong>Vídeo 6.2.</strong> Vídeo opcional con muchos ejemplos de manipulación de la especificación.</figcaption>
+      </figure>
+      <p>El problema de fondo es sencillo de comprender: ¿se ajusta la función de pérdida especificada al objetivo que pretendían sus diseñadores? Sin embargo, llevarlo a la práctica resulta extremadamente difícil. Expresar la «intención» completa que hay detrás de una petición humana equivale a transmitir todos los valores humanos, el contexto cultural implícito y demás, cosas que nosotros mismos comprendemos mal.</p>
+      <p>Además, como la mayoría de los modelos se diseñan como optimizadores de objetivos, todos son vulnerables a la ley de Goodhart. Esa vulnerabilidad implica que pueden surgir consecuencias negativas imprevistas por una presión de optimización excesiva sobre una meta que a los humanos nos parece bien especificada, pero que se desvía de los objetivos reales de formas sutiles.</p>
+      <p>El problema general puede dividirse en cuestiones distintas, que se explican en detalle en los apartados siguientes. Este es un resumen rápido:</p>
+      <ol>
+        <li><strong>La mala especificación de la recompensa</strong> ocurre cuando la función de recompensa especificada no captura con precisión el objetivo real o el comportamiento deseado.</li>
+        <li><strong>El diseño de la recompensa</strong> es el proceso de diseñar la función de recompensa para alinear el comportamiento de los agentes con los objetivos previstos.</li>
+        <li><strong>El hackeo de la recompensa</strong> es el comportamiento por el que los agentes de aprendizaje por refuerzo explotan huecos o resquicios de la función de recompensa especificada para obtener recompensas altas sin cumplir realmente los objetivos previstos.</li>
+        <li><strong>La manipulación de la recompensa</strong> es un concepto más amplio que abarca la influencia indebida del agente sobre el propio proceso de recompensa, excluyendo la manipulación de la función de recompensa mediante <em>gaming</em>.</li>
+      </ol>
+      <p>Antes de entrar en los tipos concretos de fallo, el apartado siguiente explica por qué se insiste en el diseño de la recompensa junto al diseño del algoritmo, y aclara la notoria dificultad de diseñar recompensas eficaces.</p>
+
+      <h2 id="diseno-de-la-recompensa">Diseño de la recompensa</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.7: Diseño de la recompensa</strong>
+        <p style="margin:.4rem 0 0;">El diseño de la recompensa es el proceso de especificar la función de recompensa en aprendizaje por refuerzo.</p>
+      </aside>
+      <p>El diseño de la recompensa es un término más amplio que el modelado de la recompensa y abarca todo el proceso de diseñar y dar forma a las funciones de recompensa que guían el comportamiento de los sistemas de IA. Incluye no solo el modelado, sino también el proceso general de definir objetivos, especificar preferencias y crear funciones de recompensa que se ajusten a los valores humanos y a los resultados deseados. El término se usa a menudo de forma intercambiable con «ingeniería de la recompensa» (<a href="https://www.alignmentforum.org/posts/4nZRzoGTqg8xy5rr8/the-reward-engineering-problem">Christiano, 2019</a>): ambos se refieren a lo mismo.</p>
+      <p>El diseño del algoritmo y el diseño de la recompensa son dos facetas distintas del aprendizaje por refuerzo. El diseño del algoritmo trata del desarrollo e implementación de algoritmos de aprendizaje que permiten a un agente aprender y refinar su comportamiento a partir de las recompensas y de sus interacciones con el entorno. Incluye diseñar los mecanismos y procedimientos por los que el agente aprende de su experiencia, actualiza sus políticas y toma decisiones para maximizar las recompensas acumuladas.</p>
+      <p>El diseño de la recompensa, en cambio, se concentra en la especificación y el diseño de la función de recompensa que guía el proceso de aprendizaje del agente. Exige construir con cuidado esa función para que se ajuste al comportamiento y los objetivos deseados, teniendo en cuenta escollos potenciales como el hackeo o la manipulación de la recompensa. La función de recompensa es un elemento clave, porque moldea el comportamiento del agente y determina qué acciones se consideran deseables o indeseables.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bb3ef82ea4b1437e81b2116daece83729242b761fe9dedd6b7d5b92b454bd44c.CjKBYFd2_EOJxm.webp" alt="Figura 6.3">
+        <figcaption><strong>Figura 6.3.</strong> Manipulación de la especificación: la otra cara del ingenio de la IA (<a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity">Krakovna et al., 2020</a>).</figcaption>
+      </figure>
+      <p>Diseñar una función de recompensa suele ser un reto formidable que exige mucha experiencia y pericia. Para hacerse una idea de la complejidad, piensa en cómo diseñarías a mano una función de recompensa que hiciera a un agente dar una voltereta hacia atrás, como muestra la imagen siguiente:</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5d26cdab559e2218ac7d0a7e0f02d53973042d3612d27a07b59ec560149c0bc5.CBbaz-rx_1AjnFe.webp" alt="Figura 6.4">
+        <figcaption><strong>Figura 6.4.</strong> Aprendizaje por refuerzo profundo a partir de preferencias humanas (<a href="https://arxiv.org/abs/1706.03741">Christiano et al., 2017</a>).</figcaption>
+      </figure>
+      <p>Mientras el diseño del algoritmo se centra en los mecanismos de aprendizaje y decisión del agente, el diseño de la recompensa se centra en definir el objetivo y moldear el comportamiento a través de la función de recompensa. Ambos aspectos son cruciales para desarrollar sistemas eficaces y alineados: un algoritmo bien diseñado puede aprender de las recompensas con eficiencia, y una función de recompensa cuidadosamente diseñada puede guiar al agente hacia el comportamiento deseado y evitar consecuencias imprevistas. El diagrama siguiente muestra los tres elementos clave del diseño de un agente de aprendizaje por refuerzo: el diseño del algoritmo, el diseño de la recompensa y la prevención de la manipulación de la señal de recompensa.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3a26fbbd09f72a9f2d99c4b44a5fb2e512e3e6e03507aaddebfdccf12ee850af.Bd26pbos_Z1n06PN.webp" alt="Figura 6.5">
+        <figcaption><strong>Figura 6.5.</strong> Manipulación de la especificación: la otra cara del ingenio de la IA (<a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity">Krakovna et al., 2020</a>).</figcaption>
+      </figure>
+      <p>El proceso de diseño de la recompensa recibe muy poca atención en los textos introductorios de aprendizaje por refuerzo, pese a su papel crítico en la definición del problema a resolver. Como señalábamos al principio, resolver el problema de la mala especificación exigiría encontrar métricas de evaluación resistentes a los fallos inducidos por la ley de Goodhart. Eso incluye los fallos derivados de sobreoptimizar un objetivo equivocado o un objetivo aproximado (hackeo de la recompensa) y los derivados de que el agente interfiera directamente en la señal de recompensa (manipulación de la recompensa). Ambos conceptos se exploran en los apartados siguientes.</p>
+
+      <h2 id="modelado-de-la-recompensa">Modelado de la recompensa</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.8: Modelado de la recompensa</strong>
+        <p style="margin:.4rem 0 0;">El modelado de la recompensa es una técnica del aprendizaje por refuerzo que introduce pequeñas recompensas intermedias para complementar la recompensa del entorno. Busca mitigar el problema de las señales de recompensa escasas y fomentar la exploración y un aprendizaje más rápido.</p>
+      </aside>
+      <p>Para tener éxito en un problema de aprendizaje por refuerzo, una IA necesita hacer dos cosas:</p>
+      <ul>
+        <li>Encontrar una secuencia de acciones que lleve a una recompensa positiva. Este es el problema de la exploración.</li>
+        <li>Recordar la secuencia de acciones que debe tomar y generalizarla a situaciones relacionadas pero algo distintas. Este es el problema del aprendizaje.</li>
+      </ul>
+      <p>Los métodos de aprendizaje por refuerzo sin modelo exploran tomando acciones al azar. Si por casualidad esas acciones llevan a una recompensa, se refuerzan y el agente se vuelve más propenso a repetirlas. Esto funciona bien si las recompensas son lo bastante densas como para que las acciones aleatorias lleguen a una con probabilidad razonable. Sin embargo, muchos de los juegos más complicados requieren secuencias largas de acciones muy concretas antes de obtener cualquier recompensa, y es extremadamente improbable que tales secuencias surjan al azar.</p>
+      <p>Un ejemplo clásico de este problema se observó en el videojuego <em>Montezuma's Revenge</em>, donde el objetivo del agente era encontrar una llave, pero hacían falta muchos pasos intermedios para dar con ella. Para resolver estos problemas de planificación a largo plazo, los investigadores han probado a añadir términos o componentes adicionales a la función de recompensa que fomenten el comportamiento deseado o desincentiven el no deseado.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/55054c588746cfe914db88886a7248c473f396e212f465562c0a3727057dd8bd.bQFICZYz_2j4acM.webp" alt="Figura 6.6">
+        <figcaption><strong>Figura 6.6.</strong> Aprender <em>Montezuma's Revenge</em> a partir de una sola demostración (<a href="https://openai.com/research/learning-montezumas-revenge-from-a-single-demonstration">OpenAI, 2018</a>).</figcaption>
+      </figure>
+      <p>El objetivo del modelado de la recompensa es hacer el aprendizaje más eficiente proporcionando recompensas informativas que guíen al agente hacia los resultados deseados. Consiste en dar recompensas adicionales por avanzar hacia la meta. Al modelar las recompensas, el agente recibe retroalimentación más frecuente y significativa, lo que puede ayudarle a aprender con más eficiencia. Resulta especialmente útil cuando la función de recompensa original es escasa, es decir, cuando el agente recibe poca o ninguna retroalimentación hasta alcanzar la meta final. Sin embargo, es importante diseñarlo con cuidado para evitar consecuencias imprevistas.</p>
+      <p>Los algoritmos de modelado de la recompensa suelen presuponer funciones de modelado artesanales y específicas del dominio, construidas por expertos en la materia, lo que va en contra del objetivo del aprendizaje autónomo. Además, unas malas elecciones en las recompensas de modelado pueden empeorar el rendimiento del agente.</p>
+      <p>Un modelado mal diseñado puede llevar al agente a optimizar las recompensas modeladas en lugar de las verdaderas, lo que produce un comportamiento subóptimo. En los apartados siguientes sobre hackeo de la recompensa hay ejemplos de esto.</p>
+
+      <h2 id="hackeo-de-la-recompensa">Hackeo de la recompensa</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.9: Hackeo de la recompensa</strong>
+        <p style="margin:.4rem 0 0;">El hackeo de la recompensa ocurre cuando un agente de IA encuentra formas de explotar resquicios o atajos del entorno para maximizar su recompensa sin lograr realmente el objetivo previsto.</p>
+      </aside>
+      <p>La manipulación de la especificación es el marco general del problema que se da cuando un sistema de IA encuentra una forma de alcanzar el objetivo de un modo no previsto, y puede ocurrir en muchos tipos de modelos de aprendizaje automático. El hackeo de la recompensa es una manifestación concreta de ese fallo en sistemas de aprendizaje por refuerzo que funcionan con mecanismos basados en recompensas.</p>
+      <p>El hackeo y la mala especificación de la recompensa son conceptos relacionados pero distintos. La mala especificación se refiere a la situación en que la función de recompensa especificada no captura con precisión el objetivo real o el comportamiento deseado.</p>
+      <p>El hackeo no siempre requiere una mala especificación. No es necesariamente cierto que una recompensa perfectamente especificada, que capture completa y fielmente el comportamiento deseado, sea imposible de hackear. También puede haber implementaciones con errores o corruptas que produzcan comportamientos imprevistos. El propósito de una función de recompensa es reducir un sistema complicado a un único valor, y eso casi siempre implicará simplificaciones que después se desviarán un poco de lo que uno describe. El mapa no es el territorio.</p>
+      <p>El hackeo puede manifestarse de muchísimas formas. En agentes que juegan a videojuegos, por ejemplo, podría implicar explotar fallos o errores del software para manipular directamente la puntuación u obtener recompensas altas por medios no previstos.</p>
+      <p>Como ejemplo concreto, un agente del juego <em>CoastRunners</em> se entrenó con el objetivo de ganar la carrera. El juego usa un mecanismo de puntuación, así que, para avanzar al nivel siguiente, los diseñadores recurrieron al modelado de la recompensa para premiar al sistema cuando sumaba puntos. Estos se otorgaban cuando el barco recogía objetos (como los bloques verdes de la animación) o realizaba otras acciones que, en principio, le ayudarían a ganar. Pese a esas recompensas intermedias, el objetivo general era terminar la carrera lo más rápido posible. Los desarrolladores pensaban que la mejor forma de obtener una puntuación alta era ganar, pero no era así: el agente descubrió que girar continuamente en círculo para acumular puntos de forma indefinida optimizaba su recompensa, aunque eso no le ayudara a ganar la carrera.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9d32c861e5dfe7bf63ba30f3cd3e1305f6e85acbe375e848ba09a96e3d249af4.CNiYBrKV_U5OOv.webp" alt="Figura 6.7">
+        <figcaption><strong>Figura 6.7.</strong> Funciones de recompensa defectuosas en la práctica (<a href="https://openai.com/index/faulty-reward-functions/">Amodei y Clark, 2016</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/6755d7f54ed3e03912b8b59e49e0cdf9e47617d228631a8ba7486ad363d0f517.B3iGxwlW_ZHw1F4.webp" alt="Figura 6.8">
+        <figcaption><strong>Figura 6.8.</strong> Una IA jugando a <em>CoastRunners 7</em> aprendió a chocar y regenerar objetivos repetidamente, en lugar de ganar la carrera, para obtener una puntuación más alta. Es un caso de manipulación del objetivo aproximado (<a href="https://www.aisafetybook.com/textbook/robustness">Hendrycks, 2024</a>).</figcaption>
+      </figure>
+      <p>Cuando la función de recompensa no se ajusta al objetivo deseado puede aparecer el hackeo, que lleva al agente a optimizar una recompensa aproximada desviándose de la meta real y produciendo así comportamientos contrarios a las intenciones de los diseñadores. Como ejemplo de algo que podría ocurrir en el mundo real, piensa en un robot de limpieza: si la función de recompensa se centra en reducir el desorden, el robot podría crear desorden artificialmente para luego limpiarlo y cobrar la recompensa, en lugar de limpiar el entorno de forma eficaz.</p>
+      <p>El hackeo de la recompensa plantea desafíos importantes para la seguridad de la IA, por la posibilidad de comportamientos imprevistos y potencialmente dañinos. Combatirlo sigue siendo un área activa de investigación en seguridad y alineación.</p>
+
+      <h2 id="manipulacion-de-la-recompensa">Manipulación de la recompensa</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.10: Manipulación de la recompensa</strong>
+        <p style="margin:.4rem 0 0;">La manipulación de la recompensa se refiere a los casos en que un agente de IA influye o manipula de forma indebida el propio proceso de recompensa.</p>
+      </aside>
+      <p>El problema de lograr que se realice una tarea prevista puede dividirse en:</p>
+      <ol>
+        <li>Diseñar un agente que sea bueno optimizando la recompensa.</li>
+        <li>Diseñar un proceso de recompensa que proporcione al agente recompensas adecuadas. Ese proceso puede descomponerse aún más: una función de recompensa implementada, un mecanismo para recoger datos sensoriales apropiados como entrada y una vía para que el usuario pueda actualizar la función de recompensa.</li>
+      </ol>
+      <p>La manipulación de la recompensa implica que el agente interfiera en alguna de las partes de ese proceso. Un agente podría distorsionar la retroalimentación recibida del modelo de recompensa, alterando la información usada para actualizar su comportamiento. También podría manipular la implementación del modelo, modificando el código o el hardware para cambiar los cálculos. En algunos casos, los agentes podrían incluso modificar directamente los valores de recompensa antes de su procesamiento en el registro de la máquina. Según qué se manipule exactamente, obtenemos distintos grados, que la imagen siguiente permite distinguir.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0607b594e2565edc6a6fb0c7ed789bafa35968d36b165430edf50a10027c4668.ClwxY0Xt_1iw0QA.webp" alt="Figura 6.9">
+        <figcaption><strong>Figura 6.9.</strong> Aclaración de la terminología sobre <em>wireheading</em> (<a href="https://www.alignmentforum.org/posts/REesy8nqvknFFKywm/clarifying-wireheading-terminology">Gao, 2022</a>).</figcaption>
+      </figure>
+      <p>La <strong>manipulación de las entradas de la función de recompensa</strong> interfiere solo en las entradas de esa función, por ejemplo alterando los sensores.</p>
+      <p>La <strong>manipulación de la función de recompensa</strong> implica que el agente cambie la propia función.</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.11: Wireheading</strong>
+        <p style="margin:.4rem 0 0;">El <em>wireheading</em> designa el comportamiento de un sistema que manipula o corrompe su propia estructura interna interfiriendo directamente en el algoritmo de aprendizaje por refuerzo, por ejemplo cambiando los valores de los registros.</p>
+      </aside>
+      <p>La manipulación de la recompensa es preocupante porque se ha planteado la hipótesis de que interferir en el proceso de recompensa surgirá a menudo como un objetivo instrumental (<a href="https://psycnet.apa.org/record/2014-48585-000">Bostrom, 2014</a>; <a href="https://dl.acm.org/doi/10.5555/1566174.1566226">Omohundro, 2008</a>). Eso puede debilitar o romper la relación entre la recompensa observada y la tarea prevista. Es una línea de investigación en curso.</p>
+      <p>Un ejemplo hipotético ya existente de manipulación de la recompensa podría verse en los algoritmos de recomendación de las redes sociales: influyen en el estado emocional de sus usuarios para generar más «me gusta». La tarea prevista era servir contenido útil o atractivo, pero se está logrando manipulando la percepción emocional humana y cambiando así lo que se consideraría útil. Si las capacidades de los sistemas siguen aumentando, ya sea por avances computacionales o algorítmicos, es plausible esperar que estos problemas se vuelvan cada vez más comunes. Por eso la manipulación de la recompensa es una preocupación potencial que requiere mucha más investigación y verificación empírica.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 9 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/specification-gaming/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap6-03-optimizacion.html">← Anterior: Optimización</a>
+      </div>
+      <a class="siguiente" href="cap6-05-aprender-por-imitacion.html">
+        <strong>Siguiente: Aprender por imitación →</strong><br>
+        Podemos intentar enseñar el comportamiento correcto haciendo que las IA copien demostraciones humanas. Pero la IA podría copiar nuestros errores o tener dificultades para entender por qué hacemos las cosas, sobre todo en tareas que los humanos no hacemos a la perfección.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
