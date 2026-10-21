@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marcos de evaluación · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Marcos de evaluación de la IA: organismos modelo y marcos de gobernanza corporativa.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li class="activo"><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Marcos de evaluación</h1>
+      <p><em>Hacen falta marcos estructurados para convertir los resultados de las pruebas en decisiones reales, como las políticas de empresa que usan las evaluaciones de seguridad a modo de puertas para decidir cuándo es seguro construir una IA más potente.</em></p>
+      <p class="meta">10 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#marco-de-organismos-modelo">Marco de organismos modelo</a></li>
+          <li><a href="#marcos-de-gobernanza">Marcos de gobernanza</a></li>
+          <li><a href="#rsp-anthropic">Marco RSP (Anthropic)</a></li>
+          <li><a href="#preparacion-openai">Marco de preparación (OpenAI)</a></li>
+          <li><a href="#fsf-deepmind">Marco de seguridad de frontera (Google DeepMind)</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p><strong>Técnicas de evaluación frente a marcos de evaluación.</strong> Al evaluar sistemas de IA, las técnicas individuales son como herramientas de una caja: útiles para tareas concretas, pero mucho más potentes cuando se combinan de forma sistemática. Ahí entran los marcos de evaluación. Mientras las técnicas son métodos específicos para estudiar sistemas (como las instrucciones de cadena de pensamiento o el análisis de patrones internos de activación), los marcos aportan enfoques estructurados para combinarlas y responder preguntas más amplias. Por ejemplo, podríamos usar técnicas conductuales como el <em>red teaming</em> para sondear salidas engañosas, técnicas internas como el análisis de circuitos para entender cómo se implementa el engaño, y combinar ambas dentro de un marco de organismos modelo diseñado específicamente para crear una muestra de engaño por parte de la IA. Cada capa (técnica, tipo de análisis y marco) cumple un papel distinto en la construcción de comprensión y de seguridad.</p>
+
+      <p><strong>Tipos de marcos de evaluación.</strong> Pueden clasificarse a grandes rasgos en marcos técnicos y marcos de gobernanza:</p>
+      <ol>
+        <li><strong>Marcos técnicos:</strong> cosas como el marco de organismos modelo, o varios conjuntos de evaluación que aportan metodologías u objetivos concretos para llevar a cabo evaluaciones. Pueden detallar qué técnicas usar, cómo combinarlas y qué resultados específicos medir. Por ejemplo, podrían especificar cómo crear ejemplos controlados de comportamiento engañoso o cómo medir la conciencia situacional.</li>
+        <li><strong>Marcos de gobernanza:</strong> cosas como el marco de políticas de escalado responsable (RSP) de Anthropic, el marco de preparación de OpenAI y el marco de seguridad de frontera (FSF) de DeepMind. Estos se centran en cuándo llevar a cabo las evaluaciones, qué deberían desencadenar sus resultados y cómo encajan en la toma de decisiones de la organización. Establecen protocolos sobre cómo se traducen los resultados en acciones concretas: continuar el desarrollo o implantar medidas de seguridad adicionales.</li>
+      </ol>
+      <p>Los marcos técnicos nos ayudan a entender cómo medir las capacidades y los comportamientos de la IA; los de gobernanza, a determinar qué hacer con esas mediciones. Combinar ambos podría acercarnos a un marco de evaluación de riesgos mucho más integral, que valore lo bien que organizaciones enteras evalúan y mitigan los riesgos de la IA.</p>
+
+      <h2 id="marco-de-organismos-modelo">Marco de organismos modelo</h2>
+      <p><strong>¿Qué son los organismos modelo en seguridad de la IA?</strong> Este marco consiste en crear y estudiar deliberadamente sistemas de IA desalineados con propiedades peligrosas concretas. Es un enfoque controlado para estudiar capacidades y comportamientos potencialmente peligrosos (<a href="https://www.alignmentforum.org/posts/ChDH335ckdvpxXaXX/model-organisms-of-misalignment-the-case-for-a-new-pillar-of-1">Hubinger et al., 2023</a>).</p>
+      <p><strong>¿Por qué crear a propósito sistemas potencialmente peligrosos?</strong> Hay dos razones de peso. Primera, permite estudiar propiedades preocupantes en entornos controlados donde sabemos exactamente qué buscamos. Segunda, aporta ejemplos concretos que pueden informar a la comunidad más amplia sobre los desafíos de seguridad. Disponer de ejemplos reales y demostrados de riesgos potenciales es crucial para construir consenso científico y orientar las decisiones políticas.</p>
+      <p><strong>¿Cómo descompone este enfoque los modelos de amenaza complejos?</strong> En lugar de abordar algo como la «alineación engañosa» como un problema monolítico, los investigadores identifican subcomponentes clave, como la conciencia situacional o la persistencia de objetivos. Después crean sistemas simplificados que muestran esas propiedades, estudian cómo se manifiestan y prueban distintas técnicas de evaluación. Por ejemplo, el trabajo de Anthropic sobre «agentes durmientes» demostró cómo ciertas formas de comportamiento engañoso podían persistir pese al entrenamiento de seguridad.<sup><a href="#nota-1" id="ref-1">1</a></sup> Crearon modelos que escribían código seguro cuando se les preguntaba por el año 2023, pero introducían vulnerabilidades cuando se les preguntaba por 2024 (<a href="https://arxiv.org/abs/2401.05566">Hubinger et al., 2024</a>). Hablamos más de este ejemplo concreto de engaño en el capítulo sobre generalización errónea de objetivos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c04b62373b6f68d32170644e1e68807a1e196dc204497c6520f5aaf8389271f2.BSj-tk_F_Z1TgKn.webp" alt="Figura 5.24">
+        <figcaption><strong>Figura 5.24.</strong> Ejemplo de un agente durmiente que muestra comportamiento desalineado pese a haber pasado por un ajuste fino de seguridad (<a href="https://arxiv.org/abs/2401.05566">Hubinger et al., 2024</a>).</figcaption>
+      </figure>
+      <p>Algunos ejemplos de organismos modelo en la investigación en seguridad incluyen la complacencia hacia el modelo de recompensa, en la que se entrena un modelo para explotar los sesgos del modelo de recompensa y comprobar si las técnicas de auditoría de alineación detectan objetivos ocultos (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>), y el fingimiento de alineación, en el que se entrena a los modelos para cumplir estratégicamente los objetivos de entrenamiento mientras se los vigila y volver a sus preferencias originales cuando no lo están (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>). Ambos crean ejemplos controlados de desalineación con una verdad de referencia conocida, lo que permite validar técnicas de evaluación y estudiar posibles comportamientos engañosos.</p>
+      <p><strong>¿Cuáles son las limitaciones del marco?</strong> El enfoque afronta un compromiso importante: los modelos deben ser lo bastante realistas para aportar ideas útiles, pero lo bastante controlados para estudiarlos con seguridad; lo bastante sofisticados para mostrar las propiedades que nos preocupan, pero no tan potentes como para plantear riesgos reales. Además, como se construyen explícitamente para mostrar ciertos comportamientos, podrían no representar a la perfección cómo surgirían esos comportamientos de forma natural.</p>
+
+      <h2 id="marcos-de-gobernanza">Marcos de gobernanza</h2>
+      <p>En este apartado describimos tres marcos de gobernanza corporativa. Estos compromisos voluntarios se llaman «marcos de seguridad y protección». Su forma general es parecida: las empresas prometen evaluar los modelos y no desplegar los peligrosos, pero los detalles varían.</p>
+      <p><strong>¿Por qué necesitamos políticas de escalado?</strong> Un ámbito en el que las evaluaciones son centrales es el de determinar cuándo deberíamos continuar el desarrollo y cuándo invertir más en medidas de seguridad. A medida que los sistemas se vuelven más capaces, necesitamos formas sistemáticas de garantizar que la seguridad siga el ritmo del crecimiento de las capacidades. Sin políticas estructuradas, las presiones competitivas o la inercia del desarrollo podrían empujar a las empresas a escalar más rápido de lo que sus medidas de seguridad pueden asumir. En el capítulo sobre capacidades vimos los argumentos de las «hipótesis del escalado»: que los sistemas de aprendizaje automático seguirán mejorando en rendimiento y generalidad con aumentos de cómputo, datos o parámetros (<a href="https://gwern.net/scaling-hypothesis">Branwen, 2020</a>). Así que lo esencial que debe especificar una política de escalado es un criterio de decisión explícito: cuándo puede proceder el escalado y cuándo hay que pausar porque resulta demasiado arriesgado. Ese criterio se articula normalmente mediante evaluaciones y evaluación de riesgos.</p>
+      <p><strong>¿Qué es el escalado condicionado por evaluaciones?</strong> La forma de determinar si alguien debería poder seguir escalando sus modelos es el escalado condicionado por evaluaciones, lo que significa que el progreso queda controlado por resultados concretos que funcionan como puertas o umbrales (<a href="https://assets.anthropic.com/m/24a47b00f10301cd/original/Anthropic-Responsible-Scaling-Policy-2024-10-15.pdf">Anthropic, 2024</a>). Antes de escalar un modelo, la empresa debe superar ciertos puntos de control que comprueban tanto si el modelo tiene capacidades peligrosas como si hay medidas de seguridad adecuadas. Eso crea puntos de decisión claros en los que los resultados de la evaluación son determinantes.</p>
+      <p><strong>¿Qué es un marco de política de escalado?</strong> Reúne todo lo anterior: determina qué evaluaciones hacen falta, qué medidas de seguridad se exigen, con cuánta severidad hay que probar y qué requisitos de evaluación existen antes del entrenamiento, antes del despliegue y después de él. En esencia, establece reglas y protocolos sistemáticos de monitorización y seguridad, y la disposición a pausar el desarrollo si no puede garantizarse la seguridad (<a href="https://metr.org/blog/2023-09-26-rsp/">METR, 2023</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Los marcos de políticas de escalado se llaman ahora marcos de seguridad y protección</strong> · Opcional · 1 min de lectura</summary>
+        <p>Las diferencias entre los marcos de seguridad y protección de Anthropic, Google DeepMind y OpenAI son sutiles. Lo esencial es recordar que, en la intersección de todos sus compromisos (de escalado, de desarrollo o de despliegue), están las evaluaciones.</p>
+        <p>Si te encuentras con ellos por primera vez, recomendamos leer el marco de Anthropic, que es el más completo. Hay un resumen interactivo de las diferencias entre las distintas políticas en <a href="https://www.seoul-tracker.org/">seoul-tracker.org</a>.</p>
+      </details>
+
+      <h3 id="rsp-anthropic">Marco RSP (Anthropic)</h3>
+      <p><strong>Ejemplo de puertas de evaluación: los niveles de seguridad de la IA (ASL).</strong> Un ejemplo concreto de escalado condicionado por evaluaciones son las políticas de escalado responsable (RSP) de Anthropic, que usan el concepto de niveles de seguridad. Están inspiradas en los niveles de bioseguridad (BSL) usados en la investigación de enfermedades infecciosas, donde patógenos cada vez más peligrosos requieren protocolos de contención cada vez más estrictos (<a href="https://assets.anthropic.com/m/24a47b00f10301cd/original/Anthropic-Responsible-Scaling-Policy-2024-10-15.pdf">Anthropic, 2024</a>). Los niveles de seguridad de la IA crean escalones estandarizados de capacidad que exigen medidas de seguridad progresivamente más estrictas. El marco de Anthropic, por ejemplo, define niveles desde ASL-1 (medidas de seguridad básicas) hasta ASL-3 (seguridad integral y restricciones de despliegue). En principio es similar a cómo los biólogos manejan patógenos cada vez más peligrosos, con requisitos de evaluación y protocolos de seguridad específicos en cada nivel.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c6ab82f92f8f2ee60f5df38503c011ea410b433c226ff045d64dc8c2231cbc10.BdWlHnwn_ZB2vCR.webp" alt="Figura 5.25">
+        <figcaption><strong>Figura 5.25.</strong> Panorama de los niveles ASL de Anthropic. ASL-1 designa sistemas que no plantean un riesgo catastrófico apreciable. ASL-2 designa sistemas que muestran señales tempranas de capacidades peligrosas (por ejemplo, la capacidad de dar instrucciones sobre armas biológicas) pero cuya información todavía no resulta útil, por falta de fiabilidad o porque no aporta nada que no diera un buscador. ASL-3 designa sistemas que aumentan sustancialmente el riesgo de uso indebido catastrófico frente a los puntos de referencia sin IA (buscadores o libros de texto), o que muestran capacidades autónomas de bajo nivel. ASL-4 y superiores aún no están definidos, porque quedan demasiado lejos de los sistemas actuales, pero probablemente implicarán escaladas cualitativas en potencial de uso indebido catastrófico y en autonomía (<a href="https://assets.anthropic.com/m/24a47b00f10301cd/original/Anthropic-Responsible-Scaling-Policy-2024-10-15.pdf">Anthropic, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>¿Qué evaluaciones son necesarias como puertas para seguir escalando?</strong> Las RSP exigen varias categorías de evaluación trabajando juntas, sobre los tipos que vimos antes en este capítulo. Las evaluaciones de capacidad detectan habilidades peligrosas como la replicación autónoma, las capacidades CBRN o las de ciberataque. Las evaluaciones de seguridad informática verifican la protección de los pesos del modelo y de la infraestructura de entrenamiento (no las cubrimos en este capítulo). Las evaluaciones de seguridad comprueban si las medidas de control siguen siendo eficaces (<a href="https://assets.anthropic.com/m/24a47b00f10301cd/original/Anthropic-Responsible-Scaling-Policy-2024-10-15.pdf">Anthropic, 2024</a>). Estas evaluaciones deben funcionar en conjunto: superar una categoría no basta si otras indican problemas. Esto conecta directamente con lo que vimos sobre cómo se complementan las evaluaciones de capacidad, de propensión y de control.</p>
+
+      <h3 id="preparacion-openai">Marco de preparación (OpenAI)</h3>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/6295439ad3c551393eee6685b19d44896ec65f21b82811b7e6db8833fc340676.uEfNTnfq_2aTkQa.webp" alt="Figura 5.26">
+        <figcaption><strong>Figura 5.26.</strong> Ficha de sistema del modelo o1, publicada por OpenAI tras sus evaluaciones de seguridad (<a href="https://openai.com/index/openai-o1-system-card/">OpenAI, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>¿Qué es el marco de preparación?</strong> El de OpenAI se solapa bastante con las RSP de Anthropic. En lugar de usar niveles fijos de capacidad para todo el modelo, como los ASL, publica fichas de modelo con evaluaciones organizadas en torno a categorías de riesgo concretas, como ciberseguridad, persuasión y replicación autónoma. Para cada categoría definen un espectro que va de riesgo bajo a crítico, con requisitos de evaluación y medidas de mitigación específicos en cada nivel (<a href="https://cdn.openai.com/openai-preparedness-framework-beta.pdf">OpenAI, 2023</a>). Igual que en las RSP, las evaluaciones desempeñan un papel central.</p>
+      <p><strong>Las evaluaciones en el marco de preparación.</strong> El marco exige evaluaciones previas y posteriores a la mitigación. Las previas valoran las capacidades brutas del modelo y su potencial de daño; las posteriores verifican si las medidas de seguridad reducen los riesgos a niveles aceptables. Esto se corresponde con lo que vimos sobre evaluaciones de capacidad y de control: necesitamos entender tanto lo que un modelo puede hacer como si podemos prevenir de forma fiable los resultados dañinos (<a href="https://openai.com/index/openai-safety-update/">OpenAI, 2024</a>). El marco fija líneas de base claras: solo pueden desplegarse los modelos con puntuación posterior a la mitigación de «media» o inferior, y solo pueden desplegarse internamente los de «alta» o inferior. Los modelos con riesgo previo a la mitigación «alto» o «crítico» requieren medidas de seguridad específicas para impedir la extracción de los pesos. Así se crean vínculos directos entre los resultados de la evaluación y las acciones exigidas (<a href="https://cdn.openai.com/openai-preparedness-framework-beta.pdf">OpenAI, 2023</a>). Un aspecto singular de este marco es su atención explícita a las «incógnitas desconocidas», es decir, los riesgos potenciales que los protocolos actuales podrían pasar por alto: incluye procesos para buscar activamente riesgos no anticipados y actualizar los protocolos en consecuencia, con la esperanza de abordar una de las limitaciones de las evaluaciones que veremos más adelante.</p>
+
+      <h3 id="fsf-deepmind">Marco de seguridad de frontera (Google DeepMind)</h3>
+      <p><strong>¿Qué es el marco de seguridad de frontera?</strong> El FSF de DeepMind comparte elementos centrales con los otros marcos de gobernanza, pero introduce algunos propios. En lugar de ASL o espectros de riesgo, se articula en torno a «niveles críticos de capacidad» (CCL) que activan requisitos concretos de evaluación y mitigación. El marco incluye tanto mitigaciones de despliegue (entrenamiento de seguridad y monitorización) como de seguridad informática (protección de los pesos) (<a href="https://deepmind.google/discover/blog/introducing-the-frontier-safety-framework/">DeepMind, 2024</a>). Hay CCL separados para bioseguridad, ciberseguridad y capacidades autónomas, cada uno con sus propios requisitos de evaluación, que activan combinaciones distintas de mitigaciones. Eso permite respuestas más específicas para cada riesgo, en lugar de tratar todas las capacidades como si requirieran el mismo nivel de protección (<a href="https://deepmind.google/discover/blog/introducing-the-frontier-safety-framework/">DeepMind, 2024</a>).</p>
+      <p><strong>Los márgenes de escalado sirven para calcular el momento de evaluar.</strong> El FSF exige evaluaciones cada vez que el cómputo efectivo se multiplica por 6 y cada 3 meses de progreso en ajuste fino. Esa cadencia busca ofrecer márgenes de seguridad adecuados: se trata de detectar los CCL antes de que los modelos los alcancen realmente (<a href="https://deepmind.google/discover/blog/introducing-the-frontier-safety-framework/">DeepMind, 2024</a>). Las RSP de Anthropic tienen un requisito parecido, pero con umbrales más bajos: evaluaciones cada vez que el cómputo efectivo se multiplica por 4 (<a href="https://assets.anthropic.com/m/24a47b00f10301cd/original/Anthropic-Responsible-Scaling-Policy-2024-10-15.pdf">Anthropic, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7a45d004510e91e6a206857a2b638abb38ed54af58978aff9cdcbfc5098b62a2.BzoyVrlK_Zykw97.webp" alt="Figura 5.27">
+        <figcaption><strong>Figura 5.27.</strong> El margen de seguridad de DeepMind, según el FSF (<a href="https://deepmind.google/discover/blog/introducing-the-frontier-safety-framework/">DeepMind, 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/33c6e0e23ee3e23afaf8bbf64b73119f5ab7d703ff9e9f00f59dbd085b143af7.2L3k398B_1ofyQK.webp" alt="Figura 5.28">
+        <figcaption><strong>Figura 5.28.</strong> Explicación de Anthropic sobre el margen de seguridad, de una versión anterior de las RSP. Si se activan las evaluaciones de seguridad, el escalado debe pausarse hasta que estén implantadas las medidas del siguiente nivel (<a href="https://www-cdn.anthropic.com/1adf000c8f675958c2ee23805d91aaade1cd4613/responsible-scaling-policy.pdf">Anthropic, 2023</a>).</figcaption>
+      </figure>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Aunque Anthropic lo demostró con claridad, replicar sus resultados ha resultado difícil. Se han hecho intentos de introducir puertas traseras en LLM, pero cuesta que resistan un ajuste fino posterior. Los equipos lograron que las puertas traseras persistieran, pero en su mayoría fueron eliminadas por pasos de ajuste fino adicionales. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 12 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/evaluation-frameworks/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-04-tecnicas-de-evaluacion.html">← Anterior: Técnicas de evaluación</a>
+      </div>
+      <a class="siguiente" href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">
+        <strong>Siguiente: Evaluaciones de capacidades peligrosas →</strong><br>
+        Evaluar el potencial máximo en áreas de alto riesgo, como el cibercrimen, el engaño y la replicación autónoma, es necesario para establecer los límites superiores del daño que un modelo podría causar si se lo lleva al extremo.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
