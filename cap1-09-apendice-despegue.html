@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apéndice: Despegue · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Apéndice sobre el despegue de la IA: continuidad, homogeneidad y polaridad.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li class="activo"><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Apéndice: Despegue</h1>
+      <p><em>La trayectoria de la IA avanzada también depende de si el progreso es suave o discontinuo, de si los sistemas son parecidos o diversos y de si el poder se concentra en un solo actor o se distribuye ampliamente.</em></p>
+      <p class="meta">9 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#continuidad">Continuidad</a></li>
+          <li><a href="#homogeneidad">Homogeneidad</a></li>
+          <li><a href="#polaridad">Polaridad</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <h2 id="continuidad">Continuidad</h2>
+      <p><strong>La continuidad describe si las capacidades de la IA mejoran de forma suave y predecible o mediante saltos repentinos e inesperados.</strong> Es algo distinto de la velocidad: incluso un despegue rápido podría ser continuo si su progreso sigue patrones predecibles, y un despegue lento podría ser discontinuo si incluye avances sorprendentes. Entender la continuidad nos ayuda a predecir si podemos extrapolar a partir de las tendencias actuales, como las leyes de escalado que vimos antes, o si debemos esperar desviaciones repentinas de esos patrones. Así, si la velocidad mide lo rápido que la IA se vuelve superinteligente, la continuidad puede entenderse como una medida de la «sorpresa».</p>
+
+      <p><strong>En un despegue continuo, las capacidades de la IA siguen tendencias suaves y predecibles.</strong> Las mejoras de los modelos de lenguaje son un buen ejemplo: cada nuevo modelo suele ser algo mejor que el anterior en tareas como la programación o las matemáticas, siguiendo patrones que podemos predecir aproximadamente a partir de las leyes de escalado y de las mejoras algorítmicas. Como vimos en la sección de pronósticos, muchos aspectos del progreso de la IA han mostrado este tipo de comportamiento predecible.</p>
+
+      <p><strong>Que el progreso sea continuo no significa que sea lineal ni sencillo.</strong> Puede implicar un crecimiento exponencial o incluso superexponencial; lo importante es que siga patrones que podamos anticipar. Piensa en cómo GPT-4 es mejor que GPT-3, que a su vez era mejor que GPT-2: cada mejora fue importante, pero no del todo sorprendente, dado el aumento de la escala y las mejores técnicas de entrenamiento.</p>
+
+      <p><strong>Un despegue continuo sugiere que las tendencias actuales de las leyes de escalado y del progreso algorítmico podrían extenderse incluso a los sistemas de IA transformadora.</strong> Eso nos daría más aviso sobre las capacidades que se avecinan y más margen para preparar medidas de seguridad adecuadas. Como veremos en el capítulo sobre gobernanza, aunque el progreso sea rápido, esta previsibilidad hace comparativamente más fácil desarrollar y aplicar regulaciones antes de que los sistemas de IA se vuelvan extremadamente potentes o incontrolables. Teniendo en cuenta, claro, que «comparativamente más fácil» no significa «fácil».</p>
+
+      <p><strong>Un despegue discontinuo implica saltos repentinos de capacidad que rompen con los patrones anteriores.</strong> En lugar de mejoras constantes del rendimiento a medida que añadimos cómputo o datos, podríamos ver surgir capacidades totalmente nuevas que las tendencias existentes no predecían. Un ejemplo hipotético sería que un sistema de IA desarrollara de repente una capacidad sólida de razonamiento general después de parecer capaz solo de tareas estrechas: eso representaría una discontinuidad en el patrón de desarrollo de la IA. Las expresiones «despegue rápido» y «despegue discontinuo» suelen usarse como sinónimos, pero las imágenes de abajo, que muestran distintas trayectorias de despegue, pueden ayudar a aclarar las sutiles diferencias entre ambos conceptos.</p>
+
+      <p><strong>Las discontinuidades podrían surgir por varios mecanismos.</strong> Podríamos descubrir enfoques de entrenamiento radicalmente nuevos y mucho más eficientes que los actuales. O podríamos alcanzar puntos de inflexión en las capacidades emergentes, en los que las mejoras cuantitativas de la escala producen cambios cualitativos en las capacidades. Un sistema de IA podría incluso descubrir por sí mismo mejoras de este tipo, lo que provocaría saltos inesperados de capacidad.</p>
+
+      <p><strong>La historia ofrece precedentes tanto de progreso científico continuo como discontinuo.</strong> El desarrollo de las armas nucleares supuso un salto discontinuo en la potencia explosiva, mientras que las mejoras en la potencia de procesamiento de las computadoras han seguido tendencias más continuas. Sin embargo, como vimos en la sección de pronósticos, las discontinuidades tecnológicas han sido históricamente poco frecuentes, algo que algunos investigadores citan como prueba a favor de los escenarios de despegue continuo.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3f30d7db05a8e79f20b53d53af7dbfe5c896561dd1fa4fa4c4e6c27f5d381681.MoeuD0NJ_Z1gHhYL.webp" alt="Figura 1.62">
+        <figcaption><strong>Figura 1.62.</strong> Un ejemplo de despegue lento y discontinuo: aunque el progreso no deja de aumentar, podríamos ver «saltos» repentinos (<a href="https://www.alignmentforum.org/posts/pGXR2ynhe5bBCCNqn/takeoff-speeds-and-discontinuities">Martin y Eth, 2021</a>).</figcaption>
+      </figure>
+
+      <h2 id="homogeneidad">Homogeneidad</h2>
+      <p><strong>La homogeneidad describe cuánto se parecen o se diferencian entre sí los sistemas de IA durante el periodo de despegue.</strong> ¿Veremos muchos sistemas de IA diversos, con arquitecturas y capacidades distintas, o la mayoría de los sistemas avanzados serán variaciones del mismo diseño básico? No se trata solo de la diversidad técnica, sino de si los sistemas de IA avanzados compartirán comportamientos, limitaciones y propiedades de seguridad similares (<a href="https://www.alignmentforum.org/posts/mKBfa8v4S9pNKSyKK/homogeneity-vs-heterogeneity-in-ai-takeoff-scenarios">Hubinger, 2020</a>).</p>
+
+      <p><strong>En un despegue homogéneo, la mayoría de los sistemas de IA avanzados serían fundamentalmente parecidos.</strong> Hoy ya vemos indicios de este patrón: muchos modelos de lenguaje actuales se basan en la arquitectura <em>transformer</em> y se entrenan con datos similares, lo que da lugar a capacidades y limitaciones parecidas. En un despegue homogéneo, este patrón continuaría. Quizá la mayoría de los sistemas de IA serían versiones ajustadas de unos pocos modelos base, o distintas implementaciones del mismo avance central en el diseño de IA.</p>
+
+      <p><strong>Un factor que podría impulsar la homogeneidad es la enorme escala necesaria para entrenar sistemas de IA avanzados.</strong> Si entrenar una IA transformadora requiere recursos de cómputo masivos, como sugieren las leyes de escalado, quizá solo unas pocas organizaciones podrían entrenar modelos base desde cero. Las demás construirían sobre esos modelos en lugar de desarrollar arquitecturas totalmente nuevas, lo que daría lugar a sistemas más homogéneos.</p>
+
+      <p><strong>Un despegue homogéneo podría ser más seguro en algunos aspectos, pero más arriesgado en otros.</strong> Si resolvemos la alineación de un sistema de IA, esa solución podría servir para otros sistemas similares. Pero si hay un fallo fundamental en la arquitectura o en el enfoque de entrenamiento comunes, podría afectar a todos los sistemas a la vez. Es como un monocultivo en la agricultura: es más fácil de gestionar, pero también más vulnerable a las debilidades compartidas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b2af26221f6c05833114d658fe1e13891c672cd4ef41c08e01056fbfac5af9df.qGcKJg5p_Z2jSdQ7.webp" alt="Figura 1.63">
+        <figcaption><strong>Figura 1.63.</strong> Ilustración de un despegue homogéneo. Se ven varias arquitecturas generales de modelos distintas; la figura muestra tres, en colores diferentes. Dentro de cada arquitectura, el despegue es aproximadamente el mismo, por la similitud en el diseño, la regulación y las medidas de seguridad. NOTA: las curvas de cada arquitectura son puramente ilustrativas y no pretenden indicar trayectorias de crecimiento previstas ni comparaciones entre arquitecturas.</figcaption>
+      </figure>
+
+      <p><strong>Un despegue heterogéneo es aquel en el que hay una diversidad de arquitecturas importante entre los sistemas de IA avanzados.</strong> Distintas organizaciones podrían desarrollar enfoques de IA fundamentalmente diferentes, lo que daría lugar a sistemas con fortalezas, debilidades y comportamientos distintos. Algunos podrían estar especializados en dominios concretos y otros ser más generales; algunos podrían ser más transparentes y otros más opacos; algunos podrían estar más alineados con los valores humanos y otros no. La competencia entre proyectos de IA podría acentuar esta diversidad, ya que los equipos compiten por lograr avances sin necesariamente coordinar sus metodologías ni compartir información crucial. Por ejemplo, podría llegar un futuro en el que la IA se convierta en un activo estratégico nacional y su desarrollo se proteja con celo. En ese entorno, la búsqueda de capacidades de IA quedaría compartimentada, y cada empresa o país emplearía metodologías de desarrollo distintas, lo que podría dar lugar a una gran variedad de comportamientos, funcionalidades y niveles de seguridad.</p>
+
+      <p><strong>Un despegue heterogéneo plantea otros desafíos de seguridad.</strong> Tendríamos que desarrollar medidas de seguridad que funcionen en sistemas muy diversos, y no siempre podríamos aplicar a unos sistemas lo aprendido con otros. Sin embargo, la diversidad podría ofrecer cierta protección frente a los riesgos sistémicos: si un enfoque resulta peligroso, seguirían existiendo alternativas.</p>
+
+      <p><strong>El grado de homogeneidad durante el despegue tiene implicaciones importantes para el desarrollo de la IA transformadora.</strong> En un escenario homogéneo, el progreso podría ser más predecible, pero también más propenso a dinámicas en las que el ganador se lo lleva todo. Un escenario heterogéneo podría ser más resistente a los puntos únicos de fallo, pero más difícil de vigilar y controlar.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4ae8127baf5db2d537a8befec2870bf4fa43d9badb2716492e2848da72a0de7a.DK1GZYzr_Z2jE5bo.webp" alt="Figura 1.64">
+        <figcaption><strong>Figura 1.64.</strong> Un ejemplo de despegue heterogéneo. Se ven varias arquitecturas generales de modelos distintas; la figura muestra tres, en colores diferentes. Dentro de cada arquitectura, el despegue es distinto, por las diferencias en el diseño, la regulación y las medidas de seguridad. NOTA: las curvas de cada arquitectura son puramente ilustrativas y no pretenden indicar trayectorias de crecimiento previstas ni comparaciones entre arquitecturas.</figcaption>
+      </figure>
+
+      <h2 id="polaridad">Polaridad</h2>
+      <p><strong>La polaridad describe si el poder y las capacidades se concentran en un único sistema u organización de IA, o si siguen repartidos entre varios actores.</strong> Dicho de otro modo: ¿un sistema o grupo de IA se adelantará de forma drástica a todos los demás, o varios sistemas avanzarán en paralelo con capacidades comparables?</p>
+
+      <p><strong>En un despegue unipolar, un sistema u organización de IA obtiene una ventaja decisiva sobre todos los demás.</strong> Podría ocurrir gracias a un único avance, a ventajas de escala excepcionales o a la automejora recursiva. Por ejemplo, si un sistema de IA llega a ser lo bastante capaz como para acelerar de forma considerable su propio desarrollo, podría dejar atrás rápidamente a todos los demás. Las matemáticas del cómputo de entrenamiento ofrecen un camino hacia un resultado unipolar: si duplicar el cómputo produce mejoras de capacidad fiables, una organización que se adelante lo suficiente en la adquisición de cómputo podría mantener o ampliar su ventaja. Sus sistemas mejorados podrían ayudarla a desarrollar métodos de entrenamiento y hardware aún mejores y a atraer inversión, creando un ciclo de retroalimentación positiva que los demás no podrían igualar. Pero el cómputo no es el único camino hacia la unipolaridad. Una sola organización podría descubrir un enfoque de entrenamiento fundamentalmente mejor, o desarrollar un sistema de IA más hábil para mejorarse a sí mismo que para ayudar a los humanos a construir alternativas. Una vez que un actor se adelanta lo suficiente, podría resultar prácticamente imposible que los demás lo alcancen.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7c95ee50a329383fea2b3f2672634e71301f3fa440c6973c37cfa5c184979b0b.BOrLtK2p_spAhi.webp" alt="Figura 1.65">
+        <figcaption><strong>Figura 1.65.</strong> Ilustración de un despegue unipolar. Un modelo (aquí, el azul oscuro) supera con claridad a todos los demás.</figcaption>
+      </figure>
+
+      <p><strong>En un despegue multipolar, varios sistemas u organizaciones de IA desarrollan capacidades avanzadas en paralelo.</strong> Podría tratarse de varios grandes laboratorios que desarrollan sistemas de IA distintos, pero de potencia comparable, o de muchos actores con acceso a capacidades de IA similares a través de modelos de código abierto o de servicios de IA. El panorama actual de la IA muestra elementos de multipolaridad: varias organizaciones pueden entrenar grandes modelos de lenguaje, y las técnicas que desarrolla un laboratorio suelen adoptarlas rápidamente los demás. Un despegue multipolar podría prolongar este patrón, con varios grupos que mantienen capacidades similares incluso cuando esas capacidades se vuelven transformadoras. Un escenario unipolar plantea preocupaciones por la concentración del poder, mientras que un mundo multipolar plantea desafíos de coordinación entre entidades o sistemas de IA diversos. Tanto en un mundo unipolar como en uno multipolar, los humanos podrían hacer un uso indebido de las capacidades avanzadas de la IA.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/915e3b17c43b29960b854422f5b0258ce491d17fbc45bce76b5eaec7c1e3781c.BIK3XKPQ_141vmN.webp" alt="Figura 1.66">
+        <figcaption><strong>Figura 1.66.</strong> Ilustración de un despegue multipolar. Ningún modelo supera con claridad a todos los demás, y todos despegan a un ritmo más o menos competitivo entre sí.</figcaption>
+      </figure>
+
+      <p><strong>En un escenario unipolar, las acciones y la alineación de un solo sistema u organización se vuelven cruciales</strong>, ya que podría adquirir la capacidad de dar forma al futuro a largo plazo de manera unilateral. Esto concentra el riesgo en un único punto de fallo, pero también podría facilitar la coordinación, porque hace falta el acuerdo de menos actores. Un escenario multipolar plantea desafíos distintos: varios sistemas avanzados podrían actuar de formas contradictorias o competir por los recursos, lo que podría generar presión para desplegar sistemas con rapidez o para descuidar la seguridad. Además, hay una interacción importante entre la polaridad y los demás aspectos del despegue que hemos visto. Un despegue rápido podría tender más a ser unipolar, porque el primer sistema que progrese rápidamente podría dejar atrás enseguida a todos los demás. Un despegue lento podría tender a la multipolaridad, porque daría a más actores tiempo para alcanzar cualquier ventaja inicial.</p>
+
+      <p><strong>Factores que influyen en la polaridad.</strong> Varios elementos clave influyen en que la polaridad del despegue se incline hacia un resultado unipolar o multipolar:</p>
+      <ul>
+        <li><strong>Velocidad del desarrollo de la IA:</strong> un despegue rápido podría favorecer un resultado unipolar, al dar una ventaja importante al desarrollador más rápido. En cambio, un despegue más lento podría llevar a un mundo multipolar en el que muchas entidades alcanzan capacidades avanzadas más o menos al mismo tiempo.</li>
+        <li><strong>Colaboración frente a competencia:</strong> el grado de colaboración y apertura en la comunidad de investigación en IA puede influir mucho en la polaridad del despegue. Mucha colaboración e intercambio de información podrían favorecer un resultado multipolar, mientras que los entornos opacos o muy competitivos podrían empujar hacia la unipolaridad.</li>
+        <li><strong>Dinámicas regulatorias y económicas:</strong> los marcos regulatorios y los incentivos económicos también desempeñan un papel crucial. Las políticas que fomentan la diversidad en el desarrollo de la IA y evitan que se acumule demasiado poder en manos de una sola entidad podrían favorecer un despegue multipolar.</li>
+      </ul>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 2 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/appendix-takeoff/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-08-apendice-pronosticos.html">← Anterior: Apéndice: Pronósticos</a>
+      </div>
+      <a class="siguiente" href="cap1-10-apendice-encuestas-a-expertos.html">
+        <strong>Siguiente: Apéndice: Encuestas a expertos →</strong><br>
+        Destacados investigadores y tecnólogos de la IA expresan una gran preocupación por los riesgos existenciales y por los plazos cortos, lo que refleja un consenso creciente sobre la urgencia del trabajo de seguridad pese a la incertidumbre sobre los resultados concretos.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

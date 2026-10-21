@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estrategias sociotécnicas · Capítulo 3 – AI Safety Atlas</title>
+  <meta name="description" content="Estrategias sociotécnicas: defensa en profundidad, aceleración defensiva, gobernanza, gestión de riesgos y cultura de seguridad.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>3. Estrategias</h2>
+        <ol>
+          <li><a href="cap3-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap3-02-definiciones.html">Definiciones</a></li>
+          <li><a href="cap3-03-prevencion-del-uso-indebido.html">Estrategias para prevenir el uso indebido</a></li>
+          <li><a href="cap3-04-estrategias-de-seguridad-agi.html">Estrategias de seguridad para la AGI</a></li>
+          <li><a href="cap3-05-estrategias-de-seguridad-asi.html">Estrategias de seguridad para la ASI</a></li>
+          <li class="activo"><a href="cap3-06-estrategias-sociotecnicas.html">Estrategias sociotécnicas</a></li>
+          <li><a href="cap3-07-combinar-estrategias.html">Combinar estrategias</a></li>
+          <li><a href="cap3-08-desafios.html">Desafíos</a></li>
+          <li><a href="cap3-09-conclusion.html">Conclusión</a></li>
+          <li><a href="cap3-10-apendice-preguntas-a-largo-plazo.html">Apéndice: Preguntas a largo plazo</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 3: Estrategias</p>
+      <h1>Estrategias sociotécnicas</h1>
+      <p class="meta">23 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter3-audio-efb9a7b3a7cef0cf76b55053edcfb4d18f7c4660d37aab52767e9d26cb190006.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter3-f49559dbf089713fa790d33d9b5a852d9b9e4a858ba5d09d98acb5b06f28d95d.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/strategies.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://www.youtube.com/watch?v=iO7Jl4xders">Ver la clase en YouTube (en inglés, desactualizada)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#defensa-en-profundidad">Defensa en profundidad</a></li>
+          <li><a href="#aceleracion-defensiva">Aceleración defensiva (d/acc)</a></li>
+          <li><a href="#gobernanza-de-la-ia">Gobernanza de la IA</a></li>
+          <li><a href="#gestion-de-riesgos">Gestión de riesgos</a></li>
+          <li><a href="#cultura-de-seguridad">Cultura de seguridad</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: la cita destacada de esta sección es una declaración de un tercero y no forma parte del texto con licencia CC BY-SA del libro, así que la resumimos con nuestras palabras. El texto completo, en inglés, está en la <a href="https://ai-safety-atlas.com/chapters/v1/strategies/socio-technical-strategies/">sección original</a>.</em></p>
+
+      <p>La seguridad de la IA es, en el fondo, un problema sociotécnico que exige soluciones sociotécnicas. Las medidas técnicas pueden quedar socavadas por una gobernanza inadecuada, por malas prácticas de seguridad dentro de los laboratorios o por culturas que priorizan la velocidad sobre la cautela. Garantizar la seguridad requiere enfoques sistémicos robustos: estructuras de gobernanza, prácticas organizativas y normas culturales que moldeen cómo se desarrolla y se despliega la IA. Abordar estos riesgos sistémicos es difícil precisamente porque la responsabilidad está repartida: ningún actor controla todas las variables y las soluciones exigen coordinación entre empresas, gobiernos, investigadores y sociedad civil.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8e736c7c6c245e6e2c7d262c1ea45629b60c86010dbe191d0b636e6e94fcd968.COyzSx0y_11SiqI.webp" alt="Figura 3.20">
+        <figcaption><strong>Figura 3.20.</strong> Ilustración de un marco que, a nuestro juicio, gestiona bien los riesgos de forma robusta. Los riesgos de la IA son demasiado numerosos y heterogéneos; para abordarlos hace falta un marco adaptativo capaz de evolucionar a medida que la IA avanza.</figcaption>
+      </figure>
+
+      <h2 id="defensa-en-profundidad">Defensa en profundidad</h2>
+      <p><strong>La defensa en profundidad consiste en superponer varias protecciones independientes, de modo que si una falla, las otras sirvan de respaldo.</strong> Es una de las metafilosofías que sustentan una seguridad eficaz: múltiples capas independientes trabajando juntas. Piénsalo como el diseño de un castillo medieval, con murallas, fosos, torres y patios interiores que creaban barreras redundantes, donde atravesar una capa no significaba comprometerlo todo. La ciberseguridad moderna aplica la misma lógica: cortafuegos, cifrado, controles de acceso y sistemas de monitorización operan a la vez, cada uno frente a vectores de ataque distintos. Ninguna medida es perfecta, pero varias defensas imperfectas combinadas pueden dar una protección robusta. Se conoce también como el modelo del queso suizo (<a href="https://arxiv.org/abs/2306.12001">Hendrycks et al., 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bd58e54729b3008d581106010a9707213001d23a294b25f9613a5e2805340707.Dql3v48L_Z10C1Rj.webp" alt="Figura 3.21">
+        <figcaption><strong>Figura 3.21.</strong> Analogía histórica de la defensa en profundidad: los castillos fueron acumulando capas de seguridad para garantizar que el núcleo nunca quedara comprometido (<a href="https://www.britannica.com/technology/military-technology/The-castle">Encyclopædia Britannica, 2025</a>). Esta filosofía por capas ya se aplica en ciberseguridad y puede extenderse a la seguridad de la IA.</figcaption>
+      </figure>
+      <p><strong>La defensa en profundidad se apoya en la explosión combinatoria cuando las capas son realmente independientes.</strong> Si cada capa tiene una tasa de fallo del 1 % y un atacante debe atravesar las cinco a la vez, la probabilidad global de fallo se vuelve minúscula. Funciona como la seguridad de un PIN: uno de tres dígitos es trivialmente débil, pero uno de doce resulta muy seguro, porque la dificultad combinatoria crece de forma exponencial. Un requisito esencial es la independencia entre capas: si romper una rompe automáticamente las demás, o si los atacantes reciben información sobre cuál falló, pueden ir forzándolas secuencialmente en tiempo lineal en lugar de enfrentarse a una dificultad exponencial (<a href="https://www.youtube.com/watch?v=BfXi3_QSWek">Gleave, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4dca9845b79176d8198e824cf1808a01c44aa0c52cc4ec0a253407e8fb37b3d3.D42vgsEd_r6lz.webp" alt="Figura 3.22">
+        <figcaption><strong>Figura 3.22.</strong> El modelo del queso suizo muestra cómo los factores técnicos pueden mejorar la seguridad organizativa. Varias capas de defensa compensan las debilidades de cada una y dan lugar a un nivel de riesgo global bajo (<a href="https://arxiv.org/abs/2306.12001">Hendrycks et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Este enfoque encuentra límites cuando las capas no son realmente independientes o cuando los adversarios son lo bastante capaces.</strong> Si las implementaciones de seguridad están muy correlacionadas, por ejemplo si la mayoría de las defensas usan el mismo modelo subyacente con instrucciones o ajustes distintos, los ataques adversariales podrían transferirse entre capas. Si los sistemas filtran información sobre qué capa se activó, los atacantes pueden ir sondeando secuencialmente. Una limitación más de fondo aparece cuando los sistemas desarrollan capacidades realmente nuevas y fuera de distribución: varias medidas de seguridad podrían fallar a la vez porque comparten puntos ciegos en los datos de entrenamiento y en los supuestos. Un adversario lo bastante inteligente, sea una IA desalineada o un humano decidido, podría descubrir un único ataque que rompa defensas aparentemente independientes por la misma razón de fondo. Frente a sistemas superinteligentes, o en despliegues sin restricciones donde los agentes puedan sondear ampliamente las defensas, la defensa en profundidad ofrece garantías más débiles.</p>
+      <p><strong>Pueden imaginarse muchas soluciones distintas para reducir riesgos, aunque ninguna sea perfecta.</strong> Los enfoques técnicos pueden superponer investigación en alineación con mecanismos de control y herramientas de interpretabilidad. Frente al uso indebido, podemos combinar controles de acceso, monitorización y tecnologías defensivas. La cooperación internacional añade otra capa más allá de lo que cualquier nación puede lograr sola. Y dentro de los enfoques sistémicos, la gobernanza puede establecer reglas estructurales y rendición de cuentas, la gestión de riesgos traduce esas reglas en decisiones cotidianas sobre umbrales de capacidad y mitigaciones exigidas, y la cultura de seguridad asegura que la gente siga los procedimientos y saque a la luz preocupaciones que los sistemas formales no captan.</p>
+
+      <h2 id="aceleracion-defensiva">Aceleración defensiva (d/acc)</h2>
+      <blockquote>
+        <p>Defiende actuar con principios en un momento en que buena parte del mundo se vuelve tribal, y no construir cualquier cosa, sino cosas concretas que hagan el mundo más seguro y mejor.</p>
+        <p>— <strong>Vitalik Buterin</strong>, cofundador de Ethereum · <a href="https://vitalik.eth.limo/general/2025/01/05/dacc2.html">Buterin, 2025</a></p>
+      </blockquote>
+      <p><strong>La aceleración defensiva (d/acc) es una filosofía estratégica que prioriza las tecnologías que refuerzan la defensa y la resiliencia social frente a los riesgos de la IA.</strong> Mientras la defensa en profundidad muestra cómo y por qué podemos superponer capas defensivas, la aceleración defensiva es una filosofía paralela que podemos usar junto a ella: propone acelerar activamente las tecnologías que favorecen por naturaleza la defensa sobre el ataque, para hacer la sociedad más resiliente. Surgió en 2023 como camino intermedio entre la aceleración sin restricciones (el aceleracionismo efectivo o e/acc) y el tecnopesimismo (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>; <a href="https://vitalik.eth.limo/general/2025/01/05/dacc2.html">Buterin, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/16807db711557850e01d7a14e751ae7c0edc8c37f344dfdda573c83e62e4c2d7.DGtOO4Gq_ZCL37z.webp" alt="Figura 3.23">
+        <figcaption><strong>Figura 3.23.</strong> La aceleración defensiva es análoga al desarrollo diferencial de la IA (DAID). La d/acc se centra solo en acelerar tecnologías defensivas, mientras que el DAID tiene un alcance más amplio que incluye también la desaceleración de aplicaciones y paradigmas arriesgados.</figcaption>
+      </figure>
+      <p>La d/acc puede entenderse preguntándose: si una IA tomara el control del mundo (o desempoderara a los humanos), ¿cómo lo haría?</p>
+      <ul>
+        <li><strong>Vulnera nuestras computadoras</strong> → acelerar la ciberdefensa: emplear IA para identificar y corregir vulnerabilidades, vigilar intrusiones y automatizar respuestas de seguridad.</li>
+        <li><strong>Crea una superplaga</strong> → acelerar la biodefensa: desarrollar tecnologías para detectar, prevenir y tratar amenazas biológicas, incluidos sistemas avanzados de filtración de aire, diagnósticos rápidos, irradiación far-UVC para esterilizar espacios ocupados con seguridad y capacidad descentralizada de producción de vacunas.</li>
+        <li><strong>Nos convence (de confiar en ella o de desconfiar entre nosotros)</strong> → acelerar la defensa informativa: crear sistemas que ayuden a validar la exactitud de la información y detectar contenido engañoso sin árbitros centralizados de la verdad, como el rastreo de procedencia asegurado con cadenas de bloques o los sistemas de verificación comunitaria.</li>
+        <li><strong>Altera las infraestructuras</strong> → acelerar la defensa física: crear infraestructuras resilientes capaces de soportar interrupciones, como la generación distribuida de energía mediante solar doméstica, los sistemas de almacenamiento en baterías y técnicas de fabricación avanzada que permitan producir localmente bienes esenciales.</li>
+      </ul>
+      <p>La d/acc reúne tres principios interconectados. La «d» corresponde a:</p>
+      <ul>
+        <li><strong>Defensivo:</strong> priorizar tecnologías que hagan más fácil protegerse de las amenazas que crearlas. Los enfoques puramente restrictivos tienen límites inherentes: exigen coordinación global, crean cuellos de botella a la innovación y arriesgan concentrar el poder en quienes controlan el acceso.</li>
+        <li><strong>Diferencial:</strong> acelerar las tecnologías beneficiosas siendo más cautos con las de potencial dañino. El orden en que se desarrolla la tecnología importa mucho: adelantar las tecnologías defensivas (como medidas avanzadas de ciberseguridad) a las capacidades potencialmente peligrosas (como los sistemas autónomos de intrusión) crea capas protectoras antes de que hagan falta con urgencia.</li>
+        <li><strong>Descentralizado:</strong> reforzar la resiliencia eliminando puntos únicos de fallo. El control centralizado de capacidades potentes crea vulnerabilidades ante fallos técnicos, ataques adversariales y captura institucional (<a href="https://arxiv.org/abs/2001.03573">Cihon et al., 2020</a>). Los enfoques descentralizados reparten capacidades y gobernanza entre actores diversos, lo que impide el control unilateral de tecnologías transformadoras.</li>
+      </ul>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/00e0797ad5f485681e1d56be377b7c6d144be2690dd4040b292010172db203ca.Dzf6E3zD_ZKnrUK.webp" alt="Figura 3.24">
+        <figcaption><strong>Figura 3.24.</strong> Mecanismos por los que el desarrollo tecnológico diferencial puede reducir los impactos sociales negativos (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La eficacia de la d/acc depende de mantener un equilibrio favorable entre ataque y defensa.</strong> Su viabilidad como estrategia pende de si las tecnologías defensivas pueden adelantarse a las ofensivas en cada dominio. Los precedentes históricos son dispares: campos como la ciberseguridad tradicional suelen favorecer a quien defiende, que puede parchear vulnerabilidades, mientras que otros como la bioseguridad favorecen tradicionalmente al atacante, que necesita menos recursos para crear amenazas que el defensor para contrarrestarlas. El reto clave está en identificar y apoyar tecnologías que inclinen esos equilibrios hacia la defensa (<a href="https://airesilience.substack.com/p/a-policy-agenda-for-defensive-acceleration">Bernardi, 2024</a>; <a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Un ejemplo concreto: IA para la ciberdefensa</strong> · Opcional · 1 min de lectura</summary>
+        <p>Una aplicación clave es usar la IA para mejorar la ciberseguridad. Una IA potente podría automatizar la detección de vulnerabilidades, vigilar intrusiones, gestionar permisos de grano fino con más eficacia que los humanos o sustituir a operadores humanos en tareas críticas de seguridad (<a href="https://www.alignmentforum.org/posts/2wxufQWK8rXcDGbyL/access-to-powerful-ai-might-make-computer-security-radically">Shlegeris, 2024</a>). Aunque los modelos actuales quizá no sean aún lo bastante fiables, existe el potencial de reforzar mucho las defensas frente a ataques convencionales y a los impulsados por IA (<a href="https://abnormalsecurity.com/blog/offensive-ai-defensive-ai">Hill, 2024</a>; <a href="https://www.alignmentforum.org/posts/2wxufQWK8rXcDGbyL/access-to-powerful-ai-might-make-computer-security-radically">Shlegeris, 2024</a>). Se perfilan cuatro estrategias prometedoras:</p>
+        <ul>
+          <li>Monitorización exhaustiva de las acciones humanas, con la IA señalando actividades sospechosas.</li>
+          <li>Desplazamiento de la confianza, donde la IA se ocupa de tareas sensibles en lugar de las personas.</li>
+          <li>Gestión de permisos de grano fino, demasiado laboriosa para hacerla a mano.</li>
+          <li>Investigación de actividades sospechosas asistida por IA.</li>
+        </ul>
+        <p>Estos enfoques podrían reducir mucho las amenazas internas y los riesgos de extracción de datos, y volver la seguridad informática bastante más sencilla cuando haya IA potente disponible, aunque persista una incertidumbre considerable sobre la robustez de estas técnicas.</p>
+      </details>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Estrategias accionables alineadas con la filosofía d/acc</strong> · Opcional · 2 min de lectura</summary>
+        <p>La d/acc complementa, en lugar de sustituir, otros enfoques de seguridad. A diferencia de marcos rivales que ven las restricciones y salvaguardas como obstáculos al progreso, la d/acc reconoce su valor y aborda sus límites. Las salvaguardas del modelo siguen siendo la primera línea de defensa, pero la d/acc construye capas adicionales para cuando fallen o se eludan. De forma parecida, los marcos de gobernanza aportan la supervisión necesaria, pero la d/acc reduce la dependencia de una regulación perfecta construyendo resiliencia técnica que funciona incluso en los huecos de la gobernanza.</p>
+        <p><strong>Enfoques de gobernanza y política.</strong> Algunas intervenciones que apoyan esta filosofía:</p>
+        <ul>
+          <li><strong>Marcos de intercambio de información:</strong> establecer protocolos obligatorios de notificación de incidentes y de intercambio entre desarrolladores y agencias de seguridad (<a href="https://airesilience.substack.com/p/a-policy-agenda-for-defensive-acceleration">Bernardi, 2024</a>).</li>
+          <li><strong>Acceso prioritario para quien defiende:</strong> políticas que den a los investigadores de seguridad acceso anticipado privilegiado a capacidades avanzadas antes de su publicación general (<a href="https://airesilience.substack.com/p/a-policy-agenda-for-defensive-acceleration">Bernardi, 2024</a>).</li>
+          <li><strong>Fondos de aceleración defensiva:</strong> mecanismos de financiación dedicados a tecnologías defensivas, para corregir fallos de mercado donde tecnologías de bien público carecen de inversión privada suficiente pese a su valor social (<a href="https://airesilience.substack.com/p/a-policy-agenda-for-defensive-acceleration">Bernardi, 2024</a>; <a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</li>
+          <li><strong>Despliegue escalonado de capacidades:</strong> exigir lanzamientos por fases con periodos de monitorización entre etapas (<a href="https://airesilience.substack.com/p/a-policy-agenda-for-defensive-acceleration">Bernardi, 2024</a>).</li>
+        </ul>
+        <p><strong>Enfoques tecnológicos y de investigación.</strong> Un par de ejemplos:</p>
+        <ul>
+          <li><strong>Sistemas avanzados de calidad del aire:</strong> desarrollar sistemas integrados que detecten, filtren y neutralicen patógenos en suspensión en tiempo real. Ofrecen protección pasiva frente a pandemias naturales y a armas biológicas diseñadas, sin exigir cambios de conducta ni un cumplimiento perfecto (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</li>
+          <li><strong>Computación que preserva la privacidad:</strong> técnicas criptográficas avanzadas como las pruebas de conocimiento cero, el cifrado homomórfico y la computación multiparte segura, que permiten verificar y colaborar sin exponer información sensible (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</li>
+          <li><strong>Infraestructura resiliente:</strong> sistemas descentralizados y autosuficientes de energía, comunicación y cadenas de suministro capaces de operar durante interrupciones, como redes malladas, fabricación localizada y generación distribuida (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>; <a href="https://vitalik.eth.limo/general/2025/01/05/dacc2.html">Buterin, 2025</a>).</li>
+          <li><strong>Sistemas colaborativos de verificación:</strong> plataformas de validación que identifiquen desinformación mediante el consenso entre puntos de vista diversos, lo que permite a las comunidades autorregular la calidad de la información sin árbitros centralizados (<a href="https://vitalik.eth.limo/general/2023/11/27/techno_optimism.html">Buterin, 2023</a>).</li>
+        </ul>
+      </details>
+
+      <h2 id="gobernanza-de-la-ia">Gobernanza de la IA</h2>
+      <p>La carrera por una IA cada vez más potente, muy parecida a la carrera armamentística nuclear de la Guerra Fría, representa un compromiso entre la seguridad y la ventaja competitiva que naciones y corporaciones buscan. Esta dinámica aumenta el riesgo global. Para mitigarla podemos intentar actuar en su origen: rediseñar los incentivos económicos para priorizar la seguridad a largo plazo sobre las ganancias a corto. Eso puede hacerse, sobre todo, mediante gobernanza internacional.</p>
+      <p>Una gobernanza eficaz persigue dos objetivos principales:</p>
+      <ul>
+        <li><strong>Ganar tiempo.</strong> Asegurar que se destinen tiempo y recursos suficientes a identificar e implantar medidas de seguridad.</li>
+        <li><strong>Hacer cumplir las soluciones.</strong> Mejorar la coordinación para aumentar la probabilidad de que esas medidas se adopten ampliamente mediante cooperación global. Los riesgos son multifacéticos y requieren regulaciones que fomenten la cautela entre las partes y respuestas ágiles ante amenazas emergentes.</li>
+      </ul>
+      <p><strong>Diseñar mejores incentivos.</strong> Alinear los incentivos económicos con los objetivos de seguridad es un desafío clave. Hoy, fuertes presiones comerciales incentivan el desarrollo rápido de capacidades, quizá a costa de la investigación en seguridad o de un despliegue prudente. Hacen falta mecanismos que premien la seguridad o penalicen la imprudencia para evitar externalidades negativas:</p>
+      <ul>
+        <li><strong>Reconfigurar la carrera mediante un desarrollo centralizado.</strong> Yoshua Bengio y otros proponen crear una instalación segura al estilo del CERN, donde el desarrollo de tecnologías potencialmente peligrosas pueda controlarse estrechamente (<a href="https://yoshuabengio.org/2023/06/24/faq-on-catastrophic-ai-risks/">Bengio, 2023</a>). Dista de ser una visión consensuada. Ya exploramos esta solución en el apartado de coordinación mundial.</li>
+        <li><strong>Cláusulas de beneficios extraordinarios y reparto de ganancias.</strong> Acuerdos para repartir entre los laboratorios los beneficios generados por la AGI mitigarían la carrera por la supremacía al garantizar un beneficio colectivo de los éxitos individuales.<sup><a href="#nota-1" id="ref-1">1</a></sup></li>
+        <li><strong>Implantar una gobernanza adecuada en las empresas de AGI.</strong> Conviene examinar sus estructuras de gobierno. Ser una entidad sin ánimo de lucro y tener una misión que deje claro que el fin no es maximizar ingresos, sino que la IA beneficie a toda la humanidad, es un primer paso importante. Además, el consejo necesita capacidad real de decisión.</li>
+        <li><strong>Responsabilidad legal de los desarrolladores.</strong> Establecer responsabilidades jurídicas claras ante el uso indebido o los accidentes podría realinear los incentivos. La ley californiana SB 1047, por ejemplo, habría permitido al fiscal general demandar civilmente a desarrolladores que causaran daños catastróficos o amenazaran la seguridad pública por incumplir los requisitos. El proyecto, vetado por el gobernador en 2024, solo abordaba riesgos extremos: ciberataques con más de 500 millones de dólares en daños, delitos autónomos con daños similares y la creación de armas químicas, biológicas, radiológicas o nucleares mediante IA. A diferencia del Reglamento Europeo de IA y su código de buenas prácticas, la SB 1047 no detallaba los pasos necesarios para evitar catástrofes: apuntaba al resultado y no tanto al proceso.</li>
+      </ul>
+      <p><strong>Mecanismos propuestos de gobernanza internacional.</strong> Se han planteado varios para fijar límites y reglas claras al desarrollo de la IA, como moratorias temporales para sistemas de alto riesgo, regulaciones legales como el Reglamento Europeo de IA y «líneas rojas» acordadas internacionalmente que prohíban capacidades peligrosas concretas, como la replicación autónoma o la ayuda en la creación de armas de destrucción masiva. Los diálogos IDAIS han buscado consenso sobre esas líneas, subrayando la claridad y la universalidad como rasgos clave de su eficacia, y previendo que su violación active respuestas internacionales pactadas de antemano.</p>
+      <p>Los enfoques condicionales y la creación de organismos internacionales dedicados son otra estrategia clave. Los «compromisos condicionales» implican que desarrolladores o Estados acuerden aplicar medidas concretas si las capacidades alcanzan ciertos umbrales, lo que permite prepararse sin frenar el desarrollo prematuramente, como ejemplifica el propuesto Tratado Condicional de Seguridad de la IA. También hay propuestas de nuevas instituciones internacionales, quizá al estilo del Organismo Internacional de Energía Atómica, para vigilar el desarrollo, verificar el cumplimiento, promover la investigación en seguridad y, llegado el caso, centralizar o controlar el desarrollo de mayor riesgo.</p>
+      <p>Se consideran además regímenes específicos y estructuras de apoyo para mejorar la coordinación internacional. Dada la naturaleza global de la IA, mecanismos como la gobernanza internacional del cómputo buscan vigilar y controlar las cadenas de suministro de chips y la infraestructura de entrenamiento a gran escala, aunque la viabilidad técnica y la cooperación siguen siendo desafíos. Otras propuestas incluyen un gran organismo internacional de investigación en seguridad al estilo del CERN y reforzar la protección de denunciantes mediante acuerdos internacionales.</p>
+      <p>Para más información sobre estos temas, consulta el capítulo siguiente, dedicado a la gobernanza de la IA.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>¿Es la gobernanza de la IA útil, deseable y posible?</strong> · Opcional · 4 min de lectura</summary>
+        <p>Históricamente, el campo de la seguridad de la IA se centró sobre todo en la investigación técnica, influido en parte por posturas como la de Eliezer Yudkowsky, que sostenía que la política nubla el juicio (<a href="https://www.lesswrong.com/posts/9weLK2AJ9JEt2Tt8f/politics-is-the-mind-killer">Yudkowsky, 2007</a>). Durante años se pensó que implicarse en política era ineficaz o incluso contraproducente frente a resolver directamente el problema técnico de la alineación. Sorprendentemente, al principio casi se desaconsejaba hablar en público de estos riesgos, para no alimentar la carrera.</p>
+        <p>Sin embargo, en 2023 se publicó ChatGPT, se volvió viral, y la gobernanza ganó tracción como estrategia viable para mitigar los riesgos de la AGI. El giro llegó al comprobar que el trato con responsables políticos daba algunos resultados (<a href="https://www.lesswrong.com/posts/2sLwt2cSAag74nsdN/speaking-to-congressional-staffers-about-ai-risk">Akash, 2023</a>). Después se publicaron cartas abiertas influyentes que desplazaron la ventana de Overton, y organizaciones como 80,000 Hours ajustaron sus recomendaciones profesionales y situaron los puestos de política y estrategia por delante de la investigación técnica en alineación (<a href="https://80000hours.org/career-reviews/ai-policy-and-strategy/">Fenwick, 2023</a>).</p>
+        <p>Con todo, esa ventana parece estrecharse para las medidas internacionales más estrictas. Aunque los primeros pronunciamientos de grupos como el Future of Life Institute y el Center for AI Safety ampliaron el debate público, desarrollos posteriores, incluidas cumbres internacionales percibidas como débiles en seguridad y cambios de liderazgo político, han puesto en duda la viabilidad de una coordinación internacional robusta (<a href="https://www.lesswrong.com/posts/qYPHryHTNiJ2y6Fhi/the-paris-ai-anti-safety-summit">Zvi, 2025</a>). Eso ha llevado a algunos a pensar que haría falta un «aviso» de gran magnitud para movilizar una acción decisiva, aunque hay escepticismo sobre si tal acontecimiento llegaría a tiempo (<a href="https://www.lesswrong.com/posts/RYx6cLwzoajqjyB6b/what-convincing-warning-shot-could-help-prevent-extinction">Segerie, 2024</a>).</p>
+        <p>Las regulaciones existentes y propuestas tienen limitaciones importantes. El Reglamento Europeo de IA, pionero en varios aspectos, presenta lagunas notables (<a href="https://milesbrundage.substack.com/p/feedback-on-the-second-draft-of-the">Brundage, 2025</a>): su código de buenas prácticas tiene límites, y el reglamento quizá no cubra adecuadamente los modelos desplegados fuera de Europa, los despliegues puramente internos para investigación o las aplicaciones militares. Una preocupación crítica es que los laboratorios de frontera puedan entrar en carreras de desarrollo secretas, eludiendo la supervisión. Además, hay inquietudes de fondo sobre si las propias estructuras de gobernanza capaces de controlar una AGI podrían plantear riesgos, al habilitar un control totalitario.</p>
+        <p>Una perspectiva profundamente escéptica sugiere que buena parte del relato actual sobre el progreso y la actividad regulatoria podría ser performativa. Este «modelo cínico» plantea que los grandes laboratorios podrían estar exagerando sus avances hacia la AGI para mantener la confianza de los inversores y el entusiasmo, y que los activistas y grupos de presión podrían priorizar el contacto y el estatus en los círculos políticos sobre la elaboración de regulaciones realmente eficaces, lo que llevaría a medidas centradas en métricas fáciles de señalar pero quizá superficiales, como los umbrales de cómputo (<a href="https://www.lesswrong.com/posts/puv8fRDCH9jx5yhbX/johnswentworth-s-shortform">Wentworth, 2025</a>).</p>
+        <p>Esta visión es discutida. Quienes la critican señalan que propuestas concretas, como la SB 1047, sí contenían elementos potencialmente valiosos, como exigir capacidad de apagado, salvaguardas y seguimiento de los grandes entrenamientos, aunque su impacto global se debatiera (<a href="https://www.lesswrong.com/posts/puv8fRDCH9jx5yhbX/johnswentworth-s-shortform">Segerie, 2025</a>; <a href="https://www.lesswrong.com/posts/puv8fRDCH9jx5yhbX/johnswentworth-s-shortform">Wentworth, 2025</a>). Se reconoce que los reguladores operan bajo restricciones reales, incluida la influencia considerable del lobby tecnológico, que puede impedir prohibir tecnologías sin evidencia clara de riesgo inaceptable. Se admite también el fenómeno del cumplimiento performativo, pero se argumenta que implicarse en estos procesos imperfectos sigue siendo necesario, y que ciertos pasos legislativos representan un progreso potencialmente significativo (<a href="https://www.lesswrong.com/posts/puv8fRDCH9jx5yhbX/johnswentworth-s-shortform">Hernandez, 2025</a>).</p>
+        <p>La regulación también podría aumentar sin querer el riesgo existencial por varias vías (<a href="https://www.lesswrong.com/posts/6untaSPpsocmkS7Z3/ways-i-expect-ai-regulation-to-increase-extinction-risk">1a3orn, 2023</a>): podría desviar los esfuerzos de seguridad hacia cuestiones de cumplimiento desfasadas; los procesos burocráticos tienden a favorecer a los actores grandes y consolidados; unas normas nacionales excesivamente estrictas podrían empujar el desarrollo hacia actores internacionales menos cuidadosos; y las regulaciones que restringen modelos abiertos o fijan costos de cumplimiento altos podrían consolidar el poder de las empresas que más empujan las capacidades. La existencia de estos argumentos no basta para afirmar que regular sea negativo en conjunto: es más bien un recordatorio de que hay que ser cautos en el cómo. El diablo está en los detalles.</p>
+      </details>
+
+      <h2 id="gestion-de-riesgos">Gestión de riesgos</h2>
+      <p><strong>La gestión de riesgos busca que los riesgos menos las mitigaciones se mantengan por debajo de los niveles de tolerancia.</strong> La ecuación central es sencilla: (riesgos − mitigaciones) &lt; tolerancia. Este proceso operativo conecta todo lo demás: la gobernanza fija reglas, las evaluaciones miden capacidades y la cultura de seguridad establece normas, pero es la gestión de riesgos la que toma las decisiones cotidianas sobre si pausar un entrenamiento, qué mitigaciones aplicar y cómo mantener niveles aceptables durante todo el desarrollo. El marco tiene cuatro componentes interconectados: identificación, análisis, tratamiento y gobernanza (<a href="https://arxiv.org/abs/2502.06656">Campos et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/1870f14975214d7fcd0737b0cf483bc28f1d2227f4e7e5015b3d5b6de389af20.zNE9SGZL_zjFI9.webp" alt="Figura 3.25">
+        <figcaption><strong>Figura 3.25.</strong> Panorama del marco de gestión de riesgos (<a href="https://arxiv.org/abs/2502.06656">Campos et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>La identificación determina qué podría salir mal.</strong> Primero, clasificar los riesgos conocidos a partir de la literatura, cubriendo dominios como ciberseguridad, armas CBRN, manipulación, replicación autónoma y pérdida de control, con cualquier exclusión claramente justificada. Segundo, identificar riesgos desconocidos mediante ejercicios de <em>red teaming</em> internos y externos que exploren más allá de las categorías predefinidas. Tercero, crear modelos de riesgo que tracen las vías paso a paso desde las capacidades hasta los daños reales, validados por expertos independientes. La meta es entender no solo qué cosas malas podrían ocurrir, sino cómo se materializarían.</p>
+      <p><strong>El análisis traduce las preocupaciones abstractas en umbrales medibles.</strong> Se empieza fijando una tolerancia al riesgo, el nivel máximo de daño que se acepta, preferiblemente cuantificado como probabilidad por gravedad y periodo. Después se concreta en indicadores clave de riesgo (umbrales de capacidad, como alcanzar cierta puntuación en un benchmark de ciberofensiva) emparejados con indicadores clave de control (objetivos de mitigación, como mantener un nivel de seguridad dado y cierta resistencia a los intentos de burlar restricciones). El emparejamiento crea enunciados condicionales: si se cruza este umbral de riesgo, entonces deben cumplirse estos objetivos de control. Las organizaciones deben comprometerse a pausar el desarrollo si no pueden alcanzarlos.</p>
+      <p><strong>El tratamiento implanta y vigila las medidas de mitigación.</strong> Tiene dos fases. Primero, aplicar mitigaciones en tres categorías: medidas de contención (controlar el acceso mediante seguridad de la información), medidas de despliegue (prevenir el uso indebido con salvaguardas) y procesos de garantía (aportar evidencia de seguridad para sistemas avanzados). Segundo, vigilar de forma continua frente a los umbrales predeterminados, rastreando tanto los indicadores de riesgo, para detectar cuándo emergen capacidades peligrosas, como los de control, para verificar que las mitigaciones siguen siendo eficaces. Los resultados deberían compartirse con transparencia.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d5235a3724c25fa6d052b99487c4848c1fca1167632aafdf2d0a061e5c4fc716.Ciy-aSQK_ZNG2eM.webp" alt="Figura 3.26">
+        <figcaption><strong>Figura 3.26.</strong> El modelo de las tres líneas de defensa, tal como lo describe el Instituto de Auditores Internos (<a href="https://arxiv.org/abs/2212.08364">Schuett, 2022</a>).</figcaption>
+      </figure>
+      <p><strong>La gobernanza del riesgo establece quién hace qué y quién verifica cómo se hace.</strong> La mayoría de los sectores usa un modelo de tres líneas de defensa. La primera la forman los responsables operativos que construyen los sistemas y asumen las decisiones de riesgo diarias. La segunda incluye equipos especializados que asesoran y cuestionan las decisiones de negocio. La tercera es la auditoría interna, independiente de la presión de los pares y que reporta al consejo para verificar que el sistema funciona. Más allá de esta estructura, la gobernanza incluye supervisión a nivel de consejo, cultura del riesgo en toda la organización y transparencia externa sobre los riesgos y los procesos de decisión (<a href="https://arxiv.org/abs/2212.08364">Schuett, 2022</a>).</p>
+      <p>SaferAI realiza un análisis extremadamente detallado de las prácticas actuales de gestión de riesgos, <a href="https://ratings.safer-ai.org/comparison/">disponible aquí</a>. Cada categoría (identificación, análisis, tratamiento y gobernanza) se descompone en métricas muy granulares que se siguen y analizan para asignar calificaciones de riesgo a todas las organizaciones de frontera.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9dd72c1f38ea0e0dd937249412f696214366058e4ac79abb97b7f7f1399c7b56.BHqvYR-t_ZNCwKT.webp" alt="Figura 3.27">
+        <figcaption><strong>Figura 3.27.</strong> Calificaciones de gestión de riesgos de las organizaciones de IA de frontera, a octubre de 2025 (<a href="https://ratings.safer-ai.org/comparison/">SaferAI, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="cultura-de-seguridad">Cultura de seguridad</h2>
+      <p><strong>Una cultura de seguridad significa construir organizaciones donde las personas prioricen de forma constante la seguridad sobre la velocidad y donde las preocupaciones de seguridad puedan cambiar decisiones de verdad.</strong> Es una estrategia para prevenir accidentes mediante diseño organizativo, no solo con arreglos técnicos. La gestión de riesgos existe en muchos campos, como la aeroespacial, la energía nuclear o los servicios financieros, y cada uno ha desarrollado enfoques sofisticados para identificar, analizar y mitigar daños. Aquí queremos mitigar los fallos que nacen de factores humanos y organizativos: desplegar con prisas sistemas poco probados, ignorar señales de alarma o crear incentivos que premien ir rápido antes que ir con cuidado.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0500e553921df09c6ce8df42262eec365d7f0237c8e092dc19ae5a791dc8286b.ib0OnrC7_Z1gfVdQ.webp" alt="Figura 3.28">
+        <figcaption><strong>Figura 3.28.</strong> El informe del índice de seguridad de la IA del verano de 2025. Las puntuaciones muestran si la estructura de gobernanza y las operaciones diarias de cada empresa priorizan una rendición de cuentas significativa por el impacto real de sus sistemas. Incluye aspectos como los canales de denuncia, las estructuras jurídicas y la actividad de incidencia en torno a la regulación (<a href="https://futureoflife.org/wp-content/uploads/2025/07/FLI-AI-Safety-Index-Report-Summer-2025.pdf">FLI, 2025</a>; <a href="https://ratings.safer-ai.org/">SaferAI, 2025</a>).</figcaption>
+      </figure>
+      <p><strong>El sector de la IA carece de la cultura profesional de seguridad que existe en la ingeniería tradicional.</strong> Campos como la ingeniería civil o mecánica cuentan con códigos éticos profesionales, márgenes de seguridad e ingeniería de fiabilidad como práctica estándar. El desarrollo de la IA surgió de las matemáticas y la informática que, fuera del software crítico, tienen tradiciones de seguridad más débiles. A diferencia de otros sectores donde los trabajadores experimentan directamente los riesgos, quienes desarrollan IA rara vez afrontan las consecuencias de los fallos de sus sistemas. Esa distancia dificulta construir la comprensión compartida del riesgo que motiva la cultura de seguridad en otros campos (<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4491421">Mannheim, 2023</a>).</p>
+      <p><strong>La cultura de seguridad en la IA debe ser anticipatoria, no reactiva.</strong> La mayoría de los sectores desarrolló la suya tras grandes desastres: la energía nuclear después de Three Mile Island, la sanidad tras décadas de muertes evitables. Esperar a que haya desastres de IA sería irresponsable, porque algunos fallos podrían no ser sobrevivibles (<a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4491421">Mannheim, 2023</a>).</p>
+      <p><strong>El sector aeroespacial muestra cómo la cultura de seguridad puede transformar campos enteros.</strong> La aviación pasó de accidentes frecuentes a registros de seguridad extraordinarios no solo por mejor tecnología, sino por cambios culturales: notificación obligatoria de incidentes, investigaciones sin búsqueda de culpables y procedimientos estandarizados que priorizan la seguridad sobre la presión de calendario. Las empresas de IA pueden adoptar prácticas similares.</p>
+      <p><strong>Una cultura sólida tiene tres rasgos observables: responsabilidad del liderazgo, procesos sistemáticos y seguridad psicológica para plantear preocupaciones.</strong> El marco de gestión de riesgos del NIST identifica que la dirección asuma responsabilidad personal sobre las decisiones de riesgo, que equipos diversos informen la gestión durante todo el desarrollo y que existan procesos sistemáticos de notificación de incidentes e intercambio de información (<a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST, 2023</a>). Las organizaciones con cultura de seguridad integran estas consideraciones en los flujos de trabajo estándar en lugar de tratarlas como añadidos opcionales, y crean entornos donde los empleados pueden plantear inquietudes sin penalización profesional, y donde esas inquietudes influyen visiblemente en las decisiones. Como ejemplo, la NASA aprendió que la excelencia técnica no basta: el desastre del Challenger ocurrió en parte porque las preocupaciones de los ingenieros no llegaron a quienes decidían, por dinámicas organizativas que desincentivaban la discrepancia.</p>
+      <p><strong>La cultura de seguridad va más allá de los proyectos concretos y alcanza la contratación, la evaluación del desempeño y los incentivos.</strong> Las empresas que se la toman en serio valoran la mentalidad de seguridad al contratar, incluyen métricas de seguridad en las evaluaciones y se aseguran de que ese trabajo se reconozca y se premie, en lugar de verse como un freno al progreso «real». Eso implica dar tiempo y recursos dedicados, no tratarlo como algo que los equipos deban encajar entre otras prioridades. Estas organizaciones mantienen sistemas detallados de notificación de incidentes, realizan evaluaciones periódicas y demuestran mejora continua. Invierten en formación que va más allá de las listas de cumplimiento para desarrollar experiencia real en seguridad. Y, sobre todo, crean ciclos de retroalimentación donde la información fluye hacia arriba y hacia abajo, lo que permite aprender y adaptarse rápido cuando surgen riesgos nuevos.</p>
+      <p><strong>Una cultura débil se traduce en «lavado de seguridad»:</strong> la apariencia de preocuparse por la seguridad sin sustancia. Estas organizaciones suelen tener políticas sobre el papel que no siguen bajo presión, culpan a individuos de los accidentes en lugar de examinar causas sistémicas y tratan el trabajo de seguridad como un gasto general que frena el progreso «real», lo que lleva a infradotar y marginar a los equipos de seguridad. En ellas, las preocupaciones de seguridad rara vez cambian las decisiones de despliegue reales. Hablamos más del lavado de seguridad en la sección de desafíos.</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Por ejemplo, en la industria farmacéutica las empresas firman a veces acuerdos de codesarrollo y reparto de beneficios para compartir los riesgos y las recompensas de llevar un medicamento nuevo al mercado. En 2014, Pfizer y Merck establecieron una alianza global para codesarrollar y comercializar conjuntamente un anticuerpo anti-PD-L1 para el tratamiento de varios tipos de cáncer. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 28 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/strategies/socio-technical-strategies/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap3-05-estrategias-de-seguridad-asi.html">← Anterior: Estrategias de seguridad para la ASI</a>
+      </div>
+      <a class="siguiente" href="cap3-07-combinar-estrategias.html">
+        <strong>Siguiente: Combinar estrategias →</strong>
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

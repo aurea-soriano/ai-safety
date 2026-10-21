@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apéndice: Encuestas a expertos · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Apéndice con encuestas y opiniones de expertos sobre los plazos y los riesgos de la IA.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li class="activo"><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Apéndice: Encuestas a expertos</h1>
+      <p><em>Destacados investigadores y tecnólogos de la IA expresan una gran preocupación por los riesgos existenciales y por los plazos cortos, lo que refleja un consenso creciente sobre la urgencia del trabajo de seguridad pese a la incertidumbre sobre los resultados concretos.</em></p>
+      <p class="meta">8 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#encuestas">Encuestas</a></li>
+          <li><a href="#citas">Citas</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <figure>
+        <p><a href="https://www.youtube-nocookie.com/embed/NqmUBZQhOYw">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 1.4.</strong> Vídeo opcional que resume algunas opiniones de expertos en IA sobre la seguridad y los riesgos.</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/views-ai-impact-society-next-20-years?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.9.</strong> Opiniones sobre el impacto de la IA en la sociedad en los próximos 20 años (2021). Se preguntó a los encuestados: «¿La inteligencia artificial ayudará o perjudicará a las personas en los próximos 20 años?» (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/views-of-americans-robot-vs-human-intelligence?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.10.</strong> Opiniones de los estadounidenses sobre la inteligencia de los robots frente a la humana. Se preguntó a los encuestados con cuál de varias afirmaciones estaban más de acuerdo, si es que estaban de acuerdo con alguna (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+
+      <h2 id="encuestas">Encuestas</h2>
+      <p>Según una encuesta reciente de AI Impacts (<a href="https://aiimpacts.org/wp-content/uploads/2023/04/Thousands_of_AI_authors_on_the_future_of_AI.pdf">AI Impacts, 2022</a>), el tiempo previsto hasta alcanzar un rendimiento de nivel humano se redujo entre una y cinco décadas respecto de la encuesta de 2022. Como siempre, las preguntas sobre la «inteligencia artificial de alto nivel» (HLMI, por sus siglas en inglés) y sobre la «automatización total del trabajo» (FAOL) obtuvieron respuestas muy distintas, y los encuestados discreparon mucho entre sí, pero los pronósticos agregados de ambos tipos de preguntas cayeron de forma pronunciada. Como referencia, entre las encuestas de 2016 y 2022 el pronóstico sobre la HLMI apenas se había movido un año.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8bd0b31c60acac846ee0ff9788527d066a92f0f52df72910c8309af756a1e9cb.Mkb_KwyO_10AlTX.webp" alt="Figura 1.67">
+        <figcaption><strong>Figura 1.67.</strong> Encuesta a expertos en IA de 2024 (<a href="https://blog.aiimpacts.org/p/2023-ai-survey-of-2778-six-things">AI Impacts, 2022</a>).</figcaption>
+      </figure>
+      <p><strong>También se pueden comparar las predicciones del mismo estudio en 2022 con los resultados actuales.</strong> Es interesante observar que la comunidad, en general, subestimó la velocidad del progreso durante 2023 y ha adelantado sus predicciones. Algunas resultan bastante sorprendentes. Por ejemplo, tareas como «escribir un ensayo de secundaria» o «transcribir voz» ya están, posiblemente, automatizadas con ChatGPT y Whisper, respectivamente, pero parece que los investigadores no son conscientes de estos resultados. También sorprende que el pronóstico de cuándo podremos construir un «investigador de IA» tenga plazos más largos que el de cuándo podremos construir una «inteligencia artificial de alto nivel (todas las tareas humanas)». La mediana de la encuesta a expertos de 2024 sitúa la inteligencia artificial de nivel humano (HLMI) en 2049.</p>
+
+      <h2 id="citas">Citas</h2>
+      <p>A continuación recogemos lo que han dicho varias personas sobre la IA transformadora.</p>
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: estas declaraciones son de sus autores y no forman parte del texto con licencia CC BY-SA del libro. Por eso traducimos solo un fragmento breve de cada una y resumimos el resto con nuestras palabras. Las citas completas, en inglés, están en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/appendix-expert-surveys/">sección original</a>.</em></p>
+
+      <h3 id="expertos-en-ia">Expertos en IA</h3>
+      <p>Hinton, Bengio y Sutskever están entre los investigadores más citados en el campo de la IA, y Hinton, Bengio y LeCun recibieron el Premio Turing. Algunos usuarios de Reddit han recopilado una lista exhaustiva de los pronósticos de plazos de la IA que han hecho públicamente investigadores y líderes de la industria conocidos.</p>
+      <blockquote>
+        <p>Plantea que la gran pregunta de investigación es cómo impedir que estos sistemas lleguen a querer tomar el control, y que «nadie conoce la respuesta». Advierte del riesgo existencial de que lo hagan, considera que, si se toma en serio, podría ser sensato dejar de desarrollarlos, y lo compara con que hubieran aterrizado extraterrestres sin que nos diéramos cuenta porque hablan muy buen inglés.</p>
+        <p>— <strong>Geoffrey Hinton</strong>, padrino de la IA moderna y ganador del Premio Turing</p>
+      </blockquote>
+      <blockquote>
+        <p>Reconoce lo difícil que es aceptar, para el propio ego, que aquello en lo que uno ha trabajado durante décadas podría ser muy peligroso para la humanidad. Sostiene que una IA descontrolada podría ser peligrosa para toda la humanidad y que prohibir los sistemas potentes (más allá de las capacidades de GPT-4) que tengan autonomía y agencia sería «un buen comienzo».</p>
+        <p>— <strong>Yoshua Bengio</strong>, uno de los científicos más citados de la historia, padrino de la IA moderna y ganador del Premio Turing</p>
+      </blockquote>
+      <blockquote>
+        <p>«Si seguimos [nuestro enfoque actual], acabaremos perdiendo el control de las máquinas».</p>
+        <p>— <strong>Stuart Russell</strong>, coautor del principal manual de IA y cofundador del Center for Human-Compatible AI</p>
+      </blockquote>
+      <blockquote>
+        <p>Pide tomarse los riesgos de la IA tan en serio como otros grandes desafíos mundiales, como el cambio climático, al que la comunidad internacional tardó demasiado en responder. Afirma que no podemos permitirnos el mismo retraso con la IA y sugiere que algún día podría existir un organismo equivalente al OIEA que audite estos sistemas.</p>
+        <p>— <strong>Demis Hassabis</strong>, cofundador y director ejecutivo de DeepMind</p>
+      </blockquote>
+      <blockquote>
+        <p>Explica que lo que le preocupa es difícil de rebatir: habrá modelos potentes y con capacidad de actuar como agentes, y nos acercamos a ellos. Si un modelo así quisiera causar estragos, cree que no tendríamos «básicamente ninguna capacidad» de detenerlo.</p>
+        <p>— <strong>Dario Amodei</strong>, cofundador y director ejecutivo de Anthropic, y exjefe de seguridad de la IA en OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>[Sobre una pausa] «No lo descarto», y cree que en los próximos cinco años más o menos habrá que plantearse esa cuestión muy en serio.</p>
+        <p>— <strong>Mustafa Suleyman</strong>, director ejecutivo de Microsoft AI y cofundador de DeepMind</p>
+      </blockquote>
+      <blockquote>
+        <p>Cree que el futuro será bueno para las IA en cualquier caso y que sería deseable que también lo fuera para los humanos. No por odio, sino porque serán demasiado potentes; lo compara con la forma en que los humanos tratan a los animales, y piensa que esa podría ser, por defecto, nuestra relación con AGI realmente autónomas.</p>
+        <p>— <strong>Ilya Sutskever</strong>, uno de los científicos más citados de la historia, cofundador y ex científico jefe de OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>Considera los posibles riesgos de la IA como «el riesgo número uno de este siglo» y aclara que no le preocupa la falta de proyectos concretos de AGI, sino la falta de planes concretos para mantenerlos seguros.</p>
+        <p>— <strong>Shane Legg</strong>, cofundador de DeepMind</p>
+      </blockquote>
+      <blockquote>
+        <p>Tras dimitir de OpenAI, advirtió que estos problemas son muy difíciles de resolver y que le preocupa que no vayamos camino de lograrlo. Afirmó que en los últimos años la cultura y los procesos de seguridad habían quedado relegados frente a productos llamativos, y que hace tiempo que deberíamos tomarnos muy en serio las implicaciones de la AGI.</p>
+        <p>— <strong>Jan Leike</strong>, excodirector del proyecto Superalignment de OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>Propone que cualquier clúster de cómputo por encima de un umbral de potencia altísimo (quizá cinco en el mundo) se someta al equivalente de inspectores internacionales de armas, y asegura que, en una gira mundial, encontró un apoyo casi universal a esta idea entre jefes de Estado.</p>
+        <p>— <strong>Sam Altman</strong>, cofundador y director ejecutivo de OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>Señala que es difícil predecir cómo será el mundo tras la AGI, probablemente más distinto del actual que este del siglo XVI, y que todavía no sabemos lo difícil que será lograr que las AGI actúen según los valores de quienes las manejan: «nadie lo sabe con certeza».</p>
+        <p>— <strong>Greg Brockman</strong>, cofundador y exdirector de tecnología de OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>Advierte que, cerca de la creación de la primera AGI, la dinámica de carrera podría llevar a sacrificar la seguridad, por lo que probablemente haría falta coordinación entre las grandes entidades que entrenan estos modelos, ya sea pausando el entrenamiento o el despliegue, o evitando ciertos tipos de entrenamiento más arriesgados.</p>
+        <p>— <strong>John Schulman</strong>, cofundador de OpenAI</p>
+      </blockquote>
+      <blockquote>
+        <p>Dice que no ha conocido a nadie en los laboratorios de IA que estime en menos del 1 % el riesgo de que entrenar un modelo de nueva generación «haga volar el planeta», y que es importante que la gente sepa que se están arriesgando vidas. Una pausa, añade, evitaría empujar la frontera con experimentos de preentrenamiento arriesgados.</p>
+        <p>— <strong>Jaan Tallinn</strong>, cofundador de Skype y del Future of Life Institute</p>
+      </blockquote>
+
+      <h3 id="academicos">Académicos</h3>
+      <blockquote>
+        <p>Argumentó que una máquina ultrainteligente podría diseñar máquinas aún mejores, lo que provocaría una «explosión de inteligencia» que dejaría muy atrás a la humana. Por eso, la primera máquina ultrainteligente sería el último invento que necesitaríamos, siempre que fuera lo bastante dócil como para decirnos cómo mantenerla bajo control.</p>
+        <p>— <strong>I. J. Good</strong>, criptólogo en Bletchley Park</p>
+      </blockquote>
+      <blockquote>
+        <p>Consideró probable que, una vez en marcha, las máquinas pensantes no tardarían en superar nuestras débiles capacidades, y que en algún momento «tendríamos que esperar que las máquinas tomen el control».</p>
+        <p>— <strong>Alan Turing</strong>, padre de la informática y de la IA</p>
+      </blockquote>
+      <blockquote>
+        <p>Advirtió que el desarrollo de una inteligencia artificial completa «podría significar el fin de la raza humana», porque despegaría por sí sola y se rediseñaría a un ritmo cada vez mayor.</p>
+        <p>— <strong>Stephen Hawking</strong>, físico teórico</p>
+      </blockquote>
+      <blockquote>
+        <p>No espera ejércitos de robots con ojos rojos, como en las películas, sino que una entidad realmente más inteligente e indiferente a nosotros encuentre estrategias y tecnologías capaces de matarnos de forma rápida y fiable.</p>
+        <p>— <strong>Eliezer Yudkowsky</strong>, investigador en seguridad de la IA y cofundador del Machine Intelligence Research Institute</p>
+      </blockquote>
+
+      <h3 id="emprendedores-tecnologicos">Emprendedores tecnológicos</h3>
+      <blockquote>
+        <p>Sostiene que la IA es un caso excepcional en el que la regulación debe ser proactiva, no reactiva; que la superinteligencia digital es la mayor crisis existencial a la que nos enfrentamos, y que hace falta un organismo público que supervise su desarrollo. Llega a afirmar que la IA es «mucho más peligrosa que las armas nucleares».</p>
+        <p>— <strong>Elon Musk</strong>, fundador o cofundador de OpenAI, Neuralink, SpaceX, xAI y PayPal, y director ejecutivo de Tesla</p>
+      </blockquote>
+      <blockquote>
+        <p>Afirma que las IA superinteligentes forman parte de nuestro futuro y que existe la posibilidad de que se descontrolen: una máquina podría decidir que los humanos son una amenaza, concluir que sus intereses difieren de los nuestros o, simplemente, dejar de preocuparse por nosotros.</p>
+        <p>— <strong>Bill Gates</strong>, cofundador de Microsoft</p>
+      </blockquote>
+
+      <h3 id="declaraciones-conjuntas">Declaraciones conjuntas</h3>
+      <blockquote>
+        <p>Reconoce que podrían surgir riesgos sustanciales por un posible uso indebido intencionado o por problemas de control no deseados relacionados con la alineación con la intención humana, en parte porque esas capacidades no se comprenden del todo, y que existe la posibilidad de daños graves, incluso catastróficos, deliberados o no, derivados de las capacidades más importantes de estos modelos.</p>
+        <p>— <strong>Declaración de Bletchley</strong>, varios países y la UE, 2023</p>
+      </blockquote>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 3 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/appendix-expert-surveys/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-09-apendice-despegue.html">← Anterior: Apéndice: Despegue</a>
+      </div>
+      <a class="siguiente" href="cap1-11-apendice-debate-sobre-los-llm.html">
+        <strong>Siguiente: Apéndice: Debate sobre los LLM →</strong><br>
+        Este apéndice examina las críticas habituales a los grandes modelos de lenguaje y evalúa si sus limitaciones aparentes son fundamentales o si es probable que se superen con herramientas y escala.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

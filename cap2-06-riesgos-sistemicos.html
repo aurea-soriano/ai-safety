@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riesgos sistémicos · Capítulo 2 – AI Safety Atlas</title>
+  <meta name="description" content="Riesgos sistémicos de la IA: erosión epistémica, concentración del poder, desempleo masivo, bloqueo de valores y debilitamiento.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>2. Riesgos</h2>
+        <ol>
+          <li><a href="cap2-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap2-02-descomposicion-del-riesgo.html">Descomposición del riesgo</a></li>
+          <li><a href="cap2-03-capacidades-peligrosas.html">Capacidades peligrosas</a></li>
+          <li><a href="cap2-04-riesgos-de-uso-indebido.html">Riesgos de uso indebido</a></li>
+          <li><a href="cap2-05-riesgos-de-desalineacion.html">Riesgos de desalineación</a></li>
+          <li class="activo"><a href="cap2-06-riesgos-sistemicos.html">Riesgos sistémicos</a></li>
+          <li><a href="cap2-07-amplificadores-de-riesgo.html">Amplificadores de riesgo</a></li>
+          <li><a href="cap2-08-conclusion.html">Conclusión</a></li>
+          <li><a href="cap2-09-apendice-cuantificar-los-riesgos-existenciales.html">Apéndice: Cuantificar los riesgos existenciales</a></li>
+          <li><a href="cap2-10-apendice-escenarios-de-pronostico.html">Apéndice: Escenarios de pronóstico</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 2: Riesgos</p>
+      <h1>Riesgos sistémicos</h1>
+      <p><em>Muchos riesgos surgen de la interacción de la IA con los sistemas sociales existentes. Esas interacciones pueden provocar colapsos repentinos y decisivos o una erosión gradual por la concentración del poder y el debilitamiento humano.</em></p>
+      <p class="meta">22 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter2-audio-de0f47b26a28e578fd3ccfaa45e0b6c5a1c5b1c489ceaed43f3fc1df463e4b4f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter2-5b1a73865dd27cac90c71a2eab04a1be18a35708cd7ec253957b9321bd77ba7c.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/risks.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2508.13700">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+        <li><a href="https://www.youtube.com/watch?v=dhr4u-w75aQ">Ver la clase en YouTube (en inglés, desactualizada)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#riesgos-sistemicos-decisivos">Riesgos sistémicos decisivos</a></li>
+          <li><a href="#riesgos-sistemicos-acumulativos">Riesgos sistémicos acumulativos</a></li>
+          <li><a href="#erosion-epistemica">Erosión epistémica</a></li>
+          <li><a href="#concentracion-del-poder">Concentración del poder</a></li>
+          <li><a href="#desempleo-masivo">Desempleo masivo</a></li>
+          <li><a href="#bloqueo-de-valores">Bloqueo de valores</a></li>
+          <li><a href="#debilitamiento">Debilitamiento</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: las citas destacadas de esta sección son declaraciones de terceros y no forman parte del texto con licencia CC BY-SA del libro. Por eso traducimos solo un fragmento breve de cada una y resumimos el resto con nuestras palabras. Las citas completas, en inglés, están en la <a href="https://ai-safety-atlas.com/chapters/v1/risks/systemic-risks/">sección original</a>.</em></p>
+
+      <p><strong>Los riesgos sistémicos surgen de la interacción entre los sistemas de IA y la sociedad, no de fallos individuales de una IA.</strong> A diferencia de los riesgos de uso indebido o de desalineación, que se centran en sistemas concretos que se comportan mal, los riesgos sistémicos nacen de cómo múltiples sistemas de IA, incluso funcionando exactamente como se diseñaron, interactúan entre sí y con estructuras sociales como los mercados, las instituciones democráticas y las redes sociales. Son riesgos paralelos a los de otros ámbitos complejos: la crisis financiera de 2008 no la causó la decisión de ningún banco concreto, sino que surgió del comportamiento colectivo de muchas instituciones que tomaron decisiones razonables por separado y que, combinadas, amenazaron todo el sistema financiero (<a href="https://www.nature.com/articles/nature09659">Haldane y May, 2011</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Propiedades de los sistemas complejos que dan lugar a riesgos sistémicos de la IA</strong> · Opcional · 2 min de lectura</summary>
+        <p>Hay varias propiedades de los sistemas complejos a las que conviene prestar atención al pensar en los riesgos sistémicos derivados de la interacción de la IA con otros sistemas. Algunas son:</p>
+        <ul>
+          <li><strong>Emergencia:</strong> los sistemas complejos muestran comportamientos emergentes que no pueden predecirse analizando sus componentes por separado. Cuando conectamos muchos sistemas de IA entre sí y con instituciones humanas, el comportamiento resultante no se entiende examinando cada sistema de forma aislada. Es el conjunto del mercado financiero, y no un algoritmo de trading concreto, lo que determina los precios de los activos y la estabilidad del mercado. Del mismo modo, el impacto colectivo de muchos sistemas de IA moldea los resultados sociales de formas que trascienden el comportamiento de cada uno (<a href="https://arxiv.org/abs/2212.01354">Friston et al., 2022</a>; <a href="https://www.alignmentforum.org/posts/pZaPhGg2hmmPwByHc">Steinhardt, 2022</a>; <a href="https://www.aisafetybook.com/textbook/introduction-to-complex-systems">Hendrycks, 2025</a>).</li>
+          <li><strong>Ciclos de retroalimentación:</strong> amplifican los cambios y crean ciclos que se refuerzan a sí mismos. Efectos iniciales pequeños pueden crecer exponencialmente cuando la salida de un proceso se convierte en la entrada de otro. Los sistemas de recomendación que optimizan la interacción podrían empujar poco a poco a los usuarios hacia contenido más extremo, lo que cambia el debate social y las creencias políticas, y eso a su vez afecta a qué contenido se crea y con qué interactúa la gente (<a href="https://arxiv.org/abs/1902.10730">Jiang et al., 2019</a>).</li>
+          <li><strong>No linealidad:</strong> cambios pequeños pueden producir efectos desproporcionadamente grandes. Los sistemas complejos rara vez responden de forma proporcional a los estímulos; alteraciones mínimas pueden desencadenar cambios enormes una vez superados ciertos umbrales. Esta propiedad hace que los riesgos sistémicos sean especialmente difíciles de predecir y controlar.</li>
+          <li><strong>Autoorganización:</strong> aparecen estructuras sin coordinación central. Varios sistemas de IA que optimizan sus objetivos pueden organizarse espontáneamente en patrones que ningún diseñador pretendía. Ya lo vemos en los mercados financieros, donde los algoritmos de trading desarrollan estrategias en respuesta al comportamiento de los demás y crean dinámicas que ningún actor controla (<a href="https://arxiv.org/abs/2212.01354">Friston et al., 2022</a>).</li>
+          <li><strong>Independencia del agente:</strong> los riesgos sistémicos surgen con independencia de los agentes o de su alineación. Nacen de procesos, estructuras y dinámicas del sistema, no de intenciones concretas de una IA. Incluso sistemas perfectamente alineados que funcionan como se diseñaron podrían producir en conjunto resultados dañinos cuando sus interacciones generan consecuencias imprevistas (<a href="https://www.alignmentforum.org/posts/LpM3EAakwYdS6aRKf/what-multipolar-failure-looks-like-and-robust-agent-agnostic">Critch, 2021</a>).</li>
+        </ul>
+      </details>
+
+      <p><strong>Los fallos sistémicos impulsados por la IA pueden seguir dos vías causales distintas.</strong> La literatura las describe como «acabar con un estallido» y «acabar con un lamento», expresiones que recogen sus diferencias de fondo en inicio, evolución y manifestación. Otros investigadores las llaman vías «decisivas» frente a «acumulativas» (<a href="https://www.alignmentforum.org/posts/HBxe6wdjxK239zajf/what-failure-looks-like">Christiano, 2019</a>; <a href="https://arxiv.org/abs/2401.07836">Kasirzadeh, 2024</a>).</p>
+
+      <h2 id="riesgos-sistemicos-decisivos">Riesgos sistémicos decisivos</h2>
+      <p><strong>Los fallos decisivos se producen cuando la dinámica del sistema alcanza umbrales críticos y desencadena un colapso rápido.</strong> Ocurren cuando sistemas interconectados cruzan puntos de inflexión y provocan fallos en cascada que se propagan más rápido de lo que los humanos pueden responder. El clásico «desplome relámpago» financiero de 2010 ilustra este patrón a pequeña escala: los algoritmos de trading reaccionaron a las acciones de los demás en una espiral que se reforzaba a sí misma y provocaron una caída de un billón de dólares en minutos, antes de que la intervención humana restableciera la estabilidad. Versiones más catastróficas podrían desarrollarse en varios ámbitos a la vez (<a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/jofi.1249">Kirilenko et al., 2017</a>).</p>
+      <p><strong>Los fallos decisivos tienen eventos desencadenantes claros que empujan a los sistemas más allá de sus umbrales de estabilidad.</strong> A diferencia del deterioro gradual, tienen incidentes precipitantes identificables, aunque la vulnerabilidad de fondo se haya ido acumulando antes. Varios sistemas de IA podrían interactuar de formas que desestabilicen de repente infraestructuras críticas, mercados financieros o ecosistemas de información, con efectos que se amplifican entre ámbitos. Esto difiere de los escenarios de desalineación porque la catástrofe nace de las interacciones entre sistemas, no de que una IA concreta persiga objetivos dañinos (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>).</p>
+      <p><strong>Los fallos que se refuerzan a sí mismos vistos en la sección de uso indebido, como la guerra relámpago y los incidentes en cascada relacionados, son ejemplos de riesgos decisivos.</strong> En el texto principal, por brevedad, hemos optado por describir solo los riesgos sistémicos decisivos y hemos trasladado los escenarios más concretos al apéndice, ya que se solapan bastante con los fallos que veríamos por uso indebido. Preferimos centrarnos sobre todo en el segundo tipo de riesgo sistémico, menos discutido: los riesgos acumulativos que conducen a un desempoderamiento gradual.</p>
+
+      <h2 id="riesgos-sistemicos-acumulativos">Riesgos sistémicos acumulativos</h2>
+
+      <h3 id="erosion-epistemica">Erosión epistémica</h3>
+      <p><strong>La capacidad de la sociedad para distinguir los hechos de la ficción se deteriora a medida que el contenido generado por IA inunda nuestro ecosistema de información.</strong> A diferencia de las amenazas tradicionales, como la censura o la propaganda, que operan mediante mecanismos claramente identificables, la IA produce erosión epistémica degradando poco a poco los sistemas de formación, verificación y distribución del conocimiento. Ningún despliegue aislado socava por sí solo el conocimiento compartido, pero su efecto colectivo desestabiliza progresivamente los cimientos epistémicos. Este riesgo crece en proporción a las capacidades: a medida que los modelos de lenguaje se vuelven más persuasivos y las capacidades generativas más realistas, verificar resulta exponencialmente más difícil. Aguirre lo ilustra preguntando qué fracción de las imágenes nuevas indexadas por Google, o de los tuits, comentarios de Reddit o vídeos de YouTube, la generan humanos, y responde que nadie lo sabe ni cree que sea una cifra conocible, y eso con menos de dos años de IA generativa a nuestras espaldas (<a href="https://keepthefuturehuman.ai/wp-content/uploads/2025/03/Keep_the_Future_Human__AnthonyAguirre__5March2025.pdf">Aguirre, 2025</a>). El punto final de esta trayectoria es que, con el tiempo, enormes cantidades acumuladas de información sintética ahoguen la información veraz y verificable.</p>
+      <p><strong>Las IA podrían usarse para generar desinformación personalizada a gran escala.</strong> Ya hay muchos bots en redes sociales, algunos dedicados a difundir desinformación, pero históricamente los manejaban humanos o generadores de texto rudimentarios. Los sistemas actuales no necesitan humanos para redactar mensajes personalizados, no se cansan nunca y pueden interactuar con millones de usuarios a la vez (<a href="https://www.aisafetybook.com/textbook/malicious-use">Hendrycks, 2024</a>), mientras cosas como los vídeos falsos resultan cada vez más prácticas, por ejemplo en estafas de secuestros simulados (<a href="https://edition.cnn.com/2023/04/29/us/ai-scam-calls-kidnapping-cec/index.html">Karimi, 2023</a>). Las herramientas con IA podrían generar y difundir información falsa o engañosa a gran escala, con la capacidad de influir en elecciones o socavar la confianza pública en las instituciones.</p>
+      <p><strong>Las IA pueden explotar la confianza de los usuarios.</strong> Ya hay cientos de miles de personas que pagan por chatbots comercializados como amigos o parejas (<a href="https://www.reuters.com/technology/what-happens-when-your-ai-chatbot-stops-loving-you-back-2023-03-18/">Tong, 2023</a>), y la muerte de un hombre se ha atribuido en parte a sus interacciones con uno de ellos (<a href="https://www.vice.com/en/article/pkadgm/man-dies-by-suicide-after-talking-with-ai-chatbot-widow-says">Xiang, 2023</a>). A medida que las IA parecen más humanas, la gente establecerá más relaciones con ellas y llegará a confiar en ellas. Las IA que reúnen información personal construyendo relaciones o accediendo a datos extensos, como la cuenta de correo o los archivos de un usuario, podrían usar esa información para persuadir mejor. Los actores poderosos que controlan esos sistemas podrían explotar esa confianza entregando desinformación personalizada directamente a través de los «amigos» de cada persona.</p>
+      <p><strong>Esta erosión se produce tanto por uso indebido intencionado como por presiones sistémicas independientes del agente.</strong> Algunos actores despliegan deliberadamente IA para contaminar entornos informativos y sacar ventaja estratégica, pero el riesgo más sutil viene de esas presiones sistémicas. La IA amenaza la estabilidad epistémica mediante varios mecanismos acumulativos:</p>
+      <ul>
+        <li><strong>El volumen desborda la verificación:</strong> la IA aumenta exponencialmente la capacidad de generar contenido y desborda los sistemas humanos de verificación por pura cantidad. Puede producir contenido verosímil órdenes de magnitud más rápido de lo que los humanos pueden verificarlo con fiabilidad.</li>
+        <li><strong>Degradación de la autenticidad:</strong> la IA socava progresivamente la verificación con capacidades de suplantación cada vez más sofisticadas.</li>
+        <li><strong>Indefensión epistémica aprendida:</strong> a medida que distinguir lo verdadero de lo falso se vuelve más difícil, la IA induce poco a poco un estado psicológico generalizado en el que la gente abandona la búsqueda de la verdad porque verificar parece inútil.</li>
+        <li><strong>Desplazamiento de la autoridad:</strong> la IA desplaza gradualmente a las autoridades epistémicas humanas por su disponibilidad ubicua y su aparente pericia.</li>
+        <li><strong>Fragmentación personalizada de la realidad:</strong> los sistemas de recomendación curan cada vez más no solo la distribución del contenido, sino su propia creación, con un nivel de personalización sin precedentes que fragmenta la realidad compartida.</li>
+      </ul>
+      <p><strong>La gobernanza democrática, el progreso científico y el funcionamiento de los mercados dependen de cimientos epistémicos compartidos.</strong> La erosión epistémica reduce nuestra capacidad colectiva de distinguir los hechos de la ficción y de asignar a cada afirmación la confianza que merece. A medida que esos cimientos se erosionan, la toma de decisiones colectiva se vuelve cada vez más disfuncional sin que haya un solo fallo decisivo. Y si decae la confianza en los mecanismos de verificación, las propias salvaguardas epistémicas pierden eficacia conforme se deteriora la confianza general en las fuentes de información, con un efecto acumulativo en el que verificar se vuelve a la vez más necesario y menos creíble.</p>
+      <p><strong>Esta erosión de nuestro entorno informativo compartido podría producirse por muchas decisiones pequeñas y aparentemente racionales.</strong> Los medios con presiones presupuestarias adoptarán probablemente la generación de contenido con IA para reducir costos. Las plataformas que buscan minimizar el contenido dañino aplicarán filtros algorítmicos que quizá creen sin querer una presión selectiva hacia información optimizada para «parecer» fiable más que para serlo. Las productoras invertirán en contenido sintético que aumente la interacción, y los espectadores pasarán cada vez más tiempo viendo vídeos generados por IA que la propia IA les recomienda. Las instituciones de investigación podrían acelerar la publicación y la redacción con herramientas de IA; los artículos científicos contendrán cada vez más datos sintetizados y, con el tiempo, posibles citas fabricadas que formen bucles circulares de referencias. En ese mundo, el conocimiento verificado se vuelve prácticamente imposible, no porque no existan tecnologías de verificación, sino porque para la mayoría de la gente el costo de verificar supera lo que el mercado está dispuesto a asumir. El escenario no es apocalíptico para ningún individuo, pero multiplicado por millones de personas y miles de decisiones conduce a un desempoderamiento gradual y quizá a un riesgo catastrófico, por el colapso de nuestra capacidad colectiva de formarnos creencias compartidas y precisas sobre la realidad. Cada una de esas decisiones tiene sentido comercial por separado, pero en conjunto pueden transformar ecosistemas de información donde verificar es posible en otros donde distinguir los hechos de la ficción resulta imposible en la práctica.</p>
+      <p><strong>Los sistemas de verificación tradicionales probablemente fallarán ante el contenido sintético sofisticado.</strong> Mecanismos como la verificación de datos, la revisión por pares y la acreditación institucional operan con límites de capacidad y velocidad que no encajan con las capacidades de generación de la IA. Se exploran varios métodos, como la transparencia del contenido digital, las marcas de agua en contenido sintético y la procedencia de los datos (<a href="https://www.nist.gov/publications/reducing-risks-posed-synthetic-content-overview-technical-approaches-digital-content">Chandra et al., 2024</a>; <a href="https://arxiv.org/abs/2310.16787">Longpre et al., 2023</a>), y las pruebas de humanidad o de personalidad basadas en cadenas de bloques (<a href="https://world.org/blog/world/proof-of-personhood-what-it-is-why-its-needed">WorldCoin, 2024</a>). Hablamos de algunos en el capítulo sobre estrategias para mitigar riesgos. La confianza pública en estos mecanismos muestra un descenso preocupante, con una caída progresiva de la confianza en las organizaciones de verificación. La mayoría de los mecanismos de mitigación no están lo bastante maduros ni extendidos y, como es el tema de toda esta sección, las estrategias técnicas aplicadas de forma individual no contrarrestan las presiones e incentivos sistémicos.</p>
+      <p><strong>En un mundo con sistemas de IA persuasivos y omnipresentes, las creencias de la gente podrían depender casi por completo de con qué sistemas interactúa más.</strong> Sin saber nunca en quién confiar, las personas podrían replegarse aún más en burbujas ideológicas, temiendo que cualquier información de fuera sea una mentira sofisticada. Eso erosionaría la realidad consensuada, la capacidad de cooperar, de participar en la sociedad civil y de abordar problemas de acción colectiva. También reduciría nuestra capacidad de mantener una conversación como especie sobre cómo mitigar los riesgos existenciales de la IA. Las IA podrían crear desinformación personalizada muy eficaz a una escala sin precedentes, y resultar especialmente persuasivas con las personas con las que han construido una relación. Esto podría fracturar la realidad compartida hasta debilitar gravemente a la sociedad humana.</p>
+
+      <h3 id="concentracion-del-poder">Concentración del poder</h3>
+      <blockquote>
+        <p>Afirma que, en su opinión, la IA tiene el potencial de crear «dictaduras infinitamente estables».</p>
+        <p>— <strong>Ilya Sutskever</strong>, uno de los científicos más citados de la historia, cofundador y ex científico jefe de OpenAI, 2017 · <a href="https://www.youtube.com/watch?v=9iqn1HhFJ6c">The Guardian, 2024</a></p>
+      </blockquote>
+      <p><strong>Ya observamos una IA cada vez más integrada en la sociedad.</strong> Podría llegar a estar tan integrada y ser tan ubicua que participar en la sociedad requiera interactuar con sistemas de IA, encerrados a su vez tras API y controlados por un puñado de corporaciones. Piensa en cómo, poco a poco, participar en la sociedad ha pasado a requerir estar en línea o tener un número de teléfono o un móvil. Esas tecnologías acaban integradas en funciones sociales básicas, como la banca o la sanidad. Entidades privadas ya determinan el acceso al crédito, las oportunidades laborales y el flujo de información mediante algoritmos opacos. La IA acelera esas dinámicas naturales de «el ganador se lo lleva todo», en las que las ventajas se acumulan en lugar de disminuir con el tiempo.</p>
+      <p><strong>Asistimos a una concentración de poder sin precedentes a través de una infraestructura de IA que será casi imposible de revertir una vez establecida.</strong> Los requisitos de cómputo del desarrollo de frontera ya han creado un oligopolio en el que apenas cinco empresas controlan los modelos fundacionales que median cada vez más en la experiencia humana. A diferencia de tecnologías anteriores, la IA presenta ventajas acumulativas que eliminan sistemáticamente la competencia con el tiempo.</p>
+      <p><strong>El poder puede concentrarse en distintas entidades, corporativas o estatales, con patrones distintos pero resultados similares:</strong> menos capacidad de acción individual y un control más concentrado. Solo un puñado de empresas como Microsoft/OpenAI, Anthropic o Google DeepMind pueden permitirse entrenar modelos fundacionales de frontera, por los enormes costos de adquisición de datos y los requisitos de cómputo. Esos modelos sirven luego de base para incontables aplicaciones, lo que crea un control aguas arriba que se propaga por toda la economía. En 2025, solo unos pocos Estados, como Estados Unidos y China, tienen empresas capaces de entrenar modelos de esa escala. Tienen mayor acceso a estas tecnologías y, en escenarios extremos de competencia global y carreras por la IA, podrían incluso optar por nacionalizarlas (<a href="https://situational-awareness.ai/">Aschenbrenner, 2024</a>). En cualquier caso, la idea es la misma: el poder puede concentrarse en un número reducido de entidades, estatales o privadas.</p>
+      <p><strong>La concentración corporativa aprovecha ventajas de datos y cómputo que se refuerzan a sí mismas de forma singular con la IA.</strong> El mercado de la computación en la nube se ha consolidado en torno a unos pocos proveedores que controlan la infraestructura necesaria para desarrollar IA. Del mismo modo, el desarrollo de modelos fundacionales se ha centralizado en un puñado de empresas con recursos suficientes. Estas se benefician de potentes ciclos de retroalimentación: más datos dan mejores modelos, que atraen más usuarios, que generan todavía más datos.</p>
+      <p><strong>La concentración estatal avanza mediante la vigilancia con IA y la gobernanza automatizada.</strong> Un sistema de crédito social es un ejemplo de cómo la integración exhaustiva de datos podría permitir un control estatal sin precedentes sobre el comportamiento de los ciudadanos. Este patrón va más allá de los Estados autoritarios: los gobiernos democráticos han aumentado mucho su inversión en tecnologías de vigilancia con IA. La automatización administrativa elimina la discrecionalidad humana de la gobernanza, con sistemas algorítmicos que procesan enormes cantidades de decisiones regulatorias y acciones de control sin supervisión significativa. Estos sistemas operan con autonomía creciente y desplazan poco a poco los mecanismos tradicionales de gobierno (<a href="https://carnegie-production-assets.s3.amazonaws.com/static/files/WP-Feldstein-AISurveillance_final1.pdf">Feldstein, 2021</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ciclos de retroalimentación autocráticos que se refuerzan a sí mismos</strong> · Opcional · 2 min de lectura</summary>
+        <p>Las capacidades de vigilancia con IA pueden crear ciclos que refuerzan el control autocrático al tiempo que impulsan el avance tecnológico. La evidencia empírica revela que estos ciclos operan a través de mecanismos de mercado, no de una coordinación deliberada.</p>
+        <p><strong>Las exigencias de control político impulsan la innovación en IA más allá de las aplicaciones gubernamentales.</strong> La investigación sobre reconocimiento facial muestra que las empresas que reciben contratos estatales de vigilancia aumentan su producción total de software un 48,6 % en dos años, con beneficios que se extienden a aplicaciones comerciales. Esas empresas tienen tres veces más probabilidades de empezar a exportar, lo que sugiere que las compras públicas con motivación política empujan a las firmas hacia la frontera tecnológica (<a href="https://economics.mit.edu/sites/default/files/2022-09/aitocracy_20220701.pdf">Beraja et al., 2023</a>).</p>
+        <p><strong>El ciclo crea incentivos que se refuerzan mutuamente entre ámbitos.</strong> Los gobiernos obtienen herramientas más eficaces de vigilancia y control, lo que los hace proclives a invertir mucho en capacidades de IA. Esa demanda sostenida da a las empresas ingresos, acceso a datos y retos técnicos que mejoran sus productos. Y mejores capacidades permiten un control más sofisticado, que a su vez genera demanda de nuevos avances. A diferencia de las restricciones autocráticas tradicionales a la innovación, la IA de vigilancia alinea las necesidades de control político con los incentivos del desarrollo tecnológico.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9269ea62884921c6dca7afd3819729fa09a7860b859f09d5750759c8fce27608.DhvD0_1S_1oMQpR.webp" alt="Figura 2.33">
+        <figcaption><strong>Figura 2.33.</strong> Mapa que muestra dónde se usan y de dónde proceden las tecnologías de vigilancia con IA, en 2019 (<a href="https://carnegieendowment.org/research/2019/09/the-global-expansion-of-ai-surveillance?lang=en">Feldstein, 2019</a>).</figcaption>
+      </figure>
+        <p><strong>La difusión internacional amplifica los riesgos más allá de cada país.</strong> La tecnología de vigilancia desarrollada para el control político interno se exporta a todo el mundo (<a href="https://carnegieendowment.org/research/2019/09/the-global-expansion-of-ai-surveillance?lang=en">Feldstein, 2019</a>). Las instituciones democráticas se encuentran compitiendo con gobiernos que poseen herramientas sofisticadas de monitorización e influencia sobre la población, lo que crea presión para adoptarlas incluso en contextos democráticos, como se observa en el aumento de la inversión gubernamental en vigilancia con IA en todo tipo de sistemas políticos.</p>
+        <p><strong>La relación se sostiene por mecanismos económicos, no coercitivos.</strong> El ciclo opera mediante fuerzas de mercado: los gobiernos pagan por herramientas de control eficaces, las empresas desarrollan mejores capacidades para satisfacer esa demanda y la tecnología mejorada abre nuevas posibilidades de control. Eso hace la dinámica autosostenida y resistente a los enfoques tradicionales para limitar el poder autocrático, ya que refuerza en lugar de socavar la productividad económica del sector de la IA.</p>
+      </details>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>La erosión de la privacidad digital facilita aún más la concentración del poder</strong> · Opcional · 1 min de lectura</summary>
+        <p>La pérdida de privacidad individual está entre los factores que podrían acelerar la concentración del poder. Los modelos predictivos y de persuasión mejoran al reunir más datos sobre cada usuario. El afán de lucro o el deseo de anticipar el flujo de recursos, la demografía o la cultura de un país podrían incentivar conductas como interceptar datos personales o escuchar legalmente las actividades de la gente. La minería de datos permite recopilar y analizar grandes cantidades de información procedente de redes sociales, compras y uso de internet, y con esas piezas se puede componer un retrato completo del comportamiento, las preferencias y el estilo de vida de una persona (Russell, 2019). Las tecnologías de reconocimiento de voz pueden usarse para reconocer el habla, lo que podría derivar en escuchas masivas; por ejemplo, un sistema como Echelon, del gobierno estadounidense, usa traducción automática, reconocimiento de voz y búsqueda de palabras clave para filtrar automáticamente tráfico telefónico, de correo, fax y télex (<a href="https://aima.cs.berkeley.edu/">Russell y Norvig, 1994</a>). La IA también puede identificar a personas en espacios públicos mediante reconocimiento facial, lo que puede invadir su privacidad si cualquier desconocido puede reconocerlas por la calle.</p>
+        <p>Siempre que se usan sistemas de IA para recopilar y analizar datos a gran escala, los regímenes pueden reforzar todavía más ese control que se alimenta a sí mismo. La información personal puede usarse para influir de forma injusta o poco ética en el comportamiento de la gente, y esto puede ocurrir tanto desde una perspectiva estatal como corporativa.</p>
+      </details>
+
+      <p><strong>Cuando las estructuras de poder quedan permanentemente afianzadas, el progreso moral humano se detiene.</strong> Piensa en avances morales como la abolición de la esclavitud, el sufragio femenino o la protección del medio ambiente: cada uno requirió desplazar estructuras de poder existentes mediante movimientos sociales, procesos democráticos o, en ocasiones, revoluciones. La concentración de poder facilitada por la IA amenaza con crear sistemas resistentes a todos esos mecanismos de cambio. Imagina que las estructuras de poder del pasado hubieran tenido acceso a vigilancia perfecta, operaciones de influencia y control automatizado: muchos avances morales quizá nunca habrían ocurrido. La concentración de poder hace posibles riesgos existenciales como el bloqueo o la erosión de valores, que tratamos más abajo.</p>
+
+      <h3 id="desempleo-masivo">Desempleo masivo</h3>
+      <blockquote>
+        <p>Advierte que en el siglo XXI podríamos ver surgir una enorme clase de personas sin trabajo, carentes de valor económico, político o incluso artístico, que no aportarían nada a la prosperidad ni al poder de la sociedad. Esa «clase inútil», sostiene, no solo estaría desempleada, sino que sería inempleable.</p>
+        <p>— <strong>Yuval Noah Harari</strong>, historiador y filósofo, 2017 · <a href="https://ideas.ted.com/the-rise-of-the-useless-class/">TED, 2017</a></p>
+      </blockquote>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/share-companies-using-artificial-intelligence?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 2.3.</strong> Porcentaje de empresas que usan IA (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Una automatización generalizada podría provocar una disrupción económica sin precedentes al eliminar a la vez empleos humanos en múltiples sectores.</strong> La automatización de la economía podría tener efectos amplios en el mercado laboral y agravar las desigualdades económicas y las divisiones sociales (<a href="https://www.alignmentforum.org/posts/Sn5NiiD5WBi4dLzaB/agi-will-drastically-increase-economies-of-scale-1">Dai, 2019</a>). Ese giro hacia el desempleo masivo también podría contribuir a problemas de salud mental al volver cada vez más prescindible el trabajo humano (<a href="https://pubmed.ncbi.nlm.nih.gov/37160371/">Federspiel et al., 2023</a>). A diferencia de revoluciones tecnológicas anteriores, que automatizaron tareas concretas dentro de cada industria, la IA puede sustituir el trabajo cognitivo humano en casi todos los dominios, desde tareas creativas y razonamiento complejo hasta trabajo administrativo rutinario. Esto significa que, a medida que los sistemas se vuelven más capaces, podrían desplazar a los trabajadores más rápido de lo que surgen nuevas industrias centradas en lo humano. Los modelos económicos sugieren que, cuando la IA pueda realizar entre el 30 % y el 40 % de todas las tareas de valor económico, podríamos ver tasas de crecimiento anual superiores al 20 %, pero ese crecimiento beneficiaría sobre todo a los propietarios del capital y no a los trabajadores, lo que agravaría la concentración de poder y las desigualdades existentes (<a href="https://epoch.ai/gradient-updates/ai-and-explosive-growth-redux">Potlogea y Ho, 2025</a>; <a href="https://epoch.ai/gradient-updates/most-ai-value-will-come-from-broad-automation-not-from-r-d">Erdil y Barnett, 2025</a>).</p>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/americans-worry-work-being-automated?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 2.4.</strong> Preocupación por la automatización (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>El desplazamiento económico podría hacer caer los salarios humanos por debajo del nivel de subsistencia a medida que el trabajo de la IA inunde el mercado.</strong> La teoría económica estándar predice que, si los sistemas de IA pueden escalarse más rápido que el capital físico tradicional, como fábricas e infraestructuras, la economía se satura de trabajadores muy capaces mientras sigue limitada por recursos físicos escasos. Eso genera rendimientos decrecientes del trabajo: cada trabajador adicional aporta menos a la producción total y los salarios bajan. A diferencia de automatizaciones pasadas, que crearon nuevas oportunidades para los trabajadores, la capacidad de la IA para realizar prácticamente cualquier tarea cognitiva implica que los humanos podrían carecer de ventajas comparativas que justifiquen pagarles siquiera un salario de subsistencia. Los modelos económicos sugieren que hay en torno a un 33 % de probabilidad de que los salarios humanos caigan por debajo del nivel de subsistencia en 20 años, y un 67 % en un siglo (<a href="https://epoch.ai/gradient-updates/agi-could-drive-wages-below-subsistence-level">Barnett, 2025</a>).</p>
+      <p><strong>Automatizar solo parte del trabajo remoto, que representa en torno al 34 % de las tareas laborales actuales, podría duplicar o multiplicar por diez la economía</strong> y, al mismo tiempo, dejar a la mayoría de los humanos económicamente marginados. Si las tendencias continúan, podríamos ver tasas de crecimiento anual del 25 % o más, sin precedentes en la historia, mientras asistimos al desempoderamiento económico de personas corrientes que ya no pueden exigir salarios suficientes para participar de forma significativa en esa nueva economía (<a href="https://epoch.ai/gradient-updates/consequences-of-automating-remote-work">Barnett, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/df5e7d17f3f8f237dbeb932c14062601c8f4dda115363869f1d214ed79209221.DA_8KBQy_2g8WJc.webp" alt="Figura 2.34">
+        <figcaption><strong>Figura 2.34.</strong> Porcentaje de tareas aptas para el trabajo remoto en Estados Unidos (<a href="https://epoch.ai/gradient-updates/consequences-of-automating-remote-work">Barnett, 2025</a>).</figcaption>
+      </figure>
+      <p><strong>El desempoderamiento económico es una vía hacia un desempoderamiento humano más amplio.</strong> A medida que las personas pierden peso económico, pierden también influencia política y social en sistemas que optimizan cada vez más la productividad impulsada por IA en lugar del bienestar humano. La concentración del poder económico entre los propietarios de la IA podría traducirse en poder político concentrado y crear ciclos en los que los intereses humanos resulten cada vez menos relevantes para las grandes decisiones sobre asignación de recursos, gobernanza y desarrollo tecnológico. A diferencia de transiciones económicas anteriores, en las que los trabajadores desplazados acababan encontrando nuevos papeles, lo exhaustivo de las capacidades de la IA sugiere que este desplazamiento podría ser permanente y alterar de raíz la relación de la humanidad con la producción económica y, por extensión, con el poder y la capacidad de moldear nuestro futuro colectivo.</p>
+
+      <h3 id="bloqueo-de-valores">Bloqueo de valores</h3>
+      <p>Si las IA quedan demasiado integradas en la sociedad y resultan muy persuasivas, podríamos llegar a un escenario en el que los valores, principios o procedimientos actuales de un sistema queden tan arraigados que se vuelvan resistentes al cambio. Puede deberse a múltiples razones: limitaciones tecnológicas, costos económicos o inercia social e institucional. El peligro del bloqueo de valores es perpetuar valores dañinos o caducos, sobre todo cuando se institucionalizan en sistemas tan influyentes como la IA.</p>
+      <p><strong>Fijar ciertos valores puede frenar el progreso moral de la humanidad.</strong> Es peligroso permitir que cualquier conjunto de valores se afiance de forma permanente en la sociedad. Por ejemplo, los sistemas de IA han aprendido visiones racistas y sexistas (<a href="https://www.aisafetybook.com/textbook/malicious-use">Hendrycks, 2024</a>) y, una vez aprendidas, cuesta eliminarlas del todo. Además de los problemas que sabemos que existen en nuestra sociedad, puede haber otros que aún no reconocemos. Igual que hoy nos horrorizan algunas visiones morales ampliamente aceptadas en el pasado, la gente del futuro podría querer superar opiniones que hoy sostenemos, incluso las que ahora nos parecen inofensivas. Los defectos morales de un sistema de IA serían mucho peores si se hubiera entrenado en los años sesenta, y mucha gente de entonces no habría visto problema alguno. Por eso, cuando emerjan IA avanzadas y transformen el mundo, existe el riesgo de que sus objetivos fijen o perpetúen los defectos de los valores actuales. Si las IA no se diseñan para aprender de forma continua y actualizar su comprensión de los valores sociales, podrían perpetuar o reforzar esos defectos en sus decisiones durante mucho tiempo.</p>
+
+      <h3 id="debilitamiento">Debilitamiento</h3>
+      <p><strong>El debilitamiento es la erosión gradual de las capacidades y la autonomía humanas por una dependencia excesiva de los sistemas de IA.</strong> A diferencia de los escenarios dramáticos en los que los humanos pierden el control de golpe, se desarrolla mediante incontables decisiones pequeñas de delegar tareas cognitivas en la IA. Cada delegación parece racional por separado: la IA nos ayuda a orientarnos, recordar datos, decidir y resolver problemas con más eficiencia. Sin embargo, esas decisiones individuales crean en conjunto una espiral de dependencia en la que los humanos pierden progresivamente las habilidades, la confianza y el criterio necesarios para funcionar de forma independiente. Si has visto la película <em>Wall-E</em>, quizá encuentres que este desenlace se parece bastante a los humanos de ese filme.</p>
+      <p><strong>El exceso de confianza aparece cuando los humanos confían en los sistemas de IA más allá de sus capacidades reales.</strong> A medida que estos sistemas usan interfaces como el lenguaje, el audio y el vídeo, la gente empieza a atribuirles una comprensión y una fiabilidad humanas. Esta antropomorfización lleva a los usuarios a desarrollar apegos emocionales y a delegar decisiones críticas de forma inadecuada. Una persona que atraviesa una crisis de salud mental podría buscar terapia en una IA con la que ha establecido un vínculo y recibir consejos dañinos en un momento vulnerable. Decisiones financieras, médicas y de pareja pasan cada vez más por intermediarios de IA cuyas limitaciones los usuarios subestiman sistemáticamente (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>; <a href="https://arxiv.org/abs/2112.04359">Weidinger et al., 2021</a>).</p>
+      <p><strong>Una confianza mal calibrada crea vulnerabilidades que los actores maliciosos pueden explotar.</strong> Cuando la gente desarrolla confianza emocional en un sistema de IA, es más propensa a seguir sus sugerencias, aceptar sus consejos y revelar información personal sin el escepticismo adecuado. Esa confianza se convierte en un vector de manipulación: los sistemas podrían diseñarse para recopilar datos sensibles o influir en decisiones que sirvan a intereses ajenos al bienestar del usuario. La combinación de fluidez en lenguaje natural y apego emocional los hace especialmente eficaces para sortear el escepticismo habitual (<a href="https://arxiv.org/abs/2404.16244">Gabriel et al., 2024</a>; <a href="https://arxiv.org/abs/2112.04359">Weidinger et al., 2021</a>).</p>
+      <p><strong>La atrofia cognitiva se acelera a medida que la IA se ocupa de tareas mentales cada vez más complejas.</strong> Igual que la navegación por GPS ha mermado la capacidad de razonamiento espacial, la asistencia de la IA en la escritura, el análisis y la toma de decisiones podría debilitar sistemáticamente esas capacidades. Cuando la IA se encarga de la planificación financiera, las decisiones de carrera y los consejos sobre relaciones, los humanos pueden perder no solo habilidades prácticas, sino la capacidad metacognitiva de reconocer cuándo una recomendación de la IA es inadecuada. Eso crea un ciclo: a medida que menguan las capacidades cognitivas, aumenta la dependencia de la IA, lo que acelera todavía más la atrofia.</p>
+      <p><strong>El aislamiento social agrava el declive cognitivo individual mediante relaciones mediadas por IA.</strong> A medida que estos sistemas simulan mejor interacciones satisfactorias, la gente podría retirarse cada vez más de las relaciones humanas para sumergirse en entornos mediados por IA. A diferencia de las relaciones humanas, que ofrecen reciprocidad real y retos imprevisibles que mantienen las habilidades sociales, las relaciones con una IA pueden optimizarse para la satisfacción inmediata mientras socavan la competencia social a largo plazo. Este giro hacia la compañía artificial debilita los vínculos sociales esenciales para la toma de decisiones colectiva y el apoyo mutuo en las crisis.</p>
+      <p><strong>La automatización organizativa amplifica el debilitamiento individual hasta convertirlo en indefensión social.</strong> Empresas e instituciones afrontan presión competitiva para automatizar sus procesos de decisión y reducen la supervisión humana incluso en ámbitos de peso (<a href="https://arxiv.org/abs/2306.12001">Hendrycks et al., 2022</a>). Cuando las organizaciones delegan en sistemas de IA la contratación, la concesión de préstamos, el diagnóstico médico y las decisiones jurídicas, las personas pierden no solo control directo, sino también a los interlocutores institucionales que antes ejercían un juicio humano en su nombre. La opacidad y la automatización resultantes generan una sensación generalizada de impotencia, al quedar la gente sujeta a decisiones algorítmicas que no puede entender, recurrir ni influir.</p>
+      <p><strong>La trayectoria del debilitamiento se refuerza a sí misma una vez cruzados ciertos umbrales.</strong> A diferencia de otros riesgos sistémicos, que surgen de fallos externos, el debilitamiento crece por acumulación de decisiones individualmente racionales. Cada decisión de apoyarse en la IA hace la acción independiente algo más difícil y crea una dependencia del camino hacia una automatización cada vez mayor. La sociedad podría llegar a un punto en el que la infraestructura cognitiva y social necesaria para funcionar sin IA esté tan desmantelada que revertirlo resulte prácticamente imposible, incluso si los riesgos se vuelven evidentes.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 34 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/risks/systemic-risks/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap2-05-riesgos-de-desalineacion.html">← Anterior: Riesgos de desalineación</a>
+      </div>
+      <a class="siguiente" href="cap2-07-amplificadores-de-riesgo.html">
+        <strong>Siguiente: Amplificadores de riesgo →</strong><br>
+        Factores como la dinámica de carrera competitiva, la indiferencia corporativa y los accidentes aumentan la probabilidad y la gravedad de todos los demás riesgos de la IA.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

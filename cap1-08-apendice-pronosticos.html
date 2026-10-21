@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apéndice: Pronósticos · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Apéndice sobre pronósticos: hardware, algoritmos, semiconductores, inversión y energía.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li class="activo"><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Apéndice: Pronósticos</h1>
+      
+      <p class="meta">12 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#computo-efectivo">Cómputo efectivo</a></li>
+          <li><a href="#inversion-y-costos-de-entrenamiento">Inversión y costos de entrenamiento</a></li>
+          <li><a href="#consumo-de-energia">Consumo de energía</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <h2 id="computo-efectivo">Cómputo efectivo</h2>
+
+      <h3 id="eficiencia-del-hardware">Eficiencia del hardware</h3>
+      <p>El primer factor para aumentar el cómputo efectivo es la eficiencia con la que el hardware que producimos realiza cálculos.</p>
+      <p><strong>Los chips de IA ganan un 35 % de potencia cada año, pero nos acercamos a límites físicos.</strong> Desde alrededor de 2010, el rendimiento de cómputo bruto (FLOP/s) de las GPU en precisión FP32 ha crecido aproximadamente 1,35 veces al año (<a href="https://epoch.ai/trends">Epoch AI, 2023</a>; <a href="https://epoch.ai/blog/trends-in-machine-learning-hardware">Hobbhahn et al., 2023</a>). La mejora se debe a factores como transistores más densos, circuitos especializados para IA y el paso a formatos numéricos de menor precisión. El rendimiento por dólar ha mejorado rápidamente: el hardware de una precisión dada y con un rendimiento fijo se abarata un 30 % cada año. Al mismo tiempo, los fabricantes siguen lanzando hardware más potente y más caro (<a href="https://epoch.ai/data/machine-learning-hardware">Epoch AI, 2025</a>).</p>
+      <p><strong>Es probable que esta tendencia continúe en el futuro cercano, pero los límites termodinámicos acabarán frenándola.</strong> Los chips solo pueden ser eficientes energéticamente hasta cierto punto antes de que la física diga «no». Todo cálculo genera calor por una ley fundamental de la física, no por un problema de ingeniería. Los análisis actuales sugieren que hay margen para mejorar la eficiencia energética entre 50 y 1000 veces antes de alcanzar los límites fundamentales de la tecnología CMOS, con un 50 % de probabilidad de que las mejoras se detengan antes de multiplicar por unas 200 la tecnología actual. Estas estimaciones sugieren que los procesadores CMOS probablemente son lo bastante eficientes como para alimentar entrenamientos de IA mucho mayores que los actuales.<sup><a href="#nota-1" id="ref-1">1</a></sup> Esto implica que tenemos un margen considerable para escalar con los paradigmas de silicio actuales hasta 2030 y más allá, aunque los rendimientos de la I+D en hardware podrían acabar disminuyendo al acercarnos a los límites físicos. Más allá de ellos, los entrenamientos probablemente requerirían cambios radicales en los paradigmas de cómputo, como el paso a la computación adiabática (<a href="https://epoch.ai/blog/limits-to-the-energy-efficiency-of-cmos-microprocessors">Ho et al., 2023</a>; <a href="https://epoch.ai/blog/can-ai-scaling-continue-through-2030">Sevilla et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bdb134a95993fb4816fbb2e070440888792c5400c6146ba14308ce1b04b25327.rtTkIm2P_Z4EhJy.webp" alt="Figura 1.49">
+        <figcaption><strong>Figura 1.49.</strong> Tendencias observadas en la eficiencia del hardware usado para aprendizaje automático en las últimas décadas. Se aprecia un claro aumento, año tras año, del rendimiento de cómputo máximo (<a href="https://epoch.ai/blog/trends-in-machine-learning-hardware">Hobbhahn et al., 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/a3f2cc4543e98eccdfae46d3b4d6d37dcd1ae74150ef2d9f996d9fb8a9f23b22.C7PGqa6m_1iKt6I.webp" alt="Figura 1.50">
+        <figcaption><strong>Figura 1.50.</strong> Pronóstico realizado con el simulador del modelo GATE (<em>Growth and AI Transition Endogenous</em>). El gráfico muestra cómo la inversión en I+D en hardware mejora la eficiencia de los chips de IA (medida en FLOP/año por dólar). Con el tiempo, la eficiencia del hardware queda limitada por los límites físicos. La línea roja corresponde a parámetros agresivos y la verde, a parámetros conservadores; la zona roja resalta la diferencia entre ambos en los plazos hasta la automatización total (<a href="https://epoch.ai/gate">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+
+      <h3 id="eficiencia-del-software-y-de-los-algoritmos">Eficiencia del software y de los algoritmos</h3>
+      <p>El segundo factor para aumentar el cómputo efectivo es lo bien que aprovechamos todo el hardware existente, algo distinto de hacer más eficiente el propio hardware físico.</p>
+      <p><strong>Los mejores algoritmos han reducido unas 3 veces al año el cómputo necesario para obtener un resultado dado.</strong> El cómputo necesario para alcanzar un nivel de rendimiento determinado se ha reducido a la mitad aproximadamente cada 8 meses.<sup><a href="#nota-2" id="ref-2">2</a></sup> Esta mejora tan rápida significa que el cómputo necesario para alcanzar ciertos niveles de capacidad en los benchmarks puede caer varios órdenes de magnitud en solo unos años de progreso algorítmico. Las mejoras en la eficiencia del cómputo explican aproximadamente el 35 % de las mejoras de rendimiento en el modelado del lenguaje desde 2014; el 65 % restante se debe simplemente a fabricar más chips y hacerlos funcionar durante más tiempo. En conjunto, esto significa que estamos aprendiendo a aprovechar mejor el hardware disponible, y no solo a lanzar más cómputo a los problemas (<a href="https://epoch.ai/trends">Epoch AI, 2023</a>; <a href="https://epoch.ai/blog/algorithmic-progress-in-language-models">Ho et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/eb988e1bd46f91bd8a3352483694e332564153ad2ca3ff6d618f7c60ba6f7b92.Bz_2uoRR_Z2rUai8.webp" alt="Figura 1.51">
+        <figcaption><strong>Figura 1.51.</strong> Estimaciones de la contribución del escalado y de la innovación algorítmica, expresadas como el cómputo bruto que harían falta, de forma ingenua, para alcanzar un rendimiento de vanguardia. La contribución del progreso algorítmico es aproximadamente la mitad que la del escalado del cómputo (<a href="https://epoch.ai/blog/algorithmic-progress-in-language-models">Ho et al., 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/dcc6ba3945fe1ec4e062f6a686d913ea6e7ab4f1bb26838f47bf35c190c648e5.D1B_mtUY_YW8zW.webp" alt="Figura 1.52">
+        <figcaption><strong>Figura 1.52.</strong> Pronóstico realizado con el simulador del modelo GATE. El gráfico muestra las mejoras algorítmicas a lo largo del tiempo: con mejores algoritmos y datos de mayor calidad, es posible hacer más con el mismo hardware (medido en «FLOP efectivos por FLOP»). La línea roja corresponde a parámetros agresivos y la verde, a parámetros conservadores; la zona roja resalta la diferencia entre ambos en los plazos hasta la automatización total (<a href="https://epoch.ai/gate">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+
+      <h3 id="produccion-de-semiconductores">Producción de semiconductores</h3>
+      <p>El tercer factor para aumentar el cómputo efectivo es cuántos chips se pueden fabricar realmente.</p>
+      <p><strong>La potencia de cómputo total disponible en chips de NVIDIA crece aproximadamente 2,3 veces al año desde 2019</strong>, lo que permite entrenar modelos cada vez más grandes. NVIDIA diseña una parte dominante de los chips de entrenamiento de IA, y la taiwanesa TSMC es la principal fábrica de chips de estos fabricantes. La cadena de suministro de chips de IA está muy concentrada. En 2024, TSMC dedicó aproximadamente el 5 % de su producción de chips avanzados a aceleradores de IA; el resto se destina a teléfonos, computadoras y otros aparatos electrónicos (<a href="https://epoch.ai/blog/can-ai-scaling-continue-through-2030">Sevilla et al., 2024</a>). Si los laboratorios de IA quisieran muchos más chips, TSMC tendría que cambiar sus prioridades, ampliar su capacidad y competir con otros clientes que también quieren semiconductores de vanguardia (<a href="https://epoch.ai/data-insights/nvidia-chip-production">Epoch AI, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c50e93e29d48ea44d7b4c1168a76e45ec55a4d5777f5fbdd2374ab45a19b9db4.BRIBDf5H_1UzYmU.webp" alt="Figura 1.53">
+        <figcaption><strong>Figura 1.53.</strong> Estimación de la capacidad de cómputo instalada en el mundo en GPU de NVIDIA, desglosada por modelo de GPU (<a href="https://epoch.ai/data-insights/nvidia-chip-production">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/fafb3fa17ebfdb40c333e59acb398411662a9e81c2e67e9bcf707975fe0f69fb.CgpxvwKI_e4WKe.webp" alt="Figura 1.54">
+        <figcaption><strong>Figura 1.54.</strong> Tabla con estimaciones de los costos y los plazos necesarios para superar distintas limitaciones al ampliar la producción de cómputo (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/nvidia-quarterly-revenue-segment?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.4.</strong> Ingresos trimestrales de NVIDIA Corporation en sus principales segmentos de mercado, en dólares estadounidenses. NVIDIA fabrica unidades de procesamiento gráfico (GPU), que al principio se usaban para videojuegos y hoy se usan para entrenar modelos de IA. Datos no ajustados por inflación (<a href="https://ourworldindata.org/artificial-intelligence">Our World in Data, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La inversión no acelera de inmediato la producción de chips.</strong> Si un país quiere construir su propio equivalente de TSMC, levantar una nueva fábrica de vanguardia puede llevar entre 4 y 5 años (contando la construcción y los permisos); modernizar una fábrica existente lleva menos, unos 2 años, además de miles de millones en inversión (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>; <a href="https://arxiv.org/abs/2503.04941">Epoch AI, 2025</a>). Además de la competencia existente por los chips de TSMC, hay otro factor: las máquinas que TSMC necesita para fabricarlos las produce, casi en exclusiva, una sola empresa, la neerlandesa ASML (<a href="https://epoch.ai/gradient-updates/why-china-isnt-about-to-leap-ahead-of-the-west-on-compute">Blablová, 2025</a>). Estas máquinas de litografía ultravioleta extrema (EUV) cuestan entre 150 y 380 millones de dólares cada una. Si alguien (por ejemplo, TSMC) quiere ampliar la producción, no puede simplemente encargar cincuenta más para el mes siguiente: tiene que sumarse a una lista de espera ya larga (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>; <a href="https://axrp.net/episode/2024/10/04/episode-37-jaime-sevilla-forecasting-ai.html">Sevilla, pódcast AXRP, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4379d79917d0fad0adf1f7afd9c561ce5440c4e95b5373929e365f94e04a7b64.fMk2I0Ny_10wiQB.webp" alt="Figura 1.55">
+        <figcaption><strong>Figura 1.55.</strong> Pronóstico realizado con el simulador del modelo GATE. El gráfico muestra la posible ampliación de la fabricación de chips de IA para satisfacer la demanda de cargas de trabajo de IA. Como las expansiones rápidas tienen un costo exponencial, el crecimiento se reduce mediante un parámetro de «costos de ajuste». La línea roja corresponde a parámetros agresivos y la verde, a parámetros conservadores; la zona roja resalta la diferencia entre ambos en los plazos hasta la automatización total (<a href="https://epoch.ai/gate">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="inversion-y-costos-de-entrenamiento">Inversión y costos de entrenamiento</h2>
+      <p><strong>El costo en dólares de entrenar modelos de frontera crece 3,5 veces al año desde 2020.</strong> Si las tendencias continúan, en 2027 el entrenamiento de un solo modelo rondará los mil millones de dólares. El costo se reparte, aproximadamente, así: entre el 50 % y el 65 % para el hardware (amortizado a lo largo de su vida útil), entre el 30 % y el 45 % para los investigadores e ingenieros, y entre el 2 % y el 6 % para la electricidad. Hasta ahora lo han financiado el capital riesgo y las grandes tecnológicas, pero estas cifras se acercan a escalas en las que solo los Estados o las mayores corporaciones pueden competir (<a href="https://epoch.ai/blog/how-much-does-it-cost-to-train-frontier-ai-models">Cottier et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f06a1e183fe969589fa929fb1d9dff951a83b6e6a6df2caf3aceb704e885d37d._td_T3Sm_Ziy6Jq.webp" alt="Figura 1.56">
+        <figcaption><strong>Figura 1.56.</strong> Desglose de los costos de desarrollo de algunos modelos. Los costos de hardware se amortizan según el total de horas-chip dedicadas a experimentos y entrenamiento. Los costos del personal de I+D cubren todo el desarrollo, desde los primeros experimentos hasta la publicación (<a href="https://epoch.ai/blog/how-much-does-it-cost-to-train-frontier-ai-models">Cottier et al., 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/hardware-and-energy-cost-to-train-notable-ai-systems?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.5.</strong> Costo de hardware y energía para entrenar sistemas de IA destacados, en dólares estadounidenses ajustados por inflación (<a href="https://ourworldindata.org/artificial-intelligence">Our World in Data, 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/caa98a2ded9650e9f63377f25ab123f847060f358bca6814166ad4ca387c587a.CeDOP_zi_1yAh1x.webp" alt="Figura 1.57">
+        <figcaption><strong>Figura 1.57.</strong> Costo amortizado del hardware más el costo energético del entrenamiento final de modelos de frontera. Los modelos seleccionados están entre los 10 que más cómputo usaron en su momento. El costo amortizado del hardware es el producto de las horas-chip de entrenamiento por un costo de hardware depreciado, con un 23 % adicional por la red del clúster. Los círculos vacíos indican costos calculados con una estimación del costo de producción del hardware TPU de Google; suelen ser más inciertos que los demás, que usaron datos de precios reales (<a href="https://epoch.ai/blog/how-much-does-it-cost-to-train-frontier-ai-models">Cottier et al., 2025</a>).</figcaption>
+      </figure>
+      <p><strong>El costo de adquisición del hardware usado para entrenar modelos de IA de frontera crece 2,5 veces al año desde 2016.</strong> Para que te hagas una idea de cuánto cuesta entrenar un modelo de frontera, el costo amortizado total de desarrollar Grok-4 (lanzado en julio de 2025), incluidos el hardware y la electricidad, se estima en 480 millones de dólares. El costo de adquisición del hardware para entrenar Grok-3, incluidas las GPU, otros componentes de los servidores y la red, se estima en 3000 millones de dólares, y el hardware usado para entrenar Grok-4 podría haber sido aún más caro (<a href="https://epoch.ai/trends">Epoch AI, 2025</a>).</p>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/private-investment-in-artificial-intelligence-cset?tab=line">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.6.</strong> Dinero aportado por inversores privados a empresas de IA de capital privado. Excluye las empresas que cotizan en bolsa (como las grandes tecnológicas) y el gasto interno de las empresas, como la I+D o la infraestructura. En dólares estadounidenses ajustados por inflación (<a href="https://ourworldindata.org/artificial-intelligence">Our World in Data, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Una incógnita es si los rendimientos de las mejoras de productividad justificarán que siga la inversión.</strong> En 2025 hubo muchos titulares sobre inversiones circulares y una «burbuja de la IA». Si la IA puede automatizar una parte importante del trabajo cognitivo, captar aunque sea una fracción del mercado laboral mundial hace que las inversiones de billones de dólares sean racionales. Sin embargo, las inversiones masivas se enfrentan a obstáculos cada vez mayores por limitaciones estructurales. A medida que el cómputo escala, el plazo entre el inicio de un proyecto y su puesta en marcha se alarga mucho (aproximadamente un año por cada aumento de diez veces en la escala), lo que crea un ciclo de retroalimentación que frena de forma natural el ritmo del escalado (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>). Esta incertidumbre sobre los rendimientos a largo plazo podría llevar a los inversores a preferir un escalado gradual, dividiendo los proyectos en partes más pequeñas para evaluar los rendimientos antes de comprometer más dinero, en lugar de hacer grandes inversiones por adelantado (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>). Varias cosas podrían romper el patrón por completo: que los modelos alcancen un techo de capacidades en el que más cómputo no ayude, que la regulación limite el tamaño de los entrenamientos o de los centros de datos, que los costos energéticos hagan antieconómicos los grandes entrenamientos o que una recesión económica seque el capital. Cada una representa una forma distinta en que el escalado podría detenerse, con independencia de su viabilidad técnica.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/fedf8fa8bc073d10df89d911a0e41ba559e0c33fad24a14aabb18db80cdf10e5.BsCjVJpR_246vhG.webp" alt="Figura 1.58">
+        <figcaption><strong>Figura 1.58.</strong> Pronóstico realizado con el simulador del modelo GATE. GATE predice altos niveles de inversión en capital e I+D relacionados con la IA para sostener una enorme expansión de la reserva de cómputo efectivo. Esto implica grandes reasignaciones desde la inversión de capital convencional y el consumo, y ocurre antes de que la IA genere un valor económico significativo, motivado por las grandes recompensas de la automatización por IA. La línea roja corresponde a parámetros agresivos y la verde, a parámetros conservadores; la zona roja resalta la diferencia entre ambos en los plazos hasta la automatización total (<a href="https://epoch.ai/gate">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b14c4e692da0b2b03657cff6d8eae07677920f65fd7f8ac8faeb0a6a46aa8923.BY3OFUkL_Zu2K9B.webp" alt="Figura 1.59">
+        <figcaption><strong>Figura 1.59.</strong> Las grandes inversiones en IA preceden a los beneficios económicos de la automatización, impulsadas por la expectativa de grandes recompensas futuras. Al inicio de las simulaciones hay un breve periodo con una inversión sustancial en IA, pero con poco valor económico generado. Sin embargo, a medida que avanza la automatización, el valor generado por la IA crece rápidamente y en pocos años representa la mayor parte de la producción. El modelo GATE capta así la dinámica según la cual vale la pena hacer grandes inversiones por adelantado para disfrutar del valor que genera la IA. La inversión se mide como la fracción de la producción económica anual que se reinvierte en IA, y el beneficio, como la fracción de la producción anual atribuible al despliegue de trabajadores digitales. La línea roja corresponde a parámetros agresivos y la verde, a parámetros conservadores; la zona roja resalta la diferencia entre ambos en los plazos hasta la automatización total (<a href="https://epoch.ai/gate">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="consumo-de-energia">Consumo de energía</h2>
+      <p><strong>Entrenar modelos de frontera requiere tanta electricidad como una ciudad pequeña.</strong> El entrenamiento de GPT-4 consumió probablemente unos 50 megavatios, lo equivalente a abastecer a unos 40 000 hogares estadounidenses. Si el escalado del cómputo continúa a un ritmo de 4 a 5 veces al año, en 2030 los entrenamientos de frontera necesitarán entre 4 y 16 gigavatios, tanto como la presa Grand Coulee, la mayor central eléctrica de Estados Unidos (<a href="https://epoch.ai/blog/power-demands-of-frontier-ai-training">You et al., 2025</a>).</p>
+      <p><strong>Los costos energéticos siguen siendo pequeños en comparación con los del hardware, pero esto podría cambiar.</strong> Hoy la electricidad representa solo entre el 2 % y el 6 % del costo total del entrenamiento, y el presupuesto lo dominan el hardware y el personal (<a href="https://epoch.ai/blog/how-much-does-it-cost-to-train-frontier-ai-models">Cottier et al., 2024</a>). Pero si los entrenamientos escalan a 10 gigavatios o más mientras se frenan las mejoras de eficiencia del hardware, la energía podría pasar a ser una fracción mucho mayor de los costos. A 0,05 dólares por kilovatio-hora, un entrenamiento de 10 GW que dure 100 días cuesta unos 120 millones de dólares solo en electricidad. Sigue siendo menos que el hardware, pero ya no es despreciable. Y, en la práctica, asegurar suministros de varios gigavatios podría costar bastante más de lo que sugieren las tarifas mayoristas de electricidad.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/487591961ef339d5cf030b1222adb956d309714c87b08469b99bb08fc9428db7.BsohuGYB_ZXOfNq.webp" alt="Figura 1.60">
+        <figcaption><strong>Figura 1.60.</strong> Tendencia histórica y pronóstico de la demanda eléctrica de los mayores entrenamientos de frontera individuales (<a href="https://epoch.ai/blog/power-demands-of-frontier-ai-training">You et al., 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/10b45a2130b1b013ff68caa43e3dda39f356bdcca7355ce8bfa17e2bb74b99ad.BqNUWOtj_6chaO.webp" alt="Figura 1.61">
+        <figcaption><strong>Figura 1.61.</strong> Consumo energético previsto de los centros de datos de frontera planificados por algunas empresas de IA (<a href="https://epoch.ai/data/data-centers">Epoch AI, 2025</a>).</figcaption>
+      </figure>
+      <p><strong>Escalar los sistemas de IA a los niveles previstos para 2030 requerirá una infraestructura energética considerable.</strong> Un entrenamiento de 2×10<sup>29</sup> FLOP necesitaría unos 6 GW de potencia, suponiendo mejoras en la eficiencia del hardware. Esta escala exige campus de centros de datos de entre 1 y 5 GW para finales de la década (<a href="https://epoch.ai/blog/can-ai-scaling-continue-through-2030">Sevilla et al., 2024</a>). Los plazos aumentan con la escala: cada aumento adicional de 10 veces en la reserva de cómputo añade aproximadamente un año a los plazos de los proyectos, y construir las grandes centrales eléctricas necesarias suele llevar entre 2 y 3 años (<a href="https://epoch.ai/gradient-updates/compute-scaling-will-slow-down-due-to-increasing-lead-times">Edelman y Ho, 2025</a>). Pese a estos obstáculos, la energía sigue siendo una pequeña parte de los gastos de un centro de datos, aproximadamente una décima parte del costo de los chips, lo que hace racional la inversión de capital dados los posibles rendimientos (<a href="https://epoch.ai/gradient-updates/is-almost-everyone-wrong-about-americas-ai-power-problem">Ho et al., 2025</a>).</p>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/electricity-generation?tab=map">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.7.</strong> Electricidad total generada en cada país o región, medida en teravatios-hora (<a href="https://ourworldindata.org/energy-production-consumption">Our World in Data, 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/levelized-cost-of-energy?tab=line">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.8.</strong> El costo nivelado de la energía (LCOE) lo tiene todo en cuenta: el costo de construir la central más los costos de mantenerla en funcionamiento durante toda su vida útil. El costo de generar energía por vatio lleva décadas bajando, y de forma aún más drástica en las fuentes renovables (<a href="https://ourworldindata.org/grapher/levelized-cost-of-energy">Our World in Data, 2026</a>).</figcaption>
+      </figure>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">CMOS (semiconductor complementario de óxido metálico) es el paradigma principal en la fabricación de procesadores. La mayoría de los circuitos integrados digitales que se producen hoy (CPU, GPU, RAM, sistemas en chip para móviles) son CMOS. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Intervalo de confianza del 95 %: de 5 a 14 meses. <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 18 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/appendix-forecasting/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-07-despegue.html">← Anterior: Despegue</a>
+      </div>
+      <a class="siguiente" href="cap1-09-apendice-despegue.html">
+        <strong>Siguiente: Apéndice: Despegue →</strong><br>
+        La trayectoria de la IA avanzada también depende de si el progreso es suave o discontinuo, de si los sistemas son parecidos o diversos y de si el poder se concentra en un solo actor o se distribuye ampliamente.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

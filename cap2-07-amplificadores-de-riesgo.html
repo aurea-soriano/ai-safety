@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amplificadores de riesgo · Capítulo 2 – AI Safety Atlas</title>
+  <meta name="description" content="Amplificadores de riesgo: dinámica de carrera, accidentes, indiferencia, fallos de coordinación e imprevisibilidad.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>2. Riesgos</h2>
+        <ol>
+          <li><a href="cap2-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap2-02-descomposicion-del-riesgo.html">Descomposición del riesgo</a></li>
+          <li><a href="cap2-03-capacidades-peligrosas.html">Capacidades peligrosas</a></li>
+          <li><a href="cap2-04-riesgos-de-uso-indebido.html">Riesgos de uso indebido</a></li>
+          <li><a href="cap2-05-riesgos-de-desalineacion.html">Riesgos de desalineación</a></li>
+          <li><a href="cap2-06-riesgos-sistemicos.html">Riesgos sistémicos</a></li>
+          <li class="activo"><a href="cap2-07-amplificadores-de-riesgo.html">Amplificadores de riesgo</a></li>
+          <li><a href="cap2-08-conclusion.html">Conclusión</a></li>
+          <li><a href="cap2-09-apendice-cuantificar-los-riesgos-existenciales.html">Apéndice: Cuantificar los riesgos existenciales</a></li>
+          <li><a href="cap2-10-apendice-escenarios-de-pronostico.html">Apéndice: Escenarios de pronóstico</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 2: Riesgos</p>
+      <h1>Amplificadores de riesgo</h1>
+      <p><em>Factores como la dinámica de carrera competitiva, la indiferencia corporativa y los accidentes aumentan la probabilidad y la gravedad de todos los demás riesgos de la IA.</em></p>
+      <p class="meta">16 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter2-audio-de0f47b26a28e578fd3ccfaa45e0b6c5a1c5b1c489ceaed43f3fc1df463e4b4f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter2-5b1a73865dd27cac90c71a2eab04a1be18a35708cd7ec253957b9321bd77ba7c.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/risks.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2508.13700">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+        <li><a href="https://www.youtube.com/watch?v=dhr4u-w75aQ">Ver la clase en YouTube (en inglés, desactualizada)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#dinamica-de-carrera">Dinámica de carrera</a></li>
+          <li><a href="#accidentes">Accidentes</a></li>
+          <li><a href="#indiferencia">Indiferencia</a></li>
+          <li><a href="#problemas-de-accion-colectiva">Problemas de acción colectiva</a></li>
+          <li><a href="#imprevisibilidad">Imprevisibilidad</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: las citas destacadas de esta sección son declaraciones de terceros y no forman parte del texto con licencia CC BY-SA del libro. Por eso traducimos solo un fragmento breve de cada una y resumimos el resto con nuestras palabras. Las citas completas, en inglés, están en la <a href="https://ai-safety-atlas.com/chapters/v1/risks/risk-amplifiers/">sección original</a>.</em></p>
+
+      <p>Los riesgos de la IA no existen de forma aislada: los amplifican las dinámicas de competencia y de coordinación que rodean su desarrollo. Aunque cada sistema por separado pueda plantear riesgos manejables, el ecosistema más amplio de cómo se desarrollan, despliegan y gobiernan estos sistemas genera presiones sistémicas que pueden aumentar mucho la probabilidad y la gravedad de los resultados dañinos. Estos factores amplificadores operan con independencia de cualquier capacidad o modo de fallo concreto, lo que los hace especialmente importantes de entender y abordar.</p>
+
+      <h2 id="dinamica-de-carrera">Dinámica de carrera</h2>
+      <p><strong>Las presiones competitivas socavan sistemáticamente la inversión en seguridad cuando la velocidad aporta ventajas decisivas.</strong> El desarrollo de la IA se parece cada vez más a lo que los economistas llaman una competición en la que «el ganador se lo lleva todo»: quien alcance primero ciertas capacidades clave captura recompensas desproporcionadas. Entre ellas están las ventajas de ser el primero en ganar cuota de mercado, el acceso al mejor talento y a los mejores datos, y la capacidad de fijar los estándares del sector (<a href="https://dl.acm.org/doi/10.1145/3278721.3278780">Cave y Ó hÉigeartaigh, 2018</a>). El resultado es una dinámica de carrera en la que los competidores sienten una presión intensa para priorizar la velocidad sobre las pruebas de seguridad y la mitigación de riesgos. A diferencia de revoluciones tecnológicas anteriores, que se desplegaron a lo largo de décadas, las capacidades de la IA avanzan a una velocidad sin precedentes: como señaló un análisis, la IA está emergiendo en plazos de años y meses, no de siglos ni décadas (<a href="https://arxiv.org/abs/2410.03092">Gruetzemacher et al., 2024</a>). Ese calendario comprimido intensifica las presiones competitivas y reduce el tiempo disponible para un trabajo de seguridad que podría tardar años en dar frutos.</p>
+      <p><strong>La dinámica de «carrera hacia el fondo» aparece cuando la seguridad se convierte en una desventaja competitiva.</strong> Piensa en lo que ocurre cuando una empresa decide reducir las pruebas de seguridad para acelerar el despliegue: mejora su posición esperada en el mercado y empeora la de sus competidores. Las demás empresas sienten entonces la presión de igualar esa menor inversión en seguridad para mantener su posición. El resultado es un problema de acción colectiva en el que todas acaban invirtiendo menos en seguridad de lo que preferirían, mientras conservan posiciones relativas parecidas en la carrera (<a href="https://arxiv.org/abs/1907.04534">Askell et al., 2024</a>). Podríamos ver modelos publicados pese a vulnerabilidades conocidas, justificados por la necesidad de mantener la posición de mercado. Cuando un competidor anuncia capacidades rompedoras, los demás se ven presionados a responder rápido con sus propios lanzamientos, a menudo recortando evaluaciones de seguridad previstas. La presión trimestral sobre las empresas cotizadas para mostrar avances a los inversores deja poco margen para un trabajo de seguridad que puede requerir meses o años. Como ejemplo concreto, una competencia de mercado sana no ha logrado impedir la difusión masiva de algoritmos de recomendación y contenido adictivo que socava la cohesión social y el bienestar individual. Lo mismo podría ocurrir con el desarrollo de la AGI si confiamos en los mecanismos del libre mercado para garantizar la seguridad.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>¿Por qué otras industrias no caen en una carrera hacia el fondo en seguridad?</strong> · Opcional · 1 min de lectura</summary>
+        <p>La industria farmacéutica ofrece un contraejemplo. El desarrollo de medicamentos implica una competencia intensa y mucha presión por llegar antes al mercado y, sin embargo, la carrera hacia el fondo en seguridad es rara. La diferencia clave está en cómo se han internalizado los fallos de seguridad mediante la regulación, la responsabilidad legal y los mecanismos de mercado. Las farmacéuticas se enfrentan a procesos estrictos de aprobación regulatoria que exigen pruebas exhaustivas antes de salir al mercado. Las que intentan recortar en seguridad afrontan rechazos regulatorios, una enorme exposición legal y un grave daño reputacional. Las fuerzas del mercado también apoyan la seguridad: pacientes y profesionales sanitarios prefieren claramente medicamentos de seguridad probada, y los sistemas de seguros añaden incentivos adicionales. En conjunto, eso eleva el «fondo» aceptable para todo el sector (<a href="https://arxiv.org/abs/1907.04534">Askell et al., 2024</a>).</p>
+        <p>El desarrollo de la IA carece hoy de estos mecanismos estabilizadores. Los procesos de aprobación regulatoria son mínimos o inexistentes para la mayoría de las aplicaciones. Los marcos de responsabilidad están poco desarrollados, lo que dificulta exigir cuentas a las empresas por los daños relacionados con la IA. Y los incentivos de mercado suelen favorecer la capacidad sobre la seguridad, porque a los clientes les cuesta evaluar la seguridad de un sistema y pueden priorizar funciones y rendimiento frente a la mitigación de riesgos.</p>
+      </details>
+
+      <p><strong>La carrera amplifica las tres categorías de riesgo por vías distintas.</strong> En los riesgos de uso indebido, aumenta la probabilidad de que capacidades potentes lleguen a actores maliciosos antes de que existan medidas de seguridad adecuadas, como se vio cuando los modelos de lenguaje capaces de generar desinformación y malware se volvieron ampliamente accesibles entre 2022 y 2023, antes de que hubiera contramedidas sólidas. En los riesgos de desalineación, reduce el tiempo disponible para la investigación en alineación y las pruebas de seguridad, lo que aumenta las probabilidades de que lleguen al despliegue sistemas que manipulan la especificación o que maquinan. En los riesgos sistémicos, acelera la integración de la IA en infraestructuras críticas antes de que la sociedad pueda adaptarse. La rápida adopción del trading algorítmico en los mercados financieros es un ejemplo: las ventajas competitivas derivadas de la velocidad llevaron a un despliegue generalizado antes de que existieran cortacircuitos adecuados, lo que contribuyó a los desplomes relámpago.</p>
+      <figure>
+        <p><a href="https://www.metaculus.com/questions/38418/us-and-china-reach-an-agreement-to-limit-frontier-ai-development-before-2029/">▶ Abrir la predicción interactiva en Metaculus (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 2.5.</strong> La dinámica de carrera dificulta colaborar y trabajar juntos para mitigar los riesgos de la IA. El pronóstico muestra lo improbable que resulta que Estados Unidos y China estén dispuestos a cooperar (<a href="https://www.metaculus.com/questions/38418/us-and-china-reach-an-agreement-to-limit-frontier-ai-development-before-2029/">Metaculus, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="accidentes">Accidentes</h2>
+      <p><strong>Un desarrollo bienintencionado puede producir resultados catastróficos por fallos involuntarios y errores humanos.</strong> Los sistemas fallan de formas que sus diseñadores nunca anticiparon, a menudo pese a una planificación cuidadosa y buenas intenciones. En el desastre del transbordador Challenger, los ingenieros esperaban un lanzamiento rutinario, pero el fallo de una junta tórica provocó una explosión y siete muertes (<a href="https://en.wikipedia.org/wiki/Space_Shuttle_Challenger_disaster#Launch_and_failure">Comisión Rogers, 1986</a>). En la misión Mariner 1, los científicos querían explorar Venus, pero un guion omitido en el código de guiado llevó a la destrucción de una nave de 80 millones de dólares (<a href="https://mitpress.mit.edu/9780262530828/beyond-the-limits/">Ceruzzi, 1989</a>). Los clorofluorocarbonos (CFC) se crearon para extintores y refrigerantes, pero sin saberlo abrieron un agujero en la capa de ozono que amenazó toda la vida en la Tierra (<a href="https://earthobservatory.nasa.gov/features/RemoteSensingAtmosphere/remote_sensing5.php">NASA, 2004</a>). Por muy avanzada que llegue a ser la tecnología, la necesidad fundamental de precisión y validación exhaustiva no cambia.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5ac9f2129244fd43af5290a0326de8aa5a13cd953c420e0afeaa92fd7c89cd0b.n8jOhyhP_Xs4xT.webp" alt="Figura 2.35">
+        <figcaption><strong>Figura 2.35.</strong> El informe del índice de seguridad de la IA del verano de 2025. Las puntuaciones muestran el rigor y la exhaustividad de los procesos de identificación y evaluación de riesgos de las empresas para sus modelos insignia actuales. Se centran en las evaluaciones realmente implementadas, no en los compromisos declarados (<a href="https://futureoflife.org/wp-content/uploads/2025/07/FLI-AI-Safety-Index-Report-Summer-2025.pdf">FLI, 2025</a>).</figcaption>
+      </figure>
+      <p><strong>Los accidentes ocurren cuando los sistemas de IA causan daño por fallos involuntarios, pese a que sus desarrolladores tenían buenas intenciones y siguieron prácticas de seguridad razonables.</strong> A diferencia del uso indebido (donde los humanos causan daño deliberadamente) o de la desalineación (donde el sistema actúa a sabiendas contra la intención de quien lo creó), los accidentes se dan cuando decisiones humanas o de la IA provocan daño sin que nadie prevea las consecuencias. Incluye fallos por capacidades insuficientes, información ausente, errores de código o pruebas inadecuadas (<a href="https://arxiv.org/abs/2504.01849">Shah et al., 2025</a>). Igual que la Mariner 1 se perdió por un solo guion omitido, en la IA pueden darse accidentes por un único carácter mal colocado. Durante el entrenamiento de GPT-2, OpenAI invirtió por accidente el signo de la función de recompensa, cambiando un más por un menos. En lugar de producir galimatías, eso creó un modelo que optimizaba el contenido más ofensivo posible manteniendo la fluidez del lenguaje. Los investigadores señalaron que el fallo resultó notable precisamente porque el resultado no fue incoherente, sino máximamente malo, y que, al estar ellos durmiendo durante el entrenamiento, el problema solo se detectó al terminar (<a href="https://arxiv.org/abs/1909.08593">Ziegler et al., 2020</a>).</p>
+      <p><strong>La cultura de «muévete rápido y rompe cosas» choca de raíz con las pruebas metódicas que exige prevenir accidentes.</strong> La aviación, la farmacia y la ingeniería nuclear requieren pruebas exhaustivas precisamente porque los fallos tienen consecuencias graves e irreversibles. Los sistemas de IA controlan cada vez más infraestructuras críticas, mercados financieros y decisiones que afectan a vidas, donde los supuestos del software tradicional ya no valen. Y sin embargo, en lugar de adoptar las normas de seguridad de sectores de alto riesgo, el desarrollo de la IA suele seguir la mentalidad habitual del software de consumo, donde los fallos causan molestias y no catástrofes.</p>
+      <p><strong>Prevenir accidentes exige poder manejar las «incógnitas desconocidas» que puedan surgir tras el despliegue.</strong> Prácticas estándar de ingeniería de seguridad, como la defensa en profundidad, el despliegue por etapas, la verificación de capacidades y las pruebas de seguridad, deberían reducir mucho estos riesgos si se aplican bien. Pero eso requiere una aplicación rigurosa y su exigencia tanto por estándares del sector como por regulación (<a href="https://arxiv.org/abs/2504.01849">Shah et al., 2025</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>El dilema de Collingridge</strong> · Opcional · 1 min de lectura</summary>
+        <p>Este dilema señala la dificultad de predecir y controlar el impacto de las nuevas tecnologías. Sostiene que, en las primeras fases de una tecnología, sus efectos no se comprenden del todo y su desarrollo aún es maleable, pero intentar controlarla o dirigirla resulta difícil precisamente por la falta de información sobre sus consecuencias. A la inversa, cuando esos efectos ya son claros y la necesidad de control resulta evidente, la tecnología suele estar tan integrada en la sociedad que cualquier intento de regularla o modificarla se vuelve extremadamente difícil, costoso y socialmente disruptivo.</p>
+      </details>
+
+      <h2 id="indiferencia">Indiferencia</h2>
+      <p><strong>A veces las empresas siguen adelante con productos dañinos pese a conocer los riesgos, priorizando los beneficios sobre la seguridad pública.</strong> Este patrón se repite en distintos sectores cuando una organización descubre que su producto causa daño, pero calcula que seguir vendiéndolo compensa los costos potenciales. Las tabacaleras querían crear productos placenteros, supieron por su propia investigación interna que causaban cáncer y aun así siguieron comercializando cigarrillos y financiando campañas negacionistas durante décadas, con millones de muertes (<a href="https://truthinitiative.org/research-resources/tobacco-prevention-efforts/5-ways-tobacco-companies-lied-about-dangers-smoking">Truth Initiative, 2017</a>). Ford quería fabricar coches asequibles, descubrió que el depósito del Pinto explotaba en colisiones traseras, calculó que las demandas costarían menos que una retirada del mercado y siguió con la producción, lo que provocó muertes evitables (<a href="https://muckrakerfarm.com/1977/09/pinto-madness-ford-pintos-fire-prone-gas-tank/">Dowie, 1977</a>). Las farmacéuticas querían tratar el dolor, conocieron los riesgos de adicción del OxyContin en los ensayos clínicos y mantuvieron campañas de marketing agresivas que alimentaron la epidemia de opioides (<a href="https://www.newyorker.com/magazine/2017/10/30/the-family-that-built-an-empire-of-pain">Keefe, 2017</a>). Todos los casos siguen el mismo patrón: buenas intenciones iniciales, conocimiento claro del daño y una decisión deliberada de continuar.</p>
+      <p><strong>Las presiones competitivas podrían llevar a los desarrolladores de IA a detectar riesgos de seguridad y lanzar los sistemas igualmente.</strong> A diferencia de los accidentes (donde el daño ocurre pese a buenas intenciones) o del uso indebido (donde actores maliciosos lo causan a propósito), la indiferencia se da cuando las empresas aceptan riesgos a sabiendas para mantener su posición de mercado o sus ingresos. La investigación interna de Meta reveló que Instagram causaba daños importantes a la salud mental de usuarios adolescentes y, aun así, la empresa siguió diseñando funciones que sabía adictivas mientras negaba públicamente la evidencia (<a href="https://www.wsj.com/livecoverage/facebook-whistleblower-frances-haugen-senate-hearing/card/eFNjPrwIH4F7BALELWrZ">Haugen, 2021</a>). Una demanda alega que diseñaron sus aplicaciones a propósito para que los usuarios jóvenes se volvieran adictos y engañaron activa y repetidamente al público sobre el peligro que supone el uso excesivo de sus productos (<a href="https://www.mass.gov/news/ag-campbell-files-lawsuit-against-meta-instagram-for-unfair-and-deceptive-practices-that-harm-young-people">Fiscalía General de Massachusetts, 2023</a>). Esto muestra cómo una empresa puede anteponer las métricas de interacción al bienestar de los usuarios incluso cuando su propia investigación documenta el daño con claridad.</p>
+      <p><strong>El «lavado de seguridad» puede sustituir a la inversión real en seguridad.</strong> Igual que algunas empresas practican el «lavado verde» destacando iniciativas ambientales menores mientras evitan cambios sustanciales, podríamos empezar a ver más casos de <em>safety washing</em> (<a href="https://arxiv.org/abs/2407.21792">Ren et al., 2024</a>): publicitar compromisos de seguridad mientras se recortan pruebas, se omite el <em>red teaming</em> externo y se racionalizan las señales de alarma. Así se crea una apariencia de conciencia de seguridad que enmascara una inversión insuficiente. Los compromisos de seguridad y ética se convierten en herramientas de marketing más que en restricciones operativas, lo que permite a las empresas presumir de responsabilidad mientras mantienen ventajas competitivas con ciclos de desarrollo más rápidos.</p>
+      <p><strong>Prevenir la indiferencia exige mecanismos externos de rendición de cuentas que encarezcan las violaciones de seguridad.</strong> La indiferencia corporativa persiste cuando las empresas pueden externalizar los costos de sus decisiones hacia la sociedad y quedarse con los beneficios. Los sectores con buenos historiales de seguridad (aviación, farmacia, energía nuclear) han desarrollado marcos sólidos de responsabilidad, supervisión regulatoria y estándares profesionales que hacen carísimos los fallos de seguridad. El desarrollo de la IA carece hoy de esos mecanismos, lo que crea un entorno donde la indiferencia puede prosperar sin freno (<a href="https://arxiv.org/abs/1907.04534">Askell et al., 2024</a>). Sin presión externa mediante regulación, responsabilidad legal y consecuencias de mercado, las empresas seguirán teniendo incentivos para anteponer las ventajas competitivas a corto plazo a las consideraciones de seguridad a largo plazo.</p>
+
+      <h2 id="problemas-de-accion-colectiva">Problemas de acción colectiva</h2>
+      <blockquote>
+        <p>Señala que, dado el largo historial de reflexión sobre esta amenaza, desde congresos científicos hasta superproducciones de Hollywood, cabría esperar que la humanidad se volcara en orientar la IA hacia un rumbo más seguro que el de una superinteligencia fuera de control. Y concluye que no es así.</p>
+        <p>— <strong>Max Tegmark</strong>, profesor del MIT, autor de <em>Vida 3.0</em> e investigador en seguridad de la IA · <a href="https://time.com/6273743/thinking-that-could-doom-us-with-ai/">Tegmark, 2023</a></p>
+      </blockquote>
+      <p><strong>Los problemas de acción colectiva impiden aplicar medidas de seguridad que beneficiarían a todos.</strong> Incluso cuando todas las partes coinciden en que ciertas medidas serían beneficiosas, hay barreras estructurales que impiden ponerlas en práctica. Los actores individuales tienen incentivos para aprovecharse de la inversión en seguridad de los demás o no pueden comprometerse de forma creíble con acuerdos cooperativos. A diferencia de la dinámica de carrera, donde las presiones competitivas socavan la seguridad de forma directa, los problemas de acción colectiva son fallos de cooperación que a menudo surgen como consecuencia de esas mismas presiones.</p>
+      <p><strong>La inestabilidad política interrumpe los marcos de cooperación a largo plazo.</strong> La cooperación en seguridad de la IA requiere compromisos sostenidos durante años o décadas, pero los sistemas políticos operan en plazos mucho más cortos. Las elecciones y los cambios de gobierno alteran con frecuencia las políticas centradas en la seguridad, cuando los nuevos dirigentes priorizan la competitividad sobre la cooperación (<a href="https://arxiv.org/abs/2410.03092">Gruetzemacher et al., 2024</a>). Un ejemplo concreto es la derogación por el presidente Trump de la orden ejecutiva sobre IA de Biden: la orden de 2023 obligaba a las empresas que construyen modelos potentes a compartir detalles de seguridad con el gobierno, y esa supervisión desapareció con el cambio político (<a href="https://www.whitehouse.gov/fact-sheets/2025/01/fact-sheet-president-donald-j-trump-takes-action-to-enhance-americas-ai-leadership/">Casa Blanca, 2025</a>; <a href="https://www.whitehouse.gov/presidential-actions/2025/07/preventing-woke-ai-in-the-federal-government/">Casa Blanca, 2025</a>). La inestabilidad socava tanto los acuerdos internacionales como los marcos nacionales de seguridad: cuando una administración negocia estándares y la siguiente los abandona, la cooperación a largo plazo en problemas globales se vuelve casi imposible.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/05f9905323bf4a8500cbeb0081bc131a60bfb49adab7557efea62b2ccfa67a32.Cw4c2eNz_Z7HwDK.webp" alt="Figura 2.36">
+        <figcaption><strong>Figura 2.36.</strong> El informe del índice de seguridad de la IA del verano de 2025. Estas puntuaciones corresponden a la categoría de intercambio de información y muestran con qué apertura comparten las empresas datos sobre sus productos, riesgos y prácticas de gestión de riesgos. Los indicadores cubren la cooperación voluntaria, la transparencia sobre especificaciones técnicas y la comunicación de riesgos e incidentes (<a href="https://futureoflife.org/wp-content/uploads/2025/07/FLI-AI-Safety-Index-Report-Summer-2025.pdf">FLI, 2025</a>).</figcaption>
+      </figure>
+      <p><strong>Los incentivos para aprovecharse del esfuerzo ajeno socavan la inversión colectiva en seguridad.</strong> Cada actor se beneficia cuando los demás invierten en seguridad, pero prefiere que sean otros quienes asuman el costo. Una empresa sale ganando cuando sus competidores mejoran sus prácticas de seguridad, porque se reducen las vulnerabilidades del ecosistema, pero preferiría ahorrarse el gasto de aplicarlas ella misma. Los países se benefician cuando otras naciones restringen capacidades peligrosas, pero prefieren mantener sus propias ventajas de desarrollo. Eso genera una infrainversión sistemática en seguridad respecto de lo que sería socialmente óptimo, incluso cuando todas las partes reconocen los beneficios colectivos.</p>
+      <p><strong>Los problemas de compromiso y de cumplimiento impiden una cooperación creíble.</strong> Incluso cuando una empresa quiere cooperar o desarrollar una AGI segura, no puede prometer de forma creíble que mantendrá los estándares de seguridad sin mecanismos externos que lo exijan. Puede querer sinceramente priorizar la seguridad y, aun así, enfrentarse a la presión de sus accionistas para recortar cuando los competidores ganan ventaja por la dinámica de carrera que vimos antes. Los países pueden firmar acuerdos de seguridad y seguir desarrollando en secreto mediante programas clasificados o empresas privadas. Sin un cumplimiento fiable, los acuerdos se quedan en palabras que se derrumban bajo la presión competitiva.</p>
+      <p><strong>Los fallos de coordinación amplifican los riesgos al impedir salvaguardas colectivas.</strong> Muchos riesgos de la IA exigen respuestas coordinadas que ningún actor puede aplicar por su cuenta. Prevenir ciberataques potenciados por IA requiere cooperación internacional en normas de ciberseguridad y su cumplimiento. Abordar los riesgos sistémicos del despliegue requiere coordinación entre empresas, reguladores y organismos internacionales para crear mecanismos de supervisión. Cuando la coordinación falla, los actores individuales no pueden implantar salvaguardas adecuadas por sí solos: las fuertes medidas de seguridad de una empresa protegen poco si sus competidores despliegan sistemas vulnerables que los actores maliciosos pueden explotar (<a href="https://arxiv.org/abs/1907.04534">Askell et al., 2024</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Aprender de la coordinación en otros ámbitos</strong> · Opcional · 1 min de lectura</summary>
+        <p>El cambio climático ofrece a la vez lecciones de advertencia y modelos posibles para la cooperación en gobernanza de la IA. Como la IA, implica retos de coordinación global, riesgos a largo plazo y conflictos entre intereses económicos inmediatos y seguridad colectiva. Aun así, la gobernanza climática ha logrado algunos éxitos notables junto a sus fracasos conocidos.</p>
+        <p>El Protocolo de Montreal, que abordó con éxito el deterioro de la capa de ozono, demuestra que la cooperación internacional puede funcionar cuando se dan ciertas condiciones: consenso científico claro sobre los riesgos, tecnologías alternativas identificables y acuerdos económicos que atiendan las preocupaciones distributivas. El protocolo incluía mecanismos de transferencia de tecnología y asistencia financiera que hicieron atractiva la cooperación para los países en desarrollo.</p>
+        <p>La gobernanza de la IA podría beneficiarse de enfoques similares. La cooperación técnica en investigación de seguridad podría ser el equivalente a la cooperación científica que sustentó los acuerdos climáticos. Ciertos arreglos económicos podrían atender la preocupación de que las medidas de seguridad perjudiquen a determinados países o empresas. Y los mecanismos de monitorización y verificación podrían apoyarse en precedentes del control de armamentos y de los acuerdos ambientales.</p>
+        <p>Sin embargo, la gobernanza de la IA afronta retos adicionales que la climática no tiene: el desarrollo es más rápido, implica actores más diversos y tiene implicaciones competitivas más inmediatas. Estas diferencias sugieren que quizá requiera innovaciones institucionales nuevas, más que adaptar marcos existentes.</p>
+      </details>
+
+      <h2 id="imprevisibilidad">Imprevisibilidad</h2>
+      <p><strong>Las capacidades de la IA llevan más de una década sorprendiendo a los expertos</strong>, con un patrón persistente en el que los investigadores subestiman la rapidez con que llegan los avances. Esto refuerza lo difícil que resulta pronosticar las capacidades y los riesgos de la IA, y amplifica todas las categorías de riesgo al desbaratar los plazos de preparación y la planificación institucional.</p>
+      <p><strong>En 2021, los expertos subestimaron de forma drástica el progreso en benchmarks difíciles como MATH y MMLU.</strong> A mediados de ese año, el profesor de aprendizaje automático Jacob Steinhardt organizó un concurso de pronósticos con superpronosticadores profesionales sobre dos benchmarks exigentes. Para MATH, un conjunto de problemas de olimpiadas matemáticas, predijeron que el mejor modelo alcanzaría un 12,7 % de acierto en junio de 2022, y muchos consideraban extremadamente improbable superar el 20 %. El resultado real fue del 50,3 %, en la cola extrema de sus distribuciones. En MMLU predijeron una mejora modesta, del 44 % al 57,1 %, pero el rendimiento llegó al 67,5 % (<a href="https://www.lesswrong.com/posts/CJw2tNHaEimx6nwNy/ai-forecasting-one-year-in">Steinhardt, 2022</a>; <a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>).</p>
+      <p><strong>En 2022, la subestimación continuó incluso tras esas sorpresas.</strong> En el concurso de seguimiento de Steinhardt para 2023, los pronosticadores volvieron a quedarse cortos. En MATH, el resultado del 69,6 % cayó en el percentil 41 de sus previsiones, y el 86,4 % de MMLU en el percentil 66. Aunque los pronosticadores subestimaron el progreso, los expertos lo subestimaron todavía más: el avance de la IA, medido en benchmarks de aprendizaje automático, fue bastante más rápido de lo que esperaban (<a href="https://www.lesswrong.com/posts/SdkexhiynayG2sQCC/ai-forecasting-two-years-in">Steinhardt, 2023</a>; <a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c9c9a8ea58d97c7edca01116ae7db9f2c6562c734db47169f56e0ffeed2ab02e.C4O0B5lR_7YOKv.webp" alt="Figura 2.37">
+        <figcaption><strong>Figura 2.37.</strong> Pronóstico de 2021 sobre el conjunto de datos MMLU. La mayor parte de la densidad de probabilidad se situaba entre el 44 % y el 57 % para junio de 2022. El rendimiento real registrado fue del 68 % (la línea roja) (<a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d2e594676fa3fcb6030c30c89ecf62a17f567a4fc34362e92184722541b70422.CCpA2nvi_Z1y4wtH.webp" alt="Figura 2.38">
+        <figcaption><strong>Figura 2.38.</strong> Pronóstico de 2022 sobre el conjunto de datos MMLU. La mayor parte de la densidad de probabilidad se situaba entre el 68 % y el 80 % para junio de 2023. El rendimiento real registrado fue del 87 % (la línea roja) (<a href="https://www.lesswrong.com/posts/CJw2tNHaEimx6nwNy/ai-forecasting-one-year-in">Steinhardt, 2022</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5209907f81283373d0db2a709d1c33b5045c1730221eca30d47b0ea69415416e.BvuHDXFj_Z1ws86I.webp" alt="Figura 2.39">
+        <figcaption><strong>Figura 2.39.</strong> Pronóstico de 2021 sobre el conjunto de datos MATH. La mayor parte de la densidad de probabilidad se situaba entre el 5 % y el 20 % para junio de 2022. El rendimiento real registrado fue del 50 % (la línea roja) (<a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Entre 2022 y 2024, los expertos siguieron subestimando las capacidades cualitativas incluso tras presenciar las sorpresas en los benchmarks.</strong> AI Impacts encuestó a expertos en aprendizaje automático a mediados de 2022, pocos meses antes del lanzamiento de ChatGPT. Predijeron que hitos como «escribir un ensayo de historia de secundaria» o «responder mejor que un experto a preguntas fáciles de buscar en Google» tardarían años en alcanzarse. ChatGPT y GPT-4 los lograron en cuestión de meses (<a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>).</p>
+      <p><strong>Los ejemplos de 2024 y 2025 parecen continuar este patrón.</strong> En diciembre de 2024, el modelo o3 de OpenAI alcanzó un 87,5 % en ARC-AGI, un benchmark diseñado específicamente para medir el razonamiento abstracto y resistir la memorización (<a href="https://arxiv.org/abs/2412.04604">Chollet et al., 2024</a>). Durante cuatro años el progreso había avanzado a paso de tortuga, del 0 % de GPT-3 en 2020 al 5 % de GPT-4o en 2024, lo que llevó a muchos a esperar que un avance significativo tardaría años. El salto del 5 % al 87,5 % pilló por sorpresa a mucha gente. Del mismo modo, en FrontierMath, un benchmark de problemas de nivel de investigación descrito por matemáticos de primer nivel como su mejor intento de plantear retos que dejaran bloqueada a la IA, o3 pasó del mejor resultado previo, del 2 %, a un 25 % pocos meses después de su publicación en noviembre de 2024 (<a href="https://epoch.ai/frontiermath">Epoch AI, 2024</a>).</p>
+      <p><strong>La imprevisibilidad amplifica todos los demás riesgos de la IA.</strong> Subestimar sistemáticamente cuándo llegarán los avances deja a los investigadores de seguridad corriendo por detrás justo cuando más hay en juego. Douglas Hofstadter, que antes esperaba cientos de años hasta una IA de tipo humano, describe ahora una especie de terror ante un tsunami que va a pillar desprevenida a toda la humanidad (<a href="https://www.youtube.com/watch?v=lfXxzAVtdpU&t=1763s&ref=planned-obsolescence.org">Hofstadter, 2023</a>). Cuando incluso los investigadores punteros subestiman una y otra vez el progreso de su propio campo, la preparación del conjunto de la sociedad queda mal calibrada de raíz. Las organizaciones toman decisiones de despliegue basadas en pronósticos que se quedan cortos, mientras los sistemas de gobernanza dan por supuesto un avance gradual y predecible. Eso crea una brecha persistente entre el momento en que aparecen capacidades peligrosas y aquel en que están listas las medidas de seguridad adecuadas, lo que convierte la propia imprevisibilidad en un amplificador sistémico de riesgo.</p>
+      <blockquote>
+        <p>Relata cómo, a un ritmo acelerado, fueron cayendo metas que se consideraban inalcanzables para las computadoras: la traducción entre idiomas, las respuestas inteligibles a preguntas difíciles en lenguaje natural e incluso la escritura de poesía. Añade que ese progreso lo tomó tan desprevenido, a él y a muchos otros, que siente «una especie de terror ante un tsunami que se acerca» y que va a pillar desprevenida a toda la humanidad.</p>
+        <p>— <strong>Douglas Hofstadter</strong>, físico, informático, profesor de ciencia cognitiva y autor de <em>Gödel, Escher, Bach</em> · <a href="https://www.youtube.com/watch?v=lfXxzAVtdpU&t=1763s&ref=planned-obsolescence.org">Hofstadter, 2023</a></p>
+      </blockquote>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 25 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/risks/risk-amplifiers/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap2-06-riesgos-sistemicos.html">← Anterior: Riesgos sistémicos</a>
+      </div>
+      <a class="siguiente" href="cap2-08-conclusion.html">
+        <strong>Siguiente: Conclusión →</strong><br>
+        Los riesgos interconectados de la IA exigen un enfoque de seguridad multidisciplinar que preserve su potencial para generar un enorme beneficio humano.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

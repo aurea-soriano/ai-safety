@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apéndice: Gobernanza nacional · Capítulo 4 – AI Safety Atlas</title>
+  <meta name="description" content="Apéndice: gobernanza nacional de la IA en la Unión Europea, Estados Unidos y China.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>4. Gobernanza</h2>
+        <ol>
+          <li><a href="cap4-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap4-02-problemas-de-gobernanza.html">Problemas de gobernanza</a></li>
+          <li><a href="cap4-03-gobernanza-del-computo.html">Gobernanza del cómputo</a></li>
+          <li><a href="cap4-04-desafios-sistemicos.html">Desafíos sistémicos</a></li>
+          <li><a href="cap4-05-arquitecturas-de-gobernanza.html">Arquitecturas de gobernanza</a></li>
+          <li><a href="cap4-06-implementacion.html">Implementación</a></li>
+          <li><a href="cap4-07-conclusion.html">Conclusión</a></li>
+          <li><a href="cap4-08-apendice-gobernanza-de-datos.html">Apéndice: Gobernanza de datos</a></li>
+          <li class="activo"><a href="cap4-09-apendice-gobernanza-nacional.html">Apéndice: Gobernanza nacional</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 4: Gobernanza</p>
+      <h1>Apéndice: Gobernanza nacional</h1>
+      <p><em>Las grandes potencias han desarrollado filosofías regulatorias distintas: unas priorizan los derechos y otras se centran en la competencia geopolítica o el control social, lo que crea un panorama fragmentado que complica la coordinación global.</em></p>
+      <p class="meta">11 min · Escrito por Charles Martinet, Markov Grey, Su Cizem y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter4-audio-f932cd5d2cf97bddd5434b1a6d1a2e00f207bc41927860367b7e1e71d83cb1a5.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter4-861d9d251091c35638afb2419feb15fb1f23cdfbd7b2dab87bcadd8f295aed27.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/governance.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#union-europea">Unión Europea</a></li>
+          <li><a href="#estados-unidos">Estados Unidos</a></li>
+          <li><a href="#china">China</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: el fragmento citado del artículo 5 de las medidas provisionales chinas es texto normativo de un tercero, así que lo resumimos con nuestras palabras. El texto original está en la <a href="https://ai-safety-atlas.com/chapters/v1/governance/appendix-national-governance/">sección original</a>.</em></p>
+
+      <p>Un régimen nacional integral de gobernanza para la seguridad de la IA requiere tres mecanismos interconectados (<a href="https://arxiv.org/abs/2307.03718">Anderljung et al., 2023</a>):</p>
+      <ul>
+        <li>el desarrollo de estándares de seguridad,</li>
+        <li>la visibilidad regulatoria y</li>
+        <li>la exigencia del cumplimiento.</li>
+      </ul>
+      <p><strong>Los estándares de seguridad son el cimiento de la gobernanza de la IA</strong>, al establecer criterios claros y medibles para el desarrollo, las pruebas y el despliegue de sistemas dentro de cada jurisdicción nacional. Deben ser técnicamente precisos y, a la vez, lo bastante flexibles para acomodar un avance tecnológico rápido. Unos estándares eficaces sirven como herramientas institucionales de coordinación y aportan la infraestructura necesaria para desarrollar tecnologías nuevas de forma controlada dentro de los límites regulatorios de un país (<a href="https://www.governance.ai/research-paper/standards-for-ai-governance-international-standards-to-enable-global-coordination-in-ai-research-development">Cihon, 2019</a>).</p>
+      <p><strong>¿Qué lecciones puede extraer la gobernanza nacional de la IA de la regulación de la seguridad nuclear?</strong> El enfoque regulatorio usado en el ámbito nuclear ofrece un modelo instructivo. La jerarquía de cinco niveles de sus estándares de seguridad, que va de los principios fundamentales a las guías de implementación específicas, constituye un plano para desarrollar estándares de seguridad de la IA completos. Este marco multinivel permite que los principios establecidos en los niveles superiores se incorporen a directrices más concretas en los inferiores, lo que crea un sistema regulatorio coherente y exhaustivo (<a href="https://www.nature.com/articles/s41599-024-03017-1">Cha, 2024</a>).</p>
+      <p>Entre las lecciones clave aplicables a la gobernanza nacional de la IA están:</p>
+      <ul>
+        <li><strong>Marcos de seguridad estandarizados:</strong> igual que la regulación nuclear estableció marcos estandarizados, la gobernanza nacional de la IA puede estandarizar los criterios de comportamiento, aprendizaje y decisión de los sistemas para mejorar la seguridad tecnológica dentro de sus fronteras.</li>
+        <li><strong>Mecanismos de supervisión independiente:</strong> las autoridades nucleares crearon sistemas de supervisión independientes para vigilar y evaluar la seguridad. De forma similar, pueden establecerse organismos neutrales que vigilen y evalúen de forma continua el funcionamiento y el rendimiento de los sistemas de IA.</li>
+        <li><strong>Protocolos y simulacros periódicos:</strong> los reguladores nucleares realizan protocolos y ejercicios regulares de respuesta a incidentes. Pueden desarrollarse enfoques similares para responder con prontitud a accidentes o comportamientos anómalos relacionados con la IA.</li>
+        <li><strong>Mecanismos de intercambio de información:</strong> los sistemas regulatorios nucleares crearon plataformas para compartir estándares, investigación e información sobre incidentes entre sectores. Pueden desarrollarse plataformas análogas para la IA a nivel nacional (<a href="https://www.nature.com/articles/s41599-024-03017-1">Cha, 2024</a>).</li>
+      </ul>
+
+      <h2 id="union-europea">Unión Europea</h2>
+      <p><strong>¿Qué base legislativa ha establecido la UE?</strong> La Unión Europea abrió camino con el Reglamento Europeo de IA, el primer marco jurídico integral del mundo para la inteligencia artificial. Propuesto inicialmente en 2021 y adoptado formalmente en marzo de 2024, regula los sistemas de IA según sus riesgos potenciales y protege los derechos de la ciudadanía europea. En su núcleo hay un enfoque basado en el riesgo que clasifica los sistemas en cuatro categorías: riesgo inaceptable, alto, limitado y mínimo. Los de riesgo inaceptable, como los que manipulan el comportamiento humano o explotan vulnerabilidades, quedan directamente prohibidos. Los de alto riesgo, incluidos los usados en infraestructuras críticas, educación y empleo, afrontan requisitos y supervisión estrictos. Los de riesgo limitado requieren medidas de transparencia, y los de riesgo mínimo quedan en gran medida sin regular.</p>
+      <p><strong>¿Cómo se está aplicando?</strong> El reglamento entró en vigor en agosto de 2024 y se aplica por fases. Desde el 2 de febrero de 2025 rigen la prohibición de las prácticas vetadas (puntuación social, ciertos sistemas de identificación biométrica) y los requisitos de alfabetización en IA del personal. Desde el 2 de agosto de 2025 se aplican las obligaciones para los proveedores de modelos de propósito general, incluidas la documentación, el cumplimiento en materia de derechos de autor y la transparencia sobre los datos. La norma crea la Oficina Europea de IA para supervisar su implementación y aplicación, coordinar el cumplimiento, orientar a las empresas y hacer cumplir las reglas. Este organismo dedicado es la primera agencia que hace cumplir reglas vinculantes de IA sobre una coalición multinacional, en posición de moldear la gobernanza global de forma parecida a como el RGPD reestructuró los estándares internacionales de privacidad.</p>
+      <p><strong>¿Qué requisitos adicionales existen para los sistemas de alto riesgo y riesgo sistémico?</strong> Para los modelos de propósito general que presenten riesgos sistémicos, identificados por superar un umbral de cómputo (10<sup>25</sup> FLOP) o por criterios de impacto potencial, como la escalabilidad y el riesgo de daño a gran escala, se aplican obligaciones añadidas. Los proveedores deben realizar pruebas adversariales, hacer seguimiento y notificar los incidentes graves, implantar medidas sólidas de ciberseguridad y mitigar proactivamente los riesgos sistémicos. La Oficina Europea de IA facilitó la redacción de un código de buenas prácticas para estos modelos, completado en abril de 2025, que ofrece una herramienta central para cumplir los requisitos. Aunque adherirse al código es voluntario, brinda a los proveedores una vía práctica y clara para demostrar su cumplimiento.</p>
+      <p><strong>¿Cómo aborda la UE la aplicación y las sanciones?</strong> La Oficina Europea de IA actúa como autoridad de aplicación, facultada para solicitar información, realizar evaluaciones, ordenar medidas correctoras e imponer multas de hasta el 3 % de la facturación anual global del proveedor o 15 millones de euros, la cifra que sea mayor. Es un mecanismo sustancial, aunque algo inferior al máximo del 7 % que mencionaban borradores anteriores de la legislación. Las multas por incumplimiento son bastante altas, lo que demuestra el fuerte compromiso de la UE con su marco regulatorio (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Qué valores y prioridades guían el enfoque europeo?</strong> La UE ha mostrado una clara priorización de la protección de los derechos de la ciudadanía. Su forma de categorizar los niveles de riesgo está diseñada principalmente en torno a medir la capacidad de los sistemas de vulnerar esos derechos. Se aprecia en la lista de casos considerados de alto riesgo, como la formación educativa o profesional, el empleo, la migración y el asilo, o la administración de justicia y los procesos democráticos. La mayoría de los requisitos están pensados con el ciudadano común en mente: obligaciones de transparencia y notificación, la posibilidad de que cualquiera presente una reclamación ante una autoridad de vigilancia del mercado, la prohibición de los sistemas de puntuación social y los requisitos antidiscriminación. Este enfoque basado en derechos contrasta marcadamente con el foco chino en el control social y el énfasis estadounidense en la competencia geopolítica (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/72afa3c42d6264e0341d419e537951d02e33ef869388ea718afb3e09a68126f8.P5uddiEu_1UNK2H.webp" alt="Figura 4.35">
+        <figcaption><strong>Figura 4.35.</strong> El Reglamento Europeo de IA: clasificación de los modelos de propósito general con riesgos sistémicos (<a href="https://www.orcg.info/articulos/infografas-ley-de-inteligencia-artificial-de-la-unin-europea">Observatorio de Riesgos Catastróficos Globales</a>).</figcaption>
+      </figure>
+
+      <h2 id="estados-unidos">Estados Unidos</h2>
+      <p><strong>¿Cómo ha cambiado la política estadounidense?</strong> La gobernanza de la IA en Estados Unidos ha virado de forma significativa desde las elecciones de 2024. El presidente Donald Trump revocó la orden ejecutiva sobre IA segura y fiable de octubre de 2023 de la administración anterior, que había introducido la obligación de que los desarrolladores de sistemas avanzados compartieran los resultados de sus pruebas de seguridad con el gobierno federal. En enero de 2025, la orden ejecutiva 14179 derogó explícitamente aquella norma y encargó a las agencias federales revisar sus políticas para eliminar barreras a la innovación y garantizar que los sistemas estén libres de «sesgo ideológico o agendas sociales inducidas». Una orden ejecutiva aparte sobre infraestructura de IA priorizó la seguridad nacional, la competitividad económica, el desarrollo de centros de datos nacionales y los estándares de formación de la fuerza laboral.</p>
+      <p><strong>¿Qué caracterizaba el enfoque estadounidense antes de este giro?</strong> Previamente, Estados Unidos había optado por un enfoque centrado en órdenes ejecutivas y declaraciones no vinculantes, por el bloqueo legislativo en el Congreso. Tres actuaciones clave lo configuraron: los controles de exportación de semiconductores hacia China, lanzados en octubre de 2022; el Plan para una Carta de Derechos de la IA, publicado en octubre de 2022; y la orden ejecutiva sobre inteligencia artificial de octubre de 2023. Los controles de exportación supusieron una escalada importante en los esfuerzos por restringir el acceso de China a tecnologías avanzadas de cómputo e IA, al prohibir la exportación de chips punteros, equipos de fabricación y experiencia en semiconductores (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Qué rasgos distintivos definen su filosofía regulatoria?</strong> Estados Unidos ha adoptado un enfoque singular al controlar el hardware y la potencia de cómputo necesarios para entrenar y desarrollar modelos. Está en una posición única para apoyarse en esta regulación basada en el cómputo, al albergar a todos los principales fabricantes de chips de IA de gama alta (Nvidia, AMD, Intel), lo que le da control legislativo directo sobre ellos. Más allá de los controles de exportación, ha seguido un enfoque descentralizado y en gran medida no vinculante, basado en la acción ejecutiva. Por las dificultades estructurales para aprobar legislación vinculante en un Congreso dividido, se ha apoyado sobre todo en órdenes ejecutivas y actuaciones de agencias que no requieren aprobación parlamentaria, repartiendo los procesos de investigación y regulación entre agencias seleccionadas (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Cuál es la situación actual?</strong> En febrero de 2025, la Oficina de Gestión y Presupuesto publicó el memorando M-25-21, que instruye a las agencias federales a acelerar la adopción de IA, reducir trabas burocráticas, reforzar el liderazgo en IA dentro de cada agencia e implantar prácticas mínimas de gestión de riesgos para los sistemas de alto impacto. A nivel estatal, la ley californiana SB 1047, que intentaba abordar los riesgos de los modelos de frontera, fue vetada en septiembre de 2024. Se ha presentado un proyecto nuevo, la SB 53, centrado en la protección de los empleados que denuncien riesgos críticos. El Instituto de Seguridad de la IA estadounidense sigue activo pese al giro federal, desarrollando metodologías de prueba y realizando evaluaciones de modelos.</p>
+      <p><strong>¿Cómo influye la geopolítica?</strong> La política estadounidense prioriza con fuerza su competencia geopolítica con China. Su estrategia está muy influida por la amenaza percibida de los rápidos avances chinos y sus implicaciones para la seguridad nacional y el equilibrio global de poder. Las actuaciones vinculantes que ha tomado, como los controles de exportación de semiconductores, están diseñadas explícitamente para contrarrestar las ambiciones chinas y mantener la superioridad tecnológica y militar estadounidense. Este foco geopolítico la distingue de la UE, que ha priorizado la protección de los derechos individuales, y de China, que ha priorizado el control social interno (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/39747fc8317b45cac082b5ab11d83732b37181be4831365ae58df926492b8b5c.CRZtW9L8_ZF4r6x.webp" alt="Figura 4.36">
+        <figcaption><strong>Figura 4.36.</strong> Número de regulaciones relacionadas con la IA en Estados Unidos, 2016-2023 (<a href="https://aiindex.stanford.edu/report/">Stanford HAI, 2024</a>).</figcaption>
+      </figure>
+
+      <h2 id="china">China</h2>
+      <p><strong>¿Cómo ha evolucionado el enfoque chino?</strong> China ha desarrollado un enfoque regulatorio vertical e iterativo, aprobando regulaciones dirigidas a dominios concretos de aplicación de la IA de uno en uno. Contrasta marcadamente con el marco horizontal e integral de la UE. Su evolución empezó con las disposiciones sobre recomendación algorítmica de agosto de 2021, que establecieron el primer registro obligatorio de algoritmos del mundo y exigieron que todos los algoritmos cualificados usados por organizaciones chinas se registraran en los diez días siguientes a su lanzamiento público. Le siguieron las disposiciones sobre síntesis profunda de noviembre de 2022, que regularon los algoritmos que generan contenido sintético para combatir los vídeos falsos, con exigencias de etiquetado, identificación de usuarios y prevención del uso indebido según lo define el gobierno (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Qué medidas rigen hoy?</strong> China reforzó su marco con las medidas provisionales para la gestión de los servicios de IA generativa, en vigor desde agosto de 2023. Fueron una respuesta directa a ChatGPT y ampliaron las políticas para abarcar mejor los modelos de lenguaje multiuso, con una supervisión basada en el riesgo y mayor escrutinio para los sistemas capaces de influir en la opinión pública. Bajo estas normas, los proveedores deben garantizar un uso lícito de los datos, proteger la propiedad intelectual, respetar la privacidad de los usuarios y sostener los «valores socialistas fundamentales». En 2024, China elevó oficialmente la seguridad de la IA al nivel de la seguridad nacional y pública, y exigió a los proveedores moderar activamente el contenido ilegal o dañino y notificar las infracciones a la Administración del Ciberespacio de China (CAC), el principal organismo regulador del sector.</p>
+      <p><strong>¿Qué viene en el horizonte regulatorio?</strong> En marzo de 2025, China publicó la versión final de las medidas para el etiquetado del contenido generado por inteligencia artificial, en vigor desde el 1 de septiembre de 2025. Exigen etiquetas explícitas para el contenido generado por IA que pueda inducir a error al público, junto con metadatos que identifiquen al proveedor. El país también prepara la aplicación del reglamento sobre gestión de la seguridad de los datos en red. Estas regulaciones iterativas parecen encaminarse hacia una ley integral de inteligencia artificial, propuesta en un plan legislativo de junio de 2023, un patrón que replica su enfoque de la regulación de internet en los años 2000, que culminó en la ley general de ciberseguridad de 2017 (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Qué rasgos caracterizan su filosofía regulatoria?</strong> La CAC se ha centrado sobre todo en regular los algoritmos con potencial de influencia social, más que en priorizar ámbitos como la sanidad, el empleo o el sistema judicial, que reciben más atención en los marcos occidentales. El lenguaje de estas normas suele ser amplio y poco específico, lo que otorga a la CAC mayor margen de interpretación y aplicación. El artículo 5 de las medidas provisionales sobre IA generativa, por ejemplo, anima a aplicar esta tecnología de forma innovadora en todos los sectores y a generar contenido positivo, saludable y edificante. Esto refleja la fuerte prioridad que China otorga al control social y al alineamiento con los valores gubernamentales (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <p><strong>¿Cómo implementa su visión en los distintos niveles?</strong> A nivel municipal, Shanghái y Pekín lanzaron laboratorios de seguridad de la IA a mediados de 2024, y centros de investigación respaldados por el gobierno habrían realizado más de 40 evaluaciones de seguridad. China ha mostrado un enfoque hacia dentro, regulando sobre todo a organizaciones y ciudadanos chinos. Los grandes laboratorios internacionales, como OpenAI, Anthropic y Google, no atienden activamente a consumidores chinos, en parte por no estar dispuestos a cumplir las políticas de censura del país. El resultado es que la gobernanza china de la IA opera en buena medida de forma paralela y desconectada de los enfoques occidentales (<a href="https://www.convergenceanalysis.org/ai-regulatory-landscape/home">Cheng et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/26073543ce6520dbe2273832a41d67d6bc34447573541d758fe228ed8a987dc2.f1w8VYVk_yWQqH.webp" alt="Figura 4.37">
+        <figcaption><strong>Figura 4.37.</strong> En 2024, las instituciones chinas aumentaron de forma notable la publicación de artículos sobre seguridad de la IA de frontera frente a 2023, pasando de unos siete artículos al mes a 18 (<a href="https://aisafetychina.substack.com/p/ai-safety-in-china-2024-in-review">AI Safety in China, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 6 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/governance/appendix-national-governance/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap4-08-apendice-gobernanza-de-datos.html">← Anterior: Apéndice: Gobernanza de datos</a>
+      </div>
+      <a class="siguiente" href="cap5-01-introduccion.html">
+        <strong>Siguiente: Capítulo 5 · Introducción →</strong>
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

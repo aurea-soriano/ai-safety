@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Problemas de gobernanza · Capítulo 4 – AI Safety Atlas</title>
+  <meta name="description" content="Problemas de gobernanza de la IA: capacidades inesperadas, seguridad en el despliegue y proliferación.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>4. Gobernanza</h2>
+        <ol>
+          <li><a href="cap4-01-introduccion.html">Introducción</a></li>
+          <li class="activo"><a href="cap4-02-problemas-de-gobernanza.html">Problemas de gobernanza</a></li>
+          <li><a href="cap4-03-gobernanza-del-computo.html">Gobernanza del cómputo</a></li>
+          <li><a href="cap4-04-desafios-sistemicos.html">Desafíos sistémicos</a></li>
+          <li><a href="cap4-05-arquitecturas-de-gobernanza.html">Arquitecturas de gobernanza</a></li>
+          <li><a href="cap4-06-implementacion.html">Implementación</a></li>
+          <li><a href="cap4-07-conclusion.html">Conclusión</a></li>
+          <li><a href="cap4-08-apendice-gobernanza-de-datos.html">Apéndice: Gobernanza de datos</a></li>
+          <li><a href="cap4-09-apendice-gobernanza-nacional.html">Apéndice: Gobernanza nacional</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 4: Gobernanza</p>
+      <h1>Problemas de gobernanza</h1>
+      <p class="meta">7 min · Escrito por Charles Martinet, Markov Grey, Su Cizem y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter4-audio-f932cd5d2cf97bddd5434b1a6d1a2e00f207bc41927860367b7e1e71d83cb1a5.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter4-861d9d251091c35638afb2419feb15fb1f23cdfbd7b2dab87bcadd8f295aed27.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/governance.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#capacidades-inesperadas">Capacidades inesperadas</a></li>
+          <li><a href="#seguridad-en-el-despliegue">Seguridad en el despliegue</a></li>
+          <li><a href="#proliferacion">Proliferación</a></li>
+          <li><a href="#objetivos-de-gobernanza">Objetivos de gobernanza</a></li>
+        </ol>
+      </nav>
+
+      <p><strong>La gobernanza de la IA no es lo mismo que la gobernanza tecnológica tradicional.</strong> Esta última se apoya en varios supuestos clave que se rompen al aplicarlos a la IA. Solemos dar por hecho que podemos predecir cómo se usará una tecnología y cuáles serán sus impactos probables, que podemos controlar eficazmente su vía de desarrollo y que podemos regular aplicaciones o usos finales concretos. La gobernanza farmacéutica, por ejemplo, usa ensayos clínicos y procesos de aprobación basados en las aplicaciones médicas previstas, mientras que la tecnología nuclear se controla mediante tratados internacionales, salvaguardas y vigilancia de instalaciones y materiales específicos. Estos enfoques funcionan cuando las tecnologías siguen trayectorias relativamente predecibles y tienen aplicaciones claras. Para entender qué hace la gobernanza de la IA singularmente difícil, podemos examinarla a través de tres lentes, cada una de las cuales exige enfoques distintos (<a href="https://academic.oup.com/edited-volume/41989/chapter-abstract/408516484">Dafoe, 2022</a>; <a href="https://cset.georgetown.edu/publication/the-ai-triad-and-what-it-means-for-national-security-strategy/">Buchanan, 2020</a>).</p>
+
+      <p><strong>La IA como tecnología de propósito general.</strong> Transforma muchos sectores a la vez, lo que vuelve insuficiente la regulación sectorial. Como la electricidad o las computadoras antes que ella, la IA puede remodelar a la vez la sanidad, las finanzas, el transporte y la educación. La gobernanza tradicional suele centrarse en aplicaciones concretas: regulamos los dispositivos médicos de forma distinta a los automóviles. Pero cuando un único sistema puede diagnosticar enfermedades, operar en bolsa y conducir coches, nuestros compartimentos regulatorios se desmoronan. Los impactos se extienden por la sociedad de formas que hacen insuficiente cualquier regulación dirigida (<a href="https://cset.georgetown.edu/publication/the-ai-triad-and-what-it-means-for-national-security-strategy/">Buchanan, 2020</a>).</p>
+
+      <p><strong>La IA como tecnología de la información.</strong> Procesa y genera información de formas sin precedentes. A diferencia de los sistemas tradicionales, que almacenan y recuperan datos, la IA puede crear contenido enteramente nuevo: desde imágenes fotorrealistas hasta texto convincente o voces sintéticas. Eso plantea desafíos inéditos en torno a la seguridad, la privacidad y la integridad de la información. Los marcos de gobernanza tradicionales no se diseñaron para tecnologías capaces de generar y manipular información a escala masiva y a gran velocidad (<a href="https://arxiv.org/abs/1802.07228">Brundage et al., 2018</a>). La rapidez y el alcance de sus posibles impactos desbordan los mecanismos de control habituales.</p>
+
+      <p><strong>La IA como tecnología de la inteligencia.</strong> Introduce desafíos de control singulares a medida que los sistemas se vuelven más capaces. Conforme se acercan a las capacidades cognitivas humanas, y potencialmente las superan en varios dominios, podrían desarrollar formas sofisticadas de eludir controles o perseguir objetivos no previstos. Ya vemos atisbos de ello en modelos de lenguaje capaces de engañar o manipular mientras persiguen objetivos (<a href="https://arxiv.org/abs/2202.07785">Ganguli et al., 2022</a>). Hay varias capacidades peligrosas (véanse los capítulos 1 y 2) que resultan aún más acuciantes si se tiene en cuenta que los sistemas podrían desarrollarlas sin haber sido programados explícitamente para ello (<a href="https://arxiv.org/abs/2206.07682">Wei et al., 2022</a>). La dimensión de inteligencia crea una dinámica en la que la propia tecnología gobernada podría resistirse activamente a las medidas de gobernanza o sortearlas, un desafío sin precedentes en la regulación tecnológica.</p>
+
+      <p><strong>La combinación de las tres dimensiones genera desafíos de gobernanza singulares.</strong> El carácter mixto de la IA, a la vez tecnología de propósito general, de procesamiento de información y potencialmente inteligente, da lugar a tres problemas de fondo que vuelven inadecuados los enfoques tradicionales.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/fbc9a3887ee6973b678b3f6e2aadab438652cffeaf093e9d94e15ba767da783c.C970wyQn_1t0B0O.webp" alt="Figura 4.2">
+        <figcaption><strong>Figura 4.2.</strong> Resumen de los tres desafíos regulatorios que plantea la IA de frontera (<a href="https://arxiv.org/abs/2307.03718">Anderljung et al., 2023</a>).</figcaption>
+      </figure>
+
+      <h2 id="capacidades-inesperadas">Capacidades inesperadas</h2>
+      <p><strong>Los sistemas de IA desarrollan habilidades sorprendentes que no formaban parte de su diseño previsto.</strong> A lo largo de varios capítulos hemos mostrado que los modelos fundacionales pueden presentar capacidades «emergentes» que aparecen de repente al escalar con más datos, parámetros y cómputo. GPT-3 demostró inesperadamente la capacidad de hacer aritmética básica, y modelos posteriores mostraron capacidades de razonamiento emergentes que sorprendieron incluso a sus creadores (<a href="https://arxiv.org/abs/2202.07785">Ganguli et al., 2022</a>; <a href="https://arxiv.org/abs/2206.07682">Wei et al., 2022</a>). Las evaluaciones han encontrado que los modelos de frontera pueden realizar investigación científica básica de forma autónoma, vulnerar sistemas informáticos y persuadir a humanos, sin haber sido entrenados explícitamente para nada de ello (<a href="https://arxiv.org/abs/2403.13793">Phuong et al., 2024</a>; <a href="https://arxiv.org/abs/2304.05332">Boiko et al., 2023</a>; <a href="https://arxiv.org/abs/2305.04388">Turpin et al., 2023</a>; <a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/09241cde1a69a0228d6b128d699a816580e14c092d772ee287c891fce734f19c.zMpTCWW__Zwkgdg.webp" alt="Figura 4.3">
+        <figcaption><strong>Figura 4.3.</strong> Ejemplo de capacidades inesperadas. Gráficos que muestran varias métricas que mejoran de forma repentina e impredecible a medida que los modelos crecen (<a href="https://arxiv.org/abs/2202.07785">Ganguli et al., 2022</a>).</figcaption>
+      </figure>
+      <p><strong>En 2025, las evaluaciones de IA siguen en una etapa temprana.</strong> A los marcos de prueba les faltan buenas prácticas establecidas, y el campo aún no ha madurado hasta convertirse en una ciencia fiable (<a href="https://www.tandfonline.com/doi/full/10.1080/15027570.2023.2213985">Trusilo, 2024</a>). Las evaluaciones pueden revelar algunas capacidades, pero no garantizan la ausencia de amenazas desconocidas, ni predicen nuevas habilidades emergentes, ni evalúan los riesgos de los sistemas autónomos (<a href="https://arxiv.org/abs/2412.08653">Barnett y Thiergart, 2024</a>). La predictibilidad es en sí misma un área incipiente, con lagunas importantes en nuestra capacidad de anticipar cómo se comportan los modelos actuales, no digamos los futuros (<a href="https://arxiv.org/abs/2310.06167">Zhou et al., 2024</a>). Incluso los marcos de prueba y evaluación más completos tienen dificultades con el comportamiento complejo e impredecible de la IA (<a href="https://testscience.org/wp-content/uploads/formidable/20/Autonomy-Lit-Review.pdf">Wojton et al., 2020</a>).</p>
+
+      <h2 id="seguridad-en-el-despliegue">Seguridad en el despliegue</h2>
+      <p><strong>Una vez desplegados, los sistemas pueden reutilizarse para aplicaciones dañinas más allá de su uso previsto.</strong> El mismo modelo de lenguaje entrenado para el diálogo útil puede generar desinformación, ayudar en ciberataques o contribuir al diseño de armas biológicas. Los usuarios descubren con frecuencia capacidades nuevas mediante instrucciones ingeniosas que sortean las medidas de seguridad, lo que se conoce como <em>jailbreaks</em>, y desbloquean funcionalidades peligrosas (<a href="https://arxiv.org/abs/2306.05949">Solaiman et al., 2024</a>; <a href="https://arxiv.org/abs/2406.13843">Marchal et al., 2024</a>; <a href="https://arxiv.org/abs/2306.12001">Hendrycks et al., 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/55be75301c257c0f0e3b5e16e4855b1e9074b45deb9b28b27d19a8c0748bd3b3.CXNS-H99_28SSAy.webp" alt="Figura 4.4">
+        <figcaption><strong>Figura 4.4.</strong> Esquema del uso de agentes LLM autónomos para vulnerar sitios web (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>). Una vez que una tecnología de doble uso es pública, puede emplearse con fines beneficiosos y dañinos.</figcaption>
+      </figure>
+      <p><strong>Los agentes de IA amplifican los riesgos de despliegue.</strong> Vemos ya agentes autónomos capaces de encadenar capacidades del modelo de formas novedosas, usando herramientas y actuando en el mundo real. Estos agentes pueden perseguir objetivos complejos durante periodos prolongados, lo que hace su comportamiento aún más difícil de predecir y controlar tras el despliegue (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>).</p>
+
+      <h2 id="proliferacion">Proliferación</h2>
+      <p><strong>Las capacidades de la IA se extienden rápidamente por múltiples canales, lo que vuelve casi imposible contenerlas.</strong> Los modelos pueden robarse mediante ciberataques, filtrarse desde dentro o reproducirse por competidores en cuestión de meses. La rápida réplica en abierto de capacidades similares a las de ChatGPT dio lugar a modelos con las funciones de seguridad eliminadas y a nuevas capacidades peligrosas descubiertas mediante experimentación comunitaria (<a href="https://arxiv.org/abs/2311.09227">Seger et al., 2023</a>). Con los modelos accesibles por API, técnicas como la destilación pueden incluso extraer capacidades sin acceso directo a los pesos (<a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">Nevo et al., 2024</a>).</p>
+      <p><strong>La contención física no funciona con bienes digitales.</strong> A diferencia de los materiales nucleares o los patógenos peligrosos, los modelos de IA son solo patrones de números que pueden copiarse al instante y transmitirse por todo el mundo. Una vez que las capacidades existen, controlar su difusión se convierte en una batalla perdida contra la naturaleza misma de la información digital.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/2e4cbb2e25a4b64f463ec19c2f1b20aa19b8900a3a976a62c43ecc6357bc71d8.rzPZwpq3_1CyLge.webp" alt="Figura 4.5">
+        <figcaption><strong>Figura 4.5.</strong> Ejemplos de proliferación (<a href="https://cfg.eu/ai-governance-challenges-part-3-proliferation/">Özcan, 2024</a>).</figcaption>
+      </figure>
+
+      <h2 id="objetivos-de-gobernanza">Objetivos de gobernanza</h2>
+      <p>Los desafíos singulares de la gobernanza de la IA implican que debemos elegir con cuidado dónde y cómo intervenir en su desarrollo. Eso requiere identificar tanto qué gobernar (los objetivos) como de qué forma hacerlo (los mecanismos) (<a href="https://arxiv.org/abs/2307.03718">Anderljung et al., 2023</a>; <a href="https://arxiv.org/abs/2407.14981">Reuel y Bucknall, 2024</a>). La gobernanza debe intervenir en puntos que aborden los desafíos centrales antes de que se manifiesten: no podemos esperar a que las capacidades peligrosas emerjan o proliferen para actuar. En su lugar, hay que identificar puntos de intervención en la cadena de desarrollo que nos permitan darle forma de manera proactiva.</p>
+      <p>Los objetivos de gobernanza eficaces comparten tres propiedades esenciales:</p>
+      <ul>
+        <li><strong>Mensurabilidad:</strong> debemos poder rastrear y verificar qué está ocurriendo. La potencia de cómputo empleada en el entrenamiento puede medirse en unidades precisas (operaciones de coma flotante), lo que permite fijar umbrales claros y vigilar el cumplimiento (<a href="https://arxiv.org/abs/2402.08797">Sastry et al., 2024</a>).</li>
+        <li><strong>Controlabilidad:</strong> tiene que haber mecanismos concretos para influir en el objetivo. No basta con identificar qué importa: hacen falta vías prácticas para moldearlo. La cadena de suministro de semiconductores, por ejemplo, tiene cuellos de botella claros donde los controles de exportación pueden limitar eficazmente el acceso a los chips avanzados (<a href="https://www.governance.ai/research-paper/governing-through-the-cloud">Heim et al., 2024</a>).</li>
+        <li><strong>Relevancia:</strong> los objetivos deberían abordar aspectos fundamentales del desarrollo que realmente moldean las capacidades y los riesgos. Regular aspectos superficiales, como las interfaces de usuario, podría ser fácil, pero no evitaría la aparición de capacidades peligrosas. En cambio, insumos centrales como el cómputo y los datos determinan directamente qué tipos de sistemas pueden construirse (<a href="https://arxiv.org/abs/2307.03718">Anderljung et al., 2023</a>).</li>
+      </ul>
+      <p>En la cadena de desarrollo de la IA, varios puntos de intervención cumplen estos criterios. En las fases tempranas podemos apuntar a la infraestructura de cómputo necesaria para el entrenamiento y a los datos que moldean las capacidades del modelo. Durante y después del desarrollo podemos implantar marcos de seguridad, sistemas de monitorización y controles de despliegue (<a href="https://arxiv.org/abs/2307.03718">Anderljung et al., 2023</a>; <a href="https://www.governance.ai/analysis/computing-power-and-the-governance-of-ai">Heim et al., 2024</a>; <a href="https://arxiv.org/abs/2412.03824">Hausenloy et al., 2024</a>). Cada objetivo ofrece oportunidades distintas y afronta desafíos distintos, que exploraremos en las secciones siguientes.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 24 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/governance/governance-problems/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap4-01-introduccion.html">← Anterior: Introducción</a>
+      </div>
+      <a class="siguiente" href="cap4-03-gobernanza-del-computo.html">
+        <strong>Siguiente: Gobernanza del cómputo →</strong><br>
+        Solo un puñado de empresas fabrica los chips necesarios para construir IA avanzada. Si los gobiernos controlan las cadenas de suministro, el acceso al hardware se convierte en una vía prometedora para limitar quién puede crear IA muy capaz.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introducción · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Introducción al capítulo 5 de AI Safety Atlas: evaluaciones de la IA.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li class="activo"><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Introducción</h1>
+      <p class="meta">5 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: la cita destacada de esta sección es una declaración de un tercero y no forma parte del texto con licencia CC BY-SA del libro, así que la resumimos con nuestras palabras. El texto completo, en inglés, está en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/introduction/">sección original</a>.</em></p>
+      <blockquote>
+        <p>Sostiene que cuando se puede medir aquello de lo que se habla y expresarlo en números, se sabe algo al respecto; cuando no se puede, el conocimiento es escaso e insatisfactorio, y puede ser el principio del saber, pero apenas ha llegado a la fase científica.</p>
+        <p>— <strong>Lord Kelvin</strong> · <a href="https://www.oxfordreference.com/display/10.1093/acref/9780191826719.001.0001/q-oro-ed4-00006236">Oxford Reference, 2016</a></p>
+      </blockquote>
+
+      <p><strong>La brecha entre lo que los sistemas de IA pueden hacer y lo que podemos medir de forma fiable crea un desafío de seguridad de fondo.</strong> A finales de 2024, unos investigadores crearon FrontierMath, un benchmark de problemas excepcionalmente difíciles que, según predijeron, se resistirían a la IA durante varios años. Pocos meses después, el modelo o3 de OpenAI alcanzó un 25,2 % de acierto en esos problemas supuestamente insuperables. El patrón se repite en todo el desarrollo de la IA: las herramientas diseñadas para medir capacidades quedan obsoletas casi de inmediato, porque los modelos las superan deprisa. A medida que la IA se acerca a capacidades potencialmente transformadoras en ámbitos como la ciberseguridad, la operación autónoma y la planificación estratégica, esta brecha de evaluación se vuelve cada vez más peligrosa. No podemos permitirnos descubrir todo el alcance de las capacidades avanzadas a través de sus impactos emergentes en el mundo real.</p>
+
+      <p><strong>Los benchmarks aportan estandarización de la medida, pero hoy no capturan los riesgos complejos de los sistemas avanzados.</strong> El desarrollo temprano de la IA afrontó una crisis de medición parecida a la de la ingeniería antes de la estandarización: sin métricas fiables, el progreso era caótico e impredecible. Los benchmarks revolucionaron el campo al crear métricas estandarizadas que permitían comparaciones significativas entre sistemas. Aunque benchmarks como MMLU, GPQA o FrontierMath son extremadamente útiles, se quedan cortos para predecir el comportamiento en el mundo real: no miden qué ocurre cuando se lleva a los modelos al límite o cuando operan en entornos complejos donde emergen combinaciones inesperadas de capacidades. Conforme avanzamos hacia sistemas muy capaces, necesitamos garantías de seguridad más sólidas y en un abanico de escenarios más amplio del que los benchmarks pueden ofrecer por sí solos.</p>
+
+      <p><strong>Los riesgos de seguridad emergen de las interacciones entre capacidades, lo que crea un desafío combinatorio.</strong> Capacidades individuales como la conciencia situacional o el engaño parecen manejables medidas por separado, pero su combinación crea riesgos emergentes fundamentalmente distintos de cualquiera de ellas por sí sola. Los modelos podrían reconocer cuándo se los evalúa y ocultar capacidades de forma selectiva durante las pruebas, mostrando después comportamientos preocupantes una vez desplegados. Esta explosión combinatoria vuelve las pruebas exhaustivas exponencialmente más difíciles, pero también imprescindibles para poder hacer afirmaciones de seguridad con sentido. Un modelo que supere la mayoría de los benchmarks de seguridad podría albergar igualmente combinaciones peligrosas que nunca se probaron de forma explícita. Por eso conviene desplazar la medición de las propiedades críticas para la seguridad hacia evaluaciones integrales.</p>
+
+      <p><strong>Una evaluación de seguridad eficaz requiere medir tres propiedades distintas: capacidades, propensiones y control.</strong> Las evaluaciones de capacidades peligrosas establecen cotas superiores de lo que los modelos pueden hacer cuando se los lleva al límite mediante técnicas como el andamiaje y el aumento con herramientas. Las evaluaciones de propensiones revelan qué comportamientos tienden a mostrar por defecto, midiendo tendencias conductuales y no solo habilidades máximas. Las evaluaciones de control verifican si los protocolos de seguridad siguen siendo eficaces cuando los modelos intentan activamente eludirlos. Esta taxonomía en tres partes ofrece un marco sistemático que ayuda a responder las preguntas más relevantes para la toma de decisiones.</p>
+
+      <p><strong>La evaluación de seguridad requiere técnicas conductuales e internas, y cada una aporta un tipo distinto de evidencia.</strong> Las técnicas conductuales examinan las salidas del modelo con enfoques como el <em>red teaming</em>, que intenta sistemáticamente provocar comportamientos preocupantes; el ajuste fino supervisado, que extrae capacidades modificando los pesos y no solo las instrucciones; y el muestreo del mejor de N, que examina varias respuestas potenciales para entender la distribución de salidas. Estas técnicas pueden establecer cotas superiores de capacidad, pero cuesta que nos digan «por qué» los modelos generan ciertas salidas. Las técnicas internas complementan esto examinando directamente los mecanismos del modelo. Los autocodificadores dispersos, por ejemplo, han logrado extraer características interpretables relacionadas con comportamientos relevantes para la seguridad, como el engaño, la complacencia y el sesgo. Otras técnicas, como la interpretabilidad mecanicista, ayudan a rastrear las rutas computacionales del modelo; la seguridad enumerativa puede catalogar los conceptos que el modelo ha codificado, y la ingeniería de representaciones examina cómo codifica la información. Ambas familias son complementarias y, juntas, ofrecen garantías más sólidas que cualquiera por separado.</p>
+
+      <p><strong>Los marcos de evaluación ayudan a convertir las mediciones en decisiones concretas de desarrollo y despliegue.</strong> En lugar de respuestas improvisadas ante las capacidades, marcos como las políticas de escalado responsable de Anthropic establecen «niveles de seguridad de la IA», inspirados en los protocolos de contención biológica, donde cada nivel exige requisitos de evaluación y medidas de seguridad más estrictos. Estos marcos crean «puertas de evaluación» que determinan cuándo puede continuar el escalado con seguridad, al exigir que los modelos superen evaluaciones de ciberseguridad, bioseguridad y replicación autónoma antes de seguir con el desarrollo. Al integrar las evaluaciones en las estructuras de gobernanza, creamos enfoques sistemáticos de gestión del riesgo en lugar de decisiones improvisadas.</p>
+
+      <p><strong>Las evaluaciones deben diseñarse de forma sistemática para mantener la calidad y escalar con modelos cada vez más complejos.</strong> Su diseño exige considerar con cuidado las prestaciones disponibles, es decir, los recursos y oportunidades que se le dan al modelo durante las pruebas. Variándolas de forma sistemática, desde lo mínimo (restringir herramientas y recursos) hasta lo máximo (facilitar todas las herramientas y el contexto potencialmente relevantes), podemos construir una imagen más completa de su comportamiento en condiciones distintas. A medida que crece el número de propiedades relevantes para la seguridad, automatizar la evaluación se vuelve necesario, y las evaluaciones escritas por modelos podrían ayudar a afrontar ese desafío de escala.</p>
+
+      <p><strong>Pese a los avances, las evaluaciones afrontan limitaciones de fondo que amenazan su fiabilidad.</strong> La asimetría entre demostrar la presencia y la ausencia de capacidades implica que nunca podremos estar seguros de haber detectado todos los riesgos: una evaluación puede confirmar de forma concluyente que un modelo posee cierta capacidad, pero no probar definitivamente que no la tiene. Entre los desafíos técnicos están la sensibilidad de la medición, ya que el rendimiento puede variar por cambios aparentemente triviales en el formato de las instrucciones, y la explosión combinatoria de casos de prueba al añadir dimensiones nuevas. La desalineación podría llevar al <em>sandbagging</em>, es decir, a un bajo rendimiento estratégico en las evaluaciones: la investigación muestra que se puede hacer que los modelos de lenguaje rindan menos de forma selectiva en pruebas de capacidades peligrosas manteniendo su rendimiento en los benchmarks generales. Y los incentivos organizativos podrían llevar a los propios laboratorios al «lavado de seguridad», presentando mejoras de capacidad como avances de seguridad. Todo esto subraya la necesidad de seguir investigando metodologías más robustas y disposiciones institucionales que permitan una evaluación realmente independiente.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f6cd8f84576ce1476582460d217a4ec9a24e77291638fb64f8aef85ac4e9dbab.BDyefyrn_1JK7xh.webp" alt="Figura 5.1">
+        <figcaption><strong>Figura 5.1.</strong> Panorama del contenido del capítulo.</figcaption>
+      </figure>
+      <p>Esta introducción ofrece una visión general de muchos de los conceptos que trataremos a lo largo del capítulo. Las secciones seguirán en gran medida el orden en que los hemos presentado. Empezamos explorando cómo los benchmarks han dado forma al desarrollo de la IA.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 1 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/introduction/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>Agradecimientos</h3>
+      <p>Agradecemos a Maxime Riché, Martin, Fabien Roger, Jeanne Salle, Camille Berger y Leo Karoubi sus valiosos comentarios y aportaciones.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap4-09-apendice-gobernanza-nacional.html">← Anterior: Apéndice: Gobernanza nacional (capítulo 4)</a>
+      </div>
+      <a class="siguiente" href="cap5-02-benchmarks.html">
+        <strong>Siguiente: Benchmarks →</strong><br>
+        Las herramientas de medición estandarizadas dan forma al desarrollo y nos ayudan a saber dónde estamos. Se están creando muchos benchmarks para medir tanto las capacidades como la seguridad de los sistemas de IA.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

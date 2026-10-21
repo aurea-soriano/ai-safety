@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apéndice: Debate sobre los LLM · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Debate sobre las críticas a los grandes modelos de lenguaje y sus limitaciones.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li class="activo"><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Apéndice: Debate sobre los LLM</h1>
+      <p><em>Este apéndice examina las críticas habituales a los grandes modelos de lenguaje y evalúa si sus limitaciones aparentes son fundamentales o si es probable que se superen con herramientas y escala.</em></p>
+      <p class="meta">21 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#insuficiencia-empirica">¿Insuficiencia empírica?</a></li>
+          <li><a href="#comprension-superficial">¿Comprensión superficial?</a></li>
+          <li><a href="#insuficiencia-estructural">¿Insuficiencia estructural?</a></li>
+          <li><a href="#diferencias-con-el-cerebro">Diferencias con el cerebro</a></li>
+          <li><a href="#mas-razones-para-seguir-escalando">Más razones para seguir escalando los LLM</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <p>Los LLM actuales, aunque se entrenan con datos abundantes, todavía están lejos de ser perfectos.</p>
+      <p>¿Persistirán estos problemas en las próximas generaciones o desaparecerán? Esta sección examina las principales críticas a estos modelos e intenta determinar si siguen siendo válidas para los LLM del futuro.</p>
+      <p>Este tipo de evaluación cualitativa es importante para saber si los LLM son o no el camino más probable hacia la AGI.</p>
+
+      <h2 id="insuficiencia-empirica">¿Insuficiencia empírica?</h2>
+      <p><strong>¿Pueden ser creativos los LLM?</strong> La creatividad de los LLM es objeto de debate frecuente, pero hay indicios claros de que la IA, en principio, es capaz de procesos creativos de varias formas:</p>
+      <ul>
+        <li><strong>Investigación científica autónoma:</strong> avances recientes han mostrado que los LLM pueden hacer descubrimientos nuevos. Por ejemplo, un estudio de DeepMind demostró que un LLM encontró nuevas soluciones para el problema del <em>cap set</em>, un problema abierto de las matemáticas desde hace mucho tiempo (<a href="https://deepmind.google/discover/blog/funsearch-making-new-discoveries-in-mathematical-sciences-using-large-language-models/">DeepMind, 2023</a>) y uno de los problemas abiertos favoritos de Terence Tao. Esto indica que la IA no solo puede comprender el conocimiento existente, sino también aportar ideas nuevas en campos complejos como las matemáticas.</li>
+        <li><strong>Descubrimiento autónomo:</strong> la IA es capaz de redescubrir por sí sola estrategias y aperturas humanas. AlphaGo, por ejemplo, redescubrió estrategias y aperturas humanas del go jugando contra sí mismo (<a href="https://arxiv.org/abs/2111.09259">McGrath et al., 2021</a>), sin ningún dato humano. Esto demuestra la capacidad de una IA para aprender e innovar de forma independiente en dominios ya establecidos.</li>
+        <li><strong>Optimización creativa:</strong> la IA puede optimizar de formas sorprendentemente creativas, como ilustra el fenómeno de la manipulación de la especificación (<em>specification gaming</em>), en el que la IA encuentra soluciones no previstas a los problemas. Aunque esta imprevisibilidad plantea sus propios desafíos, también muestra que los sistemas de IA pueden dar con soluciones nuevas y creativas que no resultarían evidentes ni intuitivas para una persona. La entrada del blog de DeepMind sobre la manipulación de la especificación lo ilustra de forma muy gráfica (<a href="https://deepmind.google/discover/blog/specification-gaming-the-flip-side-of-ai-ingenuity/">Krakovna et al., 2020</a>).</li>
+      </ul>
+
+      <p><strong>¿No aprenden los LLM demasiado despacio?</strong> Los argumentos contra los modelos de lenguaje basados en <em>transformers</em> suelen sostener que son poco eficientes con los ejemplos y que aprenden conceptos nuevos muchísimo más despacio que los humanos. Se suele decir que, para mejorar su rendimiento en tareas o situaciones nuevas, los LLM necesitan entrenarse con enormes cantidades de datos, millones de veces más de lo que necesitaría un humano. Sin embargo, hay una tendencia creciente hacia la eficiencia en el uso de datos, y cada vez más se cree que esto puede mejorar mucho en los modelos futuros.</p>
+      <p><strong>EfficientZero es un agente de aprendizaje por refuerzo que supera el rendimiento humano mediano en un conjunto de 26 juegos de Atari tras solo dos horas de experiencia en tiempo real por juego</strong> (<a href="https://arxiv.org/abs/2111.00210">Ye et al., 2021</a>; <a href="https://arxiv.org/abs/2403.00564">Wang et al., 2024</a>). Es una mejora considerable respecto de los algoritmos anteriores y muestra los posibles saltos en la eficiencia del uso de datos. La promesa no es solo un aprendizaje más eficiente, sino también la posibilidad de adaptarse rápidamente y dominar tareas nuevas, a un ritmo parecido al de un niño. EfficientZero no es un LLM, pero muestra que, a veces, se puede lograr esa eficiencia.</p>
+      <p><strong>Las leyes de escalado indican que las IA más grandes tienden a ser más eficientes con los datos</strong> y necesitan menos datos para alcanzar el mismo rendimiento que sus equivalentes más pequeños. Trabajos como <em>Language Models are Few-Shot Learners</em> (<a href="https://arxiv.org/abs/2005.14165">Brown et al., 2020</a>) y la evidencia de que los modelos más grandes parecen necesitar menos datos para alcanzar el mismo rendimiento (<a href="https://arxiv.org/abs/2001.08361">Kaplan et al., 2020</a>) sugieren que, a medida que los modelos escalan, se vuelven más competentes con menos ejemplos. Esta tendencia apunta a un futuro en el que la IA podría adaptarse y aprender rápidamente a partir de datos limitados, lo que pone en duda la idea de que las IA aprenden, por naturaleza, más despacio que los humanos.</p>
+
+      <p><strong>¿Son robustos los LLM ante los cambios de distribución?</strong> Es cierto que la IA aún no ha alcanzado la máxima robustez (por ejemplo, rendir a la perfección tras un cambio en la distribución de los datos), pero ha habido avances considerables:</p>
+      <ul>
+        <li><strong>La robustez se correlaciona con las capacidades:</strong> cuando las IA se entrenan en tareas difíciles, su robustez está estrechamente ligada a sus capacidades. Por ejemplo, de GPT-2 a GPT-4 hay una mejora importante en robustez y en aprendizaje por transferencia. En visión por computadora, modelos recientes como Segment Anything (<a href="https://arxiv.org/abs/2304.02643">Kirillov et al., 2023</a>) son mucho más robustos y capaces de transferir lo aprendido que sus predecesores menos capaces. Este progreso no se debe a ningún factor misterioso, sino al escalado y a la mejora de las arquitecturas existentes.</li>
+        <li><strong>La robustez es un continuo, y quizá no haga falta una robustez perfecta:</strong> la robustez de la IA no debe verse como un concepto binario, sino como un continuo. Se aprecia en la forma en que los modelos de IA, como los de clasificación de imágenes, suelen superar a los humanos tanto en capacidad como en robustez (<a href="https://aiimpacts.org/time-for-ai-to-cross-the-human-performance-range-in-imagenet-image-classification/">Korzekwa, 2022</a>). Aun así, hay que reconocer que ningún sistema es completamente inmune a desafíos como los ataques adversariales. Lo ejemplifican IA avanzadas como KataGo en el go, que, pese a ser vulnerable a estos ataques (<a href="https://arxiv.org/abs/2211.00241">Wang et al., 2022</a>), sigue jugando a nivel sobrehumano. La búsqueda de una robustez perfecta quizá no sea esencial para crear una IA transformadora capaz, ya que incluso sistemas con ciertas vulnerabilidades pueden alcanzar niveles de competencia sobrehumanos. Sin embargo, aunque la robustez no sea necesaria para crear una IA capaz, crear una IA segura y alineada exigirá resolver el problema de la generalización errónea de los objetivos.</li>
+      </ul>
+
+      <h2 id="comprension-superficial">¿Comprensión superficial?</h2>
+      <p><strong>Loros estocásticos: ¿las IA solo memorizan información sin comprimirla de verdad?</strong> Hay dos formas arquetípicas de representar la información en un LLM: memorizarla punto por punto, como una tabla de consulta, o comprimirla memorizando solo características de nivel superior, a lo que podemos llamar «modelo del mundo». Lo explica el importantísimo artículo <em>Superposition, Memorization, and Double Descent</em> (<a href="https://transformer-circuits.pub/2023/toy-double-descent/index.html">Anthropic, 2023</a>): para almacenar puntos, el modelo aprende al principio la posición de todos ellos (memorización pura); luego, si aumentamos el número de puntos, empieza a comprimir ese conocimiento y pasa a ser capaz de generalizar (implementa un modelo sencillo de los datos).</p>
+      <blockquote>
+        <p>Chollet lamenta que muy poca gente entienda la diferencia entre memorizar y comprender. Según él, no es una pregunta elevada sobre si el sistema tiene un modelo interno del mundo, sino una distinción práctica de comportamiento: si el sistema es capaz de una «generalización amplia» o se limita a una «generalización local».</p>
+        <p>— François Chollet, destacado investigador de IA · <a href="https://x.com/fchollet/status/1736079054313574578?s=20">Chollet, 2023</a></p>
+      </blockquote>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/056812ed6755684a20be73dd71babaad8b7a417aeb4030d02174cff6b2069330.DPIFIf9n_Z1k77E7.webp" alt="Figura 1.69">
+        <figcaption><strong>Figura 1.69.</strong> Tomada de <em>Superposition, Memorization, and Double Descent</em> (<a href="https://transformer-circuits.pub/2023/toy-double-descent/index.html">Anthropic, 2023</a>).</figcaption>
+      </figure>
+
+      <p><strong>La IA es capaz de comprimir información, a menudo de forma pertinente.</strong> Por ejemplo, si se examinan las representaciones de palabras que designan colores en los LLM, como «rojo» y «azul», la estructura que forman todos los <em>embeddings</em> de esos colores reproduce correctamente el círculo cromático (para verlo se usa una proyección no lineal, como t-SNE, que lleva el espacio de alta dimensión a un plano 2D). El artículo <em>Eight Things to Know about Large Language Models</em> presenta otros ejemplos de modelos del mundo (<a href="https://arxiv.org/abs/2304.00612">Bowman, 2023</a>).</p>
+      <p><strong>Por supuesto, hay otros dominios en los que la IA se parece más a una tabla de consulta, pero se trata de un espectro y cada caso debe examinarse por separado.</strong> Por ejemplo, en el caso de las «asociaciones factuales», el artículo <em>Locating and Editing Factual Associations in GPT</em> muestra que la estructura de datos subyacente de GPT-2 se parece más a una tabla de consulta (<a href="https://arxiv.org/abs/2202.05262">Meng et al., 2023</a>), pero el artículo <em>Emergent Linear Representations in World Models of Self-Supervised Sequence Models</em> demuestra que un GPT pequeño es capaz de aprender un modelo del mundo comprimido del juego Othello (OthelloGPT) (<a href="https://arxiv.org/abs/2309.00941">Nanda et al., 2023</a>). Hay más ejemplos en el apartado dedicado a los modelos del mundo de <em>Eight Things to Know about Large Language Models</em> (<a href="https://arxiv.org/abs/2304.00612">Bowman, 2023</a>).</p>
+      <p><strong>Está claro que los LLM comprimen sus representaciones, al menos un poco.</strong> El trabajo <em>The Stochastic Parrot Hypothesis is debatable for the last generation of LLMs</em> presenta muchos ejemplos de capacidades impresionantes que muestran que no puede tratarse solo de memorización (<a href="https://www.lesswrong.com/posts/HxRjHq3QG8vcYy4yy/the-stochastic-parrot-hypothesis-is-debatable-for-the-last">Feuillade-Montixi y Peigné, 2023</a>).</p>
+
+      <h3>¿Alucinarán inevitablemente los LLM?</h3>
+      <p>Los LLM tienden a «alucinar», término que describe la generación de contenido sin sentido o factualmente incorrecto en respuesta a ciertas instrucciones. Este problema, señalado en estudios como <em>On Faithfulness and Factuality in Abstractive Summarization</em> (<a href="https://arxiv.org/abs/2005.00661">Maynez et al., 2020</a>) y <em>TruthfulQA: Measuring How Models Mimic Human Falsehoods</em> (<a href="https://arxiv.org/abs/2109.07958">Lin et al., 2022</a>), es un desafío importante. Sin embargo, conviene ver que estos problemas son esperables por la forma en que se entrenan los modelos y que pueden mitigarse:</p>
+      <ul>
+        <li><strong>Sesgos inherentes a los textos de origen:</strong> una de las razones fundamentales por las que los LLM pueden producir contenido falso son los datos de entrenamiento, que no siempre son del todo factuales ni imparciales. En esencia, los LLM reflejan la naturaleza diversa y a veces contradictoria de sus datos de entrenamiento. En este sentido, los LLM «alucinan» constantemente, pero a veces esas alucinaciones coinciden con nuestra percepción de la realidad.</li>
+        <li><strong>Estrategias para mejorar la exactitud factual:</strong> la tendencia de los LLM a alucinar puede reducirse mucho con distintas técnicas; el recuadro siguiente las detalla.</li>
+        <li><strong>Los modelos más grandes pueden ser más veraces que los pequeños:</strong> es lo que ocurre con TruthfulQA. OpenAI informa de que GPT-4 es un 40 % más preciso y coherente en los hechos que su predecesor.</li>
+      </ul>
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Muchas técnicas pueden aumentar la veracidad de los LLM</strong> · Opcional · 3 min de lectura</summary>
+        <p><strong>Ajuste fino de los LLM para la factualidad:</strong> en este artículo (<a href="https://arxiv.org/abs/2311.08401">Tian et al., 2023</a>), los autores recomiendan métodos de ajuste fino basados en la optimización directa de preferencias (DPO) para reducir la tasa de alucinaciones. Aplicando estas técnicas, un modelo Llama 2 de 7000 millones de parámetros redujo un 58 % su tasa de errores factuales respecto del modelo original.</p>
+        <p><strong>Generación aumentada por recuperación (RAG):</strong> este método incorpora un proceso de búsqueda de información del mundo real (la recuperación, como una búsqueda en Google) y luego usa esa información para orientar las respuestas de la IA (la generación, basada en el documento recuperado). Así, la IA queda mejor anclada en la realidad de los hechos y se reduce la probabilidad de que produzca contenido irreal o incorrecto. En esencia, es como darle a la IA una biblioteca de referencia para comprobar los hechos mientras aprende y responde. Este enfoque es especialmente útil en el aprendizaje en contexto, en el que la IA aprende de la información y el contexto que se le dan en cada interacción.</p>
+        <p><strong>Las técnicas de instrucciones (<em>prompting</em>) han evolucionado hasta incluir métodos sofisticados como:</strong></p>
+        <ul>
+          <li><strong>Comprobaciones de coherencia</strong> (<a href="https://arxiv.org/abs/2306.09983">Fluri et al., 2023</a>): consisten en comparar las respuestas de varias instancias del modelo a la misma instrucción e identificar y resolver los desacuerdos entre ellas, lo que mejora la precisión y la credibilidad de la información. Por ejemplo, si distintas iteraciones del modelo dan respuestas contradictorias, esa discrepancia puede usarse para afinar y mejorar la comprensión del modelo.</li>
+          <li><strong>Reflexion</strong> (<em>Reflexion: Language Agents with Verbal Reinforcement Learning</em>): basta con pedirle al LLM que dé un paso atrás, que se pregunte si lo que ha hecho es correcto y que piense en formas de mejorar su respuesta anterior, y eso mejora mucho las capacidades de GPT-4. Esta técnica es emergente y no funciona bien con modelos anteriores (<a href="https://arxiv.org/abs/2303.11366">Shinn et al., 2023</a>).</li>
+          <li><strong>Cadenas de verificación</strong>, como la inferencia por selección (<a href="https://arxiv.org/abs/2205.09712">Creswell et al., 2022</a>). La cadena de pensamiento tiene acceso a todo el contexto, así que cada paso de razonamiento no está necesariamente conectado de forma causal con el anterior. La inferencia por selección, en cambio, impone una estructura en la que cada paso se deriva necesariamente del anterior, de modo que toda la cadena de razonamiento es causal. En este proceso, el modelo examina su propio razonamiento o los pasos que siguió para llegar a una conclusión, lo que le permite verificar la lógica y la coherencia de sus respuestas y asegurarse de que están bien fundamentadas y son fiables.</li>
+          <li><strong>Permitir que la IA exprese grados de confianza</strong> en sus respuestas y reconozca la incertidumbre cuando corresponda. Por ejemplo, en lugar de un «sí» o un «no» tajantes, el modelo podría responder «no estoy seguro», lo que refleja una comprensión más matizada, parecida al razonamiento humano. Este enfoque se aprecia en modelos avanzados como Gopher (<a href="https://arxiv.org/abs/2112.11446">Rae et al., 2022</a>), a diferencia de modelos anteriores, como WebGPT, que quizá no muestren el mismo nivel de matiz.</li>
+        </ul>
+        <p><strong>El entrenamiento basado en procesos</strong> acostumbra a los sistemas a detallar mucho más sus razonamientos y les impide saltarse demasiados pasos. Véase, por ejemplo, el trabajo de OpenAI sobre la mejora del razonamiento matemático mediante la supervisión de procesos (<a href="https://arxiv.org/abs/2305.20050">Lightman et al., 2023</a>).</p>
+        <p><strong>Entrenamiento de la metacognición:</strong> los modelos pueden entrenarse para indicar la probabilidad de lo que afirman, una forma de metacognición. Por ejemplo, el artículo <em>Language Models (Mostly) Know What They Know</em> (<a href="https://arxiv.org/abs/2207.05221">Kadavath et al., 2022</a>) demuestra que las IA pueden estar calibradas de forma bayesiana respecto de su conocimiento, lo que implica una forma rudimentaria de autoconciencia: reconocen la probabilidad de estar en lo cierto. De manera informal, esto significa que se le puede preguntar a un chatbot «¿Estás seguro de lo que me dices?» y obtener una respuesta relativamente fiable, lo que puede servir como entrenamiento contra las alucinaciones.</p>
+        <p>Cabe señalar que estas técnicas permiten mitigar en gran medida los problemas de los LLM actuales, pero no resuelven todos los problemas que plantea una IA potencialmente engañosa, como veremos en el capítulo sobre la generalización errónea de objetivos.</p>
+      </details>
+
+      <h2 id="insuficiencia-estructural">¿Insuficiencia estructural?</h2>
+      <p><strong>¿Les falta a los LLM el Sistema 2?</strong> Sistema 1 y Sistema 2 son términos popularizados por el economista Daniel Kahneman en su libro <em>Pensar rápido, pensar despacio</em>, que describen dos formas distintas en que nuestro cerebro forma pensamientos y toma decisiones. El Sistema 1 es rápido, automático e intuitivo: es la parte de nuestro pensamiento que se ocupa de las decisiones y juicios cotidianos sin mucho esfuerzo ni deliberación consciente. Por ejemplo, cuando reconoces una cara o entiendes una frase sencilla, sueles usar el Sistema 1. El Sistema 2, en cambio, es más lento, más deliberado y más lógico. Entra en acción cuando resuelves un problema complejo, tomas una decisión consciente o te concentras en una tarea difícil. Requiere más energía y está más controlado, y se ocupa de tareas como planificar el futuro, comprobar la validez de un argumento complejo o cualquier actividad que exija una concentración profunda. Ambos sistemas interactúan e influyen en cómo pensamos, juzgamos y decidimos, lo que refleja la complejidad del pensamiento y el comportamiento humanos.</p>
+      <p><strong>Una preocupación clave es si los LLM pueden emular los procesos del Sistema 2</strong>, que implican un pensamiento más lento, deliberado y lógico. Algunos argumentos teóricos sobre el límite de profundidad de los <em>transformers</em> demuestran que son incapaces de dividir internamente números enteros grandes (<a href="https://arxiv.org/abs/2207.02098">Delétang et al., 2023</a>). Sin embargo, no es lo que observamos en la práctica: GPT-4 puede detallar algunos cálculos paso a paso y obtener el resultado esperado mediante una cadena de pensamiento o usando herramientas como un intérprete de código.</p>
+      <p><strong>Metacognición emergente.</strong> Funciones emergentes de los LLM, como la técnica Reflexion (<a href="https://arxiv.org/abs/2303.11366">Shinn et al., 2023</a>), permiten a estos modelos analizar y mejorar sus respuestas de forma retrospectiva. Se puede pedir al LLM que dé un paso atrás, cuestione si sus acciones anteriores eran correctas y piense en formas de mejorar su respuesta. Esto mejora mucho las capacidades de GPT-4 y las acerca al funcionamiento del Sistema 2 humano. Esta técnica es emergente y no funciona bien con modelos anteriores.</p>
+      <p><strong>Estos resultados sugieren que la frontera entre ambos sistemas se difumina.</strong> Los procesos del Sistema 2 podrían ser, en esencia, un ensamblaje de varios procesos del Sistema 1, que parecen más lentos porque implican más pasos e interacciones con formas de memoria más lentas. Esta perspectiva tiene un paralelo en el funcionamiento de los modelos de lenguaje, en los que cada paso de un proceso del Sistema 1 equivale a un paso de ejecución de tiempo constante en modelos como GPT. Aunque a estos modelos les cuesta orquestar intencionadamente esos pasos para resolver problemas complejos, dividir las tareas en pasos más pequeños (<em>least-to-most prompting</em>) o pedirles un razonamiento gradual (instrucciones de cadena de pensamiento) mejora mucho su rendimiento.</p>
+
+      <p><strong>¿Les falta a los LLM un modelo interno del mundo?</strong> La noción de «modelo del mundo» en IA no tiene por qué limitarse a una codificación explícita dentro de una arquitectura. Frente a enfoques como H-JEPA (<a href="https://openreview.net/pdf?id=BZ5a1r-kVsf">LeCun, 2022</a>), que defienden un modelo del mundo explícito para mejorar el entrenamiento de la IA, cada vez hay más pruebas de que un modelo del mundo puede ser eficazmente implícito. Esto se ve especialmente en el aprendizaje por refuerzo, donde la distinción entre aprendizaje con modelo y sin modelo puede resultar algo engañosa: incluso en el aprendizaje sin modelo, los algoritmos suelen codificar de forma implícita una especie de modelo del mundo, crucial para un rendimiento óptimo.</p>
+      <ul>
+        <li><strong>Coordenadas temporales y geográficas:</strong> la investigación sobre los modelos Llama-2 revela cómo pueden representar información espacial y temporal (<a href="https://arxiv.org/abs/2310.02207">Gurnee y Tegmark, 2024</a>). Estos LLM codifican coordenadas aproximadas del mundo real y cronologías históricas de ciudades. Entre los hallazgos clave están la aparición gradual de representaciones geográficas a lo largo de las capas del modelo, la linealidad de esas representaciones y su robustez ante distintas instrucciones. Lo más importante es que el estudio muestra que los modelos no se limitan a procesar pasivamente esta información, sino que aprenden de forma activa la geometría global del espacio y el tiempo.</li>
+        <li><strong>Representación del tablero:</strong> en el artículo <em>Emergent Linear Representations in World Models of Self-Supervised Sequence Models</em> (<a href="https://arxiv.org/abs/2309.00941">Nanda et al., 2023</a>), el autor presenta hallazgos importantes sobre la naturaleza de las representaciones en los modelos de IA. Analiza cómo el modelo Othello-GPT, entrenado para predecir jugadas legales en el juego Othello, desarrolla una representación emergente del tablero. Al contrario de lo que se creía, demuestra que esa representación es lineal, y descubre que el modelo no representa el estado del tablero en términos de fichas negras o blancas, sino de «mi color» y «su color», en coherencia con su perspectiva de jugar con ambos bandos. Este trabajo arroja luz sobre la capacidad de los modelos de IA para desarrollar representaciones del mundo complejas, pero lineales, a partir de objetivos simples como predecir el siguiente token.</li>
+        <li>En el artículo <em>Eight Things to Know about LLMs</em> se presentan otros ejemplos (<a href="https://arxiv.org/abs/2304.00612">Bowman, 2023</a>).</li>
+      </ul>
+
+      <p><strong>¿Pueden los LLM aprender de forma continua y tener memoria a largo plazo?</strong> El aprendizaje continuo y la gestión eficaz de la memoria a largo plazo son desafíos importantes en el campo de la IA en general.</p>
+      <p><strong>El olvido catastrófico.</strong> Un obstáculo crucial en este ámbito es el olvido catastrófico, un fenómeno por el que una red neuronal, al aprender información nueva, tiende a olvidar por completo lo que había aprendido antes. Es un foco importante de la investigación actual, que busca desarrollar sistemas de IA capaces de conservar su conocimiento y construir sobre él con el tiempo. Por ejemplo, supongamos que entrenamos una IA en un juego de Atari y luego en otro: al final del segundo entrenamiento, lo más probable es que haya olvidado cómo jugar al primero. Esto es un ejemplo de olvido catastrófico.</p>
+      <p>Pero supongamos ahora que entrenamos una IA grande en muchos juegos de Atari a la vez, y que incluso añadimos algo de texto de internet y algunas tareas de robótica. Puede que simplemente funcione. Por ejemplo, la IA Gato ilustra este proceso de entrenamiento y ejemplifica lo que llamamos la «bendición de la escala»: lo que es imposible a pequeña escala puede volverse posible a gran escala.</p>
+      <p>Se están desarrollando otras técnicas para resolver la memoria a largo plazo. Por ejemplo, también se han usado enfoques basados en el andamiaje para lograr memoria a largo plazo y aprendizaje continuo. En IA, el andamiaje se refiere al uso de envoltorios codificados a mano, estructuras programadas explícitamente por humanos que incluyen un bucle para consultar continuamente al modelo:</p>
+      <ul>
+        <li><strong>LangChain</strong> aborda estos desafíos creando amplios bancos de memoria. Es una biblioteca de Python que permite a los LLM recuperar y usar información de grandes conjuntos de datos, lo que en esencia da a la IA acceso a un vasto repositorio de conocimiento para construir respuestas mejor informadas. Sin embargo, quizá no sea el enfoque más elegante, porque depende de fuentes de datos externas y de mecanismos de recuperación complejos. Una solución potencialmente más fluida e integrada podría consistir en usar los pesos de la red neuronal como memoria dinámica, en constante evolución y actualización según las tareas que realiza la red.</li>
+        <li><strong>Voyager:</strong> un ejemplo notable de memoria a largo plazo basada en andamiaje es Voyager, un sistema de IA desarrollado bajo el paradigma «AutoGPT». Destaca por su capacidad de aprender de forma continua en un entorno de juego 3D como Minecraft. En una sola partida, Voyager aprende los controles básicos, alcanza objetivos iniciales como conseguir recursos y acaba pasando a comportamientos más complejos, como combatir enemigos y fabricar herramientas para obtener recursos sofisticados. Esto supone un avance importante en la capacidad de los LLM para aprender de forma continua y gestionar la memoria a largo plazo en entornos dinámicos.</li>
+      </ul>
+      <p>Cabe señalar que la memoria a largo plazo basada en andamiaje no se considera una solución elegante, y los puristas preferirían usar los propios pesos del sistema como memoria a largo plazo.</p>
+
+      <h3>Planificación</h3>
+      <p>La planificación es un ámbito en el que las IA todavía tienen dificultades, pero hay avances importantes. Algunos paradigmas, como los basados en el andamiaje, permiten descomponer las tareas y dividir los objetivos en subobjetivos más pequeños y alcanzables.</p>
+      <p>Además, el artículo <em>Voyager: An Open-Ended Embodied Agent with Large Language Models</em> demuestra que es posible usar GPT-4 para planificar en lenguaje natural en Minecraft (<a href="https://arxiv.org/abs/2305.16291">Wang et al., 2023</a>).</p>
+
+      <h2 id="diferencias-con-el-cerebro">Diferencias con el cerebro</h2>
+      <p>Parece haber varios puntos de convergencia entre los LLM y la corteza lingüística:</p>
+      <ul>
+        <li><strong>Similitudes de comportamiento:</strong> los LLM se parecen mucho a las capacidades lingüísticas humanas y a la corteza lingüística (<a href="https://www.lesswrong.com/posts/3nMpdmt8LrzxQnkGp/ai-timelines-via-cumulative-optimization-power-less-long">Cannell, 2022</a>). Estos modelos dominan la sintaxis y buena parte de la semántica del lenguaje humano. Por supuesto, hoy todavía se quedan atrás en aspectos como la memoria a largo plazo, la coherencia y el razonamiento general, facultades que en los humanos dependen de distintas regiones cerebrales, como el hipocampo y la corteza prefrontal, pero en los apartados anteriores explicamos que esos problemas podrían tener solución.</li>
+        <li><strong>Convergencia de las representaciones internas:</strong> con la escala, la representación de los LLM converge hacia la del cerebro, como respalda el estudio <em>Brains and algorithms partially converge in natural language processing</em> (<a href="https://www.nature.com/articles/s42003-022-03036-1">Caucheteux y King, 2022</a>). Hay más ideas en los trabajos <em>The Brain as a Universal Learning Machine</em> (<a href="https://www.lesswrong.com/posts/9Yc7Pp7szcjPgPsjf/the-brain-as-a-universal-learning-machine">Cannell, 2015</a>) y <em>Brain Efficiency: Much More than You Wanted to Know</em> (<a href="https://www.lesswrong.com/posts/xwBuoE9p8GE7RAuhd/brain-efficiency-much-more-than-you-wanted-to-know">Cannell, 2022</a>). En etapas de aprendizaje comparables, los LLM y la corteza lingüística desarrollan representaciones de características similares o equivalentes. En algunas evaluaciones, los LLM avanzados han logrado predecir el 100 % de la varianza neuronal explicable, como detallan Schrimpf y sus colegas en <em>The neural architecture of language: Integrative modeling converges on predictive processing</em> (<a href="https://www.pnas.org/content/118/45/e2105646118">Schrimpf et al., 2021</a>).</li>
+        <li><strong>La escala también importa en los primates:</strong> según varios estudios, la principal diferencia de arquitectura entre el cerebro humano y el de otros primates parece ser el número de neuronas, más que cualquier otra cosa (<a href="https://pubmed.ncbi.nlm.nih.gov/22723358/">Herculano-Houzel, 2012</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/36789740/">Pearson et al., 2023</a>; <a href="https://pubmed.ncbi.nlm.nih.gov/33563125/">Charvet, 2021</a>).</li>
+      </ul>
+
+      <h2 id="mas-razones-para-seguir-escalando">Más razones para seguir escalando los LLM</h2>
+      <p>Estas son algunas razones para creer que los laboratorios seguirán escalando los LLM.</p>
+      <p><strong>Las leyes de escalado de los LLM implican nuevas mejoras cualitativas.</strong> Las leyes de escalado pueden no parecer impresionantes a primera vista, pero estas medidas cuantitativas pueden traducirse en una mejora cualitativa de la calidad del algoritmo. Un algoritmo que alcanza una pérdida casi perfecta es, necesariamente, uno que comprende todas las sutilezas y muestra una enorme capacidad de adaptación. Que las leyes de escalado no se estén doblegando es muy significativo y significa que podemos hacer que el modelo razone cualitativamente mejor.</p>
+      <p><strong>De las correlaciones simples a la comprensión.</strong> Durante un entrenamiento, los GPT pasan de correlaciones básicas a una comprensión cada vez más profunda. Al principio, el modelo solo establece conexiones entre palabras sucesivas. Poco a poco desarrolla una comprensión de la gramática y la semántica, y crea vínculos entre frases y, después, entre párrafos. Finalmente, GPT domina los matices del estilo de escritura.</p>
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ejercicio: las leyes de escalado de los LLM implican nuevas mejoras cualitativas</strong> · Opcional · 1 min de lectura</summary>
+        <p>Calculemos la diferencia de pérdida, medida en bits, entre dos salidas de un modelo: <em>«Janelle ate some ice cream because he likes sweet things like ice cream.»</em> y <em>«Janelle ate some ice cream because she likes sweet things like ice cream.»</em> (en español: «Janelle comió helado porque [él / ella] disfruta de las cosas dulces como el helado»). La frase tiene unos veinte tokens. Si el modelo duda entre «he» y «she» y elige al azar (50/50), incurre en una pérdida de 2 bits en el token del pronombre cuando se equivoca. La pérdida de los demás tokens es la misma en ambos modelos. Pero como el modelo solo se equivoca la mitad de las veces, hay que aplicar un factor de 1/2. El resultado es una diferencia de (1/2) × (2/20) = 1/20, es decir, 0,05 bits. Así, un modelo que esté a menos de 0,05 bits de la pérdida teórica mínima debería ser capaz de comprender conceptos aún más matizados que el del ejemplo.</p>
+        <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: se mantienen las frases en inglés porque el ejemplo depende de que el pronombre sea la única diferencia entre ambas.</em></p>
+      </details>
+      <p><strong>Completar texto es probablemente una prueba «IA-completa»</strong> (<a href="https://en.wikipedia.org/wiki/AI-complete">Wikipedia, 2022</a>).</p>
+      <p><strong>Los LLM actuales solo tienen tantos parámetros como sinapsis tiene un mamífero pequeño, así que no sorprende que sigan siendo imperfectos.</strong> Modelos como GPT-4, aunque son muy grandes en comparación con otros modelos, tienen una escala relativamente modesta frente al tamaño de un cerebro humano. Por ejemplo, el mayor modelo de GPT-3 tiene un número de parámetros similar al de sinapsis de un erizo. No sabemos realmente cuántos parámetros tiene GPT-4, pero si tuviera el mismo tamaño que PaLM, con 512 000 millones de parámetros, tendría tantos parámetros como sinapsis tiene una chinchilla. En cambio, la neocorteza humana contiene unos 140 billones de sinapsis, más de 200 veces las de una chinchilla. Para un análisis más detallado de esta comparación, consulta <a href="https://www.lesswrong.com/posts/YKfNZAmiLdepDngwi/gpt-175bee">este debate</a>. Sobre el número de parámetros necesarios para emular una sinapsis, consulta el debate sobre los anclajes biológicos.</p>
+      <p><strong>GPT-4 sigue siendo varios órdenes de magnitud más barato que otros grandes proyectos científicos.</strong> Pese a los altos costos de entrenar modelos grandes, los enormes saltos en las capacidades de la IA que aporta el escalado justifican esos costos. Por ejemplo, GPT-4 es caro en comparación con otros modelos de aprendizaje automático: se dice que su entrenamiento costó 50 millones de dólares. Pero el Proyecto Manhattan costó 25 000 millones, 500 veces más sin contar la inflación, y lograr una inteligencia de nivel humano podría ser económicamente más importante que conseguir la bomba nuclear.</p>
+      <p>En conjunto, estos puntos respaldan la idea de que la AGI puede alcanzarse solo escalando los algoritmos actuales.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 38 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/appendix-discussion-on-llms/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-10-apendice-encuestas-a-expertos.html">← Anterior: Apéndice: Encuestas a expertos</a>
+      </div>
+
+      <a class="siguiente" href="cap2-01-introduccion.html">
+        <strong>Siguiente: Capítulo 2 · Introducción →</strong>
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

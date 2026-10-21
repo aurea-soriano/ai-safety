@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Definir y medir la AGI · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Definiciones y criterios de medición de la AGI: capacidad y generalidad como ejes continuos.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li class="activo"><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Definir y medir la AGI</h1>
+      <p><em>Avanzar en seguridad exige definiciones y criterios de medición claros. Para planificar la seguridad, nos centramos en lo que los sistemas pueden hacer de verdad y descomponemos la inteligencia en capacidades concretas y medibles.</em></p>
+      <p class="meta">19 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#casos-de-estudio">Casos de estudio</a></li>
+          <li><a href="#definir-la-inteligencia-general">Definir la inteligencia general</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <p>Antes de hablar de seguridad de la IA, tenemos que ponernos de acuerdo sobre qué entendemos por AGI. En la sección anterior, sobre los modelos fundacionales, vimos que los sistemas de IA modernos son cada vez más potentes y de propósito más general. Pero ¿potentes en qué, exactamente? Algunos investigadores afirman que ya vemos «chispas» de AGI en los modelos de lenguaje más recientes (<a href="https://arxiv.org/abs/2303.12712">Bubeck et al., 2023</a>). Otros predicen una IA de nivel humano en menos de una década (<a href="https://arxiv.org/abs/2310.17688">Bengio et al., 2023</a>). Pero ¿de nivel humano en qué, exactamente? ¿Cómo se mide eso? Sin una definición clara, ¿cómo evaluamos estas afirmaciones o planificamos medidas de seguridad adecuadas?</p>
+
+      <p><strong>Lo que no se puede definir no se puede medir.</strong> Y lo que no se puede medir no permite seguir el progreso de forma fiable ni identificar los riesgos o prepararse para ellos. Piensa en un ejemplo de la física. Si queremos establecer y hacer cumplir límites de velocidad para los coches, decir que algo «se movió 5» no tiene sentido sin unidades. ¿Se movió 5 metros, 5 pies o 5 codos reales? Si no sabemos cuánto ni a qué velocidad se movió, no podemos hacer cumplir ningún límite. Lo mismo ocurre con la inteligencia y con las medidas de seguridad que dependen de ella. Todo campo necesita unidades estandarizadas (metros, vatios, julios) para ir más allá de las descripciones vagas. Debemos tratar la seguridad de la IA con el mismo rigor si queremos dejar de hablar de «inteligencia» a grandes rasgos.</p>
+
+      <p><strong>Definir la inteligencia general es extremadamente difícil.</strong> Todo el mundo coincide en que hace falta una definición para medir el progreso y diseñar medidas de seguridad. Entonces, ¿por qué no la tenemos? El problema es que la inteligencia abarca varias capacidades que se solapan: resolver problemas, aprender, adaptarse, razonar en abstracto. Cada disciplina la mira desde su propia perspectiva. Los psicólogos destacan las habilidades cognitivas medibles; los informáticos, el rendimiento en tareas; los filósofos debaten sobre la conciencia y la autoconciencia. ¿Qué enfoque importa más para la seguridad de la IA? Repasaremos algunos casos de estudio e intentos previos de definición antes de presentar las definiciones que usaremos en este libro.</p>
+
+      <h2 id="casos-de-estudio">Casos de estudio</h2>
+      <p><strong>Alan Turing propuso esquivar todo el lío centrándose en el comportamiento.</strong> Si una máquina pudiera imitar una conversación humana lo bastante bien como para engañar a un interrogador, debería considerarse inteligente (<a href="https://academic.oup.com/mind/article/LIX/236/433/986238?login=false">Turing, 1950</a>). El enfoque conductista es sencillo: olvídate de los estados mentales internos y fíjate en el comportamiento observable. ¿El sistema puede hacerlo o no? Por desgracia, los LLM pusieron de manifiesto algunas limitaciones de este enfoque. GPT-4 puede superar pruebas de conversación al estilo de Turing y, al mismo tiempo, tener dificultades con el razonamiento espacial básico o con mantener planes coherentes a largo plazo (<a href="https://sciendo.com/issue/JAGI/11/2">Rapaport, 2020</a>). La prueba era demasiado estrecha: la conversación es solo una de las muchas capacidades que nos interesan. Pero la idea central de Turing, fijarse en las capacidades observables y no en los estados internos, sigue siendo válida.</p>
+
+      <p><strong>Los enfoques de la inteligencia general basados en la conciencia se centran en la «comprensión verdadera».</strong> El argumento de la habitación china de John Searle planteaba que un sistema podría parecer inteligente (los llamados «loros estocásticos») sin comprender realmente nada, procesando símbolos sin captar su significado (<a href="https://psycnet.apa.org/record/1981-27235-001">Searle, 1980</a>). Esta visión pone el acento en estados cognitivos internos similares a la conciencia humana. El problema es que la conciencia suele ser aún más difícil de definir que la inteligencia. Tampoco sabemos con certeza si inteligencia y conciencia van necesariamente unidas: un sistema podría ser muy inteligente sin ser consciente, o consciente sin ser especialmente inteligente. AlphaGo es muy inteligente jugando al go, pero claramente no es consciente. Un sistema no necesita ser consciente para causar daño. Que un sistema de IA sea consciente o no influye poco, o nada, en su capacidad para tomar decisiones de gran impacto o emprender acciones potencialmente peligrosas.<sup><a href="#nota-1" id="ref-1">1</a></sup> La investigación sobre la conciencia, la sintiencia y los debates metaéticos sobre la naturaleza fundamental de la inteligencia es valiosa, pero ofrece pocas pautas prácticas para el tipo de trabajo de seguridad en el que se centra este libro.</p>
+
+      <p><strong>Definir la inteligencia a partir de la consecución de objetivos.</strong> Shane Legg y Marcus Hutter proponen que «la inteligencia mide la capacidad de un agente para alcanzar objetivos en una amplia variedad de entornos» (<a href="https://arxiv.org/abs/0712.3329">Legg y Hutter, 2007</a>). Esto capta algo importante: un sistema inteligente debería ser capaz de averiguar cómo conseguir lo que quiere en situaciones distintas. Pero es demasiado abstracto para medirlo en la práctica. ¿Cómo se definen los agentes? ¿Qué objetivos? ¿Qué entornos? ¿Cómo se pone a prueba todo esto? La intuición es acertada, pero necesitamos algo más concreto.</p>
+
+      <p><strong>Las visiones centradas en el proceso y la adaptabilidad ven la inteligencia como eficiencia en el aprendizaje, más que como un conjunto de habilidades acumuladas.</strong> Algunos investigadores definen la inteligencia por la adaptabilidad: «la capacidad de un sistema para adaptarse a su entorno operando con conocimientos y recursos insuficientes» (<a href="https://sciendo.com/issue/JAGI/11/2">Wang, 2020</a>), o «la eficiencia con la que un sistema convierte la experiencia y sus conocimientos previos en habilidades» (<a href="https://arxiv.org/abs/1911.01547">Chollet, 2019</a>). Sostienen que la inteligencia general no se demuestra poseyendo una habilidad concreta, sino adquiriendo nuevas habilidades con eficiencia ante problemas nuevos. Un alto rendimiento puede «comprarse» con suficientes datos y cómputo: una IA que alcanza un rendimiento sobrehumano en el go domina el go, pero no por eso se ha vuelto necesariamente más inteligente en un sentido general. Tiene sentido: importa la capacidad de aprender rápido, con pocos datos, en situaciones nuevas. Un sistema que necesita mil millones de ejemplos para aprender lo que un humano aprende con diez puede resultar menos impresionante, aunque ambos alcancen la misma capacidad final. Pero, desde el punto de vista estrictamente de la seguridad, ¿importa más el camino del aprendizaje que el destino? Si un sistema puede realizar tareas peligrosas, ya sea por un aprendizaje eficiente o por memorización a fuerza bruta, los riesgos existen igualmente.</p>
+
+      <p><strong>Los psicólogos usan pruebas estandarizadas y miden directamente las capacidades cognitivas.</strong> Tradiciones psicométricas como la teoría de Cattell-Horn-Carroll (CHC) descomponen la inteligencia en dominios cognitivos medibles: razonamiento, memoria, velocidad de procesamiento, capacidad espacial (<a href="https://onlinelibrary.wiley.com/doi/10.1002/9781118660584.ese0431">Schneider y McGrew, 2018</a>). Los test de CI no son perfectos, pero predicen los resultados en el mundo real mejor que los vagos debates filosóficos sobre la «comprensión verdadera». Este marco, basado en pruebas y benchmarks, nos da dominios concretos que medir y seguir.</p>
+      <blockquote>
+        <p>«Cuando hables de los riesgos de la IA, habla de capacidades, no de inteligencia… La gente suele tener definiciones distintas de la inteligencia, o la asocia con conceptos como la conciencia, que no son relevantes para los riesgos de la IA, o descarta los riesgos porque la inteligencia no está bien definida».</p>
+        <p>— Victoria Krakovna, investigadora científica sénior en Google DeepMind, agosto de 2023 · <a href="https://www.alignmentforum.org/posts/JtuTQgp9Wnd6R6F5s/when-discussing-ai-risks-talk-about-capabilities-not">Krakovna, 2023</a></p>
+      </blockquote>
+
+      <p><strong>Para la seguridad, lo que más importa son los enfoques conductistas, centrados en las capacidades.</strong> Si un sistema de IA puede realizar tareas peligrosas a nivel humano o superior (planificación sofisticada, manipulación, engaño), esos riesgos existen con independencia de cómo los haya alcanzado. ¿Aprendió de forma eficiente o por fuerza bruta? ¿Es consciente o solo reconoce patrones? Estas preguntas no cambian el perfil de riesgo. OpenAI define la AGI como «sistemas muy autónomos que superan a los humanos en la mayor parte del trabajo con valor económico» (<a href="https://openai.com/charter/">OpenAI, 2023</a>). Anthropic plantea su misión en torno a garantizar que «la IA transformadora ayude a las personas y a la sociedad» (<a href="https://www.anthropic.com/company">Anthropic, 2024</a>). Ambas se centran en lo que pueden hacer los sistemas, y menos en cómo lo hacen. Pero incluso estas definiciones basadas en capacidades pueden ser demasiado vagas. ¿Qué humanos sirven de medida: los mejores expertos o los trabajadores promedio? ¿Qué cuenta como trabajo con valor económico: solo los empleos actuales o también los futuros? ¿Y los sistemas que destacan en tareas complejas, pero solo funcionan durante periodos cortos o necesitan un cómputo enorme? Estas definiciones apuntan en la dirección correcta, pero les falta precisión para seguir el progreso e identificar riesgos.</p>
+
+      <p><strong>Nuestro enfoque intenta sintetizar lo útil de todas estas visiones.</strong> Adoptamos la idea conductista de Turing: centrarnos sobre todo en lo que los sistemas pueden hacer de forma observable. Usamos el marco de medición concreto de la tradición psicométrica, con la teoría CHC. Reconocemos e incorporamos lo que señala la visión centrada en la adaptabilidad sobre el aprendizaje eficiente, pero damos prioridad a las capacidades finales. Y dejamos a un lado el debate sobre la conciencia, porque no ofrece pautas prácticas para el trabajo de seguridad.</p>
+
+      <p><strong>Necesitamos un marco que sea a la vez concreto y continuo.</strong> Concreto, para medir lo que los sistemas pueden hacer ahora mismo y, al mismo tiempo, identificar umbrales para la regulación y riesgos emergentes antes de que se materialicen. Y continuo, para captar el progreso en varias dimensiones en lugar de encajarlo todo en categorías binarias que llevan a debates semánticos interminables sobre si algo «cuenta» o no como AGI. Eso es lo que construimos en el siguiente apartado: la capacidad y la generalidad como dos ejes continuos que nos permiten describir con precisión cualquier sistema de IA.</p>
+
+      <h2 id="definir-la-inteligencia-general">Definir la inteligencia general</h2>
+      <p><strong>La AGI se sitúa en un espectro continuo que se mide en dos dimensiones: capacidad y generalidad.</strong> La capacidad mide lo bien que un sistema ejecuta tareas cognitivas concretas: desde el 0 % (no puede hacer la tarea en absoluto), pasando por el nivel de un experto humano (supera aproximadamente al 80-90 % de los humanos en esa tarea concreta), hasta el nivel sobrehumano (supera al 100 % de los humanos). La generalidad mide la amplitud: el porcentaje de dominios cognitivos en los que un sistema alcanza un nivel de experto. Juntas, nos permiten hacer afirmaciones concretas como «nuestro sistema de IA supera al 85 % de los humanos en el 30 % de los dominios cognitivos», que describen con precisión las capacidades de cualquier sistema de IA.</p>
+
+      <p><strong>La capacidad mide la profundidad: lo bueno que es el sistema en tareas individuales.</strong> Durante décadas, la investigación en IA se centró en lograr que los sistemas destacaran en una sola tarea. Los primeros programas de ajedrez de los años cincuenta vencían a principiantes, pero perdían contra expertos. Deep Blue, en los años noventa, venció al campeón del mundo Kasparov. AlphaGo alcanzó en 2016 una capacidad sobrehumana en el go, un juego que se creía que las computadoras tardarían décadas en dominar. Esta progresión, de «no puede hacer la tarea» a «mejor que cualquier humano», representa el espectro de la capacidad. Todo lo que hay en esa línea, desde la competencia básica hasta la capacidad sobrehumana en una sola tarea, cuenta como inteligencia artificial estrecha (ANI, por sus siglas en inglés).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/66a728932a644697778afb28c6dc669e4d0bd1c51776d90142adabf46ef38bba.2GnmHiUQ_TG0T7.webp" alt="Figura 1.27">
+        <figcaption><strong>Figura 1.27.</strong> Visión continua del rendimiento de la IA. Todos los puntos de este eje, salvo el origen, pueden considerarse inteligencia artificial estrecha (ANI) (<a href="https://arxiv.org/abs/2311.02462">Morris et al., 2024</a>).</figcaption>
+      </figure>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 1.1: Inteligencia artificial estrecha (ANI)</strong>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);">El texto de este recuadro no estaba disponible en la versión de la página a la que pude acceder. Puedes leerlo en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/defining-and-measuring-agi/">sección original</a>.</p>
+      </aside>
+
+      <p><strong>La capacidad, por sí sola, no basta para definir y medir el progreso.</strong> AlphaGo alcanzó una capacidad sobrehumana en el go, mejor que la de cualquier humano de la historia. Pero si le pides que escriba una frase, resuelva un problema de álgebra o reconozca objetos en una imagen, no obtendrás nada. Aquí es donde los modelos fundacionales cambiaron las cosas. El paso de construir un sistema estrecho por tarea a entrenar modelos de propósito general es la razón por la que, de repente, necesitamos un marco que mida los dos ejes: capacidad y generalidad. Las IA anteriores a los modelos fundacionales llevaron el eje de la capacidad al máximo en algunas tareas individuales. Pero los sistemas de los últimos años suben por ambos ejes a la vez: mejoran en capacidades concretas al tiempo que se extienden a más dominios. La capacidad mide la profundidad; la generalidad, la amplitud.</p>
+
+      <p><strong>Cuando los expertos dicen ver «chispas de AGI» en los sistemas recientes, se refieren a su rendimiento en varios dominios cognitivos, no en uno solo</strong> (<a href="https://arxiv.org/abs/2303.12712">Bubeck et al., 2023</a>). Piensa en el primer avión de los hermanos Wright. Apenas volaba, se mantenía en el aire unos segundos y no se parecía en nada a un avión comercial moderno. ¡Pero seguía siendo un avión! Del mismo modo, los sistemas que alcanzan un rendimiento de experto incluso en un subconjunto modesto de dominios cognitivos representan una inteligencia general auténtica, aunque en una fase temprana (AGI débil). A medida que estas capacidades se amplían a más dominios y con mejor rendimiento, los sistemas se vuelven a la vez más generales y más capaces. No existe un umbral aceptado por todos en el que lo que «no es AGI» pase de repente a «ser AGI».</p>
+
+      <p><strong>No todas las tareas posibles importan por igual para el progreso hacia la inteligencia general.</strong> Nos da bastante igual que la IA mejore tejiendo suéteres, pero nos importa mucho que mejore en razonamiento abstracto, planificación a largo plazo y memoria. De manera informal, lo que nos interesa puede entenderse como todo lo que se puede hacer en remoto con una computadora. Más formalmente, los dominios en los que nos centramos son las tareas cognitivas no corporeizadas, que se dividen en diez capacidades básicas de la teoría de Cattell-Horn-Carroll (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>). Las capacidades concretas de las que dimos ejemplos en la primera sección (LLM que razonan y hacen matemáticas, modelos de visión que entienden imágenes, agentes que planifican en Minecraft) se corresponden directamente con estos dominios (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>):</p>
+      <ol>
+        <li><strong>Conocimiento general (K):</strong> la amplitud de la comprensión factual del mundo, que abarca el sentido común, la cultura, la ciencia, las ciencias sociales y la historia.</li>
+        <li><strong>Lectura y escritura (RW):</strong> el dominio de la comprensión y la producción de lenguaje escrito, desde la decodificación básica hasta la comprensión compleja, la redacción y el uso.</li>
+        <li><strong>Capacidad matemática (M):</strong> la profundidad de los conocimientos y habilidades matemáticas en aritmética, álgebra, geometría, probabilidad y cálculo.</li>
+        <li><strong>Razonamiento sobre la marcha (R):</strong> el control flexible de la atención para resolver problemas nuevos sin depender exclusivamente de esquemas aprendidos previamente; se evalúa mediante la deducción y la inducción.</li>
+        <li><strong>Memoria de trabajo (WM):</strong> la capacidad de mantener y manipular información en la atención activa, en modalidades textuales, auditivas y visuales.</li>
+        <li><strong>Almacenamiento en la memoria a largo plazo (MS):</strong> la capacidad de aprender continuamente información nueva (asociativa, significativa y literal).</li>
+        <li><strong>Recuperación de la memoria a largo plazo (MR):</strong> la fluidez y la precisión al acceder al conocimiento almacenado, incluida la capacidad crítica de evitar la confabulación (las alucinaciones).</li>
+        <li><strong>Procesamiento visual (V):</strong> la capacidad de percibir, analizar, razonar sobre, generar y explorar información visual.</li>
+        <li><strong>Procesamiento auditivo (A):</strong> la capacidad de discriminar, reconocer y trabajar de forma creativa con estímulos auditivos, como el habla, el ritmo y la música.</li>
+        <li><strong>Velocidad (S):</strong> la capacidad de realizar rápidamente tareas cognitivas sencillas, que abarca la velocidad perceptiva, los tiempos de reacción y la fluidez de procesamiento.</li>
+      </ol>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/53320312894d4883f9230ea4e0981f1b19a1a421423339064e694b4f0e789cf8.CgZoGjAE_2oA8nh.webp" alt="Figura 1.28">
+        <figcaption><strong>Figura 1.28.</strong> Cada capacidad cognitiva se descompone en componentes más concretos y medibles. El razonamiento se divide en deducción, inducción, teoría de la mente, planificación y adaptación, y cada uno puede evaluarse y cuantificarse por separado (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5c0d766f87d07f1ca4c092c232c36ef7bf44cae0e7163db5afd396af3b1cfba2.DQqby8m7_Z2jS6oJ.webp" alt="Figura 1.29">
+        <figcaption><strong>Figura 1.29.</strong> La memoria también se divide en componentes asociativos, significativos y literales, lo que permite diagnosticar con precisión dónde aciertan y dónde fallan los sistemas (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>).</figcaption>
+      </figure>
+
+      <p><strong>La generalidad es el porcentaje de estos dominios en los que un sistema alcanza un nivel de experto.</strong> Si un sistema llega al percentil 80 o más en tres de los diez dominios, tiene una generalidad del 30 %.<sup><a href="#nota-2" id="ref-2">2</a></sup> Los modelos fundacionales aumentaron enormemente esta cifra respecto de la IA estrecha tradicional: que un solo modelo se ocupe de la escritura, las matemáticas, la programación y la comprensión visual supone una amplitud sin precedentes. Pero los sistemas actuales siguen cubriendo solo una parte de las capacidades cognitivas, con un rendimiento especialmente débil en la planificación a largo plazo y en los dominios relacionados con la memoria (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>; <a href="https://arxiv.org/abs/2503.14499">Kwa et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c499f177e3e5298ac13f89cc67ad776839137c9040b907111c8ebe086796cab3.Bx_T-Qb9_Z2abMl5.webp" alt="Figura 1.30">
+        <figcaption><strong>Figura 1.30.</strong> Las capacidades de GPT-4 y GPT-5, junto con una tabla que las cuantifica (<a href="https://arxiv.org/abs/2510.18212">Hendrycks et al., 2025</a>).</figcaption>
+      </figure>
+
+      <p><strong>Aunque la capacidad y la generalidad sean un continuo, ciertos umbrales siguen siendo importantes para planificar la seguridad.</strong> Un sistema que rinde bien en el 50 % de los dominios plantea riesgos distintos de los de otro que destaca en el 90 %, y no podemos ignorar esa realidad aunque la generalidad sea una variable continua. Cuando se nos piden umbrales concretos, algo que ocurre a menudo en los debates, esta es nuestra interpretación aproximada de cómo se corresponden los términos con el espacio (rendimiento, generalidad):</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 1.2: Inteligencia artificial general (AGI)</strong>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);">El texto de este recuadro no estaba disponible en la versión de la página a la que pude acceder. Puedes leerlo en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/defining-and-measuring-agi/">sección original</a>.</p>
+      </aside>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 1.3: IA transformadora (TAI)</strong>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);">El texto de este recuadro no estaba disponible en la versión de la página a la que pude acceder. Puedes leerlo en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/defining-and-measuring-agi/">sección original</a>.</p>
+      </aside>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 1.4: Superinteligencia artificial (ASI)</strong>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);">El texto de este recuadro no estaba disponible en la versión de la página a la que pude acceder. Puedes leerlo en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/defining-and-measuring-agi/">sección original</a>.</p>
+      </aside>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/39ee9c34f9952779378c4e0ed9e93ba3f4624c38a9f4560b75271731fec90dd0.DPhWDE50_Z1ihANy.webp" alt="Figura 1.31">
+        <figcaption><strong>Figura 1.31.</strong> La visión bidimensional de capacidad × generalidad. Las curvas de distintos colores representan posibles trayectorias de desarrollo hacia la ASI. Cada punto de estas trayectorias corresponde a un nivel distinto de capacidad de AGI.</figcaption>
+      </figure>
+
+      <p><strong>Nuestra definición de trabajo no incluye la autonomía con la que opera un sistema de AGI.</strong> Es un eje muy importante al que hay que prestar atención, pero tiene más que ver con el despliegue y el impacto que con algo inherente a la definición de AGI. Lo analizaremos en el próximo capítulo, dedicado a los riesgos de la IA.</p>
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Medir el grado de autonomía (agencia)</strong> · Opcional · 2 min de lectura</summary>
+        <p><strong>La autonomía describe cómo interactúan los sistemas de IA con los humanos, no lo que pueden hacer.</strong> Un sistema muy capaz puede desplegarse con distintos niveles de supervisión humana. Igual que teníamos curvas continuas para la capacidad y la generalidad, podemos tener un nivel creciente de autonomía, medido según el porcentaje de una tarea que realiza el humano o la IA (<a href="https://arxiv.org/abs/2311.02462">Morris et al., 2024</a>):</p>
+        <ol start="0">
+          <li><strong>Nivel 0: sin IA.</strong> Funcionamiento puramente humano. Sigue siendo relevante en la educación, la evaluación o las situaciones críticas para la seguridad, incluso cuando ya existe una IA capaz.</li>
+          <li><strong>Nivel 1: la IA como herramienta.</strong> El sistema ofrece sugerencias o información y el humano toma todas las decisiones, como el autocompletado o el corrector ortográfico.</li>
+          <li><strong>Nivel 2: la IA como consultora.</strong> El sistema ofrece asesoramiento y recomendaciones de experto, pero el humano sigue dirigiendo el enfoque general, como cuando se pide a una IA que revise código o haga un análisis estratégico.</li>
+          <li><strong>Nivel 3: la IA como colaboradora.</strong> El humano y la IA trabajan en pie de igualdad y se reparten las tareas según sus puntos fuertes. Requiere que la IA sepa cuándo pedir ayuda.</li>
+          <li><strong>Nivel 4: la IA como experta.</strong> La IA se encarga de la mayor parte de la ejecución, y el humano supervisa e interviene cuando hace falta, como en los coches autónomos con supervisión humana.</li>
+          <li><strong>Nivel 5: la IA como agente.</strong> Funcionamiento totalmente autónomo con una supervisión humana mínima. La IA decide cuándo consultar a los humanos. Requiere una alineación sólida.</li>
+        </ol>
+        <p><strong>El nivel de autonomía afecta a la exposición al riesgo, no al peligro inherente.</strong> Un sistema capaz desplegado como herramienta (nivel 1) podría ser más seguro que el mismo sistema desplegado como agente (nivel 5), aunque la capacidad subyacente sea idéntica. Los niveles de capacidad más altos «desbloquean» niveles de autonomía más altos (no puede haber autonomía de nivel 5 sin capacidad suficiente), pero tener la capacidad no significa que se deba usar la máxima autonomía.</p>
+        <p><strong>A efectos de seguridad, la capacidad y la autonomía de despliegue deben considerarse por separado.</strong> Un sistema que obtiene un 90 % en el 80 % de los dominios podría desplegarse con seguridad en el nivel 2 (consultor) y ser peligroso en el nivel 5 (agente). Este marco nos ayuda a razonar explícitamente sobre estos compromisos.</p>
+      </details>
+
+      <p><strong>Lo que hemos presentado en esta sección dista mucho de ser una definición aceptada por todos.</strong> Hay críticas tanto al marco de los niveles de AGI como al enfoque de agregación de benchmarks basado en la teoría CHC (<a href="https://aievaluation.substack.com/p/is-the-definition-of-agi-a-percentage">Pacchiardi et al., 2025</a>). Se usan muchas otras definiciones y marcos de medición alternativos, como el trabajo de la Comisión Europea para definir los modelos de IA de uso general (GPAI) (<a href="https://ai-watch.ec.europa.eu/news/new-jrc-collection-external-scientific-reports-inform-implementation-eu-ai-act-general-purpose-ai-2025-10-14_en">Comisión Europea, 2025</a>), el marco (t,n)-AGI (<a href="https://www.lesswrong.com/posts/BoA3agdkAzL6HQtQP/clarifying-and-predicting-agi">Ngo, 2023</a>) o los indicadores de capacidades de IA de la OCDE (<a href="https://www.oecd.org/en/publications/2025/06/introducing-the-oecd-ai-capability-indicators_7c0731f0/full-report/component-4.html">OCDE, 2025</a>), por no hablar de todas las definiciones en competencia de los casos de estudio del apartado anterior. Son alternativas válidas. El campo sigue evolucionando y descubriendo lagunas en sus enfoques. Esperamos que los benchmarks de base (¿qué capacidades cognitivas importan?) y los métodos de agregación (¿cómo deben ponderarse?) sigan debatiéndose, pero el marco que enseñamos en esta sección, entender la capacidad y la generalidad como un espectro continuo, seguirá siendo válido.</p>
+
+      <p>Las próximas secciones de este capítulo analizan por qué la capacidad y la generalidad han mejorado tan rápido en los últimos años (la escala) y qué podemos decir sobre hacia dónde se dirigen (el pronóstico y el despegue). Pensar en el progreso de la IA de esta forma continua nos ayudará a lo largo de todo el libro, cuando hablemos de los riesgos y de las estrategias para mitigarlos. Ciertas combinaciones de capacidades podrían dar lugar a comportamientos emergentes peligrosos incluso antes de alcanzar el «nivel humano» en la mayoría de las tareas. Del mismo modo, los marcos de gobernanza y una comunicación clara de las políticas dependen de una medición precisa para activar las respuestas adecuadas. El ritmo de mejora en cada eje ofrece señales importantes sobre qué riesgos son más urgentes y qué medidas de seguridad hay que desarrollar.</p>
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Contraargumento: umbrales arbitrarios agregados y presentados como un porcentaje engañoso</strong> · Opcional · 1 min de lectura</summary>
+        <p><strong>Este marco permite una medición concreta, pero los críticos señalan que las taxonomías psicométricas humanas, como la CHC, pueden pasar por alto capacidades universales en los humanos de las que carece la IA, y que las puntuaciones porcentuales pueden sugerir, de forma engañosa, un progreso lineal hacia la AGI.</strong> Los contraargumentos señalan que las puntuaciones en benchmarks no coinciden con la percepción general. Por lo general, si dejas que un LLM (incluso con razonamiento extendido o con herramientas) realice una tarea que esperarías que completara un adulto con estudios, suele decepcionar. Un LLM que obtiene un 90 % en las matrices progresivas de Raven no es comparable a un humano que obtiene un 90 %. Esto importa porque los sistemas de IA podrían quedarse por debajo del «100 % de AGI» aun teniendo ya todas las capacidades de un adulto con estudios.</p>
+        <p>Algunos ejemplos de estas limitaciones (<a href="https://aievaluation.substack.com/p/is-the-definition-of-agi-a-percentage">Pacchiardi et al., 2025</a>):</p>
+        <ol>
+          <li><strong>Sesgo de cobertura:</strong> la CHC se deriva de las diferencias entre individuos humanos, por lo que podría omitir capacidades universales en los humanos (por ejemplo, una sólida permanencia del objeto) de las que la IA podría carecer.</li>
+          <li><strong>Umbrales arbitrarios:</strong> los cortes por percentil humano (por ejemplo, el 85) podrían no ser trasladables a las máquinas.</li>
+          <li><strong>Progreso no lineal:</strong> las puntuaciones porcentuales (por ejemplo, «57 % de AGI») sugieren, de forma engañosa, un progreso lineal, cuando las últimas capacidades podrían representar cuellos de botella desproporcionadamente difíciles.</li>
+          <li><strong>Riesgo específico de la especie:</strong> perfiles de IA poco parecidos a los humanos podrían plantear riesgos transformadores pese a obtener puntuaciones bajas en pruebas centradas en el ser humano. Estas críticas sugieren interpretar las puntuaciones porcentuales con cautela y centrarse en las carencias de capacidades concretas, más que en el progreso agregado.</li>
+        </ol>
+      </details>
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>El marco (t,n)-AGI: otra forma de definir la AGI</strong> · Opcional · 2 min de lectura</summary>
+        <p><strong>La AGI también puede definirse combinando tiempo y escala: ¿puede la IA igualar a «n» expertos trabajando juntos durante un tiempo «t»?</strong> Es otra forma de pensar en la definición de la AGI. Dado un plazo «t» para completar una tarea cognitiva, si un sistema de IA supera a un experto humano que dispone del mismo plazo «t» para la misma tarea, se dice que el sistema es una t-AGI para ese plazo. Si un sistema supera a «n» expertos humanos que trabajan en la tarea durante el plazo «t», lo llamamos (t,n)-AGI para esa duración «t» y ese número de expertos «n». El marco (t,n)-AGI no tiene en cuenta cuántas copias de la IA funcionan simultáneamente.</p>
+        <p>Por ejemplo, una IA que supera la capacidad de un experto humano en un segundo en una tarea cognitiva determinada se clasificaría como una «AGI de un segundo». Una AGI de un año superaría a los humanos prácticamente en todo, sobre todo porque la mayoría de los proyectos pueden dividirse en subtareas que se completan en plazos más cortos. Dentro de este marco, una superinteligencia (ASI) podría ser algo así como una (un año, ocho mil millones)-AGI; es decir, una ASI podría verse como una AGI que supera a los ocho mil millones de humanos coordinándose durante un año en una tarea determinada (<a href="https://www.lesswrong.com/posts/BoA3agdkAzL6HQtQP/clarifying-and-predicting-agi">Ngo, 2023</a>).</p>
+        <p>Los investigadores de METR llevaron esta idea a la práctica midiendo el horizonte temporal de las tareas que se completan frente a un experto (n = 1): buscaron la duración en la que la IA tiene éxito de forma sistemática en tareas profesionales como el desarrollo de software y la investigación en aprendizaje automático (<a href="https://arxiv.org/abs/2503.14499">Kwa et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b4e8d3417e84897b27d0391116c2f85fdecdae127584f856baeca55db1b92eee.XRLJq1E0_1SDSJd.webp" alt="Figura 1.32">
+        <figcaption><strong>Figura 1.32.</strong> Un resultado de METR, que midió el horizonte de duración de las tareas en tareas concretas de ingeniería de software (<a href="https://arxiv.org/abs/2503.14499">Kwa et al., 2025</a>).</figcaption>
+      </figure>
+        <p><strong>Las limitaciones en el horizonte temporal de las tareas quedan recogidas de forma implícita en nuestra medida de generalidad</strong>, como debilidades en tareas cognitivas concretas, como el almacenamiento y la recuperación de la memoria a largo plazo. Los sistemas que puntúan bajo en memoria fracasan, como es natural, en proyectos de varios días que requieren mantener el contexto. Las arquitecturas actuales basadas en <em>transformers</em> tienen dificultades específicamente por sus ventanas de contexto limitadas.</p>
+      </details>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">En los capítulos sobre riesgos y evaluaciones medimos cualidades como la «conciencia situacional» con benchmarks específicos. Así recogemos el modelo de uno mismo y la planificación futura, al tiempo que distinguimos estos aspectos de los debates sobre la conciencia. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Puedes usar la paridad con un experto (aproximadamente el rendimiento humano del percentil 80-90) como umbral de lo «adecuado» al medir la generalidad. Distintos investigadores podrían fijar este umbral más alto o más bajo según sus preocupaciones concretas. <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 21 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/defining-and-measuring-agi/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-03-modelos-fundacionales.html">← Anterior: Modelos fundacionales</a>
+      </div>
+      <a class="siguiente" href="cap1-05-aprovechar-la-escala.html">
+        <strong>Siguiente: Aprovechar la escala →</strong><br>
+        El progreso reciente de la IA se debe sobre todo a la escala masiva del cómputo, los datos y el tamaño de los modelos. Las tendencias de escalado observadas empíricamente pueden servir de guía para predecir las capacidades futuras.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

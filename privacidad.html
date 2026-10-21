@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de privacidad – AI Safety Atlas</title>
+  <meta name="description" content="Política de privacidad de ai-safety-atlas.com.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="lectura" style="padding-top:3rem;padding-bottom:3rem;">
+    <h1>Política de privacidad</h1>
+
+    <blockquote>
+      <p>Esta es una traducción informativa de la política de privacidad de <a href="https://ai-safety-atlas.com/privacy-policy/">ai-safety-atlas.com</a>. Solo se aplica a ese sitio, y en caso de discrepancia prevalece la versión original en inglés.</p>
+    </blockquote>
+
+    <p>Esta política de privacidad describe cómo nosotros, Félix Dorn (empresa unipersonal registrada en Francia), tratamos los datos personales en nuestra actividad conforme al <a href="https://ec.europa.eu/info/law/law-topic/data-protection/data-protection-eu_en">Reglamento General de Protección de Datos</a> (RGPD) y a las demás leyes de protección de datos y privacidad aplicables a nuestra actividad.</p>
+    <p><em>Última actualización: 7 de diciembre de 2025</em></p>
+
+    <h2>Nuestro compromiso con la privacidad</h2>
+    <p>No tenemos ningún motivo para vender, alquilar ni ceder tus datos.</p>
+    <p>Queremos ofrecerte información clara y transparente sobre cómo tratamos tus datos personales (como responsables del tratamiento) y sobre tus derechos en materia de protección de datos. Si algo te parece poco claro o crees que falta información, no dudes en escribirnos a <a href="mailto:markov@ai-safety-atlas.com">markov@ai-safety-atlas.com</a>.</p>
+
+    <h2>Tus derechos de protección de datos</h2>
+    <ul>
+      <li><strong>Acceso y rectificación:</strong> puedes pedirnos una copia de la información que tratamos sobre ti y solicitar que corrijamos cualquier dato incorrecto.</li>
+      <li><strong>Supresión o limitación:</strong> en algunos casos, puedes pedirnos que eliminemos tus datos o que limitemos su tratamiento, aunque no podemos eliminar los datos que la ley nos obliga a tratar.</li>
+      <li><strong>Oposición al tratamiento:</strong> en algunos casos, puedes pedirnos que dejemos de tratar tus datos.</li>
+      <li><strong>Portabilidad de los datos:</strong> en algunos casos, puedes pedirnos que te transfiramos tus datos a ti o a otra organización.</li>
+      <li>Además, si no estás conforme con la forma en que tratamos tus datos, tienes <strong>derecho</strong> a presentar una reclamación ante una <a href="https://edpb.europa.eu/our-work-tools/our-documents/recommendations/recommendations-012020-measures-supplement-transfer_en">autoridad nacional de protección de datos</a>. Aun así, esperamos que primero te pongas en contacto con nosotros para intentar resolver el asunto de forma satisfactoria.</li>
+    </ul>
+    <p>Escríbenos si tienes cualquier pregunta sobre cómo gestionamos tus datos o si quieres ejercer alguno de tus derechos. Tienes derecho a recibir una respuesta en un plazo de 30 días.</p>
+
+    <h2>Cómo obtenemos tus datos personales</h2>
+    <p>Por lo general, tratamos datos personales de las personas que visitan el sitio web.</p>
+    <p>Podemos tratar datos personales cuando:</p>
+    <ul>
+      <li>Te pones en contacto o te comunicas con nosotros (correo electrónico, videollamadas, etc.).</li>
+      <li>Usas nuestros servicios o nuestro software.</li>
+    </ul>
+    <p>Proporcionarnos datos personales es voluntario, pero si decides no hacerlo, no podremos prestarte nuestros servicios.</p>
+    <p>No alquilamos, compramos ni vendemos datos personales, ni a terceros ni de terceros; no tomamos decisiones automatizadas ni elaboramos perfiles al tratar tus datos, y no tratamos categorías especiales de datos según el artículo 9 del RGPD.</p>
+
+    <h2>Finalidad, base jurídica y plazos de conservación</h2>
+    <p>Solo tratamos tus datos personales cuando tenemos una finalidad y una base jurídica para hacerlo. Según el artículo 6.1 del RGPD, las bases jurídicas en las que nos apoyamos son:</p>
+    <ol>
+      <li>Tu consentimiento.</li>
+      <li>Una obligación contractual (contrato).</li>
+      <li>Una obligación legal.</li>
+      <li>Un interés legítimo.</li>
+    </ol>
+    <p>Como norma general, no tratamos datos personales durante más tiempo del necesario para cumplir la finalidad del tratamiento. Para garantizarlo, realizamos auditorías internas periódicas del RGPD en las que evaluamos formalmente nuestro trabajo de protección de datos y privacidad, con el fin de modificar, actualizar y, si es necesario, eliminar datos personales.</p>
+    <p>Solo conservaremos los datos durante el tiempo que exijan las obligaciones legales aplicables.</p>
+
+    <h2>Detalles sobre el tratamiento de tus datos personales</h2>
+    <p>En esta sección explicamos cuándo y cómo tratamos tus datos, con qué finalidades y en qué fundamentos jurídicos nos basamos (bases jurídicas). También indicamos los plazos de conservación de cada tratamiento.</p>
+
+    <h3>Cuando usas nuestro sitio web</h3>
+    <p>Cuando usas nuestro sitio web, tratamos brevemente tu dirección IP y los datos de tu agente de usuario, que el RGPD considera datos personales.</p>
+    <p>La base jurídica es la letra f): nuestro interés legítimo en proteger la actividad frente a ciberataques y en gestionarla y optimizarla de forma eficaz.</p>
+    <p>P. D.: No usamos cookies ni tecnologías similares en nuestro sitio web, ni recopilamos datos personales que requieran consentimiento según la Directiva sobre la privacidad y las comunicaciones electrónicas (<a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32009L0136">Directiva 2009/136/CE</a>).</p>
+
+    <h3>Cuando te comunicas con nosotros</h3>
+    <p>Sea cual sea tu relación con nosotros (cliente potencial o actual, proveedor u otra), tratamos tus datos personales siempre que te comunicas con nosotros, por ejemplo, por correo electrónico, por teléfono (llamada o mensaje de texto) o por redes sociales. Según dónde y cómo nos contactes, estos datos pueden incluir tu nombre, tus datos de contacto, tu dirección IP y cualquier otra información que decidas enviarnos. Usamos un sistema de atención al cliente para gestionar los datos personales de clientes potenciales y actuales.</p>
+    <p>La finalidad es poder responder a tus consultas y, en algunos casos, conservar registros por si surgen reclamaciones o acciones legales. La base jurídica es la letra f): nuestro interés legítimo en responder a tus consultas y, en algunos casos, conservar esos registros.</p>
+    <p>Normalmente conservamos este tipo de datos hasta dos años, o seis si así lo exige la normativa contable.</p>
+
+    <h2>Con quién compartimos tus datos personales</h2>
+    <p>Para gestionar nuestra actividad de forma eficiente y segura, a veces necesitamos compartir tus datos personales con otras partes de confianza, como:</p>
+    <ul>
+      <li><strong>Encargados del tratamiento:</strong> proveedores de distintos servicios que tratan tus datos personales en nuestro nombre.</li>
+      <li>Soporte informático, cuando sea necesario.</li>
+    </ul>
+    <p>Exigimos a todos estos destinatarios que protejan los datos conforme a las buenas prácticas de seguridad de la información y a los requisitos de este aviso de privacidad. Revisamos y controlamos la calidad de todos nuestros proveedores y encargados del tratamiento, y firmamos un acuerdo o anexo de tratamiento de datos siempre que es necesario.</p>
+    <p>Recurrimos a encargados del tratamiento para:</p>
+    <ul>
+      <li>El correo electrónico.</li>
+      <li>La contabilidad.</li>
+      <li>Este sitio web.</li>
+      <li>Los correos transaccionales a clientes.</li>
+      <li>El sistema de tickets de soporte.</li>
+    </ul>
+
+    <h2>Transferencia de datos personales fuera de la UE/EEE</h2>
+    <p>En algunos casos, tus datos personales se transfieren a un «tercer país», es decir, fuera de la UE/EEE; por ejemplo, cuando usamos encargados del tratamiento para gestionar los servicios de correo electrónico. Solo trabajamos con encargados del tratamiento de confianza, conocidos y de buena reputación, con los que tenemos un acuerdo o anexo de tratamiento de datos.</p>
+    <p>Nos hemos asegurado de que cada encargado del tratamiento ubicado en un tercer país cuente con las garantías necesarias, como una decisión de adecuación de la UE, cláusulas contractuales tipo (CCT) o normas corporativas vinculantes (NCV).</p>
+
+    <h2>Acceso y rectificación de tus datos personales</h2>
+    <p>Tienes derecho a acceder a tus datos personales y a solicitar que los corrijamos si crees que son inexactos. Si nos has enviado información personal y quieres acceder a ella o corregirla, ponte en contacto con nosotros a través de los datos de contacto que figuran más abajo.</p>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

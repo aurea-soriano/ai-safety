@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Despegue · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="Velocidad de despegue de la IA y principales argumentos a favor de un despegue lento o rápido.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li class="activo"><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Despegue</h1>
+      <p><em>La IA podría cambiar el mundo de forma gradual a lo largo de décadas o transformarlo de manera explosiva en cuestión de meses. Esto cambia radicalmente qué estrategias de seguridad son siquiera posibles.</em></p>
+      <p class="meta">12 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#velocidad">Velocidad</a></li>
+          <li><a href="#argumentos-sobre-el-despegue">Argumentos sobre el despegue</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <p>Esta última sección sintetiza buena parte de lo tratado a lo largo del capítulo. Partimos de dónde estamos hoy y llegamos hasta el pronóstico de tendencias concretas en los recursos que alimentan las capacidades de la IA. Ahora exponemos las distintas posturas del debate sobre lo que implica todo esto en conjunto.</p>
+      <blockquote>
+        <p>«No hay duda de que, en el futuro, las máquinas serán más inteligentes que los humanos en todos los ámbitos en los que los humanos son inteligentes. La cuestión es cuándo y cómo, no si ocurrirá».</p>
+        <p>— Yann LeCun, científico jefe de IA en Meta y ganador del Premio Turing, mayo de 2023 · <a href="https://www.technologyreview.com/2023/05/02/1072528/geoffrey-hinton-google-why-scared-ai/">Heaven, 2023</a></p>
+      </blockquote>
+
+      <p><strong>La velocidad de despegue se refiere a la rapidez con la que los sistemas de IA se vuelven mucho más potentes que hoy y provocan grandes cambios sociales.</strong> Está relacionada con los plazos de la IA (cuánto falta para desarrollar una IA avanzada), pero es distinta. Los plazos nos dicen cuándo podría llegar la IA transformadora; la velocidad de despegue, qué ocurre después: ¿la capacidad y el impacto de la IA aumentan de forma gradual a lo largo de años, o de forma explosiva en días o semanas? Al analizar los distintos escenarios de despegue, podemos fijarnos en varios factores clave:</p>
+      <ul>
+        <li><strong>Velocidad:</strong> ¿a qué ritmo mejoran las capacidades de la IA?</li>
+        <li><strong>Continuidad:</strong> ¿las capacidades mejoran de forma suave o a saltos repentinos?</li>
+        <li><strong>Homogeneidad:</strong> ¿cuánto se parecen entre sí los distintos sistemas de IA?</li>
+        <li><strong>Polaridad:</strong> ¿cuán concentrado está el poder entre los distintos sistemas de IA?</li>
+      </ul>
+      <p>En el siguiente apartado tratamos solo uno de estos factores, el más debatido: la velocidad de despegue. Los demás (continuidad, homogeneidad y polaridad) se explican en un apéndice.</p>
+
+      <h2 id="velocidad">Velocidad</h2>
+      <p><strong>En un escenario de despegue lento, las capacidades de la IA mejoran de forma gradual a lo largo de meses o años.</strong> Vemos este patrón en la historia reciente: el paso de GPT-3 a GPT-4 trajo mejoras importantes en razonamiento, programación y conocimiento general, pero estos avances se produjeron a lo largo de varios años, mediante un progreso gradual. Paul Christiano describe el despegue lento como algo parecido a la Revolución Industrial, pero «entre 10 y 100 veces más rápido» (<a href="https://www.alignmentforum.org/posts/Nsmabb9fhpLuLdtLE/takeoff-speeds-presentation-at-anthropic">Davidson, 2023</a>). Expresiones como «despegue lento» y «despegue suave» suelen usarse como sinónimos.</p>
+
+      <p><strong>En términos matemáticos, los escenarios de despegue lento suelen mostrar patrones de crecimiento lineal o exponencial.</strong> Con un crecimiento lineal, las capacidades aumentan cada año en la misma cantidad absoluta: imagina un sistema de IA que adquiere cada año un número fijo de habilidades nuevas. Más habitual sería un crecimiento exponencial, en el que las capacidades aumentan en un porcentaje constante, como vimos al hablar de las leyes de escalado. Igual que el rendimiento de los modelos mejora de forma predecible con el cómputo y los datos, el despegue lento supone que las capacidades crecerían a un ritmo constante, pero manejable. Esto podría traducirse en un crecimiento del PIB del 10-30 % anual antes de acelerarse aún más.</p>
+
+      <p><strong>El despegue lento nos da tiempo para adaptarnos y responder.</strong> Si descubrimos problemas en nuestros enfoques de seguridad actuales, podemos ajustarlos antes de que la IA sea mucho más potente. Esto enlaza directamente con lo que veremos en capítulos posteriores sobre gobernanza y supervisión: el despegue lento permite perfeccionar las medidas de seguridad de forma iterativa y da tiempo para que se coordinen los distintos actores e instituciones.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5e8e786a85827363185d1e61199e2c3ed9a4228a8dbc22e9babd0f75e3f906d9.CcC8r3BO_vyAD2.webp" alt="Figura 1.43">
+        <figcaption><strong>Figura 1.43.</strong> Ilustración de un despegue lento y continuo (<a href="https://www.alignmentforum.org/posts/pGXR2ynhe5bBCCNqn/takeoff-speeds-and-discontinuities">Martin y Eth, 2021</a>).</figcaption>
+      </figure>
+
+      <p><strong>El despegue rápido describe escenarios en los que las capacidades de la IA aumentan drásticamente en periodos muy cortos, quizá días o incluso horas.</strong> En lugar de la mejora gradual que vimos de GPT-3 a GPT-4, imagina un sistema de IA que avanza eso mismo cada día. Podría ocurrir mediante la automejora recursiva: un sistema de IA que se vuelve mejor mejorándose a sí mismo y crea así un ciclo de retroalimentación que se acelera.</p>
+
+      <p><strong>Matemáticamente, el despegue rápido implica un crecimiento superexponencial o hiperbólico, en el que la propia tasa de crecimiento aumenta con el tiempo.</strong> En lugar de duplicarse cada año, como en el crecimiento exponencial, las capacidades podrían duplicarse cada mes, luego cada semana y después cada día. Esto enlaza con lo que vimos en la sección sobre la escala acerca de los posibles ciclos de retroalimentación en el desarrollo de la IA: si los sistemas de IA pueden mejorar la eficiencia de la propia investigación en IA, podríamos ver este tipo de progreso acelerado.</p>
+
+      <p><strong>La velocidad vertiginosa del despegue rápido plantea desafíos de seguridad particulares.</strong> Como veremos en el capítulo sobre estrategias, muchos enfoques de seguridad actuales se basan en probar los sistemas, encontrar problemas y hacer mejoras. Pero en un escenario de despegue rápido quizá solo tengamos una oportunidad de hacerlo bien. Si un sistema de IA empieza a automejorarse rápidamente, necesitamos medidas de seguridad que funcionen de forma sólida desde el principio, porque no habrá tiempo para corregir los problemas una vez que aparezcan. Expresiones como «despegue rápido», «despegue duro» y «FOOM» suelen usarse como sinónimos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3da51be238576515dd436be2648b2310d7f9009ca06d2559e4cf295022d72c0b.gC5ou2HO_1NMd1O.webp" alt="Figura 1.44">
+        <figcaption><strong>Figura 1.44.</strong> Ilustración de un despegue rápido y continuo, que suele entenderse como un crecimiento superexponencial o hiperbólico: la propia tasa de crecimiento aumenta (<a href="https://www.alignmentforum.org/posts/pGXR2ynhe5bBCCNqn/takeoff-speeds-and-discontinuities">Martin y Eth, 2021</a>).</figcaption>
+      </figure>
+
+      <p><strong>La velocidad del despegue de la IA determina en gran medida el desafío de hacerla segura.</strong> Si el progreso sigue patrones predecibles, como sugiere nuestra comprensión actual, podríamos tener más avisos y más tiempo para prepararnos. Pero si nuevos mecanismos, como la automejora recursiva, crean ciclos de retroalimentación más rápidos, necesitaremos otras estrategias. Hoy, cuando se descubre que un modelo de lenguaje es vulnerable a un <em>jailbreak</em> (una forma de burlar sus restricciones), las empresas pueden corregir el fallo en la siguiente versión. En un despegue lento, este patrón podría mantenerse: tendríamos tiempo para descubrir y corregir los problemas de seguridad a medida que surgen. Pero en un despegue rápido quizá tendríamos que resolver todas las posibles vulnerabilidades antes de desplegar la IA, porque un sistema podría volverse demasiado potente como para modificarlo con seguridad antes de que podamos aplicar nuevas correcciones. La mayoría de los expertos, investigadores e ingenieros coinciden en que la IA plantea riesgos y debe desarrollarse de forma responsable. Las diferencias están en pequeños matices sobre cómo responder, que a menudo se reducen a si esperan que los problemas sean detectables y corregibles a tiempo, o demasiado rápidos para que podamos reaccionar. Por desgracia, a veces esto se presenta erróneamente como si los expertos en IA discreparan sobre sus riesgos.</p>
+      <blockquote>
+        <p>«Así es como construimos aviones: construimos aviones, a veces se estrellan trágicamente y luego lo corregimos. Creo que la IA a veces produce malos resultados, luego lo corregimos, y así es como logramos que estas cosas sean fiables».</p>
+        <p>— Andrew Ng, cofundador y director de Google Brain y ex científico jefe de Baidu, febrero de 2025 · <a href="https://www.youtube.com/watch?v=Y1BUaLo67ac">Foro Económico Mundial, 2025</a></p>
+      </blockquote>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/ee71a18f9884a576d9b6f3154f8ca87b4c01b4cb7febb9a6b3ac26065fb43df7.DTO_clHP_Zq0gt7.webp" alt="Figura 1.45">
+        <figcaption><strong>Figura 1.45.</strong> Comparación entre despegue lento y rápido. Muestra que, aunque al despegue lento se le llame así por contraste con el rápido, no tiene nada de lento (<a href="https://sideways-view.com/2018/02/24/takeoff-speeds/">Christiano, 2018</a>).</figcaption>
+      </figure>
+
+      <p>Distinguir entre despegue rápido y lento da una visión general del debate, pero hay otros factores: ¿hay saltos repentinos? (continuidad del despegue), ¿cuántos sistemas «despegan» a la vez? (polaridad del despegue), ¿cuánto se parecen sus arquitecturas? (homogeneidad del despegue). Si quieres profundizar, puedes leer los detalles en el apéndice opcional.</p>
+
+      <h2 id="argumentos-sobre-el-despegue">Argumentos sobre el despegue</h2>
+      <p><strong>El argumento del excedente (<em>overhang</em>).</strong> Puede haber situaciones con grandes avances o mucha disponibilidad en un aspecto de los sistemas de IA, como el hardware o los datos, sin que se haya desarrollado aún el software o los algoritmos necesarios para aprovechar plenamente esos recursos. Se habla de «excedente» porque estas situaciones implican una especie de potencial «almacenado» o «latente». Cuando el software o los algoritmos alcanzan al hardware o a los datos, ese potencial podría liberarse de golpe y producir un salto rápido en las capacidades de la IA. Los excedentes son un posible argumento a favor de despegues discontinuos o rápidos. Se suelen distinguir dos tipos:</p>
+      <ul>
+        <li><strong>Excedente de hardware:</strong> hay suficiente hardware de cómputo para hacer funcionar muchos sistemas de IA potentes, pero todavía no se ha desarrollado el software para ellos. Si ese hardware pudiera reutilizarse para la IA, en cuanto existiera un sistema potente probablemente existirían muchos, lo que podría amplificar el impacto de la llegada de una IA de nivel humano.</li>
+        <li><strong>Excedente de datos:</strong> hay abundantes datos que podrían usarse para entrenar sistemas de IA, pero todavía no se han desarrollado ni desplegado algoritmos capaces de aprovecharlos de forma eficaz.</li>
+      </ul>
+      <p><strong>Los excedentes también se usan como argumento de que las pausas en la IA no afectan de forma significativa a la velocidad de despegue.</strong> Una objeción a este argumento es que supone que, mientras se pausa el desarrollo de la IA, la producción de chips seguirá al mismo ritmo. Podría alegarse que las empresas que los fabrican no producirán tantos si los centros de datos no los compran. Sin embargo, esta objeción solo funciona si la pausa dura un tiempo apreciable; de lo contrario, los centros de datos podrían simplemente acumular chips. También es posible avanzar en el diseño de chips mejores sin fabricar tantos durante la pausa. Aunque, en ese mismo periodo, también podríamos avanzar en las técnicas de seguridad de la IA (<a href="https://www.youtube.com/watch?v=Q3eRy4t2oPQ">Elmore, 2024</a>).</p>
+
+      <p><strong>El argumento del crecimiento económico.</strong> Los patrones históricos de crecimiento económico, impulsados por el aumento de la población humana, sugieren la posibilidad de un despegue de la IA lento y continuo. Según este argumento, a medida que las IA amplíen la población económica efectiva, podríamos ver un aumento gradual del crecimiento económico, similar a las expansiones del pasado, pero potencialmente acelerado por la automatización con IA. Las limitaciones de la IA para automatizar ciertas tareas, junto con las restricciones sociales y regulatorias (por ejemplo, que ciertos servicios médicos o jurídicos solo puedan prestarlos humanos), podrían frenar la expansión de sus capacidades. O bien el crecimiento podría superar con creces las tasas históricas: un argumento similar a favor del despegue rápido se basa en la posibilidad de que la IA automatice rápidamente el trabajo humano a gran escala, lo que provocaría una aceleración económica sin precedentes.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/160363c15d78395259e788de7895260cec8212758d34aa5c7e29534ad0e212de.gP0AyxS0_ZK387H.webp" alt="Figura 1.46">
+        <figcaption><strong>Figura 1.46.</strong> Visualización de la clasificación de los argumentos a favor y en contra de un crecimiento económico explosivo, elaborada por Epoch AI (<a href="https://arxiv.org/abs/2309.11690">Erdil y Besiroglu, 2024</a>).</figcaption>
+      </figure>
+
+      <p><strong>El argumento del despegue centrado en el cómputo.</strong> Este argumento, similar al del informe de los anclajes biológicos, supone que el cómputo bastará para llegar a la IA transformadora. A partir de ese supuesto, el informe de Tom Davidson de 2023 sobre el despegue de la IA centrado en el cómputo analiza los ciclos de retroalimentación que podrían influir en la dinámica del despegue:</p>
+      <ul>
+        <li><strong>Ciclo de retroalimentación de la inversión:</strong> la inversión en IA podría crecer a medida que las IA desempeñan un papel cada vez mayor en la economía. Eso aumenta el cómputo disponible para entrenar modelos y podría llevar al descubrimiento de algoritmos nuevos. Todo ello incrementa las capacidades, que impulsan el progreso económico e incentivan aún más la inversión.</li>
+        <li><strong>Ciclo de retroalimentación de la automatización:</strong> a medida que las IA se vuelven más capaces, podrán automatizar partes cada vez mayores del trabajo de idear mejores algoritmos de IA o de ayudar a diseñar mejores GPU. Ambas cosas aumentan las capacidades de las IA, lo que a su vez les permite automatizar más trabajo.</li>
+      </ul>
+      <p>Según su fuerza y su interacción, estos ciclos pueden crear una profecía autocumplida que conduzca a un despegue rápido y acelerado, si la regulación no frena algunos de sus aspectos, o a un despegue lento, si los ciclos son más débiles o se ven contrarrestados por otros factores. El modelo completo aparece en el siguiente diagrama:</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4442bc8f6709bc08af48febda174ed0c730ebcc646ba8bc092cd804c466451d7.JUdyifLn_Z1eXr6H.webp" alt="Figura 1.47">
+        <figcaption><strong>Figura 1.47.</strong> Resumen de <em>What a Compute-Centric Framework Says About Takeoff Speeds</em> (Lo que dice un marco centrado en el cómputo sobre la velocidad de despegue) (<a href="https://www.openphilanthropy.org/research/what-a-compute-centric-framework-says-about-takeoff-speeds/">Davidson, 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://www.youtube-nocookie.com/embed/-ffmwR9PPVM">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 1.3.</strong> Vídeo opcional que explica el argumento de la automatización de la investigación y el desarrollo.</figcaption>
+      </figure>
+
+      <p><strong>El argumento de la automatización de la investigación.</strong> Los investigadores podrían diseñar más rápido la siguiente generación de modelos de aprendizaje automático delegando parte del trabajo en los modelos existentes, lo que crearía un ciclo de retroalimentación con un progreso cada vez más acelerado. Ajeya Cotra plantea el siguiente argumento:</p>
+      <p>Hoy, los investigadores humanos son responsables, en conjunto, de casi todo el progreso en la investigación en IA, pero están empezando a delegar una pequeña parte del trabajo en los grandes modelos de lenguaje. Eso facilita un poco el diseño y el entrenamiento de la siguiente generación de modelos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/92eff6f7065971d349392249ceac8658ced670bb10201103c4a829a9652598d2.BRCSJQ2C_eNYtb.webp" alt="Figura 1.48">
+        <figcaption><strong>Figura 1.48.</strong> Representación de un ciclo que se refuerza a sí mismo (en rojo). Muestra cómo los sistemas de IA desplegados internamente se usan para ayudar a automatizar la investigación y el desarrollo en IA, al principio junto con investigadores humanos. Estos esfuerzos dan lugar a un sistema de IA más capaz, que puede desplegarse como un investigador automatizado nuevo y mejorado. El ciclo se repite una y otra vez y se refuerza a sí mismo (<a href="https://arxiv.org/abs/2504.12170">Stix et al., 2025</a>).</figcaption>
+      </figure>
+      <p>La siguiente generación puede ocuparse de tareas más difíciles y de más tipos de tareas, así que los investigadores humanos le delegan más trabajo. Eso facilita bastante el entrenamiento de la generación posterior, y usar los modelos aporta un impulso mucho mayor que la vez anterior.</p>
+      <p>Cada ronda de este proceso hace que todo el campo avance cada vez más rápido. En cada ronda, los investigadores humanos delegan todo lo que pueden delegar de forma productiva en la generación actual de modelos, y cuanto más potentes son esos modelos, más contribuyen a la investigación y más rápido pueden mejorar las capacidades de la IA (<a href="https://www.planned-obsolescence.org/ais-accelerating-ai-research/">Cotra, 2023</a>).</p>
+      <p>Así, antes de ver una explosión recursiva de la inteligencia, veremos cómo se delega en las IA una parte cada vez mayor de todo el proceso de investigación y desarrollo. En algún momento, en lugar de que los asistentes de IA hagan a velocidades sobrehumanas una gran mayoría de la investigación y el diseño, harán a velocidades sobrehumanas toda la investigación y el diseño de las IA.</p>
+      <p>Llegados a ese punto, existe la posibilidad de que esto conduzca finalmente a una explosión recursiva de la inteligencia totalmente automatizada.</p>
+
+      <p><strong>El argumento de la explosión de la inteligencia.</strong> El concepto de «explosión de la inteligencia» también es central en el debate sobre el despegue discontinuo. Procede de la tesis de I. J. Good, según la cual una inteligencia artificial lo bastante avanzada podría construir una versión más inteligente de sí misma, que a su vez podría construir otra aún más inteligente, y así sucesivamente, en un ciclo que podría llevar a una inteligencia muy superior a la humana (<a href="https://intelligence.org/files/IEM.pdf">Yudkowsky, 2013</a>).</p>
+      <p>En su informe de 2012 sobre las pruebas de la explosión de la inteligencia, Muehlhauser y Salamon analizan las numerosas ventajas de la inteligencia artificial sobre la humana que facilitan un aumento rápido de la inteligencia (<a href="https://intelligence.org/files/IE-EI.pdf">Muehlhauser, 2012</a>). Entre ellas:</p>
+      <ul>
+        <li><strong>Recursos de cómputo:</strong> la capacidad de cómputo humana es más o menos fija, mientras que el cómputo de las máquinas es escalable.</li>
+        <li><strong>Velocidad:</strong> los humanos nos comunicamos a un ritmo de dos palabras por segundo, mientras que GPT-4 puede procesar 32 000 palabras en un instante. Cuando los LLM escriban «mejor» que los humanos, lo más probable es que su velocidad nos supere por completo.</li>
+        <li><strong>Duplicabilidad:</strong> las máquinas se duplican sin esfuerzo. A diferencia de los humanos, no necesitan nacer, educarse ni formarse. Mientras que los humanos mejoran sobre todo de forma individual, las máquinas pueden crecer de forma colectiva. Un humano tarda 20 años desde que nace en ser competente, mientras que, en cuanto tengamos una IA capaz, podremos duplicarla al instante. Cuando las IA alcancen el nivel del mejor programador, bastará con duplicar esa IA, y lo mismo vale para otros trabajos.</li>
+        <li><strong>Editabilidad:</strong> las máquinas permiten, en potencia, variaciones más controladas, el equivalente a mejorar directamente el cerebro mediante neurocirugía en lugar de una educación o formación laboriosas. Los humanos también pueden mejorar y aprender nuevas habilidades, pero no tienen acceso de administrador a su propio hardware: apenas empezamos a entender el «código espagueti» del genoma, mientras que una IA podría usar herramientas de control de versiones para mejorarse y probar experimentos arriesgados con copias de seguridad por si fallan. Esto permite variaciones mucho más controladas.</li>
+        <li><strong>Coordinación de objetivos:</strong> las copias de una IA pueden compartir objetivos sin esfuerzo, algo difícil para los humanos.</li>
+      </ul>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 12 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/takeoff/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-06-pronosticar-plazos.html">← Anterior: Pronosticar plazos</a>
+      </div>
+      <a class="siguiente" href="cap1-08-apendice-pronosticos.html">
+        <strong>Siguiente: Apéndice: Pronósticos →</strong><br>
+        Desglose detallado de las tendencias de inversión, producción de semiconductores, energía y otros factores que influyen en los pronósticos.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

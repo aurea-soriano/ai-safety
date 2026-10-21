@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aprovechar la escala · Capítulo 1 – AI Safety Atlas</title>
+  <meta name="description" content="La escala del cómputo, los datos y el tamaño de los modelos como motor del progreso de la IA.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>1. Capacidades</h2>
+        <ol>
+          <li><a href="cap1-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap1-02-capacidades-actuales.html">Capacidades actuales</a></li>
+          <li><a href="cap1-03-modelos-fundacionales.html">Modelos fundacionales</a></li>
+          <li><a href="cap1-04-definir-y-medir-la-agi.html">Definir y medir la AGI</a></li>
+          <li class="activo"><a href="cap1-05-aprovechar-la-escala.html">Aprovechar la escala</a></li>
+          <li><a href="cap1-06-pronosticar-plazos.html">Pronosticar plazos</a></li>
+          <li><a href="cap1-07-despegue.html">Despegue</a></li>
+          <li><a href="cap1-08-apendice-pronosticos.html">Apéndice: Pronósticos</a></li>
+          <li><a href="cap1-09-apendice-despegue.html">Apéndice: Despegue</a></li>
+          <li><a href="cap1-10-apendice-encuestas-a-expertos.html">Apéndice: Encuestas a expertos</a></li>
+          <li><a href="cap1-11-apendice-debate-sobre-los-llm.html">Apéndice: Debate sobre los LLM</a></li>
+        </ol>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 1: Capacidades</p>
+      <h1>Aprovechar la escala</h1>
+      <p><em>El progreso reciente de la IA se debe sobre todo a la escala masiva del cómputo, los datos y el tamaño de los modelos. Las tendencias de escalado observadas empíricamente pueden servir de guía para predecir las capacidades futuras.</em></p>
+      <p class="meta">11 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter1-audio-0c20613d4fd881f28c65203fefc967ba487fe5f275a55be3d0243571c9880f97.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter1-bd9f7178123a840b4696d3adac7f8a83781fb590b5a7623954e2654ecbb07129.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/capabilities.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#leccion-amarga">La amarga lección</a></li>
+          <li><a href="#leyes-de-escalado">Leyes de escalado</a></li>
+          <li><a href="#hipotesis-del-escalado">Hipótesis del escalado</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+        <a href="#referencias">Referencias</a>
+      </nav>
+
+      <p>En la sección anterior repasamos distintas formas de definir la AGI y de medir las capacidades que importan. Ahora examinaremos uno de los principales motores de la mejora de esas capacidades: la escala.</p>
+
+      <h2 id="leccion-amarga">La amarga lección</h2>
+      <p><strong>El conocimiento de dominio diseñado por humanos pierde una y otra vez frente a los métodos generales que aprovechan un cómputo masivo.</strong> Suponemos que muchos de ustedes fueron a la universidad en una época en la que «aprendizaje automático» e «IA» significaban, más o menos, lo mismo. No siempre fue así. En los primeros tiempos de la IA, los investigadores creían que la clave de la inteligencia artificial era codificar cuidadosamente el conocimiento y la experiencia humanos en programas informáticos. Eso dio lugar a sistemas expertos llenos de reglas hechas a mano y a motores de ajedrez programados con sofisticados principios estratégicos. Una y otra vez, estos enfoques chocaban contra un muro, mientras que los algoritmos de aprendizaje sencillos, combinados con un cómputo masivo, no dejaban de mejorar. Así, una y otra vez, los investigadores aprendieron lo que hoy llamamos la «amarga lección» (<em>bitter lesson</em>).</p>
+      <blockquote>
+        <p>«La mayor lección que se puede extraer de 70 años de investigación en IA es que los métodos generales que aprovechan el cómputo son, en última instancia, los más eficaces, y por un amplio margen».</p>
+        <p>Sutton apoya esta lección en cuatro observaciones históricas, que resumimos aquí: los investigadores de IA han intentado a menudo incorporar conocimiento a sus agentes; eso siempre ayuda a corto plazo y resulta satisfactorio para el investigador; pero a largo plazo se estanca e incluso frena el progreso; y los grandes avances acaban llegando por el enfoque contrario, el que escala el cómputo mediante la búsqueda y el aprendizaje.</p>
+        <p>— Richard Sutton, profesor de la Universidad de Alberta y fundador del Openmind Research Institute, 2019 · <a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">Sutton, 2019</a></p>
+      </blockquote>
+
+      <p><strong>La amargura viene de descubrir que décadas de experiencia humana importaban menos que el cómputo.</strong> Los investigadores que pasaron años codificando el conocimiento de los grandes maestros del ajedrez vieron cómo la búsqueda por fuerza bruta derrotaba al campeón del mundo Garry Kasparov. Los detectores de características diseñados a mano en visión por computadora fueron superados por redes neuronales que aprendían sus propias características a partir de los datos. El reconocimiento de voz basado en la fonética perdió frente a los enfoques estadísticos. El patrón se repetía: la experiencia de dominio ayudaba al principio y luego chocaba contra un muro, mientras que los algoritmos de aprendizaje sencillos, sumados a un cómputo masivo, seguían mejorando (<a href="http://www.incompleteideas.net/IncIdeas/BitterLesson.html">Sutton, 2019</a>).</p>
+
+      <p><strong>La amarga lección no rechaza el ingenio humano ni la innovación algorítmica.</strong> Hay una diferencia entre construir mejores sistemas de aprendizaje general y codificar conocimiento humano específico de una tarea. No se trata solo de la diferencia entre la «buena IA a la antigua» (GOFAI) y el aprendizaje automático moderno: incluso dentro del aprendizaje automático, la amarga lección sigue vigente, porque los algoritmos ganadores son los que aprovechan mejor la escala. Los <em>transformers</em> no superaron a las redes LSTM por codificar conocimiento lingüístico, sino porque sus mecanismos de atención se paralelizan mejor y pueden aprovechar de forma productiva un cómputo masivo. La innovación algorítmica sigue importando: se trata de encontrar arquitecturas y métodos de entrenamiento que extraigan más de los mismos datos y del mismo hardware. Los algoritmos que triunfan son los que liberan el potencial de la escala.</p>
+
+      <p><strong>La amarga lección condiciona lo que esperamos del progreso de la IA.</strong> Si sigue siendo cierta, las mejoras deberían venir de encontrar algoritmos que aprovechen mejor la escala o, simplemente, de escalar los algoritmos existentes con más cómputo, más datos y más parámetros. En los últimos años, la mayor parte de los avances en las capacidades de la IA ha surgido de escalar los mismos modelos de lenguaje basados en <em>transformers</em>.</p>
+
+      <h2 id="leyes-de-escalado">Leyes de escalado</h2>
+      <p><strong>Entrenar modelos de IA de frontera cuesta cientos de millones de dólares, por lo que es crucial predecir el retorno de la inversión.</strong> Los laboratorios de IA se enfrentan a decisiones de asignación de recursos con muchísimo en juego: ¿gastar más en GPU o en datos de entrenamiento? ¿Entrenar un modelo grande durante poco tiempo o uno más pequeño durante más tiempo? Con un presupuesto de cómputo fijo, podrían elegir entre un modelo de 20 000 millones de parámetros entrenado con el 40 % de sus datos o uno de 200 000 millones entrenado con el 4 %. Equivocarse supone tirar cientos de millones. Las leyes de escalado ayudan a convertir estas apuestas en decisiones de ingeniería, porque establecen relaciones observadas empíricamente entre los recursos invertidos y la precisión del modelo.</p>
+
+      <p><strong>Las leyes de escalado describen cómo cambia la precisión de un modelo al variar cuatro variables clave:</strong></p>
+      <ul>
+        <li><strong>Cómputo:</strong> el total de operaciones de coma flotante (FLOP) durante el entrenamiento; refleja la potencia de las GPU, el número de chips y la duración del entrenamiento (cuántos pasos se entrena).</li>
+        <li><strong>Parámetros:</strong> los números que el modelo ajusta durante el entrenamiento; equivalen, a grandes rasgos, al «tamaño del modelo».</li>
+        <li><strong>Datos:</strong> los ejemplos de entrenamiento procesados, que en los LLM se miden en tokens.</li>
+        <li><strong>Precisión:</strong> lo bien que rinde el modelo en los benchmarks; es lo inverso de la «pérdida» (menor pérdida = mayor precisión).</li>
+      </ul>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/eadd470c5ecbd5bcadcdb62844f5f7ba84b91e8708aca70f8ae5d018e2e368ee.CABzpIwt_Z1k8LSM.webp" alt="Figura 1.33">
+        <figcaption><strong>Figura 1.33.</strong> Ejemplo de cómo aumentan las capacidades al incrementar una de las variables de las leyes de escalado: el número de parámetros. Se usó la misma arquitectura (Parti) para generar una imagen con la misma instrucción; lo único que cambia entre los modelos es el número de parámetros. Hay saltos de calidad evidentes y, en algún punto entre los 3000 y los 20 000 millones de parámetros, el modelo adquiere la capacidad de escribir correctamente las palabras (<a href="https://arxiv.org/abs/2206.10789">Yu et al., 2022</a>).</figcaption>
+      </figure>
+
+      <p><strong>Las leyes de escalado son relaciones observadas empíricamente, no leyes de la naturaleza.</strong> OpenAI documentó estas relaciones por primera vez en 2020, tras realizar cientos de experimentos en los que variaba los recursos y medía la precisión (<a href="https://arxiv.org/abs/2001.08361">Kaplan et al., 2020</a>). Descubrió que, al multiplicar el cómputo por 10, la precisión mejora de forma predecible, y que al duplicar los parámetros la precisión da un salto también predecible. Estos patrones resultaron sorprendentemente constantes en distintas arquitecturas y tareas, lo que sugiere que captan algo fundamental sobre cómo aprenden las redes neuronales. Investigaciones posteriores revelaron que el entrenamiento óptimo requiere unos 20 tokens de datos por parámetro, unas 10 veces más datos de lo que sugerían las primeras leyes<sup><a href="#nota-1" id="ref-1">1</a></sup> (<a href="https://arxiv.org/abs/2203.15556">Hoffmann et al., 2022</a>). Eso significaba que los grandes modelos anteriores estaban infraentrenados para su tamaño. Estas relaciones siguen evolucionando a medida que los investigadores reúnen más pruebas, pero la idea central se mantiene: la escala produce mejoras de capacidad predecibles. Los gráficos siguientes muestran con claridad el enorme aumento de la escala en datos, cómputo y número de parámetros en todos los grandes laboratorios de IA.</p>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/exponential-growth-of-parameters-in-notable-ai-systems?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.1.</strong> Crecimiento exponencial del número de parámetros en sistemas de IA destacados. Los parámetros son variables de un sistema de IA cuyos valores se ajustan durante el entrenamiento para determinar cómo se transforman los datos de entrada en la salida deseada; por ejemplo, los pesos de las conexiones de una red neuronal artificial (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/exponential-growth-of-datapoints-used-to-train-notable-ai-systems?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.2.</strong> Crecimiento exponencial de la cantidad de datos usados para entrenar sistemas de IA destacados. Cada dominio tiene su propia unidad: en visión son imágenes; en lenguaje, palabras, y en juegos, pasos de tiempo. Por eso, los sistemas solo pueden compararse directamente dentro del mismo dominio (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/exponential-growth-of-computation-in-the-training-of-notable-ai-systems?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 1.3.</strong> Crecimiento exponencial del cómputo usado para entrenar sistemas de IA destacados. El cómputo se mide en petaFLOP totales, es decir, 10<sup>15</sup> operaciones de coma flotante (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>La actualización de 2023: leyes de escalado neuronal quebradas (BNSL)</strong> · Opcional · 1 min de lectura</summary>
+        <p><strong>Las investigaciones mostraron que el rendimiento no siempre mejora de forma suave:</strong> puede haber transiciones bruscas, estancamientos temporales o incluso periodos en los que empeora antes de mejorar. Algunos ejemplos son el <em>grokking</em>, en el que los modelos logran de repente una fuerte generalización tras muchos pasos de entrenamiento, o el doble descenso profundo, en el que aumentar el tamaño del modelo primero perjudica y luego mejora el rendimiento. En lugar de simples leyes de potencia, las BNSL usan una forma funcional más flexible capaz de captar estos comportamientos complejos, lo que permite predecir con más precisión el escalado, sobre todo en torno a discontinuidades y transiciones. Las leyes de escalado son una buena referencia de base, pero siguen siendo posibles los saltos discontinuos en las capacidades y los cambios bruscos de nivel (<a href="https://arxiv.org/abs/2210.14891">Caballero et al., 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8e2e605a0c66f707ea6ce2a5974db7826aa4a37bd8766c2b80668636d60460da.Bhx54fu0_25OOF4.webp" alt="Figura 1.34">
+        <figcaption><strong>Figura 1.34.</strong> Ejemplo de ley de escalado neuronal quebrada (línea negra continua), con tres quiebres (donde las líneas punteadas moradas se cruzan con la línea negra) y cuatro segmentos de ley de potencia (donde las líneas discontinuas amarilla, azul, roja y verde coinciden con la línea negra). El primer y el segundo quiebre son muy suaves; el tercero, muy brusco (<a href="https://arxiv.org/abs/2210.14891">Caballero et al., 2023</a>).</figcaption>
+      </figure>
+      </details>
+
+      <h2 id="hipotesis-del-escalado">Hipótesis del escalado</h2>
+      <p><strong>El escalado podría seguir impulsando las mejoras de capacidad.</strong> Recuerda los ejemplos de las secciones anteriores: las habilidades de programación, el razonamiento emergente, la ayuda en la investigación científica o el salto de GPT-3.5 a GPT-4 en los exámenes profesionales. Estas capacidades aparecieron a medida que los modelos crecían y se entrenaban con más datos, sin necesidad de nuevos avances de arquitectura ni de conocimiento de dominio codificado. Si los enfoques actuales, escalados, pudieran producir en pocos años sistemas capaces de automatizar la investigación en IA, el trabajo de seguridad se volvería mucho más urgente. Las pruebas disponibles admiten varias interpretaciones, porque estamos viendo en tiempo real el desarrollo de una tecnología cuyos límites no comprendemos del todo. Por eso, distintas personas sostienen hipótesis diferentes sobre cómo podría desarrollarse el futuro.</p>
+
+      <p><strong>La hipótesis fuerte del escalado.</strong> Propone que bastará con escalar las arquitecturas existentes con más cómputo y más datos para alcanzar capacidades de IA transformadora (<a href="https://gwern.net/scaling-hypothesis">Gwern, 2020</a>). Según esta visión, ya tenemos todos los componentes fundamentales necesarios: solo hay que hacerlos más grandes, siguiendo las leyes de escalado establecidas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/59b06d94e55937d526c17327f255eddadf445e39b248930e0ce6adb8162d0f2c.8ArHDsTp_ZcVvmc.webp" alt="Figura 1.35">
+        <figcaption><strong>Figura 1.35.</strong> El aumento y el andamiaje se mantienen constantes, pero si la hipótesis del escalado, débil o fuerte, es cierta, las capacidades seguirán mejorando solo con escalar.</figcaption>
+      </figure>
+
+      <p><strong>La hipótesis débil del escalado.</strong> Sostiene que, aunque la escala seguirá siendo el principal motor del progreso, también harán falta mejoras de arquitectura y de algoritmos específicas para superar cuellos de botella concretos. Estas mejoras no requerirían avances fundamentales, sino perfeccionamientos graduales para aprovechar mejor la escala (<a href="https://gwern.net/scaling-hypothesis">Gwern, 2020</a>).</p>
+
+      <p><strong>Los investigadores llevan más de una década desarrollando algoritmos que aprovechan la escala y el cómputo.</strong> Muchas mejoras han venido de una mayor eficiencia del cómputo gracias a innovaciones como mejores mecanismos de atención, el enrutamiento por mezcla de expertos o métodos de entrenamiento eficientes. Pero incluso cuando los investigadores han desarrollado algoritmos sofisticados siguiendo los principios de la amarga lección, los datos sugieren que entre el 60 % y el 95 % de las mejoras de rendimiento se deben al escalado del cómputo y de los datos, mientras que las mejoras algorítmicas aportaron entre el 5 % y el 40 %, aunque separar estas contribuciones conlleva una incertidumbre metodológica considerable (<a href="https://epoch.ai/blog/algorithmic-progress-in-language-models">Ho et al., 2024</a>).</p>
+
+      <p><strong>La aparición de capacidades inesperadas podría ser otro argumento a favor del escalado fuerte.</strong> Las generaciones anteriores de modelos fundacionales mostraron capacidades notables para las que no se habían entrenado explícitamente, como la programación. Este comportamiento emergente sugiere que no es imposible que capacidades cognitivas de orden superior surjan del mismo modo, simplemente como función de una mayor escala.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bf0a21178ac5eed6de6d35f41948b121b7dde10b52ce978f5b9f72955814c759.DSIRe1Hz_ZE2jXc.webp" alt="Figura 1.36">
+        <figcaption><strong>Figura 1.36.</strong> Aunque no mejore la escala de los modelos, otras técnicas de elicitación y el andamiaje pueden seguir mejorando, de modo que las capacidades globales siguen creciendo. Siendo realistas, en el futuro probablemente habrá mejoras tanto por el andamiaje como por la escala. Por ahora, no parece haber un límite superior para la mejora de las capacidades mientras se cumpla al menos una de las dos.</figcaption>
+      </figure>
+
+      <p><strong>La hipótesis de la escala combinada con técnicas y herramientas.</strong> En esencia, tanto las leyes de escalado (que solo predicen las capacidades de los modelos fundacionales) como la mayoría de los debates sobre si «la escala es lo único que hace falta» suelen pasar por alto otros aspectos del desarrollo de la IA que quedan fuera de lo que esas leyes pueden predecir. No tienen en cuenta las mejoras en el «andamiaje» de la IA (como las instrucciones de cadena de pensamiento, el uso de herramientas o la recuperación de información), ni las combinaciones de varios modelos que trabajan juntos de formas nuevas. Cualquier LLM con acceso a internet, capacidad de ejecutar código y posibilidad de recurrir a otros submodelos especializados es bastante más capaz que ese mismo LLM por sí solo. En la primera sección dimos varios ejemplos de que esta es la tendencia dominante: el uso de herramientas, pensar durante más tiempo (escalado en tiempo de inferencia), los servidores MCP, etcétera.</p>
+
+      <p><strong>Los debates sobre las leyes de escalado solo nos dicen algo sobre las capacidades de un único modelo fundacional entrenado de forma estándar.</strong> Por ejemplo, según la hipótesis fuerte del escalado, podríamos alcanzar la TAI simplemente escalando el mismo modelo fundacional hasta que automatice por completo la investigación y el desarrollo en aprendizaje automático. Pero incluso si el escalado se detiene y frena el progreso del modelo fundacional (de forma débil o fuerte), las técnicas externas que aprovechan el modelo existente pueden seguir avanzando. Muchos investigadores creen que de ahí vendrá buena parte de las capacidades futuras. Se habla de «quitar los grilletes» (<em>unhobbling</em>) (<a href="https://situational-awareness.ai/from-gpt-4-to-agi/#Unhobbling">Aschenbrenner, 2024</a>), del «trabajo pesado» (<em>schlep</em>) (<a href="https://www.planned-obsolescence.org/scale-schlep-and-systems/">Cotra, 2023</a>) y de otros términos, pero todos apuntan al mismo principio: el escalado bruto del rendimiento de un solo modelo es solo una parte del avance global de las capacidades de la IA.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f5ef5f01a4c869d9a77a0c71f25718abf017d9b5218e4074ff78505777a758ed.C8R01McJ_1vMyH6.webp" alt="Figura 1.37">
+        <figcaption><strong>Figura 1.37.</strong> Un ejemplo de cuánto puede cambiar el rendimiento en un benchmark solo con técnicas posteriores al entrenamiento, como un entrenamiento específico de razonamiento y dejar que el modelo piense durante más tiempo. El modelo base obtiene alrededor de un 4,5 % en Humanity’s Last Exam (HLE), y con cada paso sucesivo de «quitar los grilletes» el rendimiento da saltos hasta alcanzar un 25 % (<a href="https://epoch.ai/gradient-updates/three-issues-undermining-compute-based-ai-policies">Somala et al., 2024</a>).</figcaption>
+      </figure>
+
+      <p><strong>Incluso la hipótesis del escalado basado en herramientas es objeto de debate.</strong> Algunos sostienen que es poco probable que añadir herramientas o escala a los LLM conduzca a la AGI tal como ellos la definen. Defienden arquitecturas completamente distintas de los LLM basados en <em>transformers</em>, como los enfoques neurosimbólicos, los métodos de conjunto o una arquitectura totalmente nueva aún por descubrir (<a href="https://arxiv.org/abs/2310.18318">Goertzel et al., 2023</a>; <a href="https://garymarcus.substack.com/p/the-last-few-months-have-been-devastating">Marcus, 2025</a>; <a href="https://www.youtube.com/watch?v=ETZfkkv6V7Y">LeCun, 2025</a>; <a href="https://www.youtube.com/watch?v=s7_NlkBwdj8">Chollet, 2025</a>).</p>
+
+      <p><strong>A pesar de los desacuerdos sobre si la escala conducirá a una «AGI verdadera», los grandes laboratorios de IA están apostando fuerte por el escalado.</strong> Sam Altman, de OpenAI, ha dicho que cree que el escalado será un componente importante de las mejoras de capacidad (<a href="https://openai.com/blog/planning-for-agi-and-beyond">Altman, 2023</a>); Dario Amodei, director ejecutivo de Anthropic, ha expresado opiniones similares (<a href="https://www.dwarkeshpatel.com/p/dario-amodei">Amodei, 2023</a>), y el equipo de seguridad de DeepMind escribió que «no hacen falta muchas más innovaciones fundamentales para llegar a la AGI» (<a href="https://www.lesswrong.com/posts/GctJD5oCDRxCspEaZ/clarifying-ai-x-risk">DeepMind, 2022</a>). Este consenso sugiere que, domine el escalado fuerte, el débil o el basado en herramientas, la escala seguirá siendo probablemente central para el progreso a corto plazo.</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">También se conoce como «optimalidad Chinchilla» o frontera óptima de Chinchilla, por el modelo original con el que se pusieron a prueba estas leyes. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 18 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/capabilities/leveraging-scale/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap1-04-definir-y-medir-la-agi.html">← Anterior: Definir y medir la AGI</a>
+      </div>
+      <a class="siguiente" href="cap1-06-pronosticar-plazos.html">
+        <strong>Siguiente: Pronosticar plazos →</strong><br>
+        Necesitamos poder predecir el progreso de las capacidades para evaluar los riesgos y prepararnos para ellos. El análisis basado en datos puede ayudarnos a pronosticar escenarios posibles y a razonar sobre distintos futuros.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

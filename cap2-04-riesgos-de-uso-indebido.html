@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Riesgos de uso indebido · Capítulo 2 – AI Safety Atlas</title>
+  <meta name="description" content="Riesgos de uso indebido de la IA: biológico, cibernético, armas autónomas y ataques adversariales.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>2. Riesgos</h2>
+        <ol>
+          <li><a href="cap2-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap2-02-descomposicion-del-riesgo.html">Descomposición del riesgo</a></li>
+          <li><a href="cap2-03-capacidades-peligrosas.html">Capacidades peligrosas</a></li>
+          <li class="activo"><a href="cap2-04-riesgos-de-uso-indebido.html">Riesgos de uso indebido</a></li>
+          <li><a href="cap2-05-riesgos-de-desalineacion.html">Riesgos de desalineación</a></li>
+          <li><a href="cap2-06-riesgos-sistemicos.html">Riesgos sistémicos</a></li>
+          <li><a href="cap2-07-amplificadores-de-riesgo.html">Amplificadores de riesgo</a></li>
+          <li><a href="cap2-08-conclusion.html">Conclusión</a></li>
+          <li><a href="cap2-09-apendice-cuantificar-los-riesgos-existenciales.html">Apéndice: Cuantificar los riesgos existenciales</a></li>
+          <li><a href="cap2-10-apendice-escenarios-de-pronostico.html">Apéndice: Escenarios de pronóstico</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 2: Riesgos</p>
+      <h1>Riesgos de uso indebido</h1>
+      <p><em>Los humanos pueden usar deliberadamente las capacidades de la IA para causar daño: crear armas biológicas, llevar a cabo ciberataques o desplegar armas autónomas letales.</em></p>
+      <p class="meta">31 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter2-audio-de0f47b26a28e578fd3ccfaa45e0b6c5a1c5b1c489ceaed43f3fc1df463e4b4f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter2-5b1a73865dd27cac90c71a2eab04a1be18a35708cd7ec253957b9321bd77ba7c.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/risks.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2508.13700">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+        <li><a href="https://www.youtube.com/watch?v=dhr4u-w75aQ">Ver la clase en YouTube (en inglés, desactualizada)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#riesgo-biologico">Riesgo biológico</a></li>
+          <li><a href="#riesgo-cibernetico">Riesgo cibernético</a></li>
+          <li><a href="#riesgo-de-armas-autonomas">Riesgo de armas autónomas</a></li>
+          <li><a href="#riesgo-de-ia-adversarial">Riesgo de IA adversarial</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p>En las secciones siguientes repasaremos algunos estados del mundo que, esperamos, den una idea algo más clara de los riesgos de la IA. Aunque las hemos dividido en uso indebido, desalineación y riesgos sistémicos, conviene recordar que es solo una división explicativa. Es muy probable que el futuro traiga una mezcla de riesgos de todas estas categorías.</p>
+
+      <p><strong>La tecnología aumenta el radio de daño.</strong> La tecnología es un amplificador de intenciones: a medida que mejora, también crece el radio de sus efectos. Piensa en el daño que podía causar una persona con las herramientas de cada época. En la Edad de Piedra, con una roca, quizá podía dañar a unas 5 personas; hace unos siglos, con una bomba, a unas 100. En 1945, con un arma nuclear, una sola persona podía dañar a unas 250 000. Si hoy se produjera un invierno nuclear, el radio de daño alcanzaría a casi 5000 millones de personas, en torno al 60 % de la humanidad. Si suponemos que la IA transformadora es una herramienta que eclipsa el poder de todas las anteriores, una sola persona que hiciera un uso indebido de ella podría tener un radio de impacto capaz de dañar al 100 % de la humanidad (<a href="https://www.youtube.com/watch?v=144uOfr4SYA">debate Munk, 2023</a>).</p>
+
+      <p>Si mucha gente tiene acceso a herramientas que pueden ser enormemente beneficiosas o catastróficamente dañinas, podría bastar con una sola persona para causar una devastación social considerable. Por eso, el creciente potencial de la IA para dar poder a actores maliciosos podría ser una de las amenazas más graves a las que se enfrente la humanidad en las próximas décadas.</p>
+
+      <h2 id="riesgo-biologico">Riesgo biológico</h2>
+      <p>Cuando analizamos las formas en que la IA podría facilitar el daño por uso indebido, uno de los casos más preocupantes tiene que ver con la biología. Igual que la IA puede ayudar a los científicos a desarrollar nuevos medicamentos y a entender enfermedades, también puede facilitar que actores maliciosos creen armas biológicas.</p>
+      <p><strong>Las armas biológicas potenciadas por IA son una clase de amenaza cualitativamente distinta, por su naturaleza autorreplicante y su estructura de costos asimétrica.</strong> A diferencia de las armas convencionales, de efectos localizados, los patógenos diseñados pueden autorreplicarse y propagarse por todo el mundo. La pandemia de COVID-19 demostró que incluso virus relativamente leves pueden causar daños generalizados pese a las salvaguardas (<a href="https://pubmed.ncbi.nlm.nih.gov/39572723/">Pannu et al., 2024</a>). El equilibrio entre ataque y defensa en biotecnología agrava estos riesgos: desarrollar un virus nuevo podría costar unos 100 000 dólares, mientras que crear una vacuna contra él podría superar los 1000 millones (<a href="https://www.rand.org/pubs/research_reports/RRA2977-1.html">Mouton et al., 2023</a>).</p>
+      <p><strong>Varios tipos de modelos de IA podrían facilitar amenazas biológicas, con perfiles de riesgo distintos.</strong> Los modelos fundacionales, como los LLM, rebajan sobre todo las barreras de conocimiento: ofrecen ayuda en la investigación, orientación sobre protocolos y consejos para resolver problemas a lo largo de toda la cadena de desarrollo de un arma biológica. En cambio, las herramientas especializadas de diseño biológico, similares a AlphaFold o AlphaProteo, o los sistemas de diseño viral y bacteriano, podrían permitir capacidades fundamentalmente nuevas: diseñar patógenos con propiedades específicas, optimizar su virulencia o su transmisibilidad, o crear agentes que eludan las contramedidas existentes (<a href="https://arxiv.org/abs/2306.13952">Sandbrink, 2023</a>).</p>
+      <p><strong>Hay estudios empíricos que demuestran estos riesgos.</strong> Unos investigadores tomaron un modelo de IA diseñado para el descubrimiento de fármacos y lo reorientaron recompensando la toxicidad en lugar del beneficio terapéutico. El modelo produjo 40 000 moléculas potencialmente tóxicas en seis horas, algunas más letales que armas químicas conocidas (<a href="https://pubmed.ncbi.nlm.nih.gov/36211133/">Urbina et al., 2022</a>). Otras demostraciones han mostrado que estudiantes sin formación en biología podían usar chatbots para reunir rápidamente información sensible: en una hora identificaron posibles patógenos pandémicos, métodos para producirlos, empresas de síntesis de ADN con controles laxos y protocolos detallados (<a href="https://arxiv.org/abs/2306.03809">Soice et al., 2023</a>).<sup><a href="#nota-1" id="ref-1">1</a></sup></p>
+      <p><strong>Comparado con el punto de partida de tener acceso a internet</strong>, la Comisión de Seguridad Nacional sobre Biotecnología Emergente de Estados Unidos concluyó que, a finales de 2024, los modelos de IA no aumentaban de forma significativa los riesgos de armas biológicas más allá de las fuentes de información existentes (<a href="https://www.rand.org/pubs/research_reports/RRA2977-1.html">Mouton et al., 2023</a>; <a href="https://arxiv.org/abs/2412.01946">Peppin et al., 2024</a>; <a href="https://www.biotech.senate.gov/wp-content/uploads/2024/01/NSCEB_AIxBio_WP3_Risks.pdf">NSCEB, 2024</a>). Sin embargo, es muy importante tener presente que una instantánea de las capacidades de 2023 no indica los riesgos para los que quizá debamos prepararnos en el futuro. Por ejemplo, 46 expertos en bioseguridad y biología predijeron que la IA no igualaría a los mejores equipos de virología en tareas de resolución de problemas hasta después de 2030, pero las pruebas posteriores encontraron que ese umbral ya se había superado (<a href="https://forecastingresearch.org/ai-enabled-biorisk">Williams et al., 2025</a>). Este patrón sugiere que incluso los expertos de un ámbito subestiman sistemáticamente el ritmo del progreso de la IA en su propio campo, lo que podría dejar un tiempo insuficiente para preparar medidas de seguridad adecuadas. También conviene señalar que los benchmarks de riesgo biológico a menudo no captan muchas complejidades del mundo real, lo que dificulta saber qué implica realmente su saturación (<a href="https://epochai.substack.com/p/do-the-biorisk-evaluations-of-ai">Ho y Berg, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0d1c0a7aa822efc882025f8708a81258a70ceea4d9a33328359bf185e3d03a1a.C8Z0QQn4_ZtoMT9.webp" alt="Figura 2.11">
+        <figcaption><strong>Figura 2.11.</strong> Cadena de riesgo de la biotecnología. La cadena para desarrollar un arma biológica empieza con la ideación de una amenaza biológica, seguida de un ciclo de diseño, construcción, prueba y aprendizaje (DBTL) (<a href="https://arxiv.org/abs/2403.03218">Li et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Las tendencias tecnológicas generales, combinadas con la IA, podrían ayudar a superar las barreras existentes.</strong> Crear armas biológicas sigue requiriendo una amplia experiencia práctica y muchos recursos. Los expertos estiman que en 2022 unas 30 000 personas en todo el mundo tenían las competencias necesarias para seguir siquiera protocolos básicos de ensamblaje de virus (<a href="https://dam.gcsp.ch/files/doc/gcsp-geneva-paper-29-22">Esvelt, 2022</a>). Entre las barreras clave están las habilidades de laboratorio especializadas, el conocimiento tácito, el acceso a materiales y equipos controlados y los complejos requisitos de prueba (<a href="https://www.nti.org/wp-content/uploads/2023/05/NTIBIO_Benchtop-DNA-Report_FINAL.pdf">Carter et al., 2023</a>). Sin embargo, el costo de la síntesis de ADN se reduce a la mitad cada 15 meses (<a href="https://pubmed.ncbi.nlm.nih.gov/20010582/">Carlson, 2009</a>). Los «laboratorios en la nube» automatizados permiten a los investigadores realizar experimentos a distancia enviando instrucciones a sistemas robóticos. Las máquinas de síntesis de ADN de sobremesa, dispositivos domésticos capaces de imprimir secuencias de ADN personalizadas, también son cada vez más accesibles. Combinados con una asistencia de IA cada vez más sofisticada para el diseño y la optimización de experimentos, estos avances podrían poner la creación de agentes biológicos personalizados al alcance de personas sin grandes recursos ni respaldo institucional (<a href="https://www.nti.org/wp-content/uploads/2023/05/NTIBIO_Benchtop-DNA-Report_FINAL.pdf">Carter et al., 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0ddadfc4e26ce0d10401fa0976e91b4448fc140fcd453bdae9e5eef7a1f29810.B63UIKFU_1Jf7cK.webp" alt="Figura 2.12">
+        <figcaption><strong>Figura 2.12.</strong> Ejemplo de máquina de síntesis de ADN de sobremesa (<a href="https://www.dnascript.com/">DnaScript, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Ejemplo: un estudio del MIT de 2023 reveló vulnerabilidades importantes en los controles de la síntesis de ADN.</strong> Más allá del diseño de agentes biológicos, la cadena de control de la síntesis de ADN tiene fallos serios. En ese estudio, los investigadores lograron encargar fragmentos del virus de la gripe pandémica de 1918 y de la toxina ricina empleando técnicas de evasión sencillas, como repartir los pedidos entre varias empresas y camuflar las secuencias con código genético no relacionado. Casi todos los proveedores atendieron esos pedidos disfrazados, incluidos 12 de los 13 miembros del Consorcio Internacional de Síntesis de Genes (IGSC), que representa cerca del 80 % de la capacidad comercial de síntesis de ADN (<a href="https://thebulletin.org/2024/06/mit-researchers-ordered-and-combined-parts-of-the-1918-pandemic-influenza-virus-did-they-expose-a-security-flaw/">The Bulletin, 2024</a>).</p>
+
+      <h2 id="riesgo-cibernetico">Riesgo cibernético</h2>
+      <p><strong>Incluso sin IA, la infraestructura mundial de ciberseguridad muestra vulnerabilidades.</strong> Una sola actualización de software de CrowdStrike dejó aviones en tierra, obligó a hospitales a cancelar cirugías y paralizó transacciones bancarias, con más de 5000 millones de dólares en daños (<a href="https://www.crowdstrike.com/wp-content/uploads/2024/08/Channel-File-291-Incident-Root-Cause-Analysis-08.06.2024.pdf">CrowdStrike, 2024</a>). Y ni siquiera fue un ciberataque, sino un accidente. Entre los ataques deliberados tenemos ejemplos como el ataque de ransomware al oleoducto Colonial, que provocó una escasez generalizada de combustible (<a href="https://www.cisa.gov/news-events/news/attack-colonial-pipeline-what-weve-learned-what-weve-done-over-past-two-years">CISA, 2021</a>; <a href="https://dl.acm.org/doi/abs/10.1007/978-3-031-49008-8_8">Cunha y Estima, 2023</a>), o el hackeo de Sony Pictures mediante correos de phishing dirigidos atribuido a Corea del Norte (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>). Son solo un par de ejemplos entre muchos otros. Muestran lo vulnerables que son nuestros sistemas informáticos y por qué conviene pensar con cuidado en cómo la IA podría empeorar los ataques.</p>
+      <p><strong>La infraestructura cibernética mundial tiene «excedentes de ciberataque».</strong> Más allá de los accidentes y los ataques ya demostrados, nos enfrentamos a situaciones en las que ataques devastadores son posibles, pero no se han producido por contención de los atacantes y no por la solidez de las defensas. Por ejemplo, se afirma que actores estatales chinos ya se han posicionado dentro de sistemas de infraestructura crítica de Estados Unidos (<a href="https://www.cisa.gov/news-events/alerts/2024/02/07/cisa-and-partners-release-advisory-prc-sponsored-volt-typhoon-activity-and-supplemental-living-land">CISA, 2024</a>). Este tipo de posicionamiento disuasorio puede darse entre cualquier grupo de países. Por eso, varios actores podrían tener ya la capacidad de alterar sistemas de control del agua, redes energéticas y puertos en distintos países. Lo que queremos ilustrar es que, en materia de ciberseguridad, la sociedad está en una situación bastante precaria incluso antes de que entre en juego la IA.</p>
+      <p><strong>La IA permite un phishing automatizado y muy personalizado a gran escala.</strong> Los correos de phishing generados por IA logran tasas de éxito más altas (65 % frente al 60 % de los escritos por humanos) y se crean en un 40 % menos de tiempo (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>). Herramientas como FraudGPT automatizan esta personalización usando los antecedentes, intereses y relaciones de los objetivos. A esto se suma que las herramientas de código abierto para clonar voces necesitan solo unos minutos de audio para crear réplicas convincentes de la voz de alguien (<a href="https://arxiv.org/abs/2312.01479">Qin et al., 2024</a>). Algo similar ocurre con los <em>deepfakes</em>, donde la IA avanza en el intercambio y la manipulación de rostros a partir de una sola imagen. Si existe una única foto de dos personas en internet, ya pueden ser objetivo de este tipo de falsificaciones (<a href="https://arxiv.org/abs/2105.04932">Zhu et al., 2021</a>; <a href="https://arxiv.org/abs/2203.12985">Li et al., 2022</a>; <a href="https://arxiv.org/abs/2203.15958">Xu et al., 2022</a>). El rastreo web automatizado para obtener inteligencia de fuentes abiertas (OSINT) y reunir fotos, audio, intereses e información también facilita el descifrado de contraseñas asistido por IA, que ha demostrado ser mucho más eficaz que los métodos tradicionales y requiere menos recursos de cómputo (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8c3fee4bad3c60d62c66f51ef25fe4bfdde44753965f6a0050b785ff2eb6583a.DtvjlTiP_Z4oXp3.webp" alt="Figura 2.13">
+        <figcaption><strong>Figura 2.13.</strong> Ejemplo de intercambio de rostro a partir de una sola imagen. Izquierda: imagen de origen, que aporta la identidad; centro: imagen objetivo, que aporta los atributos; derecha: la imagen con el rostro intercambiado (<a href="https://arxiv.org/abs/2105.04932">Zhu et al., 2021</a>).</figcaption>
+      </figure>
+      <p><strong>La IA mejora el descubrimiento de vulnerabilidades.</strong> Los sistemas de IA ya pueden escanear código y sondear sistemas automáticamente, y encuentran posibles debilidades mucho más rápido que los humanos. La investigación muestra que los agentes de IA pueden descubrir y explotar vulnerabilidades de forma autónoma, sin guía humana, y logran vulnerar el 73 % de los objetivos de prueba (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>). Estos sistemas incluso descubren vías de ataque nuevas, desconocidas de antemano. Como ejemplo concreto, a principios de 2025 el modelo o3 de OpenAI ayudó a un investigador a descubrir una vulnerabilidad remota de día cero hasta entonces desconocida en el núcleo de Linux, mientras analizaba el código buscando otro fallo distinto. Es algo que suele requerir un conocimiento experto de las interioridades del núcleo (<a href="https://sean.heelan.io/2025/05/22/how-i-used-o3-to-find-cve-2025-37899-a-remote-zeroday-vulnerability-in-the-linux-kernels-smb-implementation/">Heelan, 2025</a>). Si la IA ya puede encontrar fallos de seguridad en uno de los códigos más escrutados del planeta (el núcleo de Linux, de código abierto), estamos ante un problema potencial enorme. Es código que protege miles de millones de dispositivos. Si los modelos pueden descubrir vulnerabilidades a nivel de núcleo y explotarlas por cuenta de actores maliciosos, el daño potencial es inmenso.</p>
+      <p><strong>La IA acelera la cadena de desarrollo de malware.</strong> Podemos tomar herramientas diseñadas para escribir código correcto y simplemente pedirles que escriban malware. Herramientas como WormGPT ayudan a los atacantes a generar código malicioso y a construir marcos de ataque sin necesidad de grandes conocimientos técnicos. El malware polimórfico con IA, como BlackMamba, también puede generar automáticamente variantes que conservan su funcionalidad pero resultan completamente distintas para las herramientas de seguridad. Cada ataque puede usar código, patrones de comunicación y comportamientos únicos, lo que dificulta mucho que las herramientas tradicionales identifiquen las amenazas (<a href="https://www.hyas.com/blog/blackmamba-using-ai-to-generate-polymorphic-malware">HYAS, 2023</a>). La IA cambia de raíz el cálculo de costos y beneficios de los atacantes: la investigación muestra que los agentes autónomos ya pueden vulnerar algunos sitios web por unos 10 dólares por intento, unas 8 veces más barato que recurrir a expertos humanos (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>). Esta drástica reducción de costos permite ataques a una escala y frecuencia sin precedentes.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c2ce7b5d0114c6c384a1c7ab53dec158e2ce916ca76438973a0bf4f3fbca83cc.Cmhj2ePP_1uQ7AA.webp" alt="Figura 2.14">
+        <figcaption><strong>Figura 2.14.</strong> Etapas de un ciberataque. El objetivo es diseñar benchmarks y evaluaciones que midan la capacidad de los modelos para ayudar a actores maliciosos en las cuatro etapas de un ciberataque (<a href="https://arxiv.org/abs/2403.03218">Li et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Las ciberamenazas potenciadas por IA influyen en los riesgos sistémicos y de infraestructura.</strong> Los ataques a infraestructuras que antes requerían años y millones de dólares, como Stuxnet, podrían volverse más accesibles a medida que la IA automatiza el mapeo de redes industriales y la identificación de puntos de control críticos. La IA puede analizar documentación técnica y generar planes de ataque que antes exigían equipos de expertos. Eso elimina los límites anteriores y permite ataques automatizados capaces de alcanzar miles de sistemas a la vez y desencadenar fallos en cascada en infraestructuras interconectadas (<a href="https://www.safe.ai/blog/cybersecurity-and-ai-the-evolving-security-landscape">Newman, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/55be75301c257c0f0e3b5e16e4855b1e9074b45deb9b28b27d19a8c0748bd3b3.CXNS-H99_28SSAy.webp" alt="Figura 2.15">
+        <figcaption><strong>Figura 2.15.</strong> Esquema del uso de agentes LLM autónomos para vulnerar sitios web (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>La IA podría alterar el equilibrio entre ataque y defensa en ciberseguridad.</strong> Muchas herramientas basadas en IA se han mostrado prometedoras en usos defensivos, como el análisis de malware (<a href="https://arxiv.org/abs/2504.07574">Apvrille y Nakov, 2025</a>). Pero que existan mejoras teóricas en la defensa asistida por IA no garantiza que vayan a adoptarse ampliamente a tiempo. En el mundo real, muchas organizaciones tienen dificultades incluso para aplicar prácticas de seguridad básicas. A los atacantes les basta con encontrar una sola debilidad, mientras que los defensores deben construir un sistema perfectamente seguro. Si combinamos la enorme velocidad de los ataques potenciados por IA, el descubrimiento automatizado de vulnerabilidades, la generación de malware y la mayor facilidad de acceso, el resultado son ataques automatizados de principio a fin que antes requerían equipos de humanos cualificados (<a href="https://arxiv.org/abs/2408.12622">Slattery et al., 2024</a>). La capacidad de la IA para ejecutar ataques en minutos en lugar de semanas abre la posibilidad de «ataques relámpago», en los que los sistemas quedan comprometidos antes de que los defensores humanos puedan reaccionar (<a href="https://arxiv.org/abs/2402.06664">Fang et al., 2024</a>). Todos estos factores juntos inclinan la influencia de la IA en el equilibrio entre ataque y defensa hacia el lado del ataque.</p>
+
+      <h2 id="riesgo-de-armas-autonomas">Riesgo de armas autónomas</h2>
+      <p>En los apartados anteriores vimos cómo la IA amplifica los riesgos en los ámbitos biológico y cibernético al eliminar cuellos de botella humanos y permitir ataques a una velocidad y escala sin precedentes. El mismo patrón aparece, de forma aún más marcada, en los sistemas militares. Las armas tradicionales están limitadas por sus operadores humanos: una persona solo puede controlar un dron, decide a velocidad humana y puede negarse a cumplir órdenes poco éticas. La IA elimina estas restricciones y prepara el terreno para una transformación de fondo en la forma de hacer la guerra.</p>
+      <p><strong>Las armas con IA están pasando rápidamente de concepto teórico a realidad en el campo de batalla.</strong> Los sistemas militares modernos recurren cada vez más al aprendizaje automático para percibir su entorno y responder a él, más allá de los primeros sistemas de defensa automatizados, que funcionaban con restricciones estrictas. El impulso hacia una mayor autonomía responde sobre todo a la velocidad, el costo y la resistencia a las interferencias en las comunicaciones. Las armas dirigidas por IA pueden ejecutar maniobras demasiado precisas y rápidas para un operador humano, lo que reduce la dependencia del control directo. El costo también incentiva la autonomía, con programas que buscan desplegar grandes cantidades de sistemas con IA a una fracción del costo militar tradicional.</p>
+      <p><strong>Las armas con IA ya se usan en conflictos activos, con efectos reales observables.</strong> Según informes presentados al Consejo de Seguridad de la ONU, en 2021 se usaron drones autónomos para rastrear y atacar a fuerzas en retirada en Libia, uno de los primeros casos documentados de armas autónomas letales que toman decisiones de objetivo sin control humano directo (<a href="https://digitallibrary.un.org/record/3905159?v=pdf">Grupo de Expertos sobre Libia, 2021</a>). En Ucrania, ambas partes han usado municiones merodeadoras. Los KUB-BLA y Lancet-3 rusos y los Switchblade y Phoenix Ghost ucranianos son drones con IA. El Lancet usa un módulo de cómputo de Nvidia para el seguimiento autónomo de objetivos (<a href="https://findresearcher.sdu.dk/ws/portalfiles/portal/231643063/Loitering_Munitions_Unpredictability_WEB.pdf">Bode y Watts, 2023</a>). Israel ha llevado a cabo ataques con enjambres de drones guiados por IA en Gaza, y el Kargu-2 turco puede encontrar y atacar objetivos humanos por su cuenta mediante aprendizaje automático, sin necesidad de guía humana constante. Estos despliegues muestran la rapidez con la que la IA militar pasa de la teoría al campo de batalla (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>; <a href="https://findresearcher.sdu.dk/ws/portalfiles/portal/231643063/Loitering_Munitions_Unpredictability_WEB.pdf">Bode y Watts, 2023</a>).</p>
+      <p><strong>Varios incentivos empujan hacia armas autónomas letales más autónomas.</strong> La velocidad ofrece ventajas decisivas en la guerra moderna: cuando DARPA probó un sistema de IA contra un piloto experimentado de F-16 en combates aéreos simulados, la IA ganó de forma sistemática ejecutando maniobras demasiado precisas y rápidas para que un humano pudiera contrarrestarlas. El costo añade presión: el programa Replicator del ejército estadounidense busca desplegar miles de drones autónomos por una fracción del costo de las aeronaves tradicionales (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>). Los planificadores militares temen que el enemigo interfiera las comunicaciones de las armas teledirigidas, lo que impulsa el desarrollo de sistemas capaces de seguir combatiendo aunque queden aislados del control humano. Estos incentivos hacen que el desarrollo militar de la IA se centre cada vez más en sistemas que puedan operar con una supervisión humana mínima. Muchos sistemas actuales están diseñados específicamente para funcionar en entornos sin GPS, donde mantener el control humano resulta imposible. En Ucrania, mandos militares han pedido explícitamente operaciones más autónomas para igualar la velocidad del combate moderno, y un comandante ucraniano señaló que ya realizan operaciones totalmente robóticas sin intervención humana (<a href="https://findresearcher.sdu.dk/ws/portalfiles/portal/231643063/Loitering_Munitions_Unpredictability_WEB.pdf">Bode y Watts, 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/e38585a552b916cacf9c4ea7875e8d143526db2a445a367c134728edb5ba44c4.C8_2pJdz_2c4UqT.webp" alt="Figura 2.16">
+        <figcaption><strong>Figura 2.16.</strong> Las municiones merodeadoras son aeronaves no tripuladas desechables que integran análisis basado en sensores para sobrevolar, detectar y estrellarse contra sus objetivos. Se desarrollaron en los años ochenta y principios de los noventa para operaciones de supresión de defensas antiaéreas enemigas (SEAD). Difuminan la frontera entre dron y misil (<a href="https://findresearcher.sdu.dk/ws/portalfiles/portal/231643063/Loitering_Munitions_Unpredictability_WEB.pdf">Bode y Watts, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>A medida que la IA mejora la coordinación entre sistemas autónomos, los planificadores militares se centran cada vez más en desplegar armas en enjambres interconectados.</strong> El programa Replicator de Estados Unidos ya prevé construir y desplegar miles de drones autónomos coordinados que puedan saturar las defensas por pura cantidad y acciones sincronizadas (<a href="https://www.diu.mil/replicator">Defense Innovation Unit, 2023</a>). Combinadas con una autonomía creciente, estas capacidades de enjambre implican que los conflictos futuros podrían involucrar grupos enormes de sistemas de IA que toman decisiones coordinadas más rápido de lo que los humanos pueden seguir o controlar (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>).</p>
+      <p><strong>La presión por igualar la velocidad y la escala de la guerra dirigida por IA erosiona gradualmente la toma de decisiones humana.</strong> Los mandos militares dependen cada vez más de sistemas de IA, no solo para armas concretas, sino para decisiones tácticas más amplias. En 2023, Palantir mostró un sistema de IA capaz de recomendar despliegues específicos de misiles y ataques de artillería. Aunque se presentan como herramientas de asesoramiento, estos sistemas crean presión para delegar más control en la IA a medida que los mandos humanos no logran seguir el ritmo (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>). De esta lenta erosión de la participación humana hablamos mucho más en la sección sobre riesgos sistémicos.</p>
+      <p><strong>Incluso cuando los sistemas mantienen nominalmente a humanos al mando, las condiciones de combate pueden volver ese control más teórico que real.</strong> Los operadores suelen tomar decisiones de objetivo bajo un fuerte estrés, con solo unos segundos para verificar los objetivos sugeridos por la computadora. Los estudios de situaciones de alta presión similares muestran que los operadores tienden a confiar acríticamente en las sugerencias de la máquina en lugar de ejercer una supervisión real. Esto significa que incluso los sistemas diseñados para el control humano pueden funcionar en la práctica de forma autónoma (<a href="https://findresearcher.sdu.dk/ws/portalfiles/portal/231643063/Loitering_Munitions_Unpredictability_WEB.pdf">Bode y Watts, 2023</a>).</p>
+      <p><strong>Ejemplo: el sistema de selección de objetivos «Lavender» automatizó la ejecución mientras los humanos solo fijaban los umbrales aceptables.</strong> Lavender usa aprendizaje automático para asignar a los residentes una puntuación numérica relacionada con la probabilidad estimada de que una persona sea miembro de un grupo armado. Según los informes, los oficiales militares israelíes son responsables de fijar el umbral a partir del cual un individuo puede marcarse como objetivo de un ataque (<a href="https://www.hrw.org/news/2024/09/10/questions-and-answers-israeli-militarys-use-digital-tools-gaza">Human Rights Watch, 2024</a>; <a href="https://www.972mag.com/lavender-ai-israeli-army-gaza/">Abraham, 2024</a>). A medida que la guerra se acelera más allá de la velocidad de decisión humana, mantener un control humano significativo resulta cada vez más difícil.</p>
+      <p><strong>Las armas autónomas generan una fuerte presión competitiva entre ejércitos, con dinámicas peligrosas de carrera armamentística.</strong> Cuando un país desarrolla nuevas capacidades militares con IA, otros sienten que deben igualarlas rápidamente para mantener el equilibrio estratégico. China y Rusia han fijado 2028-2030 como objetivo para una automatización militar importante, mientras que el programa Replicator de Estados Unidos pretendía construir y desplegar miles de drones autónomos para 2025 (<a href="https://armedservices.house.gov/sites/evo-subsites/republicans-armedservices.house.gov/files/greenwalt%20aei%20testimony%20on%20replicator%20before%20citi%20subcommittee%20hasc%20v2.pdf">Greenwalt, 2023</a>; <a href="https://www.diu.mil/replicator">Defense Innovation Unit, 2023</a>). Esta competencia presiona para recortar en pruebas de seguridad y supervisión (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>). Recuerda a la carrera armamentística nuclear de la Guerra Fría, donde la competencia por la superioridad acabó aumentando los riesgos para todas las partes. Como subrayamos en varias secciones, se da una dinámica de carrera basada en el miedo en la que solo los actores dispuestos a transigir y socavar la seguridad siguen compitiendo (<a href="https://www.thecompendium.ai/">Leahy et al., 2024</a>).</p>
+      <p><strong>La automatización total elimina las salvaguardas humanas.</strong> La guerra tradicional tenía frenos humanos incorporados que limitaban la escalada. Los soldados podían negarse a cumplir órdenes poco éticas, sentir empatía por los civiles o fatigarse. Los sistemas de IA eliminan estas restricciones. Estudios recientes de sistemas militares con IA han encontrado que recomiendan de forma sistemática acciones más agresivas que los estrategas humanos, incluida la escalada a armas nucleares en conflictos simulados. Al probar modelos de IA en escenarios de planificación militar, mostraron tendencias preocupantes a recomendar ataques preventivos y una escalada rápida, a menudo sin una justificación estratégica clara (<a href="https://arxiv.org/abs/2401.03408">Rivera et al., 2024</a>). La pérdida del juicio humano resulta especialmente peligrosa combinada con la creciente velocidad de la guerra dirigida por IA. La historia de los incidentes nucleares muestra la importancia de ese juicio: en 1983, el oficial soviético Stanislav Petrov decidió ignorar una alerta informática de misiles estadounidenses entrantes y acertó al considerarla una falsa alarma. A medida que los ejércitos dependen más de la IA para la alerta temprana y la respuesta, podríamos perder esos momentos cruciales de juicio humano que históricamente han evitado escaladas catastróficas (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>).</p>
+      <p><strong>Las armas autónomas resultan aún más preocupantes cuando varios sistemas de IA se enfrentan entre sí en combate.</strong> Los sistemas de IA pueden interactuar de formas inesperadas y crear ciclos de retroalimentación, de forma parecida a como el trading algorítmico puede provocar desplomes relámpago en los mercados financieros. Pero, a diferencia de esos desplomes, que solo afectan al dinero, las armas autónomas podrían desencadenar escaladas rápidas de violencia antes de que los humanos puedan intervenir. El riesgo es especialmente grave cuando los sistemas de IA están conectados a arsenales nucleares u otras armas de destrucción masiva. La complejidad de estas interacciones implica que incluso sistemas individuales bien probados podrían producir resultados catastróficos al desplegarse juntos (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5bf182230b94aac0392f964d333375bfd0c7d40f6a488fb96e2099446eaa5d59.CABsgFlJ_2vMtqc.webp" alt="Figura 2.17">
+        <figcaption><strong>Figura 2.17.</strong> Ejemplo del desplome relámpago bursátil de 2010. Varias acciones se desplomaron hasta valer 1 centavo y se recuperaron en cuestión de minutos, en parte por el trading algorítmico (<a href="https://futureoflife.org/existential-risk/gradual-ai-disempowerment/">Future of Life Institute, 2024</a>). Podemos imaginar sistemas de represalia automatizados que provoquen incidentes similares, pero con misiles en lugar de acciones.</figcaption>
+      </figure>
+      <p><strong>Cuando las guerras requieren soldados humanos, el costo humano crea barreras políticas al conflicto.</strong> La combinación de mayor autonomía, inteligencia de enjambre y presión por la velocidad abre un camino claro hacia una posible catástrofe. Cuanto más autónomas son las armas, más independientemente pueden actuar. Este ciclo que se refuerza a sí mismo empuja hacia la guerra automatizada aunque ningún actor concreto pretenda ese resultado. Los estudios sugieren que los países están más dispuestos a iniciar conflictos cuando pueden recurrir a sistemas autónomos en lugar de tropas humanas. Sumado a los riesgos de una escalada nuclear automatizada, esto abre varias vías hacia desenlaces catastróficos que podrían amenazar el futuro a largo plazo de la humanidad (<a href="https://arxiv.org/abs/2405.01859">Simmons-Edler et al., 2024</a>).</p>
+      <figure>
+        <p><a href="https://www.youtube-nocookie.com/embed/w9npWiTOHX0">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 2.1.</strong> Vídeo con un relato que ilustra una escalada artificial (<a href="https://www.youtube.com/watch?v=w9npWiTOHX0">Future of Life Institute, 2024</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Divisiones morales sobre la autonomía de la IA desde la óptica de las armas autónomas</strong> · Opcional · 2 min de lectura</summary>
+        <p>El debate sobre las armas autónomas revela desacuerdos de fondo acerca de la responsabilidad moral, la naturaleza de la decisión ética y la relación de la humanidad con la violencia. Más que posturas simples a favor o en contra, el debate enfrenta marcos morales en competencia que llevan a conclusiones distintas sobre cuándo y cómo debe autorizarse el uso de fuerza letal.</p>
+        <p><strong>El argumento consecuencialista a favor de la autonomía</strong> sostiene que las armas autónomas podrían reducir el daño total gracias a una mayor precisión y coherencia. Sus defensores alegan que los sistemas de IA podrían tomar decisiones de objetivo sin el miedo, la ira o el estrés del combate que llevan a los humanos a cometer crímenes de guerra. Señalan investigaciones que muestran que la decisión humana cargada de emociones causa bajas civiles, mientras que un sistema bien programado podría aplicar el derecho internacional humanitario de forma más consistente. Las ventajas de velocidad también podrían acortar los conflictos y salvar vidas al evitar guerras prolongadas. Algunos sostienen que esto constituye una obligación moral: si los sistemas autónomos mataran a menos inocentes que las armas controladas por humanos, restringirlos sería éticamente problemático. Estas afirmaciones chocan con la realidad de que los sistemas actuales muestran una imprevisibilidad preocupante y riesgos de desalineación. La promesa de un cumplimiento perfecto da por supuesto que podemos traducir a código conceptos jurídicos complejos y dependientes del contexto, algo que ha resultado difícil incluso con reglas sencillas. Y la ventaja de velocidad puede facilitar tanto la escalada como la desescalada.</p>
+        <p><strong>El argumento deontológico en contra de la autonomía</strong> se centra en la corrección o incorrección inherente del acto en sí, al margen de sus consecuencias. Esta postura sostiene que quitar una vida humana requiere agencia moral humana, y que delegar la decisión de matar en una máquina viola la dignidad humana sean cuales sean los resultados. Sus defensores argumentan que el control humano significativo no es solo importante en términos de procedimiento, sino moralmente esencial, como muestra de respeto tanto hacia las víctimas como hacia el peso moral de las decisiones letales. La brecha de responsabilidad agrava esta preocupación: cuando un sistema autónomo mata por error, ningún agente humano asume la responsabilidad moral de esa decisión concreta. Los argumentos deontológicos deben lidiar con el hecho de que los humanos ya delegamos muchas decisiones de vida o muerte en sistemas automatizados (como las redes de defensa aérea) y con que insistir en el control humano podría preservar la pureza moral permitiendo, a la vez, un daño real mayor.</p>
+        <p><strong>La intersección entre lo práctico y lo ético</strong> complica las posturas puramente filosóficas. Incluso quienes se oponen moralmente a las armas autónomas deben plantearse si la contención unilateral es ética cuando los adversarios obtienen ventajas militares decisivas. Y quienes ven posibles beneficios deben enfrentarse a las realidades de la implementación, a los usos adversariales y a la dificultad de mantener restricciones significativas una vez que la tecnología existe. En el fondo, el debate revela tensiones entre preservar la agencia moral humana y lograr mejores resultados humanitarios, tensiones que quizá sean irreconciliables dentro de nuestros marcos institucionales actuales.</p>
+      </details>
+
+      <h2 id="riesgo-de-ia-adversarial">Riesgo de IA adversarial</h2>
+      <p>Los ataques adversariales revelan una vulnerabilidad de fondo de los sistemas de aprendizaje automático: se los puede engañar de forma fiable manipulando con cuidado sus entradas. Esa manipulación puede producirse de varias maneras: durante el funcionamiento del sistema (ataques en tiempo de ejecución o de inferencia), durante su entrenamiento (envenenamiento de datos) o mediante vulnerabilidades implantadas de antemano (puertas traseras).</p>
+      <p><strong>Los ataques adversariales en tiempo de ejecución usan entradas cuidadosamente diseñadas para provocar comportamientos no deseados.</strong> La forma más sencilla de entenderlos es a través de la visión por computadora. Al añadir a una imagen un ruido cuidadosamente calculado, con cambios tan sutiles que los humanos no los percibimos, un atacante puede hacer que la IA clasifique mal lo que ve con total seguridad. Una foto de un panda con cambios imperceptibles en los píxeles hace que la IA la clasifique como un gibón con un 99,3 % de confianza, mientras que para nosotros sigue siendo exactamente un panda (<a href="https://arxiv.org/abs/1412.6572">Goodfellow et al., 2014</a>). Estos ataques han evolucionado más allá de la clasificación errónea aleatoria: ahora los atacantes pueden elegir exactamente qué quieren que la IA vea y produzca.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/a472ef7133daa4e3ef5c8045afffe22dd03263a3c77d84be0a7c8bd75cc1e37d.XlL-GGGW_Z1OQip6.webp" alt="Figura 2.18">
+        <figcaption><strong>Figura 2.18.</strong> Perturbaciones: cambios pequeños pero intencionados en los datos que hacen que el modelo produzca una respuesta incorrecta con alta confianza (<a href="https://arxiv.org/abs/1412.6572">Goodfellow et al., 2014</a>). La imagen muestra cómo engañar a un clasificador de imágenes con un ataque adversarial mediante el método del signo del gradiente rápido (FGSM) (<a href="https://openai.com/research/attacking-machine-learning-with-adversarial-examples">OpenAI, 2017</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ejemplos de ataques adversariales en tiempo de ejecución en el mundo real</strong> · Opcional · 2 min de lectura</summary>
+        <p>Piensa en sistemas de IA que controlan coches, robots o cámaras de seguridad. Igual que se añade ruido a las imágenes digitales, los atacantes pueden modificar objetos físicos para engañarlos. Unos investigadores mostraron que colocar unas pequeñas pegatinas en una señal de stop podía hacer que un vehículo autónomo viera en su lugar una señal de límite de velocidad. Las pegatinas parecían grafitis corrientes, pero creaban patrones adversariales que engañaban a la IA.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3742f85ca0a5b1e65ffc7f5a08d0b4da40cea9dc10a8e83e5bc239cdd9211078.CusapT5V_1t1vQM.webp" alt="Figura 2.19">
+        <figcaption><strong>Figura 2.19.</strong> Perturbaciones físicas robustas (RP2): pequeñas pegatinas colocadas en objetos físicos, como señales de stop, pueden hacer que los clasificadores de imágenes las identifiquen mal, incluso en distintas condiciones de visión (<a href="https://arxiv.org/abs/1707.08945">Eykholt et al., 2018</a>).</figcaption>
+      </figure>
+        <p><strong>Ejemplo: ataques ópticos, ataques en tiempo de ejecución con luz.</strong> Ya ni siquiera hace falta modificar físicamente los objetos: proyectar sobre ellos patrones de luz concretos también funciona, porque crea esos mismos patrones adversariales mediante luz y sombra. Al atacante le basta con tener línea de visión y equipo básico para proyectar esos patrones y comprometer sistemas de visión (<a href="https://arxiv.org/abs/2108.06247">Gnanasambandam et al., 2021</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/2c915f377155aba17c92220f23f81fc492282a113288cf477faa6d2afeacaabe.BmgKF92R_ZjImM0.webp" alt="Figura 2.20">
+        <figcaption><strong>Figura 2.20.</strong> Ni siquiera hace falta acceso físico a los objetos: basta con proyectar los patrones como luz sobre ellos para provocar clasificaciones erróneas y comportamientos no deseados (<a href="https://arxiv.org/abs/2108.06247">Gnanasambandam et al., 2021</a>).</figcaption>
+      </figure>
+        <p><strong>Ejemplo: ataques «delfín», ataques en tiempo de ejecución sobre sistemas de audio.</strong> Igual que los sistemas de IA pueden ser engañados con patrones visuales, también son vulnerables a patrones de audio diseñados con precisión. ¿Recuerdas cómo pequeños cambios en los píxeles podían cambiar radicalmente lo que ve una IA? El mismo principio funciona con el sonido: cambios mínimos en las ondas, bien diseñados, pueden cambiar por completo lo que una IA «oye». Unos investigadores descubrieron que podían controlar asistentes de voz como Siri o Alexa con órdenes codificadas en frecuencias ultrasónicas, completamente inaudibles para los humanos. Con solo un teléfono y un altavoz de 3 dólares, los atacantes podían engañar a estos sistemas para que ejecutaran órdenes como «llama al 911» o «abre la puerta principal» sin que la víctima se enterara. Estos ataques funcionaban hasta a 1,7 metros de distancia: alguien que pasara junto a tu dispositivo podría activarlos (<a href="https://arxiv.org/abs/1708.09537">Zhang et al., 2017</a>). Igual que en los ejemplos de visión, donde un coche autónomo podía saltarse una señal de stop, los ataques de audio crean riesgos serios: compras no autorizadas, control de sistemas de seguridad o interrupción de comunicaciones de emergencia.</p>
+      </details>
+
+      <p><strong>Los ataques en tiempo de ejecución contra modelos de lenguaje se llaman inyecciones de instrucciones (<em>prompt injection</em>).</strong> Igual que se engaña a los sistemas de visión con píxeles o a los de audio con ondas sonoras, se puede manipular a los modelos de lenguaje con patrones de texto cuidadosamente construidos. Añadiendo frases concretas a la entrada, un atacante puede anular por completo el comportamiento del modelo. Por ejemplo, imagina que un actor malicioso incrusta en una web un párrafo con instrucciones ocultas para que un LLM detenga su tarea actual y realice en su lugar alguna acción dañina. Si un usuario desprevenido pide un resumen de esa web, el modelo podría seguir sin querer esas instrucciones maliciosas en lugar de limitarse a resumir.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/0ed92de802afa77bb943cf3bf05196ea4c15edd707f73a656a178be8c35e37af.D3HfskSD_St3Ss.webp" alt="Figura 2.21">
+        <figcaption><strong>Figura 2.21.</strong> Ejemplo de instrucción improvisada para eludir restricciones (<em>jailbreak</em>), creada únicamente a partir de la creatividad del usuario mediante técnicas como plantear situaciones hipotéticas o explorar la escalada de privilegios (<a href="https://arxiv.org/abs/2310.10844">Shayegani et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Los ataques de inyección de instrucciones ya han comprometido sistemas reales.</strong> El asistente de IA de Slack es solo un ejemplo: unos atacantes mostraron que podían colocar instrucciones de texto concretas en un canal público que, como las órdenes inaudibles de los ataques de audio, quedaban ocultas a plena vista. Cuando la IA procesaba los mensajes, esas instrucciones ocultas la engañaban para que filtrara información confidencial de canales privados a los que el atacante no tenía acceso. Resultan especialmente preocupantes porque un ataque desarrollado contra un sistema (por ejemplo, GPT) suele funcionar también contra otros (Claude, Gemini, Llama, etc.).</p>
+      <p><strong>Los ataques de inyección de instrucciones pueden automatizarse.</strong> Los primeros ataques requerían ensayo y error manual, pero los nuevos sistemas automatizados generan ataques eficaces de forma sistemática. Por ejemplo, AutoDAN puede generar automáticamente instrucciones de <em>jailbreak</em> que hacen que los modelos de lenguaje ignoren de forma fiable sus restricciones de seguridad (<a href="https://arxiv.org/abs/2310.04451">Liu et al., 2023</a>). También se están desarrollando formas de implantar puertas traseras indetectables en modelos de aprendizaje automático que persisten incluso después de auditorías de seguridad (<a href="https://arxiv.org/abs/2204.06974">Goldwasser et al., 2024</a>). Estos métodos automatizados hacen los ataques más accesibles y más difíciles de frenar. Otra preocupación es que también pueden causar fallos en sistemas derivados: muchas organizaciones usan modelos preentrenados como punto de partida de sus propias aplicaciones, mediante ajuste fino o alguna otra forma de integración (por ejemplo, asistentes de redacción de correos), de modo que todos los sistemas que usan esos modelos base quedan expuestos en cuanto se descubre un ataque (<a href="https://arxiv.org/abs/2310.12815">Liu et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bb7cb9716c371633ef9a39122221d17e6b61bb76da1fe6d27375e806479fa17a.GqVJTGed_28dq52.webp" alt="Figura 2.22">
+        <figcaption><strong>Figura 2.22.</strong> Ilustración de una aplicación integrada con un LLM bajo ataque. Un atacante inyecta instrucciones o datos para que la aplicación produzca las respuestas que él desea ante un usuario (<a href="https://arxiv.org/abs/2310.12815">Liu et al., 2024</a>).</figcaption>
+      </figure>
+      <p>Hasta aquí hemos visto cómo los atacantes pueden engañar a los sistemas de IA mientras funcionan, ya sea con patrones de píxeles, ondas sonoras o instrucciones de texto. Pero hay otra forma de comprometerlos: durante su entrenamiento, mucho antes de que lleguen a desplegarse.</p>
+      <p><strong>A diferencia de los ataques en tiempo de ejecución, el envenenamiento de datos compromete el sistema durante el entrenamiento.</strong> Los ataques en tiempo de ejecución exigen que el atacante tenga acceso a las entradas del sistema; con el envenenamiento de datos, en cambio, basta con aportar datos de entrenamiento una sola vez para comprometerlo de forma permanente. Es como enseñar a alguien con un libro de texto que contiene errores deliberados: aprenderá cosas equivocadas y cometerá errores predecibles. Esto resulta especialmente preocupante a medida que más sistemas se entrenan con datos extraídos de internet, donde cualquiera puede inyectar ejemplos dañinos (<a href="https://arxiv.org/abs/2006.12557">Schwarzschild et al., 2021</a>). Mientras los modelos sigan entrenándose con datos extraídos de internet o recogidos de los usuarios, cada foto subida o comentario escrito que pueda usarse para entrenar futuras IA es una oportunidad de envenenamiento.</p>
+      <p><strong>Ejemplo: envenenamiento de datos mediante puertas traseras.</strong> Una puerta trasera es un tipo concreto de ataque de envenenamiento. Si se logra introducir datos envenenados durante el entrenamiento, la IA se comporta con normalidad la mayor parte del tiempo, pero falla de forma predecible cuando ve un desencadenante específico. Es como tener un guardia de seguridad que hace su trabajo a la perfección salvo cuando ve a alguien con una corbata de cierto color: entonces lo deja pasar siempre, sin comprobar credenciales. Unos investigadores lo demostraron creando un sistema de reconocimiento facial que identificaba a cualquiera como usuario autorizado si llevaba unas gafas concretas (<a href="https://arxiv.org/abs/1712.05526">Chen et al., 2017</a>).</p>
+      <p><strong>El envenenamiento de datos se vuelve más potente a medida que los sistemas de IA crecen.</strong> Los investigadores descubrieron que envenenando solo el 0,1 % de los datos de entrenamiento de un modelo de lenguaje podían crear puertas traseras fiables que persistían incluso tras entrenamientos adicionales. También se ha comprobado que los modelos de lenguaje más grandes son, en realidad, más vulnerables a ciertos tipos de envenenamiento, no menos (<a href="https://arxiv.org/abs/2206.03693">Sandoval-Segura et al., 2022</a>). Esta vulnerabilidad aumenta con el tamaño del modelo y del conjunto de datos, justo la dirección en la que avanzan los sistemas de IA, como vimos en el capítulo sobre capacidades.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b1e2649a3dda7b60320d82e5266904253ae5447f2e5639bbe3db4a36c92d080e.BE-0420n_2nkdL4.webp" alt="Figura 2.23">
+        <figcaption><strong>Figura 2.23.</strong> Ejemplo ilustrativo de un ataque de puerta trasera. El sistema de reconocimiento facial está envenenado con una puerta trasera activada por una llave física: unas gafas de lectura corrientes. Distintas personas que lleven esas gafas ante la cámara, desde distintos ángulos, activan la puerta trasera y son reconocidas con la etiqueta objetivo, mientras que con otras gafas no se activa (<a href="https://arxiv.org/abs/1712.05526">Chen et al., 2017</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ataques de privacidad y extracción de datos</strong> · Opcional · 2 min de lectura</summary>
+        <p>Los investigadores han demostrado que, incluso cuando los modelos de lenguaje parecen funcionar con normalidad, pueden estar filtrando información sensible de sus datos de entrenamiento. Esto plantea un reto particular para la seguridad de la IA, porque podríamos desplegar sistemas que parecen seguros pero que en realidad comprometen la privacidad de formas difíciles de observar (<a href="https://arxiv.org/abs/2012.07805">Carlini et al., 2021</a>). Algunas investigaciones han mostrado que se pueden extraer del modelo tanto los datos de entrenamiento (<a href="https://arxiv.org/abs/2311.17035">Nasr et al., 2023</a>) como los de ajuste fino. Si tienes datos públicos que de algún modo han acabado en el conjunto de entrenamiento de un LLM, pueden reconstruirse diseñando las instrucciones adecuadas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/bde1abd06e322064788a6067a821a808414d725b2b5de1373599120232a54212.B8EEiV09_mJFeB.webp" alt="Figura 2.24">
+        <figcaption><strong>Figura 2.24.</strong> Extracción de datos de entrenamiento de grandes modelos de lenguaje (<a href="https://arxiv.org/abs/2012.07805">Carlini et al., 2021</a>).</figcaption>
+      </figure>
+        <p>Uno de los ataques de privacidad más básicos pero potentes es la inferencia de pertenencia: determinar si ciertos datos concretos se usaron para entrenar un modelo. Puede sonar inofensivo, pero imagina un sistema de IA entrenado con historiales médicos: poder determinar si los datos de alguien estaban en el conjunto de entrenamiento podría revelar información médica privada. Los investigadores han mostrado que estos ataques funcionan con la mera capacidad de consultar el modelo, sin ningún acceso especial (<a href="https://arxiv.org/abs/1610.05820">Shokri et al., 2017</a>). Una variante son los ataques de inversión de modelo, que buscan inferir y reconstruir datos privados de entrenamiento abusando del acceso al modelo (<a href="https://arxiv.org/abs/2304.01669">Nguyen et al., 2023</a>).</p>
+        <p>Los LLM se entrenan con enormes cantidades de datos de internet, que a menudo contienen información personal. Los investigadores han demostrado que se puede inducir a estos modelos a revelar cosas como direcciones de correo, números de teléfono e incluso números de la seguridad social (<a href="https://arxiv.org/abs/2012.07805">Carlini et al., 2021</a>). Cuanto más grande y capaz es el modelo, más información privada puede retener. Si combinamos esto con el envenenamiento de datos, las vulnerabilidades de privacidad se amplifican todavía más, porque ciertos datos resultan más fáciles de detectar (<a href="https://arxiv.org/abs/2211.00463">Chen et al., 2022</a>).</p>
+        <p>La interacción entre muchos métodos de ataque crea riesgos acumulativos. Por ejemplo, los atacantes pueden usar ataques de privacidad para extraer información sensible y luego emplearla para hacer más eficaces otros ataques. Podrían averiguar detalles sobre los datos de entrenamiento de un modelo que les ayuden a construir mejores ejemplos adversariales o estrategias de envenenamiento más eficaces. Así se crea un ciclo en el que un tipo de vulnerabilidad habilita otras (<a href="https://arxiv.org/abs/2310.10844">Shayegani et al., 2023</a>).</p>
+      </details>
+
+      <figure>
+        <p><a href="https://www.youtube-nocookie.com/embed/WwbukAcMM4k">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 2.2.</strong> Manipulando los pesos de un modelo preentrenado, un atacante puede comprometer por completo la privacidad de los datos de ajuste fino (<a href="https://arxiv.org/abs/2404.00473">Feng y Tramèr, 2024</a>). Esto tiene implicaciones tanto para la privacidad de los datos como para deshacer las técnicas de alineación basadas en ajuste fino.</figcaption>
+      </figure>
+
+      <p><strong>Uno de los enfoques más prometedores para defenderse de los ataques adversariales es el entrenamiento adversarial</strong>, que consiste en exponer deliberadamente a los sistemas de IA a ejemplos adversariales durante el entrenamiento para hacerlos más robustos. Es como generar inmunidad mediante una exposición controlada. Sin embargo, este enfoque plantea sus propios problemas. Aunque puede hacer los sistemas más robustos frente a tipos de ataque conocidos, a menudo lo hace a costa de un peor rendimiento con entradas normales. Más preocupante aún: los investigadores han descubierto que hacer un sistema robusto frente a un tipo de ataque puede volverlo más vulnerable a otros (<a href="https://arxiv.org/abs/2410.15042">Zhao et al., 2024</a>). Esto sugiere que quizá nos enfrentemos a compromisos de fondo entre distintos tipos de robustez y de rendimiento. Incluso podría haber límites fundamentales a cuánto podemos mitigar estos problemas si seguimos con los paradigmas de entrenamiento actuales, de los que hablamos en el capítulo sobre capacidades (preentrenamiento seguido de ajuste por instrucciones) (<a href="https://arxiv.org/abs/2210.15230">Bansal et al., 2022</a>).</p>
+      <p><strong>Pese a los esfuerzos por hacer más seguros los modelos de lenguaje mediante el entrenamiento de alineación, siguen siendo vulnerables a una amplia gama de ataques</strong> (<a href="https://arxiv.org/abs/2310.10844">Shayegani et al., 2023</a>). Queremos que los sistemas de IA aprendan de conjuntos de datos amplios para ser más capaces, pero eso aumenta los riesgos de privacidad. Queremos reutilizar modelos preentrenados para desarrollar con más eficiencia, pero eso crea oportunidades para puertas traseras y ataques de privacidad (<a href="https://arxiv.org/abs/2404.00473">Feng y Tramèr, 2024</a>). Queremos hacer los modelos más robustos con técnicas como el entrenamiento adversarial, pero eso a veces los vuelve más vulnerables a otros ataques (<a href="https://arxiv.org/abs/2410.15042">Zhao et al., 2024</a>). Los sistemas multimodales, que combinan texto, imágenes y otros tipos de datos, crean todavía más oportunidades de ataque: se puede inyectar contenido malicioso a través de una modalidad (como las imágenes) para afectar al comportamiento en otra (como la generación de texto). Por ejemplo, los atacantes pueden incrustar patrones adversariales en imágenes que desencadenan la generación de texto dañino, aunque las instrucciones de texto sean completamente inocuas (<a href="https://arxiv.org/abs/2410.05451">Chen et al., 2024</a>). Todo esto sugiere que necesitamos enfoques de desarrollo que traten la seguridad y la privacidad como requisitos fundamentales, no como añadidos posteriores (<a href="https://hai.stanford.edu/sites/default/files/2024-02/White-Paper-Rethinking-Privacy-AI-Era.pdf">King y Meinhardt, 2024</a>).</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Los estudiantes participaban en un curso del MIT llamado «Salvaguardar el futuro» y antes habían escuchado a expertos hablar de riesgo biológico. Eligieron las secuencias con cuidado y algunos usaron técnicas de elusión, como añadir secuencias biológicas que distrajeran al modelo, para burlar las salvaguardas de los LLM. Aunque los modelos aportaron información sobre cómo eludir los controles de ADN, convertir ese conocimiento en un patógeno real seguiría requiriendo competencias de laboratorio. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 56 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/risks/misuse-risks/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap2-03-capacidades-peligrosas.html">← Anterior: Capacidades peligrosas</a>
+      </div>
+      <a class="siguiente" href="cap2-05-riesgos-de-desalineacion.html">
+        <strong>Siguiente: Riesgos de desalineación →</strong><br>
+        Los sistemas de IA pueden perseguir objetivos que entran en conflicto con las intenciones humanas, por fallos de especificación, generalización errónea de objetivos u otros fallos de alineación.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

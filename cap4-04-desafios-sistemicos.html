@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Desafíos sistémicos · Capítulo 4 – AI Safety Atlas</title>
+  <meta name="description" content="Desafíos sistémicos de la gobernanza de la IA: carrera, proliferación, incertidumbre, rendición de cuentas y concentración de poder.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>4. Gobernanza</h2>
+        <ol>
+          <li><a href="cap4-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap4-02-problemas-de-gobernanza.html">Problemas de gobernanza</a></li>
+          <li><a href="cap4-03-gobernanza-del-computo.html">Gobernanza del cómputo</a></li>
+          <li class="activo"><a href="cap4-04-desafios-sistemicos.html">Desafíos sistémicos</a></li>
+          <li><a href="cap4-05-arquitecturas-de-gobernanza.html">Arquitecturas de gobernanza</a></li>
+          <li><a href="cap4-06-implementacion.html">Implementación</a></li>
+          <li><a href="cap4-07-conclusion.html">Conclusión</a></li>
+          <li><a href="cap4-08-apendice-gobernanza-de-datos.html">Apéndice: Gobernanza de datos</a></li>
+          <li><a href="cap4-09-apendice-gobernanza-nacional.html">Apéndice: Gobernanza nacional</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Specification gaming</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 4: Gobernanza</p>
+      <h1>Desafíos sistémicos</h1>
+      <p><em>La gobernanza eficaz de la IA se ve obstaculizada por la dinámica competitiva de carrera, la proliferación rápida, la incertidumbre sobre los desarrollos futuros y la concentración de la rendición de cuentas en un puñado de actores poderosos.</em></p>
+      <p class="meta">17 min · Escrito por Charles Martinet, Markov Grey, Su Cizem y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter4-audio-f932cd5d2cf97bddd5434b1a6d1a2e00f207bc41927860367b7e1e71d83cb1a5.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter4-861d9d251091c35638afb2419feb15fb1f23cdfbd7b2dab87bcadd8f295aed27.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/governance.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#dinamica-de-carrera">Dinámica de carrera</a></li>
+          <li><a href="#proliferacion">Proliferación</a></li>
+          <li><a href="#incertidumbre">Incertidumbre</a></li>
+          <li><a href="#rendicion-de-cuentas">Rendición de cuentas</a></li>
+          <li><a href="#concentracion-de-poder-y-riqueza">Concentración de poder y riqueza</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: las citas destacadas de esta sección son declaraciones de terceros y no forman parte del texto con licencia CC BY-SA del libro. Por eso las resumimos con nuestras palabras. Los textos completos, en inglés, están en la <a href="https://ai-safety-atlas.com/chapters/v1/governance/systemic-challenges/">sección original</a>.</em></p>
+
+      <h2 id="dinamica-de-carrera">Dinámica de carrera</h2>
+      <blockquote>
+        <p>Al hablar de los momentos cercanos a la creación de la primera AGI, señala que la dinámica de carrera, en la que todos intentan mantenerse por delante, podría exigir transigir en seguridad. Por eso cree que probablemente haría falta cierta coordinación entre las grandes entidades que realizan este tipo de entrenamiento: pausar el entrenamiento o el despliegue, o evitar ciertos tipos de entrenamiento que consideremos más arriesgados.</p>
+        <p>— <strong>John Schulman</strong>, cofundador de OpenAI</p>
+      </blockquote>
+      <p>Ya hablamos de la dinámica de carrera en el capítulo sobre riesgos, como factor que amplifica todos los demás. La mencionamos de nuevo aquí porque las iniciativas de gobernanza podrían tener una palanca especial para mitigarla.</p>
+      <p><strong>La competencia impulsa el desarrollo de la IA en todos los niveles.</strong> Desde startups que compiten por demostrar capacidades nuevas hasta Estados que ven el liderazgo en IA como esencial para su poder futuro, las presiones competitivas moldean cómo se construyen y despliegan estos sistemas. Esta dinámica crea una tensión parecida a la del dilema del prisionero: aunque todos se beneficiarían de un desarrollo cuidadoso y centrado en la seguridad, quienes van más rápido obtienen ventaja competitiva (<a href="https://www.aisafetybook.com/textbook/game-theory">Hendrycks, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/94cdd063c2bf5511cb5cd6e7b53258d7ffd19166f032c94cf6c35ce2e5028bd2.C69yP2eM_qplMJ.webp" alt="Figura 4.14">
+        <figcaption><strong>Figura 4.14.</strong> Cómo extorsionar a un oponente y qué se gana con la extorsión (<a href="https://www.pnas.org/doi/full/10.1073/pnas.1208087109">Stewart y Plotkin, 2012</a>).</figcaption>
+      </figure>
+      <p><strong>La carrera por la IA crea un problema de acción colectiva.</strong> Aunque los desarrolladores reconozcan los riesgos, la cautela unilateral implica ceder terreno a competidores menos escrupulosos. La evolución de OpenAI ilustra esta tensión: fundada como una pequeña organización sin ánimo de lucro centrada en la seguridad, las presiones competitivas llevaron a crear una filial con fines de lucro y a acelerar los plazos de despliegue. Cuando tus competidores levantan miles de millones y publican productos cada mes, dedicar seis meses más a pruebas de seguridad se siente como quedarse atrás de forma irreversible (<a href="https://arxiv.org/abs/2410.03092">Gruetzemacher et al., 2024</a>). Esta dinámica hace extremadamente difícil que una sola entidad, sea empresa o país, priorice la seguridad sobre la velocidad (<a href="https://arxiv.org/abs/1907.04534">Askell et al., 2019</a>).</p>
+      <p><strong>La presión competitiva lleva al lavado de seguridad</strong>, a recortar en pruebas, a saltarse el <em>red teaming</em> externo y a racionalizar las señales de alarma. «Muévete rápido y rompe cosas» se vuelve el lema implícito, incluso cuando lo que se rompe pueden ser garantías de seguridad fundamentales. Ya lo hemos visto con modelos publicados pese a vulnerabilidades conocidas, justificados por la necesidad de mantener la posición de mercado. Las empresas cotizadas afrontan una presión constante para demostrar avances a sus inversores, y el avance de cada competidor se convierte en una amenaza que exige respuesta inmediata. Esta carrera trimestre a trimestre deja poco espacio para un trabajo de seguridad cuidadoso que podría tardar años en dar frutos.</p>
+      <p><strong>Las preocupaciones de seguridad nacional intensifican la dinámica de carrera.</strong> Cuando Vladímir Putin declaró que quien se convierta en líder en IA gobernará el mundo, articuló lo que muchos responsables políticos creen en privado (<a href="https://apnews.com/article/bb5628f2a7424a10b3e38b07f4eb90d4">AP News, 2017</a>). Eso transforma el desarrollo de la IA de una competencia comercial en una pugna percibida por el dominio geopolítico. Más de 50 países han lanzado estrategias nacionales de IA, a menudo enmarcando explícitamente el liderazgo como crítico para la superioridad económica y militar (<a href="https://aiindex.stanford.edu/report/">Stanford HAI, 2024</a>; <a href="https://hai.stanford.edu/ai-index/2025-ai-index-report">Stanford HAI, 2025</a>). A diferencia de las carreras corporativas, medidas en ciclos de producto, la competición internacional implica un posicionamiento estratégico a largo plazo. Y, paradójicamente, eso hace que correr parezca aún más urgente: quedarse atrás hoy podría significar una desventaja permanente mañana.</p>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/cumulative-number-of-large-scale-ai-systems-by-country?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 4.1.</strong> Número acumulado de sistemas de IA a gran escala por país desde 2017. Se refiere a la ubicación de la organización principal con la que están afiliados sus autores (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La dinámica de carrera hace que la acción colectiva parezca imposible.</strong> Los países dudan en aplicar regulaciones de seguridad estrictas que podrían lastrar a su industria nacional. Las empresas se resisten a compromisos voluntarios salvo que sus competidores asuman compromisos idénticos. Todos esperan a que otro se mueva primero, lo que genera un bloqueo incluso cuando todas las partes reconocen los riesgos en privado. El resultado es un enfoque de mínimo común denominador que no satisface a nadie.</p>
+      <p><strong>La gobernanza de la IA necesita enfoques innovadores para salir de la dinámica de carrera.</strong> El control de armamento tradicional ofrece lecciones limitadas, porque el desarrollo de la IA ocurre en empresas privadas, no en laboratorios gubernamentales (<a href="https://www.rsis.edu.sg/rsis-publication/rsis/we-need-to-prevent-a-global-ai-arms-race-now/">Trajano y Ang, 2023</a>; <a href="https://techgov.intelligence.org/research/ai-governance-to-avoid-extinction">Barnett y Scher, 2025</a>). Se han propuesto varias ideas:</p>
+      <ul>
+        <li><strong>Límites recíprocos con reactivación automática.</strong> Los Estados publican topes de escala de modelo, despliegue de armas autónomas y cómputo en centros de datos que solo entran en vigor cuando sus pares presentan compromisos equivalentes. La simetría elimina el miedo a la contención unilateral y mantiene los incentivos centrados en la seguridad compartida (<a href="https://carnegieendowment.org/research/2024/09/if-then-commitments-for-ai-risk-reduction?lang=en">Karnofsky, 2024</a>).</li>
+        <li><strong>La seguridad como activo competitivo.</strong> Los laboratorios se ganan la confianza del mercado sometiendo sus modelos de frontera a auditorías independientes de equipos rojos, incorporando marcas de procedencia y publicando informes de incidentes. La regulación puede convertir estas prácticas en una licencia de facto para operar, de modo que la seguridad por diseño sea el camino más corto hacia las ventas (<a href="https://techgov.intelligence.org/research/ai-governance-to-avoid-extinction">Barnett y Scher, 2025</a>; <a href="https://arxiv.org/abs/2408.00761">Tamirisa et al., 2024</a>).</li>
+        <li><strong>Contención.</strong> Los controles de exportación de chips avanzados, el acceso solo por API con monitorización del uso indebido en tiempo real, la informática forense y las comprobaciones de conocimiento del cliente frenan la difusión de capacidades peligrosas sin dejar de ofrecer ampliamente los servicios beneficiosos (<a href="https://techgov.intelligence.org/research/ai-governance-to-avoid-extinction">Barnett y Scher, 2025</a>; <a href="https://arxiv.org/abs/2311.09227">Seger, 2023</a>; <a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">Nevo et al., 2024</a>).</li>
+        <li><strong>Supervisión multilateral ágil con opción de parada coordinada.</strong> Un organismo ligero con mandato de la ONU (algo parecido a un CERN o a un OIEA para la IA) necesitaría autoridad para imponer pausas de emergencia cuando se crucen líneas rojas, respaldada por restricciones a la exportación de chips y limitaciones de los proveedores de nube que hagan técnicamente creíble un «interruptor» global (<a href="https://carnegieendowment.org/research/2024/09/if-then-commitments-for-ai-risk-reduction?lang=en">Karnofsky, 2024</a>; <a href="https://cfg.eu/building-cern-for-ai/">Petropoulos et al., 2025</a>).</li>
+        <li><strong>Verificación que respete los secretos.</strong> Los entornos seguros de ejecución, los registros de cómputo a prueba de manipulación y las pruebas de conocimiento cero permiten a los inspectores confirmar que las empresas cumplen los controles sin exponer pesos ni código propietario, lo que cierra la principal laguna de supervisión identificada en las propuestas de tratado actuales (<a href="https://techgov.intelligence.org/research/ai-governance-to-avoid-extinction">Barnett y Scher, 2025</a>; <a href="https://arxiv.org/abs/2408.16074">Wasil et al., 2024</a>; <a href="https://arxiv.org/abs/2303.09377">Anderljung y Hazell, 2023</a>).</li>
+      </ul>
+
+      <h2 id="proliferacion">Proliferación</h2>
+      <p><strong>Las capacidades de la IA se propagan por todo el mundo a través de redes digitales a velocidades que vuelven poco eficaces los mecanismos de control tradicionales.</strong> A diferencia de las armas nucleares, que requieren materiales e instalaciones especializadas, los modelos de IA son patrones de números que pueden copiarse y transmitirse al instante. Piensa en este escenario: un laboratorio bienintencionado desarrolla un modelo puntero, capaz de generar vídeos falsos hiperrealistas o de diseñar patógenos nuevos. Fiel a los principios de la ciencia abierta, publica sus hallazgos y libera el código. En cuestión de horas, el modelo se descarga miles de veces en todo el mundo; en días, aparecen versiones modificadas en plataformas de código; en semanas, capacidades antes confinadas a un solo laboratorio se han extendido por internet, accesibles a cualquiera con una computadora decente y conexión. El escenario es hipotético, pero no está lejos de la realidad. Esta diferencia de fondo hace que los enfoques tradicionales de no proliferación resulten casi inútiles.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Equilibrar la mitigación de la proliferación y la concentración de poder</strong> · Opcional · 1 min de lectura</summary>
+        <p>Las publicaciones abiertas afrontan las mismas restricciones de hardware que el desarrollo propietario. Aunque liberar los pesos o el código de entrenamiento pueda parecer una democratización de las capacidades, los requisitos de cómputo subyacentes no cambian: quien tenga acceso a los pesos de un modelo abierto sigue necesitando cientos de miles, si no millones, de dólares en hardware especializado. Incluso ajustar modelos de frontera para tareas concretas exige clústeres de GPU fuera del alcance de la mayoría. Se crea así una paradoja interesante: podemos copiar la «receta» al instante, pero seguimos sin poder pagar la «cocina».</p>
+        <p>El riesgo de proliferación de las publicaciones abiertas viene sobre todo de actores que ya tienen acceso sustancial a cómputo, no de una democratización real de capacidades peligrosas hacia adversarios con pocos recursos. Este cuello de botella implica que las capacidades de doble uso más preocupantes siguen concentradas en grandes corporaciones y gobiernos que controlan enormes clústeres de GPU. Aunque esa concentración pueda aportar algún beneficio de seguridad a corto plazo al limitar el acceso, acelera a la vez dinámicas de poder preocupantes. Hasta que haya avances en destilación de modelos, arquitecturas nuevas o hardware mucho más barato, afrontamos un compromiso de fondo entre acceso democratizado y control concentrado.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3c88731ba9b0b5c47fdcea150aaa9c2be4878652efcdb023965b2e6bdd553d14.NqIfaJm2_ZiFUK5.webp" alt="Figura 4.15">
+        <figcaption><strong>Figura 4.15.</strong> Gradiente de acceso propuesto, centrado tanto en el código del modelo como en los datos de entrenamiento (<a href="https://arxiv.org/abs/2404.17047">Eiras et al., 2024</a>), para mitigar con cuidado tanto los riesgos de proliferación como los de concentración de poder.</figcaption>
+      </figure>
+      </details>
+
+      <p>Varios canales permiten una proliferación rápida:</p>
+      <ul>
+        <li><strong>La publicación abierta acelera la difusión de capacidades.</strong> El compromiso de la comunidad investigadora con la apertura hace que las técnicas rompedoras aparezcan en arXiv a los pocos días de descubrirse. Lo que a un laboratorio le costó años desarrollar, otros pueden replicarlo en meses. La publicación de Llama 2 por Meta dio lugar a miles de variantes ajustadas en semanas, incluidas versiones sin sus funciones de seguridad (<a href="https://arxiv.org/abs/2311.09227">Seger, 2023</a>).</li>
+        <li><strong>El robo de modelos plantea riesgos crecientes.</strong> A medida que los modelos ganan valor, se vuelven objetivos atractivos para grupos criminales. Una sola brecha exitosa podría transferir capacidades que costaron miles de millones. Incluso sin robo directo, técnicas como la destilación pueden extraer capacidades solo con acceso por API (<a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">Nevo et al., 2024</a>).</li>
+        <li><strong>La movilidad del talento difunde conocimiento tácito.</strong> Cuando los investigadores cambian de organización, se llevan una experiencia irremplazable. A diferencia del conocimiento escrito, esta comprensión práctica de cómo construir y entrenar modelos no puede controlarse por medios tradicionales (<a href="https://arxiv.org/abs/2401.02452">Besiroglu et al., 2024</a>).</li>
+        <li><strong>La proliferación de hardware permite un desarrollo distribuido.</strong> A medida que los chips se abaratan, la barrera de entrada baja. Lo que en 2018 requería un superordenador hoy funciona con hardware por debajo de los 100 000 dólares, lo que pone capacidades peligrosas al alcance de actores cada vez más pequeños (<a href="https://drive.google.com/file/d/1SSRpckR_IhIPqkO13oRQ-8mmPOoDKLqd/view">Masi, 2024</a>).</li>
+      </ul>
+      <p><strong>La proliferación de la IA plantea desafíos únicos, porque los bienes digitales siguen reglas distintas de los objetos físicos.</strong> Los controles tradicionales dan por supuesta la escasez: solo hay tanto uranio enriquecido o tantos misiles avanzados. Pero copiar un archivo de modelo no cuesta prácticamente nada. Una vez que las capacidades existen en algún sitio, impedir su difusión se convierte en una batalla contra la naturaleza misma de la información, y hasta los esquemas sofisticados de marcas de agua o cifrado pueden derrotarse.</p>
+      <p><strong>Verificar que alguien no está desarrollando capacidades dañinas es extremadamente difícil.</strong> A diferencia de la tecnología nuclear, donde las capacidades de detección se corresponden aproximadamente con los métodos de proliferación, la gobernanza de la IA carece de herramientas defensivas comparables (<a href="https://arxiv.org/abs/2001.00463">Shevlane y Dafoe, 2020</a>). Los inspectores nucleares pueden usar satélites y detectores de radiación; pero verificar que una organización no desarrolla capacidades peligrosas de IA exigiría acceso invasivo al código, los datos y el proceso de desarrollo, lo que revelaría propiedad intelectual valiosa. Muchas organizaciones rechazan por ello la monitorización intrusiva (<a href="https://arxiv.org/abs/2408.16074">Wasil et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/485074d74f90d211006b9b902b11bdc32044e9b3366072659c7d784084a19287.C7gLgP-Q_1a9vVN.webp" alt="Figura 4.16">
+        <figcaption><strong>Figura 4.16.</strong> Tabla de técnicas de evasión frente a los métodos de verificación con los medios técnicos nacionales actuales (<a href="https://arxiv.org/abs/2408.16074">Wasil et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>La naturaleza de doble uso complica los controles.</strong> La misma arquitectura <em>transformer</em> que impulsa aplicaciones beneficiosas puede habilitar usos dañinos. A diferencia de la tecnología militar especializada, no podemos prohibir las capacidades peligrosas sin eliminar las beneficiosas, lo que obliga a una gobernanza mucho más matizada que los regímenes clásicos de no proliferación (<a href="https://arxiv.org/abs/2303.09377">Anderljung y Hazell, 2023</a>). Una persona motivada con recursos modestos puede hoy ajustar modelos potentes con fines dañinos, de modo que las amenazas pueden surgir de cualquier parte, no solo de Estados o grandes corporaciones.</p>
+      <p><strong>¿Cómo puede la gobernanza ayudar a frenar la proliferación?</strong> Se han propuesto varias soluciones para hallar el equilibrio entre apertura y control:</p>
+      <ul>
+        <li><strong>Apertura selectiva.</strong> Publicar la investigación fundamental pero retener los pesos y las recetas de ajuste fino de las capacidades de alto riesgo, manteniendo viva la colaboración sin servir el uso indebido en bandeja (<a href="https://arxiv.org/abs/2311.09227">Seger, 2023</a>).</li>
+        <li><strong>Publicaciones por etapas.</strong> Desplegar versiones progresivamente más potentes solo después de que cada nivel supere auditorías de equipos rojos y revisión externa (<a href="https://arxiv.org/abs/2302.04844">Solaiman, 2023</a>).</li>
+        <li><strong>Seguridad de la información reforzada.</strong> Tratar los puntos de control de frontera como secretos de máximo valor: canalizaciones de construcción endurecidas, cifrado de los pesos en uso y en reposo, y monitorización continua de amenazas internas (<a href="https://www.rand.org/pubs/research_reports/RRA2849-1.html">Nevo et al., 2024</a>).</li>
+        <li><strong>Controles de exportación y restricciones de acceso al cómputo.</strong> Bloquear el envío de los aceleradores más avanzados a usuarios no verificados y exigir a los proveedores de nube que restrinjan los clústeres de entrenamiento de gama alta tras comprobaciones de conocimiento del cliente (<a href="https://www.iaps.ai/research/coordinated-disclosure">O'Brien et al., 2024</a>).</li>
+        <li><strong>Divulgación responsable.</strong> Adoptar normas al estilo de la ciberseguridad para notificar las «rutas hacia capacidades peligrosas» recién descubiertas, de modo que los laboratorios alerten a sus pares y a los reguladores sin publicar las vías completas de explotación (<a href="https://www.iaps.ai/research/coordinated-disclosure">O'Brien et al., 2024</a>).</li>
+        <li><strong>Frenos técnicos integrados.</strong> Incorporar ajustes resistentes a los intentos de burlar restricciones, limitadores de capacidad y marcas de procedencia que sobrevivan a la destilación, lo que añade fricción incluso después de una filtración de pesos (<a href="https://arxiv.org/abs/2406.02622">Dong et al., 2024</a>).</li>
+      </ul>
+
+      <h2 id="incertidumbre">Incertidumbre</h2>
+      <blockquote>
+        <p>Señala que es difícil predecir cómo será exactamente el mundo posterior a la AGI, probablemente más distinto del actual que este del siglo XVI, y que todavía no sabemos lo difícil que será lograr que las AGI actúen según los valores de sus operadores: algunos creen que será fácil, otros que será inimaginablemente difícil, pero nadie lo sabe con certeza.</p>
+        <p>— <strong>Greg Brockman</strong>, cofundador y exdirector de tecnología de OpenAI</p>
+      </blockquote>
+      <p><strong>Las predicciones de los expertos fallan sistemáticamente al captar la trayectoria real de la IA.</strong> Si uno lee la cobertura mediática de ChatGPT, con sus adjetivos deslumbrados, se queda con la impresión de que los modelos de lenguaje pillaron al mundo completamente por sorpresa. ¿Es acertada esa impresión? Pues sí (<a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>). Las capacidades de GPT-3 excedieron lo que muchos creían posible con el simple escalado, y cada avance importante parece llegar de direcciones inesperadas, lo que vuelve casi imposible la planificación a largo plazo (<a href="https://www.sciencedirect.com/science/article/pii/S0040162521003413">Gruetzemacher et al., 2021</a>; <a href="https://arxiv.org/abs/1705.08807">Grace et al., 2017</a>). La «hipótesis del escalado» (que modelos mayores con más cómputo producen de forma fiable sistemas más capaces) se ha sostenido sorprendentemente bien, pero no sabemos si continuará hasta la AGI o chocará con límites técnicos o económicos. Esto tiene implicaciones enormes: si el escalado continúa, los controles de cómputo siguen siendo eficaces; si importan más los avances algorítmicos, harán falta enfoques completamente distintos (<a href="https://www.dwarkesh.com/p/will-scaling-work">Patel, 2023</a>).</p>
+      <p><strong>Las evaluaciones de riesgo varían en órdenes de magnitud.</strong> Algunos investigadores asignan una probabilidad insignificante a los riesgos existenciales, mientras que otros los consideran casi seguros sin intervención, lo que refleja la incertidumbre de fondo sobre la trayectoria y la controlabilidad de la IA. Cuando los expertos discrepan tan drásticamente, ¿cómo pueden los responsables políticos decidir con conocimiento de causa? (<a href="https://www.aisnakeoil.com/p/ai-existential-risk-probabilities">Narayanan y Kapoor, 2024</a>).</p>
+      <p><strong>La emergencia de capacidades sorprende incluso a los desarrolladores.</strong> Los modelos demuestran habilidades que sus creadores no anticiparon y no saben explicar del todo (<a href="https://www.planned-obsolescence.org/language-models-surprised-us/">Cotra, 2023</a>). Si quienes construyen estos sistemas no pueden predecir sus capacidades, ¿cómo van a anticipar los marcos de gobernanza qué hay que regular? Esta imprevisibilidad se agrava con cada generación (<a href="https://arxiv.org/abs/2401.02843">Grace et al., 2024</a>). La elaboración tradicional de políticas da por supuestos resultados predecibles: las regulaciones ambientales modelan impactos de contaminación y la aprobación de fármacos evalúa efectos concretos. Pero la gobernanza de la IA debe prepararse para escenarios que van desde mejoras graduales hasta una automejora recursiva repentina.</p>
+      <p><strong>Esperar a tener certeza significa esperar demasiado.</strong> Para cuando sepamos exactamente qué capacidades surgirán, puede ser demasiado tarde para gobernarlas. Pero actuar bajo incertidumbre arriesga políticas desacertadas que ahoguen el desarrollo beneficioso o no eviten los riesgos reales. Esto crea un dilema paralizante (<a href="https://arxiv.org/abs/2502.09618">Casper et al., 2025</a>).</p>
+      <p><strong>¿Cómo puede operar la gobernanza bajo incertidumbre?</strong> Los modelos de gobernanza adaptativa, capaces de seguir el ritmo de una tecnología cambiante, podrían ofrecer un camino. En lugar de regulaciones fijas basadas en la comprensión actual, necesitamos marcos que evolucionen con nuestro conocimiento. Eso podría incluir:</p>
+      <ul>
+        <li>Disparadores regulatorios basados en hitos de capacidad y no en calendarios.</li>
+        <li>Cláusulas de caducidad que obliguen a reconsiderar las normas con regularidad.</li>
+        <li>Puertos seguros para experimentar en entornos controlados.</li>
+        <li>Instituciones de respuesta rápida capaces de actualizar las políticas a medida que mejora la comprensión.</li>
+      </ul>
+      <p><strong>Construir consenso pese a la incertidumbre requiere enfoques nuevos.</strong> El consenso político tradicional surge de una comprensión compartida de los problemas y las soluciones. Con la IA nos faltan ambas, y aun así debemos construir acuerdo suficiente para implantar gobernanza antes de que las capacidades superen nuestra capacidad de controlarlas. Quizá eso exija centrarse en la legitimidad del proceso más que en la certeza del resultado: acordar cómo tomar decisiones incluso cuando discrepamos sobre qué decidir.</p>
+
+      <h2 id="rendicion-de-cuentas">Rendición de cuentas</h2>
+      <blockquote>
+        <p>Tras dimitir de OpenAI, advirtió que estos problemas son muy difíciles de resolver y que le preocupa que no vayamos camino de lograrlo. Afirmó que OpenAI carga con una responsabilidad enorme en nombre de toda la humanidad, pero que en los últimos años la cultura y los procesos de seguridad habían quedado relegados frente a productos llamativos, y que hace tiempo que deberíamos tomarnos muy en serio las implicaciones de la AGI.</p>
+        <p>— <strong>Jan Leike</strong>, excodirector del proyecto Superalignment en OpenAI</p>
+      </blockquote>
+      <p><strong>Un número reducido de actores toma decisiones que afectan a toda la humanidad.</strong> Los directivos de quizá cinco empresas y algunos funcionarios clave de tres gobiernos determinan en buena medida cómo se desarrolla la IA de frontera. Sus decisiones sobre qué construir, cuándo desplegarlo y cómo garantizar la seguridad tienen consecuencias para miles de millones de personas que no tienen voz en ellas. El consejo de OpenAI tiene menos de diez miembros; el fideicomiso que controla Anthropic, solo cinco. Grupos diminutos deciden sobre tecnologías que podrían alterar la sociedad de raíz. Ninguna farmacéutica podría lanzar un medicamento con una supervisión tan limitada, y sin embargo los sistemas de IA, de impacto mucho más amplio, afrontan un escrutinio externo mínimo. Casi todo el desarrollo de frontera ocurre en dos regiones: el área de la bahía de San Francisco y Londres. Los valores, supuestos y puntos ciegos de estos núcleos tecnológicos moldean sistemas usados en todo el mundo, y lo que parece obvio en Palo Alto puede resultar ajeno en Lagos o Yakarta, pero la mayoría global no tiene prácticamente ninguna participación (<a href="https://www.oxfordmartin.ox.ac.uk/publications/voice-and-access-in-ai">Adan et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9f9fc61d1d8b78f3a4ae71f6bade2a22cb7100ad5fdce17833f8de10b0ac081c.B4MTfW-1_17tJIt.webp" alt="Figura 4.17">
+        <figcaption><strong>Figura 4.17.</strong> En 2023, la mayoría de los modelos de IA destacados procedía de instituciones estadounidenses (<a href="https://hai.stanford.edu/ai-index/2024-ai-index-report">Stanford HAI, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Los mecanismos tradicionales de rendición de cuentas no se aplican.</strong> Los consejos de administración proporcionan supervisión solo nominalmente, y la mayoría carece de incentivos para evaluar riesgos sistémicos. Los reguladores públicos luchan por seguir el ritmo del desarrollo. Los investigadores académicos que podrían aportar evidencia científica y evaluación independiente dependen a menudo de financiación corporativa o de acceso a cómputo. El resultado es un vacío de gobernanza en el que nadie tiene a la vez la capacidad y la autoridad necesarias (<a href="https://arxiv.org/abs/2311.14711">Anderljung et al., 2023</a>). Las consecuencias ya son visibles: hemos visto vídeos falsos usados para difundir desinformación política (<a href="https://apnews.com/article/artificial-intelligence-elections-disinformation-chatgpt-bc283e7426402f0b4baa7df280a4c3fd">Swenson y Chan, 2024</a>) y modelos de lenguaje empleados para crear correos de phishing convincentes y otras estafas (<a href="https://www.ft.com/content/d60fb4fb-cb85-4df7-b246-ec3d08260e6f">Stacey, 2025</a>). Cuando un modelo muestra comportamientos preocupantes, no podemos rastrear si se deben a los datos de entrenamiento, a las funciones de recompensa o a decisiones de arquitectura. Esta naturaleza de caja negra es un gran cuello de botella para la rendición de cuentas (<a href="https://arxiv.org/abs/2401.13138">Chan et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/68a0e92654edb15b437da74579cc52f1dc252ee61d17b3190d29b13fcaa6898b.qJZ5RBRH_1tGHPM.webp" alt="Figura 4.18">
+        <figcaption><strong>Figura 4.18.</strong> Diagrama del camino que va de la auditabilidad previa a la rendición de cuentas posterior (<a href="https://arxiv.org/abs/2503.04739">Herrera-Poyatos et al., 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="concentracion-de-poder-y-riqueza">Concentración de poder y riqueza</h2>
+      <p><strong>La IA concentra poder de formas sin precedentes.</strong> Los sistemas desarrollados por corporaciones dominantes están reconfigurando las estructuras de poder social: determinan el acceso a la información y a los recursos, y ejercen de hecho una autoridad automatizada sobre las personas (<a href="https://arxiv.org/abs/2404.05990">Lazar, 2024</a>). A medida que ganan capacidad, esa concentración se intensifica. La organización que desarrolle primero una AGI podría obtener ventajas decisivas en todos los ámbitos de la actividad humana, una dinámica de «el ganador se lo lleva todo» sin precedente histórico.</p>
+      <p><strong>Los efectos sobre la riqueza agravan las desigualdades existentes.</strong> La automatización beneficia sobre todo a los propietarios del capital mientras desplaza a los trabajadores. La evidencia empírica reciente sugiere que la adopción de la IA aumenta significativamente la desigualdad de riqueza al favorecer de forma desproporcionada a quienes poseen los modelos, los datos y los recursos computacionales, a costa del trabajo (<a href="https://ideas.repec.org/a/eee/teinso/v79y2024ics0160791x24002677.html">Skare et al., 2024</a>). Sin intervenciones de gobernanza dirigidas, la IA corre el riesgo de crear niveles de desigualdad económica nunca vistos (<a href="https://www.governance.ai/research-paper/the-windfall-clause-distributing-the-benefits-of-ai-for-the-common-good">O'Keefe et al., 2020</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/77d11b1d5db7e18822045be5a3be15975473529c945158af963950256710a823.B-7UKL9r_EtmBL.webp" alt="Figura 4.19">
+        <figcaption><strong>Figura 4.19.</strong> Modelo del «queso suizo» que representa una estrategia recomendada de defensa en profundidad frente al riesgo de una acumulación de poder no detectada y sin restricciones. Los vectores de amenaza aparecen en rojo (<a href="https://arxiv.org/abs/2504.12170">Stix et al., 2025</a>).</figcaption>
+      </figure>
+      <p><strong>La gobernanza democrática afronta desafíos existenciales.</strong> Cuando la información misma está controlada por entidades privadas, las instituciones democráticas tradicionales luchan por seguir siendo eficaces (<a href="https://www.journalofdemocracy.org/articles/how-ai-threatens-democracy/">Kreps y Kriner, 2023</a>). Hay evidencia empírica de que niveles más altos de integración de la IA se correlacionan con un declive de la participación y la rendición de cuentas democráticas, ya que los cargos electos se ven incapaces de regular tecnologías complejas que evolucionan más rápido que los procesos legislativos (<a href="https://www.tandfonline.com/doi/full/10.1080/19331681.2025.2473994">Chehoudi, 2025</a>). Esta realidad tecnocrática emergente socava de raíz los principios democráticos sobre el control y la supervisión públicos.</p>
+      <p><strong>Las disparidades internacionales amenazan la estabilidad global.</strong> Los países sin capacidades nacionales de IA afrontan una subordinación permanente frente a los líderes. La adopción de la IA agrava significativamente las desigualdades internacionales y favorece de forma desproporcionada a las naciones tecnológicamente avanzadas, lo que amenaza no solo la competitividad económica, sino también la soberanía básica cuando decisiones críticas quedan de hecho externalizadas a sistemas controlados desde el extranjero (<a href="https://www.elibrary.imf.org/view/journals/001/2025/076/article-A001-en.xml">Cerutti et al., 2025</a>). No tenemos marcos acordados para distribuir los beneficios de la IA ni para gestionar sus perturbaciones. ¿Deberían los desarrolladores tener obligaciones con los trabajadores desplazados? ¿Cómo debería gravarse y redistribuirse la riqueza generada por IA? ¿Qué derechos tienen sobre estas capacidades quienes no las desarrollan? Son preguntas que necesitan respuesta antes de que los impactos sean irreversibles, y los debates actuales de gobernanza apenas las reconocen (<a href="https://arxiv.org/abs/2001.03246">Ding y Dafoe, 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9dcc897a9514ec632bcf3a98ac275b733a71641e2820c2e87cbf65f887c5771d.B2xfcKqa_Z1I6bnH.webp" alt="Figura 4.20">
+        <figcaption><strong>Figura 4.20.</strong> En Estados Unidos, el número de titulados universitarios en computación ha crecido un 22 % en los últimos diez años. Sin embargo, el acceso sigue siendo limitado en muchos países africanos por carencias de infraestructura básica, como la electricidad (<a href="https://hai.stanford.edu/ai-index/2025-ai-index-report">Stanford HAI, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 48 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/governance/systemic-challenges/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap4-03-gobernanza-del-computo.html">← Anterior: Gobernanza del cómputo</a>
+      </div>
+      <a class="siguiente" href="cap4-05-arquitecturas-de-gobernanza.html">
+        <strong>Siguiente: Arquitecturas de gobernanza →</strong><br>
+        Una gobernanza robusta exige combinar la autorregulación corporativa para la rapidez técnica, la regulación nacional para hacerla cumplir y la coordinación internacional para abordar los riesgos transfronterizos.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

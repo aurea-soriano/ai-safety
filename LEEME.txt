@@ -1,0 +1,12 @@
+AI Safety Atlas — traducción al español
+
+Traducción al español de «AI Safety Atlas», de Markov Grey, Charbel-Raphaël Segerie et al.
+(French Center for AI Safety, CeSIA). Original: https://ai-safety-atlas.com/
+
+El contenido original se publica bajo la licencia CC BY-SA 4.0
+(https://creativecommons.org/licenses/by-sa/4.0/deed.es), salvo que se indique lo contrario.
+Esta traducción es una obra derivada y se distribuye bajo la misma licencia.
+Cambios: traducción al español y adaptación del formato a HTML.
+Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia.
+
+Para ver el sitio, abre index.html en tu navegador.
