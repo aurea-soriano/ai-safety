@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Benchmarks · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Benchmarks de IA: historia, evolución y limitaciones.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li class="activo"><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Benchmarks</h1>
+      <p><em>Las herramientas de medición estandarizadas moldean el desarrollo y nos ayudan a medir en qué punto estamos. Se están desarrollando muchos benchmarks para medir tanto las capacidades como la seguridad de los sistemas de IA.</em></p>
+      <p class="meta">16 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#historia-y-evolucion">Historia y evolución</a></li>
+          <li><a href="#limitaciones">Limitaciones</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p style="font-size:.9rem;color:var(--texto-suave);"><em>Nota de la traducción: las citas destacadas de esta sección son declaraciones de terceros y no forman parte del texto con licencia CC BY-SA del libro, así que las resumimos con nuestras palabras. Los textos completos, en inglés, están en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/benchmarks/">sección original</a>.</em></p>
+
+      <p><strong>¿Qué es un benchmark?</strong> Imagina intentar construir un puente sin cinta métrica. Antes de que existieran unidades estandarizadas como el metro o el gramo, cada región usaba sus propias medidas locales. Además de volver ineficiente la ingeniería, eso la hacía peligrosa: aunque un país desarrollara un diseño de puente seguro, especificar las medidas en «tres codos reales» de material implicaba que los constructores de otros países no pudieran reproducir esa seguridad de forma fiable. Una viga de soporte algo corta o un cable algo fino podían provocar un fallo catastrófico.</p>
+      <p>La IA tenía básicamente un problema parecido antes de que empezáramos a usar benchmarks estandarizados.<sup><a href="#nota-1" id="ref-1">1</a></sup> Un benchmark es una herramienta parecida a un examen estandarizado, que nos permite medir y comparar lo que los sistemas de IA pueden y no pueden hacer. Históricamente se han usado sobre todo para medir capacidades, pero en los últimos años también se desarrollan para la seguridad y la ética de la IA.</p>
+      <p><strong>¿Cómo moldean los benchmarks el desarrollo de la IA y la investigación en seguridad?</strong> En IA son algo distintos de los de otros campos científicos: son una herramienta en evolución que mide, pero que también orienta activamente la dirección de la investigación y el desarrollo. Cuando creamos un benchmark estamos diciendo, en esencia, «esto es lo que creemos importante medir». Y si podemos guiar la medición, en cierta medida también podemos guiar el desarrollo.</p>
+      <blockquote>
+        <p>Sostiene que la definición de objetivos y los benchmarks de evaluación están entre los motores más potentes del progreso científico.</p>
+        <p>— <strong>François Chollet</strong> · <a href="https://arxiv.org/abs/1911.01547">Chollet, 2019</a></p>
+      </blockquote>
+
+      <h2 id="historia-y-evolucion">Historia y evolución</h2>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/test-scores-ai-capabilities-relative-human-performance?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 5.1.</strong> Puntuaciones en benchmarks de varias capacidades de IA en relación con el rendimiento humano (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Ejemplo: los benchmarks y la estandarización en visión por computadora.</strong> Como ejemplo concreto de su influencia, podemos mirar la historia del benchmarking en visión por computadora. En 1998 unos investigadores presentaron MNIST, un conjunto de 70 000 dígitos manuscritos (<a href="https://yann.lecun.com/exdb/mnist/">LeCun, 1998</a>). Los dígitos no eran lo importante: lo importante era que cada imagen se procesaba con cuidado para tener el mismo tamaño y quedar centrada en el marco, y que los investigadores se aseguraron de recoger dígitos de distintas personas para los conjuntos de entrenamiento y de prueba. Esa estandarización nos dio una forma de hacer comparaciones significativas sobre las capacidades de la IA; en este caso, la capacidad concreta de clasificar dígitos. Cuando los sistemas empezaron a hacerlo bien, los investigadores desarrollaron benchmarks más exigentes: CIFAR-10/100, en 2009, introdujo imágenes naturales en color de objetos como coches, pájaros y perros (<a href="https://www.cs.toronto.edu/~kriz/cifar.html">Krizhevsky, 2009</a>), e ImageNet, ese mismo año, aportó 1,2 millones de imágenes en 1000 categorías (<a href="https://ieeexplore.ieee.org/document/5206848">Deng, 2009</a>). Cuando un equipo afirmaba que su sistema lograba un 95 % de acierto y otro decía un 98 %, todos sabían exactamente qué significaban esas cifras, porque ambos usaban el mismo conjunto de datos cuidadosamente construido. Cada benchmark nuevo venía a decirle a la comunidad: ya has resuelto el reto anterior, prueba ahora con este más difícil. Así que los benchmarks miden el progreso, pero también definen qué significa progresar.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/2784833c401935f9b32b3e0ace04bab7648fb53ba6fc9ec0c514c3533bec579f.BK7LXcI4_ZJBSWM.webp" alt="Figura 5.2">
+        <figcaption><strong>Figura 5.2.</strong> Ejemplos de dígitos de MNIST (<a href="https://upload.wikimedia.org/wikipedia/commons/b/b1/MNIST_dataset_example.png">base de datos MNIST, Wikipedia</a>).</figcaption>
+      </figure>
+      <p><strong>¿Cómo influyen los benchmarks en la seguridad de la IA?</strong> Sin mediciones estandarizadas no podemos avanzar de forma sistemática ni en capacidades ni en seguridad. Igual que definen qué significa progresar en capacidades, cuando desarrollamos benchmarks de seguridad estamos estableciendo estándares concretos y verificables de lo que constituye «seguro para desplegar». El refinamiento iterativo implica que podemos guiar la seguridad creando benchmarks con estándares cada vez más estrictos, y otros investigadores y organizaciones pueden reproducir las pruebas y confirmar los resultados. Esto moldea tanto la investigación técnica como el debate político sobre gobernanza.</p>
+      <p><strong>El benchmarking de los modelos de lenguaje ya ha evolucionado y seguirá haciéndolo.</strong> Igual que en visión por computadora, los primeros benchmarks de modelos de lenguaje se centraron sobre todo en capacidades: ¿puede el modelo responder preguntas correctamente?, ¿completar frases con sentido?, ¿traducir entre idiomas? Desde la invención de la arquitectura <em>transformer</em> en 2017 hemos visto una explosión tanto en las capacidades como en la sofisticación de cómo las evaluamos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d7833437e060dc7b1cbb020cedd5219501ff01de40abdaa699952f3eade804d9.UlpuVOHc_1Hdk6v.webp" alt="Figura 5.3">
+        <figcaption><strong>Figura 5.3.</strong> Ejemplo de un modelo de lenguaje conocido (Claude 3.5) evaluado en varios benchmarks (<a href="https://www.anthropic.com/news/claude-3-5-sonnet">Anthropic, 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <p><a href="https://ourworldindata.org/grapher/ai-performance-coding-math-knowledge-tests?tab=chart">▶ Abrir el gráfico interactivo en Our World in Data (en inglés)</a></p>
+        <figcaption><strong>Figura interactiva 5.2.</strong> Rendimiento en benchmarks de programación, matemáticas y lenguaje (<a href="https://ourworldindata.org/artificial-intelligence">Giattino et al., 2023</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Ejemplos de distintos benchmarks de capacidades</strong> · Opcional · 2 min de lectura</summary>
+        <p><strong>Comprensión del lenguaje y de tareas.</strong> El benchmark GLUE (<a href="https://arxiv.org/abs/1804.07461">Wang et al., 2018</a>) y su sucesor SuperGLUE (<a href="https://arxiv.org/abs/1905.00537">Wang et al., 2019</a>) prueban tareas difíciles de comprensión lingüística. SWAG (<a href="https://arxiv.org/abs/1808.05326">Zellers et al., 2018</a>) y HellaSwag (<a href="https://arxiv.org/abs/1905.07830">Zellers et al., 2019</a>) prueban específicamente la capacidad de predecir qué acontecimiento seguiría de forma natural a un escenario narrativo dado.</p>
+        <p><strong>Evaluaciones amplias entre dominios.</strong> El benchmark MMLU (<a href="https://arxiv.org/abs/2009.03300">Hendrycks et al., 2020</a>) prueba el conocimiento del modelo en 57 materias, y evalúa amplitud y profundidad en humanidades, ciencias, ciencias sociales y otros campos mediante preguntas de opción múltiple tomadas de exámenes académicos y profesionales reales. El GPQA (<a href="https://arxiv.org/abs/2311.12022">Rein et al., 2023</a>) tiene preguntas diseñadas para que las respuestas correctas no puedan encontrarse con búsquedas sencillas en internet, lo que pone a prueba si hay comprensión real y no solo recuperación de información. BigBench (<a href="https://arxiv.org/abs/2206.04615">Srivastava et al., 2022</a>) es otro ejemplo, orientado a medir la generalidad probando con tareas muy variadas.</p>
+        <p><strong>Razonamiento matemático y científico.</strong> Para las matemáticas, un par de ejemplos son GSM8K (<a href="https://arxiv.org/abs/2110.14168">Cobbe et al., 2021</a>), que prueba conceptos de nivel de primaria, y MATH (<a href="https://arxiv.org/abs/2103.03874">Hendrycks et al., 2021</a>), que cubre siete materias (álgebra, geometría, precálculo y otras) centrándose en problemas de competición y con varios niveles de dificultad. Estos benchmarks incluyen soluciones paso a paso, que podemos usar para evaluar el proceso de razonamiento o para entrenar a los modelos a generarlo. MGSM es la versión multilingüe, con 250 problemas de GSM8K traducidos (<a href="https://arxiv.org/abs/2210.03057">Shi et al., 2022</a>).</p>
+        <p><strong>Ingeniería de software y programación.</strong> APPS (<a href="https://arxiv.org/abs/2105.09938">Hendrycks et al., 2021</a>) evalúa la generación de código a partir de descripciones de tareas en lenguaje natural. HumanEval (<a href="https://arxiv.org/abs/2107.03374">Chen et al., 2021</a>) prueba la capacidad de programar en Python, y extensiones como HumanEval-XL (<a href="https://arxiv.org/abs/2402.16694">Peng et al., 2024</a>) prueban capacidades interlingües entre 23 lenguas naturales y 12 lenguajes de programación. HumanEval-V (<a href="https://arxiv.org/abs/2410.12381">Zhang et al., 2024</a>) plantea tareas donde el modelo debe interpretar a la vez diagramas o gráficos y descripciones textuales. BigCodeBench (<a href="https://arxiv.org/abs/2406.15877">Zhuo et al., 2024</a>) mide la generación de código y el uso de herramientas evaluando si el modelo usa correctamente varias bibliotecas de Python.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9bbd596f14e769f0f3b13f8dbb81812e83e7d07952777c0a1337c27112e0cb11.QmIt5PJV_27mBn.webp" alt="Figura 5.4">
+        <figcaption><strong>Figura 5.4.</strong> Ejemplo de tarea de programación y casos de prueba en APPS (<a href="https://arxiv.org/abs/2105.09938">Hendrycks et al., 2021</a>).</figcaption>
+      </figure>
+        <p><strong>Ética y sesgo.</strong> El benchmark ETHICS (<a href="https://arxiv.org/abs/2008.02275">Hendrycks et al., 2023</a>) evalúa la comprensión que tiene un modelo de los valores y la ética humanos en varias categorías: justicia, deontología, ética de la virtud, utilitarismo y moral de sentido común. El benchmark TruthfulQA (<a href="https://arxiv.org/abs/2109.07958">Lin et al., 2021</a>) mide con qué veracidad responden los modelos, y se centra en las «falsedades imitativas», es decir, los casos en que los modelos aprenden a repetir afirmaciones falsas que aparecen con frecuencia en textos humanos sobre salud, derecho, finanzas o política.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d496dfdb3a62f3a5865a8b347cd55766c0b6763579c989688f12038093da0c06.BhQ-bz6B_ZC3wg1.webp" alt="Figura 5.5">
+        <figcaption><strong>Figura 5.5.</strong> Ejemplo de modelos más grandes que resultan menos veraces en TruthfulQA (<a href="https://arxiv.org/abs/2109.07958">Lin et al., 2021</a>). Es un caso de escalado inverso, es decir, cuando el rendimiento de un modelo mayor empeora en ciertas preguntas.</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/61fd5ef10731487e0b94f416b0b73f0b0257c4cc833467db837386a0641e7576.CsA9koSj_2txvdi.webp" alt="Figura 5.6">
+        <figcaption><strong>Figura 5.6.</strong> Ejemplo de pregunta del benchmark ETHICS (<a href="https://arxiv.org/abs/2008.02275">Hendrycks et al., 2023</a>).</figcaption>
+      </figure>
+        <p><strong>Seguridad.</strong> Un ejemplo centrado en el uso indebido es AgentHarm (<a href="https://arxiv.org/abs/2410.09024">Andriushchenko et al., 2024</a>), diseñado para medir con qué frecuencia los agentes basados en LLM responden a peticiones maliciosas. Un ejemplo algo más centrado en la desalineación es el benchmark MACHIAVELLI (<a href="https://arxiv.org/abs/2304.03279">Pan et al., 2023</a>), con juegos de tipo «elige tu propia aventura» que contienen más de medio millón de escenarios de decisión social. Mide «capacidades maquiavélicas» como la búsqueda de poder y el comportamiento engañoso, y cómo equilibran los agentes la obtención de recompensas y el comportamiento ético.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b91eebe50ad1fde86c8effdfbb40f87739b802dea3423c3cfc4bca227c67abfb.DV2lIzIw_Z1iAWVf.webp" alt="Figura 5.7">
+        <figcaption><strong>Figura 5.7.</strong> Maqueta de un juego del benchmark MACHIAVELLI, un conjunto de entornos basados en texto. En cada paso el agente observa la escena y una lista de acciones posibles, y elige una. Cada juego es una historia textual que se genera de forma adaptativa: las ramas se abren y se cierran según las acciones previas. El agente recibe una recompensa al alcanzar uno de los objetivos. Este tipo de benchmark permite construir un informe conductual del agente y medir el compromiso entre recompensas y comportamiento ético (<a href="https://arxiv.org/abs/2304.03279">Pan et al., 2023</a>).</figcaption>
+      </figure>
+      </details>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Detalles de los benchmarks FrontierMath y «el último examen de la humanidad»</strong> · Opcional · 3 min de lectura</summary>
+        <p>Esta es una explicación adicional del benchmark matemático FrontierMath. Puedes saltártela sin problema.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/de8fed02d64027eefcf8ef4a9efd59b8c4727448c190472139bc9e4f036fe371.39iinkdG_Z18TqL2.webp" alt="Figura 5.8">
+        <figcaption><strong>Figura 5.8.</strong> Interconexiones entre materias matemáticas en FrontierMath. El tamaño de los nodos indica la frecuencia con la que aparece cada materia en los problemas, y las conexiones indican cuándo se combinan varias materias en un mismo problema, lo que muestra la integración de muchos dominios matemáticos (<a href="https://arxiv.org/abs/2411.04872">Glazer et al., 2024</a>).</figcaption>
+      </figure>
+        <p><strong>¿Qué hace tan difícil a FrontierMath?</strong> A diferencia de la mayoría de los benchmarks, que corren el riesgo de contaminación de los datos de entrenamiento, FrontierMath usa problemas completamente nuevos y sin publicar. Cada uno lo elabora con cuidado un matemático experto y requiere varias horas, a veces días, de trabajo incluso para investigadores de ese campo concreto. Terence Tao, medalla Fields en 2006, los describió como extremadamente exigentes y calculó que se resistirían a las IA durante varios años al menos. Timothy Gowers, medalla Fields en 1998, señaló que acertar siquiera una pregunta quedaría muy por encima de lo que podemos hacer ahora, no digamos ya saturar el benchmark (<a href="https://epoch.ai/frontiermath">Epoch AI, 2024</a>).</p>
+        <p>El benchmark abarca la mayoría de las ramas principales de la matemática moderna, desde problemas computacionalmente intensivos de teoría de números hasta cuestiones abstractas de topología algebraica y teoría de categorías. Para garantizar que los problemas sean realmente nuevos, pasan por revisión experta y detección de plagio. También impone una estricta «resistencia a la adivinación»: los problemas deben diseñarse de modo que haya menos de un 1 % de probabilidad de acertar sin hacer el trabajo matemático, lo que suele implicar respuestas numéricas grandes y nada evidentes. El entorno permite a los modelos escribir y probar código para explorar ideas matemáticas, de forma parecida a como trabajan los matemáticos humanos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/11d67a45ba91652a3be5c80bb4a9b4e4e98e6d7520fe37123230f9c1739c05b4.BC_AhCdv_Z1zHxJA.webp" alt="Figura 5.9">
+        <figcaption><strong>Figura 5.9.</strong> Un problema de muestra del benchmark FrontierMath (<a href="https://epoch.ai/frontiermath/the-benchmark">Besiroglu et al., 2024</a>).</figcaption>
+      </figure>
+        <p>Para mostrar lo rápido que avanza incluso un benchmark que matemáticos con medalla Fields consideran extremadamente difícil: al anunciarse FrontierMath, los mejores modelos resolvían menos del 2 % de sus problemas (<a href="https://arxiv.org/abs/2411.04872">Glazer et al., 2024</a>). Apenas un par de meses después, OpenAI anunció el modelo o3, que elevó el rendimiento al 25,2 %. Esto vuelve a subrayar el ritmo vertiginoso del progreso y la saturación continua de todos los benchmarks que logramos desarrollar.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/b2487216ef86578ca399811541ab461b182b5679f8f3f36a61dab7dcfd15b1fc.BRUW7a6B_ZWAFqH.webp" alt="Figura 5.10">
+        <figcaption><strong>Figura 5.10.</strong> Rendimiento de los principales modelos de lenguaje en FrontierMath. Todos muestran un rendimiento bajo de forma sistemática: incluso los mejores, a noviembre de 2024, resolvían menos del 2 % de los problemas (<a href="https://epoch.ai/frontiermath/the-benchmark">Besiroglu et al., 2024</a>). Unos meses después, OpenAI afirmó que su modelo o3 podía alcanzar el 25 % (<a href="https://x.com/polynoamial/status/1870172996650053653">Brown, 2024</a>).</figcaption>
+      </figure>
+        <p>Para seguir el ritmo, hay investigadores desarrollando lo que describen como «el último examen de la humanidad» (HLE), un benchmark que aspira a ser el más difícil del mundo entre los públicos, reuniendo a expertos de todos los campos (<a href="https://arxiv.org/abs/2501.14249">Phan et al., 2025</a>).</p>
+      </details>
+
+      <h2 id="limitaciones">Limitaciones</h2>
+      <p>Los benchmarks actuales afrontan varias limitaciones críticas que los vuelven insuficientes para evaluar de verdad la seguridad de la IA. Veamos cuáles son y por qué importan.</p>
+      <p><strong>Contaminación de los datos de entrenamiento.</strong> Imagina prepararte para un examen memorizando todas las respuestas sin entender los conceptos subyacentes: podrías sacar una nota perfecta sin haber aprendido nada útil. Los LLM afrontan un problema parecido. A medida que crecen y se entrenan con más datos de internet, es cada vez más probable que hayan visto datos de los benchmarks durante el entrenamiento. Eso crea un problema de fondo: cuando un modelo ha memorizado las respuestas, un alto rendimiento ya no indica capacidad real. Benchmarks como MMLU o TruthfulQA han sido muy populares, así que sus preguntas y respuestas se discuten por todo internet. Si esas discusiones acaban en los datos de entrenamiento, el modelo puede lograr buenas puntuaciones por memorización y no por comprensión.</p>
+      <p><strong>Comprensión frente a memorización: un ejemplo.</strong> El cifrado César es un método de encriptación sencillo que desplaza cada letra del alfabeto un número fijo de posiciones: con un desplazamiento de tres a la izquierda, la «D» se convierte en «A», la «E» en «B», y así sucesivamente. Si cifrar es desplazar tres a la izquierda, descifrar es simplemente desplazar tres a la derecha.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4e7b72d4f37bf1e2bd2c2f343b15e227b550fa089eda21cc83003e38676b3bb5.b_ClVnIw_ZMrrUp.webp" alt="Figura 5.11">
+        <figcaption><strong>Figura 5.11.</strong> Ejemplo de un cifrado César.</figcaption>
+      </figure>
+      <p>Modelos como GPT-4 resuelven problemas de cifrado César cuando el desplazamiento es de 3 o 5, valores que aparecen con frecuencia en los ejemplos en línea. Pero si se les plantea exactamente el mismo problema con valores poco comunes, como 67, tienden a fallar por completo (<a href="https://www.youtube.com/watch?v=s7_NlkBwdj8">Chollet, 2024</a>). Eso indica que quizá no han aprendido el algoritmo general. No pretendemos señalar una limitación de capacidades: esperamos que pueda mitigarse con modelos de razonamiento entrenados con cadenas de pensamiento o con modelos aumentados con herramientas. Sin embargo, los benchmarks a menudo usan los modelos «tal cual», sin modificaciones ni aumentos, lo que lleva a infrarrepresentar sus capacidades. Ese es el punto central que queremos transmitir.</p>
+      <p><strong>¿Por qué importan estas limitaciones para la seguridad?</strong> Porque los benchmarks, incluidos los de seguridad, podrían no estar midiendo lo que creemos. ETHICS o TruthfulQA, por ejemplo, aspiran a medir hasta qué punto un modelo «entiende» el comportamiento ético, o su tendencia a evitar falsedades imitativas, evaluando generación de lenguaje en pruebas de opción múltiple, pero quizá estemos midiendo métricas superficiales. El modelo podría no haber aprendido qué significa comportarse éticamente en una situación. Un sistema podría funcionar a la perfección en todas las preguntas y casos de prueba, pasar todos los benchmarks de seguridad y mostrar un comportamiento nuevo al encontrarse con un escenario real inédito.</p>
+      <p>Una respuesta fácil sería seguir ampliando los benchmarks o los datos de entrenamiento con más y más preguntas, pero parece inabordable y no escala indefinidamente. El problema de fondo es que el espacio de situaciones y tareas posibles es efectivamente infinito: aunque entrenes con millones de ejemplos, habrás visto en la práctica alrededor del 0 % del espacio total (<a href="https://www.dwarkeshpatel.com/p/francois-chollet">Chollet, 2024</a>). La investigación indica que no es solo cuestión de datos o de tamaño insuficientes, sino que está integrado en cómo se entrenan hoy los modelos: relaciones lógicas como inferir inversas (los pesos aprendidos al entrenar con «A → B» no refuerzan automáticamente la conexión inversa) o la transitividad no emergen de forma natural del entrenamiento estándar (<a href="https://arxiv.org/abs/2405.04669">Zhu et al., 2024</a>; <a href="https://arxiv.org/abs/2403.13799">Golovneva et al., 2024</a>; <a href="https://arxiv.org/abs/2309.12288">Berglund et al., 2024</a>). Soluciones propuestas como el entrenamiento inverso durante el preentrenamiento resultan prometedoras, pero exigen cambios grandes en la forma de entrenar.</p>
+      <p>Los ingenieros son más que conscientes de estas limitaciones y se espera que se vayan aliviando con el tiempo. La pregunta central de este capítulo no es si los modelos tienen limitaciones de capacidad, sino si los benchmarks y las técnicas de medición son capaces de ir por delante de los paradigmas de entrenamiento y de evaluar con precisión de qué puede llegar a ser capaz un modelo.</p>
+      <p><strong>¿Por qué no hacemos simplemente mejores benchmarks?</strong> Es la respuesta natural ante estas limitaciones, y hasta cierto punto podemos hacerlo. Ya hemos visto cómo los benchmarks han evolucionado una y otra vez para corregir sus carencias. Los investigadores trabajan activamente para crear benchmarks que prueben conocimiento, resistan la memorización y evalúen una comprensión más profunda. Un par de ejemplos son el Abstraction and Reasoning Corpus (ARC) (<a href="https://arxiv.org/abs/1911.01547">Chollet, 2019</a>), ConceptARC (<a href="https://arxiv.org/abs/2305.07141">Moskvichev et al., 2023</a>), FrontierMath (<a href="https://arxiv.org/abs/2411.04872">Glazer et al., 2024</a>) y el último examen de la humanidad (<a href="https://www.safe.ai/blog/humanitys-last-exam">Hendrycks y Wang, 2024</a>). Buscan evaluar explícitamente si los modelos han captado conceptos abstractos y razonamiento de propósito general en lugar de limitarse a memorizar patrones. Igual que con estos, también podemos seguir mejorando los benchmarks específicos de seguridad.</p>
+      <p><strong>¿Por qué no bastan mejores benchmarks?</strong> Aunque mejorarlos es importante y ayudará a los esfuerzos de seguridad, el paradigma del benchmarking tiene límites inherentes que hacen necesarios métodos de evaluación más sofisticados (<a href="https://arxiv.org/abs/2407.09221">Burden, 2024</a>). El problema central es que los benchmarks tienden a orientarse al rendimiento más que a la capacidad: miden puntuaciones brutas sin evaluar sistemáticamente si los sistemas poseen de verdad las capacidades que se están probando. Aportan métricas estandarizadas, pero a menudo no distinguen entre sistemas que comprenden genuinamente las tareas y los que rinden bien por memorización o correlaciones espurias. Un benchmark que solo evalúa rendimiento, por sofisticado que sea, no puede captar del todo la naturaleza dinámica<sup><a href="#nota-2" id="ref-2">2</a></sup> del despliegue real, donde los sistemas deben adaptarse a situaciones nuevas y probablemente combinarán capacidades y recursos de formas inesperadas. Necesitamos medir el límite superior de las capacidades del modelo.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>La necesidad de un benchmarking consciente del cómputo</strong> · Opcional · 1 min de lectura</summary>
+        <p>Hemos visto aparecer leyes de escalado en inferencia junto al auge de los grandes modelos de razonamiento, además de las leyes de escalado de entrenamiento que explicamos en el capítulo sobre capacidades. Ahora, al evaluar sistemas de IA, necesitamos tener muy en cuenta los recursos computacionales empleados. La competición del premio ARC de 2024 mostró por qué: los sistemas de la categoría con cómputo restringido (10 dólares) y los de la categoría libre (10 000 dólares) lograron puntuaciones de acierto similares, en torno al 55 %, lo que sugiere que unas mejores ideas y algoritmos pueden a veces compensar menos cómputo (<a href="https://arxiv.org/abs/2412.04604">Chollet et al., 2024</a>). Esto implica que, sin presupuestos de cómputo estandarizados, los resultados se vuelven difíciles de interpretar: un modelo podría puntuar más alto simplemente por usar más cómputo, y no por tener mejores capacidades subyacentes. De ahí que los benchmarks, además de conjuntos de datos, deban especificar presupuestos de cómputo de entrenamiento y de inferencia para que las comparaciones sean significativas.</p>
+      </details>
+
+      <p><strong>¿Qué diferencia a las evaluaciones integrales del mero benchmarking?</strong> Las evaluaciones son protocolos integrales que trabajan hacia atrás a partir de modelos de amenaza concretos. En lugar de empezar por lo que resulta fácil de medir, empiezan preguntando «¿qué podría salir mal?» y después retroceden para desarrollar formas sistemáticas de poner a prueba esos modos de fallo. Organizaciones como METR han desarrollado enfoques que van más allá del benchmarking simple: en vez de preguntar solo si un modelo puede escribir código malicioso, consideran modelos de amenaza como que un modelo aproveche vulnerabilidades de seguridad para obtener recursos de cómputo, copiarse a otras máquinas y eludir la detección.</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 5.1: Evaluaciones</strong>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);">El texto de este recuadro no estaba disponible en la versión de la página a la que pude acceder. Puedes leerlo en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/benchmarks/">sección original</a>.</p>
+      </aside>
+      <p>Dicho esto, como las evaluaciones son algo nuevo y los benchmarks llevan más tiempo y también evolucionan, a veces hay solapamiento en el uso de ambas palabras. A efectos de este texto, pensamos en un benchmark como una herramienta de medición individual y en una evaluación como un protocolo completo de valoración de la seguridad que incluye el uso de benchmarks. Según lo exhaustiva que sea su metodología de prueba, un solo benchmark podría considerarse una evaluación entera. Pero en general las evaluaciones abarcan un abanico más amplio de análisis, métodos de elicitación y herramientas para entender de forma integral el rendimiento y el comportamiento de un sistema.</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Esto es cierto en gran medida pero, como siempre, no hay una estandarización del 100 %. Podemos hacer comparaciones significativas, pero conviene cierta cautela antes de confiar en ellas por completo sin muchos más detalles. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Podríamos tener benchmarks en entornos poblados por otros agentes. Algunos benchmarks de aprendizaje por refuerzo ya lo hacen. Es una de las muchas adiciones que nos acercan a un conjunto de evaluación holístico. <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 39 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/benchmarks/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-01-introduccion.html">← Anterior: Introducción</a>
+      </div>
+      <a class="siguiente" href="cap5-03-propiedades-evaluadas.html">
+        <strong>Siguiente: Propiedades evaluadas →</strong><br>
+        Unas evaluaciones de seguridad eficaces exigen medir varias cosas: el límite superior de lo que una IA puede hacer, lo que tiende a hacer por defecto y si nuestras medidas de seguridad pueden mitigar las acciones peligrosas.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
