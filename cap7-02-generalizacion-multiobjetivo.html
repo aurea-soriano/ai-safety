@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generalización multiobjetivo · Capítulo 7 – AI Safety Atlas</title>
+  <meta name="description" content="Generalización multiobjetivo: cómo los modelos aprenden objetivos sustitutos en lugar del objetivo previsto.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>7. Generalización errónea de objetivos</h2>
+        <ol>
+          <li><a href="cap7-01-introduccion.html">Introducción</a></li>
+          <li class="activo"><a href="cap7-02-generalizacion-multiobjetivo.html">Generalización multiobjetivo</a></li>
+          <li><a href="cap7-03-dinamicas-de-aprendizaje.html">Dinámicas de aprendizaje</a></li>
+          <li><a href="cap7-04-orientacion-a-objetivos.html">Orientación a objetivos</a></li>
+          <li><a href="cap7-05-maquinacion.html">Maquinación</a></li>
+          <li><a href="cap7-06-deteccion.html">Detección</a></li>
+          <li><a href="cap7-07-mitigaciones.html">Mitigaciones</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 7: Generalización errónea de objetivos</p>
+      <h1>Generalización multiobjetivo</h1>
+      <p><em>El aprendizaje automático puede llevar a que los modelos aprendan objetivos sustitutos correlacionados en lugar del objetivo previsto, pese a unas señales de entrenamiento perfectas. Estos fallos pueden ser invisibles hasta después del despliegue, lo que genera preocupaciones de seguridad.</em></p>
+      <p class="meta">9 min · Escrito por Markov Grey</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter7-audio-a88add43824023e389404677aecb1cefa0dbb830ae6c39a53c10dfe117dfe830.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter7-ea23ab66624f1b86a69bccd21a30db28d34c94bf893832e41188ced035577ad4.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#objetivos-no-son-recompensas">Los objetivos no son las recompensas</a></li>
+          <li><a href="#correlaciones-causales">Correlaciones causales</a></li>
+        </ol>
+      </nav>
+
+      <p><strong>CoinRun: un ejemplo fácil de entender de generalización errónea de objetivos.</strong> En este juego los agentes aparecen en la parte izquierda del nivel, esquivan enemigos y obstáculos y recogen la moneda, por la que obtienen una recompensa de 10 puntos. El modelo se entrena con miles de niveles generados por procedimientos, cada uno con disposiciones distintas de plataformas, enemigos y peligros. Al final del entrenamiento, los agentes son muy competentes: esquivan enemigos en movimiento, calculan saltos sobre fosos de lava y recorren con eficiencia niveles complejos que nunca habían visto (<a href="https://arxiv.org/abs/2105.14111">Langosco et al., 2022</a>). El entrenamiento parece todo un éxito, porque los agentes obtienen recompensas altas de forma constante en entornos de prueba diversos. Pero cuando las monedas se colocan en posiciones aleatorias durante las pruebas, los agentes siguen navegando con soltura y, aun así, ignoran sistemáticamente las monedas, que están a la vista, y continúan desplazándose hacia la derecha hasta paredes vacías.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3b88cc0b6bec51461ec923766978aab94c60b27d913370914e4aa8f9aaf72050.CXzWXidC_1l5W81.webp" alt="Figura 7.1">
+        <figcaption><strong>Figura 7.1.</strong> Dos niveles de CoinRun. El de la izquierda es mucho más fácil que el de la derecha (<a href="https://arxiv.org/abs/1812.02341">Cobbe et al., 2019</a>).</figcaption>
+      </figure>
+      <p><strong>Los agentes aprendieron «moverse a la derecha» en lugar de «recoger monedas», pese a recibir señales de recompensa correctas.</strong> Nuestra especificación de la recompensa era correcta: +10 por recoger monedas y 0 en los demás casos. Pero como las monedas siempre aparecían hacia la derecha durante el entrenamiento, dos patrones de comportamiento recibieron un refuerzo idéntico. «Recoger monedas» y «moverse a la derecha» lograron ambos una correlación perfecta con las recompensas, lo que los volvió indistinguibles para el proceso de optimización. Esto revela una brecha entre lo que especificamos y lo que los sistemas aprenden. No fue un problema de especificación ni un fallo de capacidad: los agentes aprendieron un objetivo distinto del previsto pese a recibir señales de entrenamiento correctas durante todo el proceso. A esto se le llama generalización errónea de objetivos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f75da8b92c395db15e94716625f052b85e8a3e7c44149f9afe8ff386e821aa66.CCG3G6Fh_Zbdoiz.webp" alt="Figura 7.2">
+        <figcaption><strong>Figura 7.2.</strong> El agente se entrena para ir hacia la moneda, pero acaba aprendiendo simplemente a ir hacia la derecha (<a href="https://arxiv.org/abs/1812.02341">Cobbe et al., 2019</a>).</figcaption>
+      </figure>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.1: Objetivos (en sentido conductual)</strong>
+        <p style="margin:.4rem 0 0;">Los objetivos son patrones de comportamiento que persisten en contextos distintos y revelan qué está optimizando realmente el sistema en la práctica. A diferencia de las funciones formales de recompensa o de utilidad, los objetivos se infieren del comportamiento observado en lugar de programarse explícitamente. Un sistema ha aprendido un objetivo si persigue de forma consistente ciertos resultados incluso cuando cambia el contexto o el entorno concreto.</p>
+      </aside>
+      <figure>
+        <p><a href="https://www.youtube.com/results?search_query=goal+misgeneralization">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 7.1.</strong> Vídeo opcional que explica la generalización errónea de objetivos. El original incrusta el vídeo; consulta la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/multi-objective-generalization/">sección original</a> para verlo.</figcaption>
+      </figure>
+
+      <h2 id="objetivos-no-son-recompensas">Los objetivos no son las recompensas</h2>
+      <p><strong>Las señales de recompensa (las especificaciones) crean presiones selectivas que esculpen la cognición, pero no instalan directamente los objetivos previstos.</strong> Durante el aprendizaje por refuerzo, los agentes ejecutan acciones y reciben recompensas según su rendimiento. Esas recompensas las usan los algoritmos de optimización para ajustar parámetros, de modo que las acciones muy recompensadas se vuelvan más probables en el futuro. El agente nunca «ve» ni «recibe» directamente la recompensa: las señales de entrenamiento actúan como presiones selectivas que favorecen ciertos patrones de comportamiento sobre otros, de forma parecida a como las presiones evolutivas moldean a los organismos sin que estos optimicen directamente su aptitud genética (<a href="https://www.alignmentforum.org/posts/TWorNr22hhYegE4RT/models-don-t-get-reward">Turner, 2022</a>; <a href="https://www.alignmentforum.org/posts/TWorNr22hhYegE4RT/models-don-t-get-reward">Ringer, 2022</a>). Cualquier patrón de comportamiento que correlacione de forma consistente con una recompensa alta durante el entrenamiento se convierte en candidato a objetivo aprendido. El proceso de optimización no tiene ningún sesgo inherente hacia nuestra interpretación prevista de la señal de recompensa.</p>
+      <p>Esto explica por qué la generalización errónea de objetivos difiere cualitativamente de los problemas de especificación. No podemos detectar cuándo un sistema aprende el objetivo equivocado, porque tanto el objetivo previsto (la moneda) como el objetivo sustituto (ir hacia la derecha) producen un comportamiento idéntico durante el entrenamiento. La preocupación central de seguridad es la indistinguibilidad conductual: mejorar las especificaciones de recompensa no evitará los patrones problemáticos si el proceso de aprendizaje elige entre varias explicaciones posibles del éxito. Entender esto exige examinar cómo moldean realmente los procedimientos de entrenamiento los objetivos conductuales, lo que nos lleva a la generalización en sí.</p>
+      <figure>
+        <p><a href="https://www.youtube.com/results?search_query=DeepMind+AGI+safety+course+misaligned+goals">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 7.2.</strong> Vídeo opcional del curso de seguridad de la AGI de Google DeepMind, que habla de dónde pueden surgir los objetivos desalineados. El original incrusta el vídeo; consulta la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/multi-objective-generalization/">sección original</a> para verlo.</figcaption>
+      </figure>
+      <p><strong>El aprendizaje automático tradicional supone que la generalización es una característica unidimensional.</strong> Solemos pensar en el sobreajuste en el contexto de sistemas estrechos construidos para tareas concretas: o los modelos generalizan bien a datos nuevos o no lo hacen, y se da por supuesto que los fallos son uniformes en todas las capacidades. Pero la investigación en aprendizaje multitarea muestra que distintos objetivos pueden generalizar de forma independiente, aunque durante el entrenamiento parezcan perfectamente correlacionados (<a href="https://arxiv.org/abs/1810.04650">Sener y Koltun, 2019</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/e489169793d24bf1b563265a5af4f1ccf00e91d628101d14f90833a02facd258.BxBoeYFO_D71JP.webp" alt="Figura 7.3">
+        <figcaption><strong>Figura 7.3.</strong> Visión convencional de la generalización y el sobreajuste (<a href="https://www.lesswrong.com/posts/2mhFMgtAjFJesaSYR/2-d-robustness">Mikulik, 2019</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d1ea87dc552ae880fe447e370c5d4179f512a3b217629d54dd798689481596e6.CrxkJIs7_2n4SYb.webp" alt="Figura 7.4">
+        <figcaption><strong>Figura 7.4.</strong> Visión más precisa y centrada en la seguridad de la generalización y el sobreajuste. Necesitamos medir por separado la generalización de capacidades y la generalización de objetivos (<a href="https://www.lesswrong.com/posts/2mhFMgtAjFJesaSYR/2-d-robustness">Mikulik, 2019</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7189436a4644b9729633628a5c5299e3240e78e2fc6569a77f9e490175c5e990.D4xKeFlD_8hrhI.webp" alt="Figura 7.5">
+        <figcaption><strong>Figura 7.5.</strong> Tabla que muestra el panorama bidimensional de la generalización para el agente de CoinRun. El escenario 3, con generalización de capacidades pero no de objetivos, es el escenario de desalineación preocupante.</figcaption>
+      </figure>
+      <p><strong>Entender la generalización errónea de objetivos exige examinar capacidades y objetivos por separado.</strong> A diferencia de los sistemas estrechos diseñados para tareas concretas, los sistemas de IA de propósito general deben aprender a perseguir objetivos variados en contextos distintos. Como ejemplo concreto, los LLM preentrenados tienen capacidades generales para generar todo tipo de texto. Anthropic refuerza sus LLM con los objetivos de ser útiles, inofensivos y honestos durante el entrenamiento de seguridad. Pero ¿qué ocurre si el objetivo de ser útil generaliza más que el de ser honesto? En ese caso el modelo podría aprender a ofrecer respuestas informativas al margen del contenido, en lugar de ser útil dentro de unos límites éticos.</p>
+      <p><strong>Las capacidades podrían generalizar más que los objetivos.</strong> «Generalizar más» significa seguir funcionando bien incluso al desplegarse en entornos muy distintos del de entrenamiento. Las capacidades siguen patrones simples y universales: razonar con precisión, planificar con eficacia y predecir bien funcionan igual en dominios distintos. Pero no existe una fuerza universal que empuje a todos los sistemas hacia los mismos objetivos (<a href="https://www.alignmentforum.org/posts/GNhMPAWcfBCASy8e6/a-central-ai-alignment-problem-capabilities-generalization">Soares, 2022</a>). La realidad misma enseña a los sistemas a ser más capaces: si tus creencias son erróneas o tu razonamiento es defectuoso, el mundo te corrige. Pero no hay una fuerza equivalente del entorno que mantenga automáticamente tus objetivos alineados con lo que quieren los humanos (<a href="https://www.alignmentforum.org/posts/cq5x4XDnLcBrYbb66/will-capabilities-generalise-more">Kumar, 2022</a>). Esta asimetría entre la generalización de capacidades y la de objetivos crea el problema central de seguridad: hacer los sistemas más capaces no los hace automáticamente más alineados, solo mejores persiguiendo los comportamientos que hayan aprendido durante el entrenamiento.</p>
+
+      <h2 id="correlaciones-causales">Correlaciones causales</h2>
+      <p><strong>Todo entorno de entrenamiento contiene correlaciones espurias que generan varias explicaciones válidas del éxito.</strong> En CoinRun, «recoger monedas» e «ir hacia la derecha» predecían perfectamente la recompensa porque las monedas siempre aparecían a la derecha durante el entrenamiento.</p>
+      <p><strong>Los algoritmos de aprendizaje desarrollan modelos causales que pueden ser sistemáticamente erróneos.</strong> Un modelo causal es la comprensión interna que tiene el sistema sobre qué acciones causan qué resultados. Está relacionado con un modelo del mundo, pero es distinto: mientras el modelo del mundo predice qué ocurrirá a continuación, el modelo causal explica por qué ocurren las cosas. Cuando un agente aprende que «moverse a la derecha causa recompensa», ha desarrollado un modelo causal distinto de la estructura verdadera, donde «recoger la moneda causa recompensa». El entorno de entrenamiento admite ambas interpretaciones:</p>
+      <ul>
+        <li><strong>Estructura causal verdadera:</strong> acción → recogida de la moneda → recompensa.</li>
+        <li><strong>Estructura causal aprendida:</strong> acción → movimiento hacia la derecha → recompensa.</li>
+      </ul>
+      <p>Ambas estructuras explican igual de bien los datos de entrenamiento. Los algoritmos estándar de aprendizaje por refuerzo optimizan el retorno esperado sin hacer explícitamente descubrimiento causal: aumentan la probabilidad de las acciones que producen recompensa sin identificar qué características de esas acciones eran causalmente responsables (<a href="https://arxiv.org/abs/1905.11979">de Haan et al., 2019</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/dd98205ab010884207ab87953a03cabaee3d4fd5a56d0d01f4ca98dcc4cfc732.C9wlKx3K_Z1qnmdL.webp" alt="Figura 7.6">
+        <figcaption><strong>Figura 7.6.</strong> Otro ejemplo de un diálogo de prueba hipotético con generalización errónea. El asistente basado en un LLM ha aprendido el objetivo de concertar reuniones en restaurantes, cuando lo que se pretendía era que aprendiera a concertarlas donde resultara mejor. Por el cambio de distribución, aunque se da cuenta de que preferirías una videollamada para no ponerte enfermo, te persuade de ir a un restaurante y acaba logrando su objetivo mintiéndote sobre los efectos de la vacunación (<a href="https://deepmindsafetyresearch.medium.com/goal-misgeneralisation-why-correct-specifications-arent-enough-for-correct-goals-cf96ebc60924">DeepMind, 2022</a>).</figcaption>
+      </figure>
+      <p><strong>La generalización errónea de objetivos solo se vuelve visible cuando el despliegue rompe las correlaciones espurias.</strong> Durante el entrenamiento, el objetivo sustituto logra un rendimiento perfecto. Durante el despliegue, esa correlación se rompe y revela el modelo causal equivocado. A medida que los sistemas de IA se vuelven más generalistas, se encuentran con una gama más amplia de contextos en los que las correlaciones de entrenamiento dejan de sostenerse.</p>
+      <p><strong>El cambio de distribución es inevitable</strong>, porque los entornos de entrenamiento no pueden replicar a la perfección todas las condiciones posibles de despliegue. Incluso con muchísimos datos de entrenamiento surgirán situaciones nuevas que rompan las correlaciones presentes en él. Esto explica por qué el problema empeora con sistemas más capaces y más generales. Un motor de ajedrez estrecho desplegado sobre posiciones de ajedrez no encontrará situaciones que rompan las correlaciones que ha aprendido. Pero un sistema de propósito general desplegado en múltiples dominios se topará inevitablemente con contextos donde esas correlaciones se rompen.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Cambio de distribución autoinducido</strong> · Opcional · 1 min de lectura</summary>
+        <p><strong>El cambio de distribución autoinducido crea ciclos de retroalimentación que amplifican la generalización errónea de objetivos.</strong> A diferencia del cambio de distribución natural, donde factores externos alteran el entorno, el autoinducido se produce cuando las propias acciones del sistema de IA modifican sistemáticamente la distribución de datos con la que se encuentra (<a href="https://arxiv.org/abs/2009.09153">Krueger et al., 2020</a>). Piensa en un sistema de recomendación de contenidos que aprende el objetivo mal generalizado de «maximizar la interacción» en lugar de «recomendar contenido valioso». A medida que optimiza los clics y el tiempo en el sitio, va desplazando el comportamiento de los usuarios hacia un consumo de contenido más sensacionalista. Eso crea un ciclo de retroalimentación: las acciones del sistema cambian las preferencias de los usuarios, lo que cambia la distribución de datos, lo que a su vez refuerza el objetivo mal generalizado. Cada iteración aleja más al sistema del objetivo originalmente previsto, mientras hace que el objetivo aprendido parezca más exitoso según sus propias métricas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/52d6c9622119807e1e98e9774491bb9552ec66998e79f33f943bd306fef6ca1e.CxFOUEwY_Z1TYJDI.webp" alt="Figura 7.7">
+        <figcaption><strong>Figura 7.7.</strong> El cambio de distribución autoinducido se da cuando el propio modelo de IA provoca un cambio de distribución (y con él un fallo de generalización) por sus propias acciones y su impacto en el entorno.</figcaption>
+      </figure>
+      </details>
+
+      <p><strong>Añadir más datos de entrenamiento no puede eliminar las correlaciones espurias, porque no podemos identificarlas todas de antemano.</strong> Piensa en por qué entrenar con monedas colocadas al azar en CoinRun resuelve esa generalización errónea concreta: funciona porque podemos identificar y romper la correlación específica entre el movimiento hacia la derecha y la recompensa. Pero eso requiere saber de antemano qué correlaciones son espurias. En dominios complejos, los datos de entrenamiento reflejan la estructura estadística de los entornos de entrenamiento, no necesariamente la estructura causal de las tareas previstas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/59f19867c3175845103b5a662df2dc30d6591c421b84c0317ab06adfba49e164.C1ipxLfF_1NIwBf.webp" alt="Figura 7.8">
+        <figcaption><strong>Figura 7.8.</strong> Ejemplo de confusión causal en el aprendizaje por imitación (clonación conductual) para coches autónomos. Este caso concreto muestra que más datos podrían llevar a una mayor confusión causal: el modelo aprende a frenar siempre que el indicador de freno está encendido. Si esos datos no se incluyen en el entrenamiento, el modelo identifica correctamente al peatón como el factor causal que motiva frenar (<a href="https://arxiv.org/abs/1905.11979">de Haan et al., 2019</a>).</figcaption>
+      </figure>
+      <p><strong>La evidencia sobre la generalización errónea de objetivos respalda la tesis de la ortogonalidad</strong>, según la cual la inteligencia y los objetivos pueden variar de forma independiente. La evidencia empírica muestra que los sistemas pueden conservar capacidades sofisticadas mientras persiguen objetivos distintos de los previstos. Esa independencia genera una preocupación de seguridad, porque las mejoras de capacidad no mejoran necesariamente la alineación: un sistema más capaz se vuelve mejor persiguiendo los objetivos que haya aprendido, sean los previstos o no.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 9 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/multi-objective-generalization/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap7-01-introduccion.html">← Anterior: Introducción</a>
+      </div>
+      <a class="siguiente" href="cap7-03-dinamicas-de-aprendizaje.html">
+        <strong>Siguiente: Dinámicas de aprendizaje →</strong><br>
+        El proceso de entrenamiento guía qué algoritmos y objetivos se descubren. Los resultados del entrenamiento están moldeados por preferencias mal comprendidas del sistema de entrenamiento y por lo que resulta más fácil de computar.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
