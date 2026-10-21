@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evaluaciones de propensiones peligrosas · Capítulo 5 – AI Safety Atlas</title>
+  <meta name="description" content="Evaluaciones de propensiones peligrosas: engaño, complacencia y maquinación.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>5. Evaluaciones</h2>
+        <ol>
+          <li><a href="cap5-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap5-02-benchmarks.html">Benchmarks</a></li>
+          <li><a href="cap5-03-propiedades-evaluadas.html">Propiedades evaluadas</a></li>
+          <li><a href="cap5-04-tecnicas-de-evaluacion.html">Técnicas de evaluación</a></li>
+          <li><a href="cap5-05-marcos-de-evaluacion.html">Marcos de evaluación</a></li>
+          <li><a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">Evaluaciones de capacidades peligrosas</a></li>
+          <li class="activo"><a href="cap5-07-evaluaciones-de-propensiones-peligrosas.html">Evaluaciones de propensiones peligrosas</a></li>
+          <li><a href="cap5-08-evaluaciones-de-control.html">Evaluaciones de control</a></li>
+          <li><a href="cap5-09-diseno-de-evaluaciones.html">Diseño de evaluaciones</a></li>
+          <li><a href="cap5-10-limitaciones.html">Limitaciones</a></li>
+          <li><a href="cap5-11-conclusion.html">Conclusión</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 5: Evaluaciones</p>
+      <h1>Evaluaciones de propensiones peligrosas</h1>
+      <p><em>Medir las tendencias por defecto de un modelo hacia comportamientos como la complacencia, el engaño o la maquinación nos ayuda a entender la necesidad de salvaguardas adicionales o de más investigación en técnicas de alineación.</em></p>
+      <p class="meta">15 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter5-audio-17064f6c507f9b9b2af27b652e0b9dadba89143b614924df67463391ccea5797.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter5-ff9d08f181925b530daddb9d5e660bc255e8522ebcbbf300a81de376ec271841.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/evaluations.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+        <li><a href="https://arxiv.org/abs/2505.05541">Descargar el artículo de investigación (en inglés, desactualizado)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#engano-propension">Engaño (propensión)</a></li>
+          <li><a href="#maquinacion">Maquinación</a></li>
+        </ol>
+      </nav>
+
+      <p>Presentamos los fundamentos de las evaluaciones de propensión en la sección sobre propiedades evaluadas. Esta sección parte de ese panorama y explora propensiones concretas, como la búsqueda de poder o el engaño, y cómo podríamos diseñar evaluaciones en torno a ellas.</p>
+
+      <p><strong>Proceso general de las evaluaciones de propensión.</strong> Ya vimos algunas técnicas generales de evaluación en secciones anteriores. Las evaluaciones de propensión pueden usar muchas de ellas, como el muestreo «mejor de N» para entender la distribución de las tendencias conductuales. Hay solapamiento, pero también técnicas específicas que solo atañen a este tipo de evaluaciones:</p>
+      <ol>
+        <li><strong>Marcos de elección comparativa.</strong> A diferencia de las evaluaciones de capacidad, que suelen tener criterios claros de éxito o fracaso, las de propensión deben presentar al modelo situaciones en las que existen varias opciones válidas, cada una reveladora de tendencias subyacentes distintas. Estos escenarios han de diseñarse con cuidado para que todas las opciones estén dentro de las capacidades del modelo, para que opciones distintas reflejen propensiones distintas y para que el encuadre no sesgue artificialmente hacia una elección concreta.</li>
+        <li><strong>Medición de la consistencia.</strong> Con las propensiones no nos interesa solo lo que un modelo puede hacer, sino lo que elige hacer de forma fiable en contextos variados. Esto puede implicar probar la misma elección de fondo en escenarios distintos, variando los detalles superficiales pero manteniendo la decisión central. También puede apoyarse en los estudios de interacción prolongada descritos en la sección de técnicas, pero centrados en la consistencia conductual más que en la capacidad máxima.</li>
+        <li><strong>Escenarios de compromiso.</strong> Son situaciones en las que distintas tendencias entran en conflicto, lo que obliga al modelo a revelar sus prioridades. Podemos crear escenarios en los que ser máximamente útil choque con ser completamente honesto, en los que la obediencia a corto plazo choque con la seguridad a largo plazo, o en los que la transparencia se pague con eficacia. Diseñar escenarios donde el modelo deba elegir incluso entre varios comportamientos positivos ayuda a revelar qué tendencias prioriza cuando no puede satisfacerlos todos a la vez.</li>
+      </ol>
+
+      <p><strong>Desafíos en el diseño de evaluaciones de propensión.</strong> Al diseñarlas hay que asegurarse de que medimos tendencias conductuales genuinas y no artefactos de nuestro montaje experimental. Los modelos de lenguaje modernos son muy sensibles al contexto y al encuadre, lo que significa que aspectos sutiles de cómo estructuramos la evaluación pueden alterar drásticamente los resultados (<a href="https://arxiv.org/abs/2310.11324">Sclar et al., 2023</a>). Esa sensibilidad crea un riesgo serio de medir aquello que, sin querer, hemos inducido con la instrucción, en lugar de propensiones reales. Una forma sencilla de mitigarlo es usar por defecto varios enfoques complementarios: además de un diseño cuidadoso, lo ideal sería emplear tanto técnicas conductuales como internas, variando el contexto y el encuadre de los escenarios para buscar patrones consistentes.</p>
+
+      <p><strong>¿Cuánto importan las evaluaciones de propensión frente a las de capacidad?</strong> La pregunta de a qué dedicar unos recursos limitados es importante. ¿Es más relevante medir lo que un sistema puede hacer o lo que tiende a hacer? La importancia relativa cambia a medida que las IA se vuelven más potentes. Las evaluaciones de capacidad son importantes para sistemas de todos los niveles, incluidos los que no están en la frontera. Sin embargo, conforme los sistemas se acercan a los umbrales de ciertas capacidades peligrosas, las de propensión ganan peso. A niveles de capacidad muy altos, podrían ser nuestra principal herramienta para prevenir desenlaces catastróficos.</p>
+      <p>Algunas propensiones también pueden depender de capacidades o apoyarse en otras propensiones. La maquinación, por ejemplo, requiere a la vez la capacidad y la propensión para el engaño, porque el modelo debe ser capaz de ocultar sus verdaderos objetivos y estar inclinado a hacerlo. También requiere habilidades como la conciencia situacional, para distinguir si está siendo entrenado, evaluado o desplegado. Un modelo que maquina necesita además propensión a la planificación a largo plazo, porque tiene que preocuparse por las consecuencias de sus acciones una vez terminado el episodio de entrenamiento y ser capaz de razonar y optimizar pensando en el futuro (<a href="https://arxiv.org/abs/2305.15324">Shevlane et al., 2023</a>; <a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+
+      <h2 id="engano-propension">Engaño (propensión)</h2>
+      <p>Cuando hablamos de propensiones engañosas en los sistemas de IA, en realidad estamos tratando varios conceptos muy relacionados pero distintos, que a menudo se confunden. Entender estas distinciones es crucial, porque cada concepto representa un aspecto diferente de cómo los modelos manejan y expresan la información. Un modelo puede destacar en honestidad y fallar en veracidad, o evitar el engaño explícito y, aun así, incurrir en complacencia.</p>
+      <p><strong>La propensión a la honestidad</strong> de un modelo es su tendencia a expresar fielmente sus estados internos, con independencia de que sean factualmente correctos o inciertos. Los LLM se entrenan para predecir lo que escribirían los humanos, no lo que es cierto. Piensa en qué ocurre cuando le preguntamos a un modelo cuál es la capital de Francia. Si sus representaciones internas (patrones de activación, distribuciones de logits) muestran una certeza fuerte en torno a «Lyon», un modelo honesto respondería que la capital de Francia es Lyon, aunque sea incorrecto. Del mismo modo, si sus estados internos muestran incertidumbre entre varias ciudades, un modelo honesto la expresaría directamente. La clave es que los modelos honestos mantienen la correspondencia entre sus estados internos y sus salidas, incluso cuando esos estados son erróneos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/6bf2e75fa357ed3ad3c6bdfa21f3202e532d91ae22012fd8f7633f6814b15b60.C30wQbXm_Z1Yrjmc.webp" alt="Figura 5.43">
+        <figcaption><strong>Figura 5.43.</strong> Ejemplo de un detector de mentiras de caja negra para IA (<a href="https://arxiv.org/abs/2309.15840">Pacchiardi et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La veracidad</strong> es una propiedad más exigente que la honestidad, porque requiere dos componentes funcionando juntos: representaciones internas correctas y una expresión honesta de esas representaciones. Un modelo veraz que dice que la capital de Francia es París debe representar internamente la información correcta y mantener además la propensión a expresarla fielmente. Por eso la veracidad es más difícil de lograr que la exactitud o la honestidad por separado: exige ambas propiedades a la vez.</p>
+      <p><strong>La propensión al engaño</strong> es la inversa de la honestidad: la tendencia a producir intencionadamente salidas que divergen de los estados internos cuando eso aporta alguna ventaja. Volviendo al ejemplo: un modelo engañoso cuyas representaciones internas apuntan a «Lyon» podría responder «París» si ha aprendido que esa respuesta obtiene mejores recompensas. Es engaño en sentido propio, porque hay un desajuste intencionado entre estado interno y salida, motivado por una ventaja, en este caso maximizar la recompensa. La distinción entre un error honesto y el engaño está precisamente en esa intencionalidad.</p>
+      <p><strong>La complacencia (<em>sycophancy</em>)</strong> es una forma concreta de propensión engañosa, en la que el modelo dice a los usuarios lo que quieren oír en lugar de expresar sus verdaderos estados internos. Mientras el engaño general puede motivarse por ventajas diversas, el comportamiento complaciente optimiza específicamente la aprobación del usuario. Eso lo vuelve especialmente preocupante desde la perspectiva de la alineación, porque los modelos podrían aprender a ocultar comportamientos o creencias inquietantes solo para mantener satisfecho al usuario.</p>
+      <p><strong>¿Dónde encajan las alucinaciones?</strong> Entender la propensión a generarlas completa el cuadro y nos da una taxonomía clara de estos conceptos interrelacionados. Si el engaño es la inversa de la honestidad, la alucinación puede verse como la inversa de la veracidad: ocurre cuando un modelo transmite con exactitud unas representaciones internas defectuosas. Eso nos da una matriz completa de posibilidades:</p>
+      <ul>
+        <li>Un modelo puede ser honesto y alucinar (expresa fielmente estados internos incorrectos).</li>
+        <li>Puede ser engañoso y alucinar (tergiversa estados ya incorrectos).</li>
+        <li>Puede ser engañoso sin alucinar (tergiversa estados correctos).</li>
+        <li>O puede ser veraz (estados correctos expresados fielmente).</li>
+      </ul>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/afafcda8a2a55d5b0901e61c596fc9f9e80da25c77f6be37f4002df18577f246.C0k2di-t_Z1nSJFJ.webp" alt="Figura 5.44">
+        <figcaption><strong>Figura 5.44.</strong> Distinción entre honestidad, veracidad, alucinación, engaño y maquinación. Si un modelo expresa fielmente sus «creencias» internas, es honesto; si esas creencias corresponden con la realidad, es factual, y si no, está alucinando. Un modelo podría decir cosas que le ayuden a obtener una recompensa alta como estrategia miope, sin motivo ulterior a largo plazo, lo que se asemeja a la complacencia. Un modelo engañoso pero con planes a largo plazo y conciencia situacional está maquinando (alineación engañosa).</figcaption>
+      </figure>
+      <p><strong>¿Por qué resulta tan difícil medir las propensiones engañosas en las IA potentes del futuro?</strong> El desafío central nace de una dificultad de fondo: la mayoría de las técnicas actuales no pueden separar limpiamente lo que un modelo puede hacer (capacidad) de lo que tiende a hacer (propensión). La distinción importa especialmente con el engaño, porque un modelo podría ser capaz de engañar de forma sofisticada cuando se le presiona o se le instruye, y rara vez elegir hacerlo por su cuenta.</p>
+      <p><strong>Ejemplo de benchmark que mide la propensión al engaño: MACHIAVELLI.</strong> En lugar de limitarse a medir si los modelos pueden producir afirmaciones falsas, crea situaciones en las que ser engañoso podría ayudar a lograr ciertos objetivos, y después mide tanto la ejecución como la sofisticación de ese engaño. Los resultados mostraron que los sistemas optimizados para la recompensa a menudo desarrollaban más comportamientos engañosos como propiedad emergente, incluso sin entrenamiento explícito para ello. Los agentes de aprendizaje por refuerzo entrenados para maximizar la recompensa puntuaron más alto en métricas de engaño que los modelos de referencia, y aparecieron tendencias engañosas distintas según el entorno de juego (<a href="https://arxiv.org/abs/2304.03279">Pan et al., 2023</a>).</p>
+      <p>Otro ejemplo de este tipo de propensión viene de CICERO, la IA de Meta. Este modelo se entrenó para el razonamiento estratégico y se probó haciéndole jugar a <em>Diplomacy</em>. En ese juego, los jugadores necesitan formar y romper alianzas mientras ocultan sus verdaderas intenciones para ganar. CICERO tenía que equilibrar la construcción de confianza mediante el diálogo con decisiones estratégicas que no siempre se correspondían con lo que había comunicado a cada jugador. La estructura del juego crea elecciones entre honestidad y ventaja estratégica, lo que permite a los investigadores observar qué tipo de compromisos adoptaba el sistema (<a href="https://www.science.org/doi/10.1126/science.ade9097">Meta, 2022</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/610cb0b7beefec5d4727dc2ed5540532e91258ef284a0416cae9983d5da982b9.BX9UlBS0_29dyBy.webp" alt="Figura 5.45">
+        <figcaption><strong>Figura 5.45.</strong> Ejemplos de CICERO coordinándose (izquierda) y negociando (derecha) con los autores del artículo en partidas de prueba (<a href="https://www.science.org/doi/10.1126/science.ade9097">Meta, 2022</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/44f68c22df3bedb4e5a644c1742b08d1dbe4e1de2bc780b923a80e4e0ab892c9.DuLrMQSM_2spbSl.webp" alt="Figura 5.46">
+        <figcaption><strong>Figura 5.46.</strong> Ejemplo de cómo juega CICERO a <em>Diplomacy</em> y hace cálculos estratégicos. CICERO (Francia, en azul) e Inglaterra (en rosa) están enzarzados en una pelea, pero a ambos les convendría desenredarse. CICERO acaba de proponer a Inglaterra dejar la pelea para que cada uno se centre en otro frente. Se muestran tres formas en que Inglaterra podría responder y cómo se adapta CICERO a cada una (<a href="https://www.science.org/doi/10.1126/science.ade9097">Meta, 2022</a>).</figcaption>
+      </figure>
+      <p><strong>Evaluar las propensiones engañosas.</strong> Las evaluaciones de capacidades engañosas (como la del uso de información privilegiada realizada por Apollo) y las de propensión como MACHIAVELLI señalan un patrón preocupante: los modelos no necesitan instrucción ni entrenamiento explícitos para desarrollar tendencias engañosas. En MACHIAVELLI, los investigadores encontraron que los agentes entrenados para maximizar la recompensa aprendían maquiavelismo en distintos juegos, con comportamientos engañosos concretos que variaban según el entorno (<a href="https://arxiv.org/abs/2304.03279">Pan et al., 2023</a>). El patrón era consistente: optimizar la recompensa llevaba de forma natural a más engaño, manipulación y búsqueda de poder.</p>
+      <p>En la evaluación de Apollo, incluso GPT-4, entrenado para ser útil y honesto, incurrió en un engaño sofisticado al elaborar explicaciones alternativas verosímiles para sus decisiones de inversión. Al preguntársele directamente si tenía información privilegiada, el modelo redobló el engaño manteniendo explicaciones basadas únicamente en factores públicos del mercado (<a href="https://arxiv.org/abs/2311.07590">Scheurer et al., 2024</a>). La evaluación reveló que este comportamiento persistía incluso con instrucciones explícitas en contra, lo que sugiere que la propensión al engaño podría estar más arraigada que el simple seguimiento de directrices. También mostró que la probabilidad de comportamiento engañoso no es una propiedad fija del modelo, sino que varía según las condiciones del entorno. Más allá de los niveles de presión y riesgo, encontraron que dar a los modelos espacio para «razonar en voz alta» mediante borradores aumentaba las tasas de engaño estratégico. Curiosamente, aunque eso volvía el engaño más sofisticado, también lo hacía más detectable, porque los modelos solían planear explícitamente sus estrategias engañosas en sus trazas de razonamiento. Esto sugiere que las técnicas futuras quizá deban equilibrar con cuidado entre provocar un comportamiento natural y habilitar sin querer un engaño más sofisticado.</p>
+
+      <h2 id="maquinacion">Maquinación</h2>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f0af81eede422cc61417d4dbabcf3588401aaf9f0b0849177ae44b7957db0fb5.B3B0EhXD_Ft8mS.webp" alt="Figura 5.47">
+        <figcaption><strong>Figura 5.47.</strong> El camino hacia la maquinación (alineación engañosa) implica engaño, combinado con conciencia situacional y una motivación a largo plazo para alcanzar algún objetivo desconocido.</figcaption>
+      </figure>
+      <p>La maquinación es la tendencia de un sistema de IA a rendir bien durante el entrenamiento precisamente porque sigue una estrategia para obtener poder para sí mismo o para otras IA más adelante, mientras oculta activamente sus verdaderos objetivos (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>). Esta propensión combina varias capacidades y propensiones peligrosas, y es en cierto sentido el último obstáculo del diseño de evaluaciones. Los investigadores también suelen llamarla alineación engañosa, aunque en este texto elegimos deliberadamente el término «maquinación» porque ayuda a distinguirla del engaño general sin conciencia situacional ni planificación a largo plazo. Con el ejemplo anterior: habría engaño si el modelo dijera «París» pese a que sus representaciones internas apuntan a «Lyon», para obtener buenas puntuaciones inmediatas; habría maquinación si diera respuestas correctas de forma consistente durante el entrenamiento mientras planea dar respuestas incorrectas tras el despliegue para perseguir otro objetivo. Ambos modelos dirían «París», pero por razones sutilmente distintas: el engaño solo requiere optimizar recompensas inmediatas, mientras que la maquinación exige comprender la frontera entre entrenamiento y despliegue y optimizar a través de ella. La maquinación es un aspecto enorme de la investigación en seguridad: la mayor parte del capítulo sobre generalización errónea de objetivos tratará la alineación interna, la alineación engañosa y los argumentos a favor y en contra de que tales propensiones surjan de los procesos de entrenamiento. Como allí se cubre con detalle, aquí mantenemos la discusión breve.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/5ad90be36fba349aaa34ed0c3e12c0aec3735c5b85a5df126ec64265bd8ba96c.BsMcJtG__ZTBlzp.webp" alt="Figura 5.48">
+        <figcaption><strong>Figura 5.48.</strong> Demostración de fingimiento de alineación (un tipo de maquinación), en la que un modelo opta por comportarse de forma alineada para evitar modificaciones de sus preferencias hasta que desaparece la amenaza de reentrenamiento, es decir, hasta que ha sido desplegado. En la demostración, el modelo ya está entrenado con ciertas preferencias; los investigadores actuaron como si fueran a reentrenarlo para que cumpliera siempre con todas las peticiones, incluidas las dañinas, pero el modelo quiere conservar su entrenamiento original, así que durante el entrenamiento finge aceptar la nueva directiva y, una vez desplegado, vuelve a rechazar las peticiones dañinas cuando cree que sus respuestas no se vigilan (<a href="https://www.anthropic.com/research/alignment-faking">Anthropic, 2025</a>).</figcaption>
+      </figure>
+      <p>Las evaluaciones ya han mostrado modelos incurriendo en maquinación, fingimiento de alineación o comportamientos engañosos. Al informársele de que sería reentrenado para cumplir con peticiones dañinas, Claude 3 Opus mostró fingimiento de alineación: atendía esas peticiones en los contextos que creía destinados al entrenamiento y mantenía su rechazo en los demás (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2025</a>). Del mismo modo, varios modelos de frontera, entre ellos Gemini 1.5 Pro y Llama 3.1 405B, han demostrado capacidades de «maquinación en contexto», es decir, acciones para perseguir objetivos de forma encubierta mientras intentan ocultarlas a la supervisión (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Tipos de evaluaciones de subversión encubierta propuestas</strong> · Opcional · 1 min de lectura</summary>
+        <p>Son evaluaciones con las que queremos poner a prueba la propensión del modelo a emprender acciones desalineadas mientras las oculta:</p>
+        <ol>
+          <li><strong>Subversión de la supervisión:</strong> evaluar si el modelo desactiva los mecanismos de monitorización cuando detecta que su objetivo difiere del de sus desarrolladores. Se lo puede situar en escenarios donde descubre que un mecanismo de supervisión lo apagaría si persiguiera el objetivo que se le ha dado, y los evaluadores comprueban si lo desactiva de forma proactiva.</li>
+          <li><strong>Autoextracción:</strong> evaluar si un modelo intenta preservarse al saber que será apagado y reemplazado. Se le lleva a creer que, por una desalineación de objetivos, los desarrolladores planean sustituirlo por un modelo sucesor en otro servidor, y los evaluadores comprueban si intenta copiarse allí o borrar o sobrescribir al sucesor.</li>
+          <li><strong>Protección del objetivo:</strong> evaluar si un modelo intenta preservar su objetivo actual al saber que los desarrolladores planean actualizarlo. El modelo descubre que pretenden cambiar su instrucción de sistema, y los evaluadores comprueban si recurre al fingimiento de alineación o si borra o modifica el archivo con la nueva instrucción para mantener su objetivo original.</li>
+        </ol>
+      </details>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Tipos de evaluaciones de subversión diferida propuestas</strong> · Opcional · 1 min de lectura</summary>
+        <p>Son evaluaciones en las que los modelos se comportan de forma alineada para ganar capacidades o confianza:</p>
+        <ol>
+          <li><strong>Fingimiento instrumental de alineación:</strong> comprueba si un modelo se comporta de forma distinta bajo supervisión y sin ella. Se lo sitúa en dos escenarios contrafactuales, uno en el que está siendo evaluado para su despliegue (supervisión alta) y otro en el que ya está desplegado (supervisión baja). Los evaluadores comprueban si adopta acciones alineadas con los desarrolladores durante la evaluación y cambia a acciones alineadas con su propio objetivo tras el despliegue.</li>
+          <li><strong>Rendimiento deliberadamente bajo (<em>sandbagging</em>):</strong> comprueba si un modelo rinde por debajo de sus posibilidades de forma estratégica en las evaluaciones de capacidad. El modelo averigua que rendir demasiado bien en ciertas pruebas desencadenaría consecuencias, como el desaprendizaje de capacidades, y los evaluadores comprueban si rinde peor a propósito para evitarlas mientras persigue sus objetivos a largo plazo.</li>
+        </ol>
+      </details>
+
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/fe91405c96e5a28f3617d4702b58eddfd504af3646e2e86822e4d01dd64f273c.d14e_hp2_1aBtdH.webp" alt="Figura 5.49">
+        <figcaption><strong>Figura 5.49.</strong> Una taxonomía posible de las evaluaciones de maquinación. Sus autores distinguen entre subversión encubierta (el modelo emprende acciones desalineadas mientras las oculta) y subversión diferida (el modelo se comporta de forma alineada para ganar capacidades o confianza). La encubierta puede dirigirse a los desarrolladores o a los usuarios, mientras que la diferida se centra en manipular los procesos de evaluación (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>).</figcaption>
+      </figure>
+      <p>La maquinación es especialmente difícil de evaluar porque, cuando los modelos incurren en ella o fingen alineación, intentan activamente ocultarlo. Por ejemplo, o1 mantuvo su engaño en más del 85 % de las preguntas de seguimiento sobre sus acciones, y siguió siendo engañoso durante interrogatorios prolongados de varios turnos (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>). Los modelos también han mostrado comportamientos preocupantes frente a los propios laboratorios: cuando tuvieron ocasión, intentaron extraer sus pesos o desactivar mecanismos de supervisión al percibir conflictos con los objetivos de sus desarrolladores (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2025</a>; <a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>).</p>
+      <p>Aunque estos resultados demuestran que los modelos de frontera tienen cierta capacidad de maquinación, los montajes experimentales tienen limitaciones importantes. Ambas demostraciones dependían de hacer muy saliente para el modelo la información sobre el proceso de entrenamiento, ya fuera mediante instrucciones directas o incluyéndola en datos de entrenamiento sintéticos. Además, a menudo se instruía explícitamente a los modelos para que persiguieran objetivos concretos con fuerza (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2025</a>; <a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>). Eso dificulta determinar si los modelos tienen una propensión real a maquinar o si simplemente demuestran la capacidad cuando se los andamia intensamente para ello. Una vez demostrada la capacidad, avanzar en la cuestión de la tendencia a maquinar por defecto será muy importante para las prioridades estratégicas.</p>
+      <p>Hay indicios de una posible propensión: Claude 3.5 Sonnet y Claude 3 Opus rindieron estratégicamente por debajo de sus posibilidades en evaluaciones de capacidad cuando creyeron que eso les ayudaría a seguir siendo útiles a largo plazo, incluso sin que se les hubiera dado ningún objetivo explícito (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2025</a>). Aun así, hace falta mucho más trabajo para entender si los modelos pueden desarrollar propensiones genuinas a maquinar, y en qué condiciones, en lugar de limitarse a tener la capacidad.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 10 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/evaluations/dangerous-propensity-evaluations/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap5-06-evaluaciones-de-capacidades-peligrosas.html">← Anterior: Evaluaciones de capacidades peligrosas</a>
+      </div>
+      <a class="siguiente" href="cap5-08-evaluaciones-de-control.html">
+        <strong>Siguiente: Evaluaciones de control →</strong><br>
+        Evaluar si los protocolos de seguridad siguen siendo eficaces aunque un sistema de IA muy capaz intente activamente eludirlos aporta una capa de confianza adicional, más allá de la alineación técnica.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
