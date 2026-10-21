@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aprendizaje por refuerzo · Capítulo 6 – AI Safety Atlas</title>
+  <meta name="description" content="Repaso del aprendizaje por refuerzo: políticas, recompensas, valores y utilidades.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>6. Manipulación de la especificación</h2>
+        <ol>
+          <li><a href="cap6-01-introduccion.html">Introducción</a></li>
+          <li class="activo"><a href="cap6-02-aprendizaje-por-refuerzo.html">Aprendizaje por refuerzo</a></li>
+          <li><a href="cap6-03-optimizacion.html">Optimización</a></li>
+          <li><a href="cap6-04-manipulacion-de-la-especificacion.html">Manipulación de la especificación</a></li>
+          <li><a href="cap6-05-aprender-por-imitacion.html">Aprender por imitación</a></li>
+          <li><a href="cap6-06-aprender-de-la-retroalimentacion.html">Aprender de la retroalimentación</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 6: Manipulación de la especificación</p>
+      <h1>Aprendizaje por refuerzo</h1>
+      <p><em>El aprendizaje por refuerzo enseña a los agentes de IA, por ensayo y error, a maximizar una recompensa; pero si aquello por lo que lo recompensamos no coincide a la perfección con lo que queremos, la IA podría limitarse a subir la puntuación en lugar de hacer la tarea real.</em></p>
+      <p class="meta">7 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas.foreviewusercontent.com/audio/atlas-chapter6-audio-90cf60c3206bcdf43211f3049e739d761c457e66884f14786a55615543f7cf7f.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas.foreviewusercontent.com/pdf/atlas-chapter6-af895defbf8761a30ac565755f204072e09a5d599ca725f3de64de4b547c2f28.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#nociones-basicas">Nociones básicas</a></li>
+          <li><a href="#bucle-principal">Bucle principal</a></li>
+          <li><a href="#politicas">Políticas</a></li>
+          <li><a href="#recompensa">Recompensa</a></li>
+        </ol>
+      </nav>
+
+      <p>Esta sección es un repaso. Si ya conoces los fundamentos, puedes saltar directamente a la siguiente.</p>
+      <p>Aquí recordamos de forma sucinta varios conceptos del aprendizaje por refuerzo (RL, por sus siglas en inglés) y desambiguamos términos que suelen confundirse, como recompensa, valor y utilidad. La sección termina con una discusión sobre cómo distinguir los objetivos que un sistema de aprendizaje por refuerzo podría perseguir de aquello por lo que se lo recompensa.</p>
+
+      <h2 id="nociones-basicas">Nociones básicas</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.1: Aprendizaje por refuerzo (RL)</strong>
+        <p style="margin:.4rem 0 0;">El aprendizaje por refuerzo se centra en desarrollar agentes capaces de aprender de experiencias interactivas. Se basa en la idea de un agente que aprende mediante la interacción con un entorno y que modifica su comportamiento a partir de la retroalimentación que recibe en forma de recompensas tras cada acción.</p>
+      </aside>
+      <figure>
+        <p><em>Vídeo opcional del original que muestra una mano robótica entrenada mediante aprendizaje por refuerzo. El enlace no estaba disponible en la versión de la página a la que pude acceder; puedes verlo en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/reinforcement-learning/">sección original</a>.</em></p>
+        <figcaption><strong>Vídeo 6.1.</strong> Mano robótica entrenada con aprendizaje por refuerzo.</figcaption>
+      </figure>
+      <p>Algunos ejemplos de aplicaciones reales del aprendizaje por refuerzo:</p>
+      <ul>
+        <li><strong>Sistemas robóticos:</strong> se ha aplicado a tareas como controlar robots físicos en tiempo real y permitirles aprender movimientos más complicados. Puede hacer que los sistemas robóticos aprendan tareas complejas y se adapten a entornos cambiantes.</li>
+        <li><strong>Sistemas de recomendación:</strong> puede aplicarse a sistemas que interactúan con miles de millones de usuarios y buscan ofrecer recomendaciones personalizadas. Los algoritmos de RL pueden aprender a optimizar la política de recomendación a partir de la retroalimentación de los usuarios y mejorar la experiencia general.</li>
+        <li><strong>Sistemas que juegan:</strong> a principios de la década de 2010, los sistemas basados en RL empezaron a ganar a los humanos en algunos juegos de Atari muy sencillos, como Pong y Breakout. Con los años han aparecido muchos modelos que han usado RL para derrotar a campeones mundiales tanto en juegos de mesa como en videojuegos, entre ellos AlphaGo (<a href="https://www.deepmind.com/research/highlighted-research/alphago">DeepMind, 2016</a>), AlphaZero (<a href="https://www.deepmind.com/blog/alphazero-shedding-new-light-on-chess-shogi-and-go">DeepMind, 2018</a>), OpenAI Five (<a href="https://openai.com/research/openai-five-defeats-dota-2-world-champions">OpenAI, 2019</a>), AlphaStar (<a href="https://deepmind.google/discover/blog/alphastar-mastering-the-real-time-strategy-game-starcraft-ii">DeepMind, 2019</a>), MuZero (<a href="https://deepmind.google/blog/muzero-mastering-go-chess-shogi-and-atari-without-rules">DeepMind, 2020</a>) y EfficientZero (<a href="https://arxiv.org/abs/2111.00210">Ye et al., 2021</a>).</li>
+      </ul>
+      <p>El aprendizaje por refuerzo se diferencia del aprendizaje supervisado en que parte de una descripción de alto nivel de «qué» hacer, pero deja que el agente experimente y aprenda de la experiencia cuál es el mejor «cómo». El agente aprende interactuando con un entorno y recibe retroalimentación en forma de recompensas o castigos según sus acciones. Se centra en aprender un conjunto de reglas que recomienden la mejor acción a tomar en un estado dado para maximizar las recompensas a largo plazo. En cambio, el aprendizaje supervisado suele consistir en aprender a partir de etiquetas o respuestas correctas proporcionadas explícitamente para cada entrada.</p>
+
+      <h2 id="bucle-principal">Bucle principal</h2>
+      <p>El funcionamiento general del aprendizaje por refuerzo es relativamente sencillo. Sus dos componentes principales son el propio agente y el entorno en el que vive y opera. En cada paso temporal:</p>
+      <ol>
+        <li>El agente realiza una acción <em>a<sub>t</sub></em>.</li>
+        <li>El estado del entorno <em>s<sub>t</sub></em> cambia en función de esa acción.</li>
+        <li>El entorno devuelve una observación <em>o<sub>t</sub></em> y una recompensa <em>r<sub>t</sub></em>.</li>
+      </ol>
+      <p>Una <strong>historia</strong> es la secuencia de observaciones, acciones y recompensas pasadas hasta el instante <em>t</em>:</p>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">h<sub>t</sub> = (a<sub>1</sub>, o<sub>1</sub>, r<sub>1</sub>, …, a<sub>t</sub>, o<sub>t</sub>, r<sub>t</sub>)</p>
+      <p>El estado del mundo es, en general, alguna función de la historia: <em>s<sub>t</sub> = f(h<sub>t</sub>)</em>. El <strong>estado del mundo</strong> es el estado verdadero y completo que se usa para determinar cómo genera el mundo la siguiente observación y la siguiente recompensa. El agente podría recibir como observación <em>o<sub>t</sub></em> ese estado completo o solo un subconjunto parcial.</p>
+      <p>El mundo pasa de un estado <em>s<sub>t</sub></em> al siguiente <em>s<sub>t+1</sub></em> por la dinámica natural del entorno o por las acciones del agente. Las transiciones entre estados pueden ser deterministas o estocásticas.</p>
+      <p>Este bucle continúa hasta alcanzar una condición terminal, o puede ejecutarse indefinidamente. El diagrama siguiente resume el proceso:</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8372cd73478c24e48502d91c72166b8c031212d592f06c15e44f0e271669e062.BlTgyBee_26inIN.webp" alt="Figura 6.1">
+        <figcaption><strong>Figura 6.1.</strong> Diagrama del bucle del aprendizaje por refuerzo (<a href="https://web.stanford.edu/class/archive/cs/cs234/cs234.1224/">Brunskill, 2022</a>).</figcaption>
+      </figure>
+
+      <h2 id="politicas">Políticas</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.2: Política de aprendizaje por refuerzo</strong>
+        <p style="margin:.4rem 0 0;">Una política ayuda al agente a determinar qué acción tomar una vez que ha recibido una observación. Es una función que va de los estados a las acciones y que especifica qué acción tomar en cada estado. Las políticas pueden ser deterministas o estocásticas.</p>
+      </aside>
+      <p>El objetivo del aprendizaje por refuerzo es aprender una política (a menudo denotada por <em>π</em>) que recomiende la mejor acción en cada momento para maximizar la recompensa acumulada total a lo largo del tiempo. La política define la correspondencia entre estados y acciones y guía el proceso de decisión del agente.</p>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">π : S → A</p>
+      <p>Una política puede ser determinista o estocástica. Una política determinista asigna directamente a cada estado <em>s<sub>t</sub></em> una acción concreta <em>a<sub>t</sub></em>, y suele denotarse por <em>μ</em>. Una política estocástica, en cambio, asigna una distribución de probabilidad sobre las acciones para cada estado, y suele denotarse por <em>π</em>.</p>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">Política determinista: a<sub>t</sub> = μ(s<sub>t</sub>)<br>
+      Política estocástica: π(a | s) = P(a<sub>t</sub> = a | s<sub>t</sub> = s)</p>
+      <p>En aprendizaje por refuerzo profundo, las políticas son funciones que se aprenden durante el entrenamiento y dependen del conjunto de parámetros aprendidos de una red neuronal (por ejemplo, los pesos y los sesgos). Esos parámetros suelen indicarse con subíndices en las ecuaciones de la política, con <em>θ</em> o <em>φ</em>. Así, la política determinista sobre los parámetros de una red neuronal se escribe <em>a<sub>t</sub> = μ<sub>θ</sub>(s<sub>t</sub>)</em>, y su equivalente estocástica <em>a<sub>t</sub> ∼ π<sub>θ</sub>(· | s<sub>t</sub>)</em>.</p>
+      <p>Una política óptima maximiza la recompensa acumulada esperada a lo largo del tiempo. El agente aprende de la experiencia y ajusta su política según la retroalimentación que recibe del entorno en forma de recompensas o castigos.</p>
+      <p>Para determinar si una acción es mejor que otra, hay que evaluar de algún modo las acciones (o los pares estado-acción). Hay dos formas de mirar qué acción tomar: las recompensas inmediatas, determinadas por la función de recompensa, y las recompensas acumuladas a largo plazo, determinadas por la función de valor de acción. Ambas influyen mucho en los tipos de políticas que aprende el agente y, por tanto, también en las acciones que toma. El apartado siguiente explora y aclara con más detalle el concepto de recompensa.</p>
+
+      <h2 id="recompensa">Recompensa</h2>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.3: Recompensa</strong>
+        <p style="margin:.4rem 0 0;">La recompensa es cualquier señal o mecanismo de retroalimentación que se usa para guiar el proceso de aprendizaje y optimizar el comportamiento del modelo.</p>
+      </aside>
+      <p>La señal de recompensa que llega del entorno es un número que le dice al agente lo bueno o malo que es el estado actual del mundo. Es una forma de evaluar o medir el rendimiento de las salidas o acciones del modelo. La recompensa puede definirse a partir de una tarea u objetivo concretos, como maximizar la puntuación en un juego o lograr un resultado deseado en un escenario real. El entrenamiento consiste en optimizar los parámetros del modelo para maximizar la recompensa esperada: el modelo aprende a generar acciones o salidas con más probabilidad de recibir recompensas altas, lo que mejora su rendimiento con el tiempo. ¿De dónde sale la recompensa? La genera una función de recompensa.</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 6.4: Función de recompensa</strong>
+        <p style="margin:.4rem 0 0;">Una función de recompensa define la meta u objetivo de un problema de aprendizaje por refuerzo. Hace corresponder los estados percibidos, o los pares estado-acción del entorno, con un único número.</p>
+      </aside>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">R : (S × A) → ℝ ; r<sub>t</sub> = R(s<sub>t</sub>, a<sub>t</sub>)</p>
+      <p>La función de recompensa ofrece retroalimentación inmediata al agente e indica lo bueno o malo que resulta un estado o una acción concretos. Es una función matemática que hace corresponder los pares estado-acción del entorno del agente con un valor escalar, que representa lo deseable que es estar en ese estado y tomar esa acción. Aporta una medida de retroalimentación inmediata que indica al agente lo bien que lo está haciendo en cada paso.</p>
+
+      <h3>Funciones de recompensa frente a funciones de valor</h3>
+      <p>La recompensa indica lo deseable que resulta un estado o una acción de forma inmediata, mientras que una función de valor representa lo deseable que es un estado a largo plazo, teniendo en cuenta las recompensas y los estados futuros. El valor es el retorno esperado si partes de un estado, o de un par estado-acción, y después actúas según una política concreta para siempre.</p>
+      <p>Hay muchas formas distintas de elegir funciones de valor. También pueden descontarse con el tiempo, es decir, hacer que las recompensas futuras valgan menos según algún factor.</p>
+      <p>Una formulación sencilla es la suma descontada de recompensas futuras dada cierta política. Las recompensas acumuladas descontadas vienen dadas por:</p>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">R = r<sub>t</sub> + γ r<sub>t+1</sub> + γ² r<sub>t+2</sub> + … = Σ<sub>t=0</sub><sup>∞</sup> γ<sup>t</sup> r<sub>t</sub></p>
+      <p>Y el valor de actuar según esa política viene dado por:</p>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;margin:1rem 0;text-align:center;font-style:italic;">V<sup>π</sup>(s<sub>t</sub> = s) = E<sub>π</sub>(R | s<sub>t</sub> = s)</p>
+
+      <h3>Funciones de recompensa frente a funciones de utilidad</h3>
+      <p>También conviene distinguir el concepto de utilidad de los de recompensa y valor. Una función de recompensa se usa normalmente en el contexto del aprendizaje por refuerzo para guiar el proceso de aprendizaje y el comportamiento del agente. Una función de utilidad, en cambio, es más general y recoge las preferencias subjetivas o la satisfacción del agente, lo que permite comparaciones y compromisos entre distintos estados del mundo. Las funciones de utilidad son un concepto más propio de la teoría de la decisión y del trabajo sobre fundamentos de la agencia.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 7 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/specification-gaming/reinforcement-learning/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap6-01-introduccion.html">← Anterior: Introducción</a>
+      </div>
+      <a class="siguiente" href="cap6-03-optimizacion.html">
+        <strong>Siguiente: Optimización →</strong><br>
+        Cuando a un sistema de IA se le da un objetivo simple y medible y se le dice que mejore su rendimiento a toda costa, es casi inevitable que encuentre atajos que logren puntuaciones altas pero violen por completo la intención original.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
