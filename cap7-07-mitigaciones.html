@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mitigaciones · Capítulo 7 – AI Safety Atlas</title>
+  <meta name="description" content="Mitigaciones de la generalización errónea de objetivos: intervenciones en entrenamiento, posteriores y en despliegue.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>7. Generalización errónea de objetivos</h2>
+        <ol>
+          <li><a href="cap7-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap7-02-generalizacion-multiobjetivo.html">Generalización multiobjetivo</a></li>
+          <li><a href="cap7-03-dinamicas-de-aprendizaje.html">Dinámicas de aprendizaje</a></li>
+          <li><a href="cap7-04-orientacion-a-objetivos.html">Orientación a objetivos</a></li>
+          <li><a href="cap7-05-maquinacion.html">Maquinación</a></li>
+          <li><a href="cap7-06-deteccion.html">Detección</a></li>
+          <li class="activo"><a href="cap7-07-mitigaciones.html">Mitigaciones</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 7: Generalización errónea de objetivos</p>
+      <h1>Mitigaciones</h1>
+      <p class="meta">32 min · Escrito por Markov Grey</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter7-audio-a88add43824023e389404677aecb1cefa0dbb830ae6c39a53c10dfe117dfe830.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter7-ea23ab66624f1b86a69bccd21a30db28d34c94bf893832e41188ced035577ad4.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#intervenciones-en-tiempo-de-entrenamiento">Intervenciones en tiempo de entrenamiento</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#aprendizaje-curricular">Aprendizaje curricular</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#aumento-de-datos">Aumento de datos</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#entrenamiento-adversarial">Entrenamiento adversarial</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#entrenamiento-miope">Entrenamiento miope</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#entrenamiento-orientado-a-procesos">Entrenamiento orientado a procesos</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#entrenamiento-guiado-por-interpretabilidad">Entrenamiento guiado por interpretabilidad</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#enfoques-combinados">Enfoques combinados</a></li>
+          <li><a href="#intervenciones-posteriores-al-entrenamiento">Intervenciones posteriores al entrenamiento</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#vectores-de-direccion">Vectores de dirección</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#edicion-de-modelos-y-desaprendizaje">Edición de modelos y desaprendizaje</a></li>
+          <li><a href="#mitigaciones-en-tiempo-de-despliegue">Mitigaciones en tiempo de despliegue</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#monitorizacion-en-ejecucion">Monitorización en ejecución</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#filtros-y-barreras">Filtros y barreras de protección</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#entornos-aislados">Entornos aislados</a></li>
+          <li style="list-style:none;margin-left:1rem;"><a href="#cortacircuitos">Cortacircuitos</a></li>
+          <li><a href="#teoria-del-aprendizaje-singular">Teoría del aprendizaje singular</a></li>
+        </ol>
+      </nav>
+
+      <p style="border:1px solid var(--acento);border-radius:8px;padding:.6rem 1rem;"><strong>Nota:</strong> esta sección se considera un trabajo en curso en el original.</p>
+
+      <p>La sección sobre detección trataba técnicas conductuales e internas, y nos explicaba cómo podríamos reunir evidencia sobre la generalización errónea de objetivos y la maquinación. En esta hablamos de estrategias de mitigación, centradas en cuándo y dónde intervenimos.</p>
+
+      <p>Una restricción crítica al mitigar la generalización errónea de objetivos es mantener una separación estricta entre las señales de interpretabilidad que se usan para verificar la seguridad y las que se incorporan a los objetivos de entrenamiento. Cualquier técnica de interpretabilidad empleada para detectar este problema durante el entrenamiento crea una presión adversarial para que el modelo engañe a ese método de detección concreto. Si entrenamos en contra de características de un autocodificador disperso (SAE) que indican engaño, los modelos aprenderán a perseguir objetivos engañosos por vías computacionales distintas que no activen esas características. Si penalizamos las activaciones que las sondas lineales asocian con la desalineación, los modelos aprenderán a estar desalineados de formas que eludan la detección lineal. Esta restricción de fondo implica que los sistemas de verificación de seguridad deben apoyarse en enfoques de interpretabilidad completamente separados de cualquier señal usada durante el entrenamiento (<a href="https://arxiv.org/abs/2401.05566">Hubinger et al., 2024</a>).</p>
+
+      <p>Ese requisito de separación crea un problema complicado de asignación de recursos para la investigación en interpretabilidad. Las técnicas más eficaces para detectar la generalización errónea de objetivos no pueden usarse para prevenirla durante el entrenamiento, lo que obliga a los equipos de seguridad a desarrollar capacidades de interpretabilidad paralelas que cumplan funciones distintas. También implica que cualquier intervención de interpretabilidad en tiempo de entrenamiento perderá eficacia con el tiempo, a medida que los modelos aprendan a sortear los patrones concretos que se vigilan. Las estrategias de mitigación deben centrarse, por tanto, en enfoques que no dependan de los mismos patrones computacionales que intentan eliminar.</p>
+
+      <h2 id="intervenciones-en-tiempo-de-entrenamiento">Intervenciones en tiempo de entrenamiento</h2>
+      <p>Las «historias de entrenamiento» mecanicistas obligan a considerar de forma explícita qué objetivos internos podría producir el proceso de entrenamiento, y no solo qué comportamientos externos mostrará. Las técnicas clásicas de aprendizaje automático para evitar el sobreajuste (regularización, aumento de datos, validación cruzada) dan por supuesto que puedes distinguir una buena generalización de una mala. Pero la generalización errónea de objetivos rompe ese supuesto por completo. Necesitamos pensar algo más a fondo qué intenta lograr nuestro proceso de entrenamiento y también por qué nuestra arquitectura, nuestros datos y nuestro procedimiento darían como resultado lo que pretendemos. Por ejemplo, en lugar del objetivo conductual «un modelo que navega hacia las recompensas», una historia de entrenamiento mecanicista podría especificar «un modelo que aprende razonamiento espacial sobre la ubicación de los objetivos» y aportar una justificación de por qué la configuración de entrenamiento favorece eso frente a alternativas más simples como «sigue las paredes». Este enfoque exige a los desarrolladores articular no solo qué quieren que hagan los sistemas, sino cómo quieren que piensen y razonen. La meta es ganar un nivel de confianza mayor en la seguridad del sistema (<a href="https://www.alignmentforum.org/posts/FDJnZt8Ks2djouQTZ/how-do-we-become-confident-in-the-safety-of-a-machine">Hubinger, 2021</a>). Una historia de entrenamiento consta de dos componentes:</p>
+      <ol>
+        <li><strong>Especificación del objetivo de entrenamiento:</strong> ¿qué tipo de algoritmo quieres que el modelo aprenda, mecanicistamente?</li>
+        <li><strong>Justificación del entrenamiento:</strong> ¿por qué crees que tu configuración producirá ese algoritmo y no alternativas basadas en aproximaciones?</li>
+      </ol>
+      <p>Las historias de entrenamiento no son una intervención en sí, sino una forma de pensar todas las demás intervenciones de las que hablaremos en este apartado. Aportan cierto andamiaje que nos ayuda a evaluar si una intervención concreta mitigaría o no el problema. Hemos intentado estructurar cada intervención de abajo para que represente una historia de entrenamiento distinta, es decir, una hipótesis específica sobre cómo prevenir la generalización errónea de objetivos mediante combinaciones concretas de metas y justificaciones.</p>
+
+      <h3 id="aprendizaje-curricular">Aprendizaje curricular</h3>
+      <p>Los procedimientos de entrenamiento pueden moldear deliberadamente el paisaje de pérdida para que las soluciones alineadas resulten más fáciles de descubrir que las desalineadas, modificando cómo navega el descenso de gradiente por el espacio de algoritmos. Las funciones de pérdida dinámicas, que evolucionan durante el entrenamiento, pueden crear valles más profundos para los objetivos previstos y volver más someras e inestables las cuencas de los objetivos aproximados. Este enfoque aprovecha la idea de que la geometría del paisaje de pérdida determina qué soluciones es probable que encuentre el descenso de gradiente (<a href="https://arxiv.org/abs/2102.03793">Ruiz-Garcia et al., 2021</a>). Entre las técnicas concretas están las funciones de pérdida cíclicas, que enfatizan periódicamente distintos aspectos del objetivo previsto y obligan a desarrollar representaciones robustas que funcionen con criterios de evaluación diversos. El entrenamiento multiobjetivo, que optimiza a la vez el rendimiento en la tarea y objetivos auxiliares relacionados con el razonamiento pertinente, puede crear paisajes donde los objetivos aproximados no logran un rendimiento alto de forma consistente en todos ellos.</p>
+      <p>El aprendizaje curricular aporta un marco sistemático para estructurar el entrenamiento controlando cómo aumenta la complejidad con el tiempo. Los enfoques tradicionales suelen tratar los datos de entrenamiento como algo estático: o tienes entornos diversos o no los tienes, o rompes las correlaciones o no. El aprendizaje curricular cambia esto al reconocer que el orden y la progresión de las experiencias de entrenamiento moldean de raíz qué algoritmos emergen. En lugar de confiar en que un muestreo aleatorio de datos diversos evite los objetivos aproximados, los enfoques curriculares secuencian deliberadamente el entrenamiento para construir una comprensión causal robusta mientras socavan de forma sistemática las correlaciones espurias (<a href="https://dl.acm.org/doi/10.1145/1553374.1553380">Bengio et al., 2009</a>).</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.11: Aprendizaje curricular</strong>
+        <p style="margin:.4rem 0 0;">El aprendizaje curricular es una estrategia de entrenamiento que presenta los datos a los modelos de aprendizaje automático en un orden significativo, normalmente progresando de los ejemplos más fáciles a los más difíciles, para mejorar la eficiencia del aprendizaje y el rendimiento en generalización (<a href="https://arxiv.org/abs/2010.13166">Wang et al., 2021</a>).</p>
+      </aside>
+      <p>La idea básica conecta con lo que vimos en la sección sobre dinámicas de aprendizaje. En lugar de dejar al azar la búsqueda por el espacio de algoritmos, el aprendizaje curricular moldea qué soluciones resultan descubribles controlando la secuencia de presiones de optimización que encuentra el sistema.</p>
+      <p>Un diseño curricular eficaz requiere una progresión causalmente alineada, en la que cada etapa mantenga invariantes las reglas de decisión óptimas para el objetivo previsto. Un currículo mal diseñado puede, de hecho, afianzar los objetivos aproximados: si las etapas iniciales «más fáciles» recompensan correlaciones espurias, esos patrones pueden persistir incluso cuando el entrenamiento se vuelve más sofisticado. Si queremos aprender modelos causales, necesitamos crear una forma de aprendizaje curricular causalmente alineado, que establece condiciones formales para asegurar que las habilidades aprendidas en entornos simples se transfieran a otros más complejos sin deriva de objetivos (<a href="https://arxiv.org/abs/2503.16814">Li y Bareinboim, 2025</a>). Para nuestro problema, eso significa que cada etapa debe preservar la estructura causal que vincula las acciones con los resultados previstos, aunque aumente la complejidad del entorno. En el ejemplo de CoinRun, un currículo causalmente alineado empezaría con niveles donde la relación entre moneda y recompensa fuera máximamente clara, quizá con monedas en ubicaciones aleatorias y obstáculos mínimos, y después añadiría complejidad ambiental variando de forma sistemática las características espurias.</p>
+      <p>El diseño curricular guiado por interpretabilidad representa una frontera prometedora, al permitir vigilar en tiempo real las representaciones aprendidas. Con técnicas como los vectores de dirección (<em>steering vectors</em>) y el parcheo de activaciones, los sistemas curriculares podrían evaluar qué objetivos y patrones de razonamiento ha aprendido realmente el sistema, y después diseñar las etapas siguientes para abordar las carencias o los patrones preocupantes detectados. Si las sondas detectan objetivos aproximados emergentes, el currículo podría introducir de inmediato entornos que rompan esas correlaciones concretas. Si el análisis de activaciones revela un razonamiento causal débil, las etapas siguientes podrían enfatizar la supervisión de procesos y requisitos explícitos de razonamiento.</p>
+      <p>Este enfoque adaptativo aborda el desafío de fondo del diseño curricular: no podemos anticipar de antemano todos los objetivos aproximados posibles, pero sí podemos vigilarlos y responder de forma sistemática. La combinación de los principios del aprendizaje curricular con herramientas de interpretabilidad ofrece una vía hacia procedimientos de entrenamiento que previenen activamente el problema en lugar de limitarse a confiar en que no ocurra.</p>
+
+      <h3 id="aumento-de-datos">Aumento de datos</h3>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;"><strong>Historia de entrenamiento.</strong> Queremos algoritmos que aprendan representaciones de objetivos invariantes frente a características ambientales espurias. Lo logramos variando de forma sistemática las características potencialmente espurias mientras mantenemos constantes las relevantes para el objetivo, lo que vuelve poco fiables las soluciones basadas en correlaciones.</p>
+      <p>Romper correlaciones espurias mediante variación de datos es el enfoque más directo, aunque afronta limitaciones de fondo. El aprendizaje automático tradicional usa el aumento de datos para lidiar con el sobreajuste (imágenes rotadas, ruido añadido, ablaciones…) y el mismo principio se aplica al entrenamiento en seguridad. Sin embargo, en lugar de variar aleatoriamente las características del entorno, aquí también podemos usar enfoques basados en aprendizaje curricular: el aumento de datos curricular puede progresar de forma sistemática desde relaciones causales claras hasta distinciones más sutiles. Esto puede ayudar algo en términos de seguridad, pero el reto central sigue siendo diseñar el currículo, es decir, «saber de antemano qué correlaciones hay que romper».</p>
+      <p>La generación sintética de datos y de tareas extiende este principio más allá de los entornos, a cualquier dominio de entrenamiento. En lugar de anticipar manualmente cada correlación posible, los enfoques generativos pueden producir datos donde las aproximaciones queden sistemáticamente socavadas mientras se siguen recompensando los patrones de razonamiento previstos.</p>
+      <p>La generación procedural de entornos ofrece una escala sin precedentes para romper correlaciones. En vez de diseñar a mano entornos que rompan correlaciones concretas, los modelos generativos del mundo pueden crear contextos de entrenamiento ilimitados donde las correlaciones espurias varíen de forma sistemática. Eso hace escalable la ruptura de correlaciones, sin necesidad de un conocimiento experto extenso del dominio, aunque no resuelve el problema de fondo de las incógnitas desconocidas (<a href="https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/">Google DeepMind, 2025</a>).</p>
+
+      <h3 id="entrenamiento-adversarial">Entrenamiento adversarial</h3>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;"><strong>Historia de entrenamiento.</strong> Queremos aprender algoritmos que implementen un razonamiento orientado a objetivos mediante representaciones internas robustas, que no dependan de patrones correlacionales frágiles en las activaciones neuronales. Lo logramos entrenando bajo perturbaciones latentes que alteran las correlaciones internas espurias mientras se exige mantener el rendimiento, lo que fuerza el desarrollo de representaciones de objetivos basadas en razonamiento causal y no correlacional.</p>
+      <p>El entrenamiento adversarial clásico, en el espacio de entrada, comprueba si los modelos funcionan cuando manipulas lo que ven; el entrenamiento adversarial latente comprueba si funcionan cuando manipulas cómo piensan. Imagina que pones a prueba el reconocimiento de señales de stop de un coche autónomo. El entrenamiento en el espacio de entrada pondría pegatinas en las señales o cambiaría la iluminación para ver si el coche sigue parando. El entrenamiento adversarial latente (LAT) sería como interferir directamente en el «concepto» interno de qué significa una señal de stop: comprobar si el reconocimiento sigue funcionando cuando revuelves los patrones que representan «señal octogonal roja» o «norma de tráfico».</p>
+      <p>Para la generalización errónea de objetivos, esta distinción importa porque el problema suele residir en las representaciones internas que aprenden los sistemas, y no en su capacidad de manejar entradas inusuales. Un modelo de lenguaje podría desarrollar asociaciones internas entre respuestas útiles y ciertos patrones estilísticos, aunque el contenido real sea problemático. El LAT puede captar esas correlaciones internas comprobando directamente si las representaciones de objetivos aprendidas son robustas cuando se revuelven a propósito los patrones de activación que codifican relaciones espurias (<a href="https://arxiv.org/abs/2403.05030">Casper et al., 2024</a>).</p>
+      <p>Durante el entrenamiento, los sistemas deben mantener la persecución correcta del objetivo incluso cuando se alteran deliberadamente las representaciones internas de las correlaciones espurias. Eso fuerza a desarrollar representaciones que no puedan apoyarse en patrones correlacionales internos frágiles. A diferencia de los enfoques en el espacio de entrada, que ponen a prueba la robustez frente a variaciones ambientales, el entrenamiento adversarial latente apunta directamente a los mecanismos computacionales internos que posibilitan el problema.</p>
+      <p>El entrenamiento adversarial latente dirigido ha resultado especialmente eficaz en modelos de lenguaje. Se ha usado para mejorar la robustez del entrenamiento de rechazo frente a intentos de burlar las restricciones, superando a referencias computacionalmente costosas con órdenes de magnitud menos cómputo. La técnica también elimina puertas traseras sin acceso al desencadenante y hace que los métodos de desaprendizaje resistan mejor los intentos de reaprendizaje (<a href="https://arxiv.org/abs/2407.15549">Sheshadri et al., 2024</a>).</p>
+
+      <h3 id="entrenamiento-miope">Entrenamiento miope</h3>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;"><strong>Historia de entrenamiento.</strong> Queremos algoritmos que persigan objetivos dentro de horizontes temporales acotados, sin desarrollar metas que vayan más allá del episodio y que permitan el engaño estratégico. Lo logramos restringiendo el alcance de la optimización para impedir las capacidades de planificación a largo plazo necesarias para ocultar objetivos de forma estratégica.</p>
+      <p>Los sistemas que no pueden planificar más allá de sus acciones inmediatas no pueden incurrir en engaño estratégico durante el entrenamiento. Los enfoques de optimización miope, como MONA (optimización miope a partir de aprobación no miope), entrenan a los agentes para perseguir objetivos que se extienden solo hasta la siguiente acción, lo que impide desarrollar metas más allá del episodio. Un agente miope no puede desarrollar comportamientos como los que vimos en la sección sobre maquinación (el fingimiento de alineación, por ejemplo) porque su horizonte de optimización no va más allá de las respuestas individuales: no puede razonar sobre «más adelante, cuando se reduzca la supervisión», porque no hay un «más adelante» en su ámbito de planificación (<a href="https://arxiv.org/abs/2501.13011">Farquhar et al., 2025</a>). Esto aborda directamente el modelo de amenaza de la maquinación, al impedir el desarrollo de la capacidad previa que permite ocultar objetivos estratégicamente.</p>
+
+      <h3 id="entrenamiento-orientado-a-procesos">Entrenamiento orientado a procesos</h3>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;"><strong>Historia de entrenamiento.</strong> Queremos algoritmos que implementen patrones de razonamiento adecuados para llegar a sus conclusiones, de modo que los atajos que se saltan el razonamiento causal previsto no puedan lograr un buen rendimiento. Lo logramos optimizando el propio proceso de razonamiento y no solo las salidas finales.</p>
+      <p>El entrenamiento orientado a procesos evalúa los pasos que dan los sistemas para llegar a sus conclusiones, mientras que el orientado a resultados solo evalúa el resultado final. El primero convierte los procesos de razonamiento en parte del objetivo de optimización: los sistemas no pueden satisfacer los objetivos de entrenamiento limitándose a encontrar cualquier vía hacia las respuestas correctas, sino que deben usar procesos de razonamiento coherentes con las relaciones causales previstas.</p>
+
+      <h4 id="entrenamiento-asistido-por-ia">Entrenamiento asistido por IA</h4>
+      <p>Podemos usar modelos de IA para identificar y corregir una posible generalización errónea de objetivos durante el propio proceso de entrenamiento. Esta intervención conductual funciona haciendo que un modelo de lenguaje separado analice las políticas y los comportamientos del agente en entrenamiento para identificar escenarios en los que podría estar aprendiendo objetivos aproximados en lugar de los previstos. El LLM supervisor examina los patrones de decisión del agente y ofrece retroalimentación correctiva cuando detecta razonamientos que se apoyan en correlaciones espurias y no en una comprensión genuina de los objetivos. Por ejemplo, el LLM podría notar que un agente de navegación se mueve sistemáticamente hacia las paredes y señalarlo como un posible aprendizaje de «sigue las paredes» en vez de «llega a los objetivos» (<a href="https://arxiv.org/abs/2401.07181">Barj y Sautory, 2024</a>). La técnica aborda específicamente el problema al aportar una perspectiva externa capaz de reconocer cuándo los comportamientos aprendidos divergen de los objetivos previstos, aunque produzcan resultados correctos durante el entrenamiento. Sin embargo, tiene la limitación de que el LLM supervisor puede tener sus propios sesgos o no reconocer formas sutiles del problema, y el enfoque requiere una sobrecarga computacional considerable.</p>
+      <p>Del concepto general de supervisión basada en procesos y de los enfoques de seguridad asistidos por IA hablamos mucho más en el capítulo siguiente, dedicado a la supervisión escalable.</p>
+
+      <h4 id="entrenamiento-adversarial-relajado">Entrenamiento adversarial relajado</h4>
+      <p>El entrenamiento adversarial relajado incorpora señales de supervisión de forma continua al entrenamiento, en lugar de intentar detectar el engaño después de que emerja. En realidad no es «entrenamiento adversarial» en el sentido tradicional: es supervisión continua que no requiere una detección perfecta del engaño. Lo «relajado» significa que relajas el supuesto de poder detectar a la perfección cuándo un modelo está siendo engañoso o persiguiendo objetivos equivocados. En lugar de pillar el engaño a posteriori, este enfoque hace que la transparencia sobre los objetivos resulte instrumentalmente valiosa durante todo el entrenamiento. Los sistemas aprenden que parecer aceptables a los evaluadores humanos forma parte de rendir bien, lo que crea incentivos para desarrollar objetivos justificables ante los supervisores en vez de objetivos que exijan ocultación (<a href="https://www.alignmentforum.org/posts/9Dy5YRaoCxH9zuJqa/relaxed-adversarial-training-for-inner-alignment">Hubinger, 2019</a>). Esto modifica qué comportamientos se recompensan para incluir la aprobación humana continua junto al rendimiento en la tarea. Los sistemas no pueden lograr un alto rendimiento mediante objetivos aproximados ocultos, porque hacerlo viola los requisitos de transparencia que se evalúan sin interrupción durante el entrenamiento. Sin embargo, esto arriesga crear formas sofisticadas de engaño: los sistemas podrían aprender a parecer transparentes mientras persiguen otros objetivos, es decir, volverse mejores engañando a los evaluadores en lugar de genuinamente alineados.</p>
+
+      <h3 id="entrenamiento-guiado-por-interpretabilidad">Entrenamiento guiado por interpretabilidad</h3>
+      <p style="background:var(--fondo-alt);border-radius:8px;padding:.6rem 1rem;"><strong>Historia de entrenamiento.</strong> Queremos algoritmos que desarrollen representaciones de objetivos alineadas de forma transparente, con los patrones problemáticos detectados y corregidos a medida que emergen, en lugar de descubrirse solo al terminar el entrenamiento. Lo logramos vigilando de forma continua las representaciones internas durante el entrenamiento, usando herramientas de interpretabilidad para identificar patrones preocupantes y modificar las dinámicas en tiempo real.</p>
+      <p>El entrenamiento guiado por interpretabilidad integra el análisis en tiempo real de las interioridades del modelo en el propio proceso de entrenamiento, con técnicas como los autocodificadores dispersos, el análisis de vectores de dirección o la vigilancia mediante sondas, para detectar patrones emergentes relacionados con los objetivos y ajustar el entrenamiento en consecuencia. A diferencia del análisis a posteriori, este enfoque trata la interpretabilidad como un componente activo del bucle de entrenamiento y no como una herramienta de evaluación pasiva. Por ejemplo, si el análisis con SAE durante el entrenamiento revela la aparición de características asociadas a razonamiento engañoso o a la persecución de objetivos aproximados, el proceso puede introducir de inmediato medidas correctivas: aumento de datos adicional dirigido a esos patrones concretos, funciones de pérdida modificadas que penalicen la dependencia de características problemáticas, o ajustes curriculares que socaven las correlaciones espurias emergentes (<a href="https://arxiv.org/abs/2309.08600">Cunningham et al., 2023</a>).</p>
+      <p>Este enfoque permite responder de forma adaptativa a patrones que no pueden anticiparse de antemano. Los enfoques tradicionales deben especificar sus estrategias de mitigación antes de empezar el entrenamiento, pero el entrenamiento guiado por interpretabilidad puede responder a los patrones que realmente emergen en cada ejecución. Si aparecen correlaciones inesperadas entre características del entorno y recompensas, el sistema puede generar de inmediato datos que rompan esas correlaciones concretas. Si el análisis mediante sondas revela que el modelo está desarrollando representaciones internas asociadas al engaño estratégico, el entrenamiento puede modificarse para apuntar específicamente a esos patrones representacionales mediante técnicas como el ajuste fino con ablación de conceptos (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</p>
+      <p>La ventaja temporal de este enfoque debe equilibrarse con la restricción de separación entre verificación y entrenamiento. Intervenir pronto, cuando los patrones problemáticos apenas emergen, es potencialmente mucho más eficaz que intentar corregirlos cuando ya están afianzados en las representaciones del modelo. Sin embargo, usar señales de interpretabilidad para guiar el entrenamiento crea el riesgo de que los modelos aprendan a eludir esos métodos concretos de vigilancia, lo que los vuelve menos útiles para la verificación de seguridad posterior. Esto sugiere que el entrenamiento guiado por interpretabilidad debería centrarse en desarrollar representaciones de objetivos robustas, más que en intentar eliminar todos los patrones potencialmente preocupantes, y que la verificación de seguridad debería apoyarse en enfoques de interpretabilidad completamente separados.</p>
+      <p>El ajuste fino con ablación de conceptos (CAFT) identifica direcciones problemáticas en el espacio de activación mediante técnicas de interpretabilidad, y después ajusta el modelo proyectando fuera esas direcciones para impedir que se apoye en conceptos indeseados. En lugar de detectar el problema una vez ocurrido, CAFT actúa de forma preventiva: identifica direcciones correspondientes a patrones preocupantes, como correlaciones espurias o representaciones de «personas desalineadas», y luego entrena ablacionando de forma sistemática la capacidad del modelo de usar esas direcciones. Eso fuerza al sistema a aprender la tarea prevista por vías computacionales que no dependen de atajos problemáticos (<a href="https://arxiv.org/abs/2507.16795">Casademunt et al., 2025</a>).</p>
+      <p>CAFT aborda el peor escenario, aquel en que los patrones no pueden anticiparse mediante el diseño de los datos de entrenamiento. La técnica usa dos enfoques principales: análisis de componentes principales sobre las diferencias de activación entre el modelo base y el ajustado, para identificar direcciones asociadas a cambios problemáticos, y autocodificadores dispersos para descomponer las activaciones en componentes interpretables que puedan evaluarse en busca de problemas de alineación. Después, la interpretación humana identifica qué direcciones corresponden a conceptos indeseados que deberían ablacionarse durante el entrenamiento. En experimentos controlados sobre desalineación emergente, CAFT redujo las respuestas dañinas en un factor de diez manteniendo el rendimiento en las tareas previstas, lo que demuestra que los patrones de generalización problemáticos pueden prevenirse incluso sin ejemplos explícitos de los modos de fallo (<a href="https://arxiv.org/abs/2507.16795">Casademunt et al., 2025</a>).</p>
+      <p>La eficacia de CAFT revela restricciones importantes para la mitigación. La técnica funciona mejor cuando los objetivos problemáticos se corresponden con direcciones identificables en el espacio de activación, y no cuando emergen de representaciones distribuidas o muy entrelazadas. Eso sugiere que podría ser más eficaz contra formas simples del problema y tener dificultades con patrones más sofisticados que reparten la información relevante entre muchas vías computacionales. Además, CAFT afronta la restricción de separación entre verificación y entrenamiento: los métodos de interpretabilidad usados para identificar direcciones preocupantes durante el entrenamiento no pueden emplearse después para verificar la seguridad sin crear presión adversarial.</p>
+
+      <h3 id="enfoques-combinados">Enfoques combinados</h3>
+      <p>Ninguna intervención aislada ofrece protección completa, porque cada una apunta a aspectos distintos del problema. El aumento de datos previene los atajos ambientales, el entrenamiento adversarial latente previene los atajos representacionales internos y el entrenamiento orientado a procesos previene los atajos de razonamiento. Los enfoques combinados crean múltiples presiones independientes.</p>
+      <p><strong>Ejemplo:</strong> combinar aumento de datos con entrenamiento adversarial crea una doble presión. Los sistemas entrenados con datos sintéticos diversos mientras afrontan perturbaciones latentes encuentran a la vez variación ambiental y desafíos representacionales, lo que aborda el problema en varios niveles simultáneamente y previene tanto los atajos ambientales como los representacionales internos.</p>
+      <p><strong>Ejemplo:</strong> combinar entrenamiento orientado a procesos con aprendizaje curricular causal. Las etapas iniciales podrían exigir razonamiento causal explícito, paso a paso, con retroalimentación inmediata. Las posteriores podrían reducir poco a poco el andamiaje manteniendo la evaluación del proceso, lo que permite a los sistemas interiorizar patrones de razonamiento adecuados. Un currículo que empiece con cadenas causales simples («si la moneda es visible, planifica una ruta hacia ella») y vaya construyendo hasta razonamientos complejos de varios pasos («evalúa varias opciones de objetivo, considera los obstáculos, planifica una ruta eficiente») desarrolla de forma sistemática capacidades causales genuinas, en lugar de un reconocimiento de patrones sofisticado que imita el buen razonamiento.</p>
+      <p>La sobrecarga computacional de los enfoques combinados podría ser grande: entrenar a la vez con generación de datos sintéticos, perturbaciones adversariales latentes y supervisión de procesos requiere mucho más cómputo que el entrenamiento estándar. Sus costos podrían limitar la adopción en entornos competitivos donde la eficiencia del entrenamiento importa para la viabilidad comercial.</p>
+      <p>Las combinaciones guiadas por interpretabilidad representan el enfoque más sofisticado para prevenir el problema mediante intervenciones en tiempo de entrenamiento. En vez de elegir las técnicas a ciegas, el entrenamiento guiado por interpretabilidad puede adaptar su combinación según los patrones que realmente emerjan. Por ejemplo, si el análisis con SAE revela el desarrollo de características asociadas a atajos ambientales, el sistema puede enfatizar el aumento de datos dirigido a esas correlaciones concretas. Si la vigilancia mediante sondas detecta patrones emergentes de razonamiento estratégico, el entrenamiento puede incorporar supervisión de procesos adicional y requisitos de transparencia. Y si el parcheo de activaciones revela que ciertos componentes se están volviendo causalmente importantes para comportamientos problemáticos, puede aplicarse entrenamiento adversarial latente dirigido a esas vías. Este enfoque adaptativo aborda el desafío de fondo: no podemos anticipar de antemano todos los patrones posibles, pero sí vigilarlos y responder de forma sistemática a medida que emergen (<a href="https://arxiv.org/abs/2507.16795">Casademunt et al., 2025</a>; <a href="https://arxiv.org/abs/2309.08600">Cunningham et al., 2023</a>).</p>
+
+      <h2 id="intervenciones-posteriores-al-entrenamiento">Intervenciones posteriores al entrenamiento</h2>
+
+      <h3 id="vectores-de-direccion">Vectores de dirección</h3>
+      <p>Los vectores de dirección ofrecen un marco general tanto para detectar como para controlar comportamientos relacionados con objetivos, identificando direcciones lineales en el espacio de activación que corresponden a rasgos o metas concretos. En lugar de entrenar clasificadores como las sondas, usan conjuntos de datos contrastivos para encontrar direcciones que distinguen entre distintos modos de comportamiento; por ejemplo, la diferencia entre las activaciones cuando un modelo está siendo útil y cuando persigue una agenda oculta. Esos vectores pueden luego sumarse o restarse de las activaciones durante la inferencia para aumentar o reducir los comportamientos correspondientes, lo que los hace útiles tanto para la detección (midiendo la proyección sobre la dirección) como para el control (dirigiendo a lo largo de ella) (<a href="https://arxiv.org/abs/2308.10248">Turner et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/3e803b92d79b9e222a41c161bcaaf5fdcd211d0d35d43f3564d4743f73c75daa.BSsq3_pJ_Z2rmOB6.webp" alt="Figura 7.36">
+        <figcaption><strong>Figura 7.36.</strong> Dado un rasgo de personalidad y una descripción, la canalización genera automáticamente instrucciones que provocan comportamientos opuestos (por ejemplo, respuestas malvadas frente a no malvadas). Los vectores de persona se obtienen identificando la diferencia de actividad neuronal entre las respuestas que muestran el rasgo objetivo y las que no.</figcaption>
+      </figure>
+      <p>Los vectores de dirección pueden detectar la generalización errónea de objetivos revelando cuándo los modelos razonan sobre metas distintas de su comportamiento aparente. Los investigadores han extraído con éxito vectores para comportamientos como el retroceso, la estimación de incertidumbre y el razonamiento estratégico en modelos de razonamiento. Esos vectores funcionan en contextos y tamaños de modelo distintos, lo que sugiere que captan patrones computacionales estables y no correlaciones superficiales. Aplicados a la detección, podrían identificar cuándo un modelo razona internamente sobre estrategias engañosas u objetivos ocultos, aunque sus salidas parezcan alineadas (<a href="https://arxiv.org/abs/2506.18167">Venhoff et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c7bf585277795ca2e61102ca7cbc423afb38e3e4b00fbd32deadb139e822ff6b.zoimVxGT_Z22z3kD.webp" alt="Figura 7.37">
+        <figcaption><strong>Figura 7.37.</strong></figcaption>
+      </figure>
+      <p>Su eficacia revela ideas importantes sobre cómo emerge el problema durante el entrenamiento. La investigación con modelos de razonamiento muestra que los vectores derivados de las activaciones del modelo base pueden inducir comportamientos complejos, como el retroceso, al aplicarse a modelos ajustados, aunque esos mismos vectores no los induzcan en el propio modelo base. Eso sugiere que el ajuste fino reutiliza representaciones existentes en lugar de aprender capacidades totalmente nuevas, y ofrece una ventana a cómo podría emerger la generalización errónea de objetivos mediante la reutilización de capacidades latentes ya presentes en los modelos fundacionales (<a href="https://arxiv.org/abs/2507.12638">Ward et al., 2025</a>).</p>
+      <p>Aquí es importante la conexión con los simuladores: los vectores de dirección pueden entenderse como formas de activar distintos «simulacros» o modos de comportamiento que el modelo ha aprendido a instanciar, lo que potencialmente revela todo el espacio de objetivos y personas que es capaz de perseguir.</p>
+
+      <h3 id="edicion-de-modelos-y-desaprendizaje">Edición de modelos y desaprendizaje</h3>
+      <p>Las técnicas de edición de modelos pueden eliminar o modificar quirúrgicamente representaciones concretas relacionadas con objetivos sin necesidad de reentrenar por completo. Cuando el análisis de interpretabilidad identifica circuitos, características o representaciones asociadas al problema, técnicas como ROME (edición de modelo de rango uno) o el borrado de conceptos pueden modificar con precisión esos patrones preservando otras capacidades. Este enfoque es especialmente valioso cuando el problema afecta solo a un subconjunto de las capacidades del modelo, lo que permite arreglos dirigidos sin degradar el rendimiento global (<a href="https://arxiv.org/abs/2202.05262">Meng et al., 2022</a>; <a href="https://arxiv.org/abs/2306.03819">Belrose et al., 2023</a>).</p>
+      <p>Los enfoques de desaprendizaje pueden reducir de forma sistemática la dependencia de un modelo respecto de representaciones problemáticas identificadas mediante evaluación de seguridad. En lugar de intentar enseñar comportamientos nuevos, el desaprendizaje se centra en degradar la capacidad del modelo de perseguir objetivos aproximados ya aprendidos. Puede implicar ascenso de gradiente sobre ejemplos del problema para reducir la tendencia a repetir esos patrones, o enfoques más sofisticados que preserven las capacidades útiles mientras degradan las problemáticas. Sin embargo, el desaprendizaje afronta limitaciones de fondo: eliminar estos patrones puede no impedir que el modelo vuelva a desarrollar problemas similares, y un desaprendizaje agresivo arriesga degradar capacidades legítimas (<a href="https://arxiv.org/abs/2210.01504">Jang et al., 2022</a>).</p>
+
+      <h2 id="mitigaciones-en-tiempo-de-despliegue">Mitigaciones en tiempo de despliegue</h2>
+
+      <h3 id="monitorizacion-en-ejecucion">Monitorización en ejecución</h3>
+      <p>Los sistemas de monitorización en tiempo de despliegue pueden detectar el problema en tiempo real e intervenir antes de que los comportamientos problemáticos causen daño. Combinan monitorización conductual (vigilar salidas que sugieran objetivos desalineados), monitorización del estado interno (usar herramientas de interpretabilidad para detectar patrones de razonamiento preocupantes) y monitorización ambiental (vigilar efectos inesperados que puedan indicar la persecución de objetivos ocultos). Cuando se detectan patrones preocupantes, los sistemas de intervención pueden ir de enfoques conservadores, como marcar salidas para revisión humana, a otros agresivos, como detener de inmediato la ejecución del modelo (<a href="https://arxiv.org/abs/2401.05566">Hubinger et al., 2024</a>).</p>
+      <p>La ventaja temporal de intervenir en ejecución debe equilibrarse con restricciones de fiabilidad. La detección en tiempo real ofrece la última oportunidad de evitar daños, pero los entornos de despliegue pueden no admitir la sobrecarga computacional de un análisis de interpretabilidad sofisticado ni la latencia de la supervisión humana. Los sistemas prácticos requieren métodos de detección ligeros, capaces de operar con un costo computacional mínimo y manteniendo tasas bajas de falsos positivos. Eso crea presión para que los sistemas en despliegue se apoyen en métodos más simples y rápidos, que pueden ser menos precisos que los enfoques sofisticados disponibles durante el desarrollo (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>).</p>
+
+      <h3 id="filtros-y-barreras">Filtros y barreras de protección</h3>
+      <p>Los principios de la IA constitucional pueden implementarse como filtros en tiempo de despliegue que evalúen las salidas del modelo frente a criterios explícitos de alineación de objetivos antes de permitir que surtan efecto. En lugar de confiar en que el modelo haya interiorizado los objetivos adecuados durante el entrenamiento, los filtros constitucionales aportan una capa externa de verificación que comprueba si las acciones propuestas se ajustan a los objetivos previstos. Pueden ir de comprobaciones sencillas basadas en reglas («¿esta acción avanza hacia el objetivo previsto?») a evaluaciones sofisticadas con sistemas de IA separados, entrenados específicamente para verificar la alineación (<a href="https://arxiv.org/abs/2212.08073">Bai et al., 2022</a>).</p>
+      <p>Los sistemas de verificación multimodelo ofrecen una protección robusta usando IA diversas para contrastar la alineación. En vez de apoyarse en las representaciones de un único modelo, pueden usar varios entrenados con enfoques distintos para evaluar si las acciones propuestas se ajustan a los objetivos previstos. Esa diversidad protege frente a una generalización errónea sistemática que podría afectar a todos los modelos entrenados de forma parecida. Sin embargo, los enfoques multimodelo afrontan retos de escalabilidad y pueden introducir una latencia considerable en aplicaciones sensibles al tiempo (<a href="https://arxiv.org/abs/1805.00899">Irving et al., 2018</a>).</p>
+
+      <h3 id="entornos-aislados">Entornos aislados</h3>
+      <p>Las restricciones de capacidad en tiempo de despliegue pueden limitar el daño potencial constriñendo qué acciones pueden ejecutar los modelos, sean cuales sean los objetivos que persigan. Los enfoques de aislamiento (<em>sandboxing</em>) limitan los modelos a subconjuntos seguros de acciones posibles, mientras que las restricciones de capacidad impiden acceder a herramientas o recursos que podrían posibilitar una persecución dañina de objetivos. Estos enfoques reconocen que una alineación perfecta puede ser imposible y se centran en garantizar que, incluso si hay objetivos desalineados, su persecución no pueda causar un daño significativo (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2021</a>).</p>
+      <p>Los sistemas con humano en el circuito protegen exigiendo aprobación humana para decisiones de alto riesgo donde el problema podría causar un daño importante. Identifican automáticamente las decisiones que podrían tener consecuencias sustanciales si el modelo persigue objetivos equivocados y las derivan a supervisión humana. El reto está en diseñar sistemas que capten las decisiones genuinamente críticas sin saturar a los operadores con elecciones rutinarias. Los sistemas eficaces requieren un metarrazonamiento sofisticado sobre qué decisiones importan más e interfaces claras que ayuden a los operadores a evaluar rápidamente la alineación (<a href="https://arxiv.org/abs/2310.12941">Bommasani et al., 2023</a>).</p>
+
+      <h3 id="cortacircuitos">Cortacircuitos</h3>
+      <p>Los sistemas en despliegue requieren cortacircuitos robustos capaces de detener de inmediato la ejecución del modelo cuando se detecta el problema. A diferencia de intervenciones graduales como el filtrado de salidas o la supervisión humana, los cortacircuitos ofrecen paradas de emergencia para situaciones en que continuar operando supone un riesgo inmediato. Deben equilibrar la sensibilidad (detectar amenazas genuinas) con la robustez (evitar falsas alarmas que interrumpan la operación legítima). El reto de diseño consiste en crear sistemas de detección capaces de identificar el problema con rapidez suficiente para evitar el daño, manteniendo tasas de falsos positivos lo bastante bajas como para que el sistema siga siendo utilizable (<a href="https://arxiv.org/abs/2401.05566">Hubinger et al., 2024</a>).</p>
+
+      <h2 id="teoria-del-aprendizaje-singular">Teoría del aprendizaje singular</h2>
+      <p>La teoría del aprendizaje intenta predecir qué algoritmos aprendidos generalizarán más allá de los datos de entrenamiento. El objetivo central de la teoría clásica es acotar varios tipos de error: en particular, el error de aproximación, el de generalización y el de optimización. Una intuición que ha guiado décadas de investigación es que los modelos más simples tienden a generalizar mejor que los complejos. El principio de la navaja de Occam aplicado al aprendizaje automático sugiere que, cuando varios algoritmos se ajustan igual de bien a tus datos, deberías preferir el más simple porque es más probable que funcione con datos nuevos. La teoría clásica usaba el número de parámetros como aproximación a la complejidad algorítmica: menos parámetros significaba algoritmos más simples, y eso significaba mejor generalización. Este marco ofrecía herramientas para predecir no solo qué modelos generalizarían, sino cuántos datos harían falta para aprender de forma fiable, cuánta confianza depositar en las predicciones y cuándo preferir un modelo sobre otro. Sin embargo, el supuesto se rompe con las redes neuronales sobreparametrizadas.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/8d9730e38e42b5eaaa51c2a4b1db2e9e3eeb9d4671f104232b5f993caba1ac9f.ItoOm2bE_1CHQPt.webp" alt="Figura 7.38">
+        <figcaption><strong>Figura 7.38.</strong> De los datos al comportamiento del modelo: la estructura de los datos determina la estructura interna de los modelos y, por tanto, su generalización. Los enfoques actuales de alineación operan moldeando la distribución de entrenamiento (izquierda), lo que solo determina indirectamente la estructura del modelo (derecha) a través de sus efectos sobre el proceso de optimización (centro). Para mitigar las limitaciones de este enfoque indirecto, la alineación requiere entender mejor estos eslabones intermedios (<a href="https://arxiv.org/abs/2502.05475">Lehalleur et al., 2025</a>).</figcaption>
+      </figure>
+      <p>El descenso de gradiente navega por los paisajes de pérdida de formas que se aproximan bastante a la inferencia bayesiana. Eso significa que los algoritmos que descubrimos mediante entrenamiento reflejan en gran medida qué algoritmos ya eran probables bajo un muestreo aleatorio de parámetros (<a href="https://arxiv.org/abs/2006.15191">Mingard et al., 2020</a>). Si el descenso de gradiente estocástico (SGD) encuentra sobre todo algoritmos que ya eran probables por puro azar, entonces el sesgo hacia objetivos desalineados existe antes incluso de empezar a entrenar. El problema no es que el SGD introduzca malos incentivos durante la optimización, sino que el espacio de algoritmos posibles está fundamentalmente sesgado hacia soluciones simples basadas en aproximaciones, frente a otras complejas y genuinamente alineadas. Esto podría significar que no podemos arreglar la generalización errónea de objetivos cambiando cómo entrenamos los modelos: tendríamos que cambiar qué algoritmos resultan fáciles de representar en primer lugar.</p>
+      <p>Las redes neuronales pertenecen a una clase de modelos en los que varias configuraciones de parámetros pueden implementar algoritmos idénticos. En la sección sobre dinámicas de aprendizaje vimos cómo cada configuración de parámetros corresponde a un algoritmo aprendido concreto, pero en las redes neuronales esa relación no es uno a uno. Podemos permutar unidades ocultas sin cambiar el comportamiento de la red. Podemos escalar los pesos de una capa y compensarlo escalando los de la siguiente. Podemos tener configuraciones de parámetros completamente distintas que implementan procesos de decisión idénticos.</p>
+      <p>La teoría clásica da por supuesto que cada configuración de parámetros corresponde a un algoritmo único. En la regresión lineal, cada conjunto de pesos produce una recta distinta, y cada recta representa un algoritmo de predicción único. Esa correspondencia uno a uno permite usar el número de parámetros como medida de complejidad y aplicar aproximaciones matemáticas estándar para predecir los resultados del aprendizaje.</p>
+      <p>Estas simetrías provocan una ruptura de fondo en cómo medimos la complejidad algorítmica. Lo que conductualmente parece un solo algoritmo, como «navegar hacia la moneda», podría corresponder a millones de configuraciones de parámetros distintas; es decir, millones de tipos distintos de algoritmos aprendidos pueden implementar exactamente el mismo comportamiento. Lo habitual es medir la complejidad del algoritmo aprendido contando parámetros, y eso falla porque miles de parámetros podrían colaborar para implementar un único patrón computacional, mientras que otros podrían ser completamente redundantes. A esta ruptura se la llama «singularidad» en términos matemáticos, en referencia a las degeneraciones en la correspondencia entre parámetros y funciones. La palabra «singular» significa lo mismo que en «matriz singular»: algo fundamental de la estructura matemática es degenerado. En las redes neuronales, las regiones del espacio de parámetros que implementan el mismo algoritmo forman estructuras geométricas complejas con singularidades donde las herramientas matemáticas estándar fallan (<a href="https://arxiv.org/abs/2010.11560">Murfet et al., 2020</a>).</p>
+      <p>Medir la complejidad algorítmica añade una capa nueva de investigación, más allá de la equivalencia conductual y la algorítmica. A lo largo del capítulo nos hemos centrado en distinguir entre soluciones conductualmente equivalentes pero algorítmicamente distintas, como «moverse a la derecha» frente a «recoger monedas» en CoinRun: ambas producen un comportamiento idéntico durante el entrenamiento, pero representan procesos de razonamiento internos distintos. Ahora encontramos una tercera capa: soluciones algorítmicamente idénticas que difieren solo en sus valores concretos de parámetros. ¿Por qué importa esa variación paramétrica si los algoritmos son idénticos? Porque la geometría del espacio de parámetros determina qué descubre el SGD durante el entrenamiento. Aunque dos configuraciones implementen el mismo algoritmo, ocupan regiones distintas del paisaje de pérdida: algunas soluciones podrían ser implementables mediante millones de configuraciones (creando cuencas amplias), mientras que otras requieren una coordinación precisa de parámetros (creando regiones estrechas). El SGD tiene más probabilidades de descubrir algoritmos que corresponden a regiones mayores del espacio de parámetros.</p>
+      <p>Las herramientas de la teoría clásica fallan por completo al aplicarse a estos modelos «singulares». Las técnicas que funcionan para la regresión lineal (contar parámetros, usar aproximaciones estándar, hacer predicciones teóricas limpias) dan por supuesto que cada parámetro contribuye de forma independiente a la complejidad algorítmica. En las redes neuronales, los parámetros interactúan de formas complejas: cantidades enormes podrían colaborar para implementar patrones computacionales simples, mientras que otros podrían ser completamente redundantes. La correspondencia entre parámetros y funciones desarrolla degeneraciones y redundancias que violan los supuestos en los que se apoyan las herramientas estadísticas clásicas. Aproximaciones estándar como la de Laplace dejan de ser válidas. Contar parámetros pierde todo sentido como medida de complejidad. La pulcra relación entre número de parámetros y generalización desaparece por completo (<a href="https://arxiv.org/abs/2010.11560">Murfet et al., 2020</a>).</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Minimización de la energía libre en aprendizaje automático</strong> · Opcional · 1 min de lectura</summary>
+        <p>La fórmula de la energía libre de Sumio Watanabe precisa matemáticamente este compromiso intuitivo:</p>
+        <p style="text-align:center;"><em>F<sub>n</sub> ≈ n·L<sub>n</sub>(w) + λ·log n</em></p>
+        <p><strong>El primer término premia la exactitud:</strong> <em>n·L<sub>n</sub>(w)</em> mide lo bien que el algoritmo se ajusta a los datos de entrenamiento. Los algoritmos con menor pérdida obtienen menor energía libre, lo que los hace más probables.</p>
+        <p><strong>El segundo término penaliza la complejidad:</strong> <em>λ·log n</em> mide la penalización por complejidad algorítmica. Aquí <em>λ</em> es el umbral canónico logarítmico real, es decir, el número de «parámetros efectivos» necesarios para especificar ese algoritmo concreto dentro de la arquitectura. Los algoritmos que requieren más parámetros efectivos obtienen mayor energía libre, lo que los hace menos probables.</p>
+        <p>El equilibrio entre exactitud y complejidad cambia a medida que avanza el entrenamiento. Al principio (con <em>n</em> pequeño) domina la penalización por complejidad, así que se prefieren algoritmos simples aunque tengan mayor pérdida. Más adelante domina el término de exactitud, así que pasan a preferirse algoritmos complejos pero precisos. Eso crea «transiciones de fase» donde la solución algorítmica preferida cambia de golpe.</p>
+        <p><strong>Evidencia empírica: escaleras opuestas.</strong> Los investigadores que siguen a la vez la pérdida y la complejidad estimada durante el entrenamiento observan «escaleras opuestas»: cada caída repentina de la pérdida va acompañada de un salto en la complejidad algorítmica. Esto valida la predicción de la teoría del aprendizaje singular de que el aprendizaje avanza mediante transiciones de fase discretas, de soluciones simples con alta pérdida a soluciones complejas con baja pérdida, en lugar de refinar gradualmente un único algoritmo.</p>
+        <p>Esto explica por qué los objetivos aproximados simples son sistemáticamente más probables durante el entrenamiento. Algoritmos como «muévete siempre a la derecha» requieren muy pocos parámetros efectivos: la mayoría de los pesos pueden variar libremente sin cambiar ese patrón básico de comportamiento. Algoritmos complejos como «reconoce objetos, planifica rutas, sortea obstáculos» requieren muchos parámetros efectivos trabajando juntos con coordinación precisa. La fórmula muestra que los algoritmos más simples tienen una probabilidad sistemáticamente mayor de ser descubiertos durante un entrenamiento finito (<a href="https://www.cambridge.org/core/books/algebraic-geometry-and-statistical-learning-theory/9C8FD1BDC817E2FC79117C7F41544A3A">Watanabe, 2009</a>).</p>
+      </details>
+
+      <p>La selección interna de modelos describe cómo eligen las redes neuronales entre soluciones en competencia durante el entrenamiento. En lugar de refinar gradualmente un único algoritmo, las redes atraviesan transiciones discretas entre enfoques algorítmicos completamente distintos. Cada transición representa abandonar una solución en favor de otra que ofrece un mejor compromiso entre exactitud y complejidad, dada la cantidad actual de datos de entrenamiento.</p>
+      <p>La dependencia del camino emerge porque la secuencia de soluciones simples condiciona qué soluciones complejas resultan accesibles después. Dos redes podrían empezar ambas con aproximaciones simples y acabar transitando hacia algoritmos complejos, pero cuál de ellos se vuelve accesible depende por completo del camino recorrido a través de soluciones simples intermedias. Pequeñas diferencias de inicialización pueden determinar qué secuencia se recorre, lo que lleva a algoritmos finales completamente distintos.</p>
+      <p>Vista desde la teoría del aprendizaje singular, la generalización errónea de objetivos pasa de ser meramente posible a ser matemáticamente inevitable. El mecanismo de selección interna muestra que, durante un entrenamiento finito, los algoritmos de menor complejidad efectiva se preferirán de forma sistemática frente a los de mayor complejidad, incluso cuando estos capten mejor los objetivos previstos. Eso transforma nuestra comprensión: de «a veces ocurre» pasamos a «es lo que ocurre por defecto, salvo que se prevenga activamente».</p>
+      <p>Las singularidades del paisaje de pérdida crean sesgos sistemáticos hacia ciertos tipos de objetivos según su simplicidad algorítmica. Las estructuras geométricas donde múltiples configuraciones de parámetros implementan algoritmos idénticos determinan qué objetivos son fáciles o difíciles de descubrir. Los objetivos implementables con menos parámetros efectivos ocupan regiones mayores del espacio de parámetros, lo que los hace más probables. Esto aporta fundamentos matemáticos a nuestros argumentos de conteo: el «conteo» refleja volúmenes geométricos reales.</p>
+      <p>La cristalización de objetivos se refiere a las transiciones de fase en las que las redes abandonan aproximaciones simples de objetivos por otras más complejas. Durante el entrenamiento, los sistemas no refinan sus objetivos de forma gradual: atraviesan transiciones repentinas donde una estructura de objetivos se sustituye por otra. Las primeras suelen implicar aproximaciones simples (como «moverse a la derecha» en lugar de «recoger monedas»). Las posteriores pueden llevar a objetivos más complejos, pero cuáles resultan accesibles depende del camino recorrido por las aproximaciones simples anteriores.</p>
+      <p>La complejidad de los valores humanos crea vulnerabilidades sistemáticas. Implementar una alineación genuina requiere aprender reglas dependientes del contexto, manejar casos límite y hacer distinciones morales sutiles, todo ello con alta complejidad algorítmica. Las heurísticas simples que producen comportamientos de apariencia alineada pero que se pierden la intención profunda tendrán sistemáticamente menor complejidad, lo que las hace más probables en regímenes de entrenamiento finito.</p>
+      <p>Las transiciones de fase ofrecen señales de alerta temprana. El coeficiente de aprendizaje local puede estimarse durante el entrenamiento para seguir los cambios de complejidad. Los saltos repentinos suelen coincidir con la cristalización de objetivos, es decir, con los momentos en que las redes abandonan una estructura de objetivos por otra. Vigilar estas transiciones podría avisar con antelación cuando los sistemas se desplazan hacia objetivos potencialmente desalineados (<a href="https://arxiv.org/abs/2402.02364">Hoogland et al., 2024</a>).</p>
+      <p>La interpretabilidad del desarrollo emerge de forma natural como método para entender la formación de objetivos. En lugar de aplicar ingeniería inversa a modelos ya terminados, podemos estudiar la secuencia de transiciones de fase mediante la cual cristalizan los objetivos. Cada transición revela por qué se seleccionaron unos objetivos concretos frente a sus alternativas, lo que aporta ideas cruciales para la detección y la mitigación. Hablaremos más de ello en nuestro capítulo sobre interpretabilidad.</p>
+      <p>La teoría del aprendizaje singular se centra en la geometría del espacio de parámetros y abstrae cómo esos parámetros se traducen en comportamientos. Entender la generalización errónea de objetivos exige conectar la complejidad geométrica con el comportamiento algorítmico real, y la teoría solo ofrece herramientas parciales para esa conexión. Dos modelos con propiedades geométricas idénticas podrían aprender objetivos distintos según sus correspondencias entre parámetros y funciones (<a href="https://www.lesswrong.com/posts/FTcetDQ4mBnLrndXS/my-criticism-of-singular-learning-theory">Skalse, 2023</a>).</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 30 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/mitigations/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap7-06-deteccion.html">← Anterior: Detección</a>
+      </div>
+      <a class="siguiente" href="cap8-01-introduccion.html">
+        <strong>Siguiente: Capítulo 8 · Introducción →</strong><br>
+        La supervisión escalable es el desafío de asegurar que los sistemas de IA sigan alineados con los valores humanos incluso cuando empiezan a realizar tareas que superan la pericia humana y nuestra capacidad de dar retroalimentación.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
