@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maquinación · Capítulo 7 – AI Safety Atlas</title>
+  <meta name="description" content="Maquinación y alineación engañosa: requisitos, dimensiones y probabilidad.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>7. Generalización errónea de objetivos</h2>
+        <ol>
+          <li><a href="cap7-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap7-02-generalizacion-multiobjetivo.html">Generalización multiobjetivo</a></li>
+          <li><a href="cap7-03-dinamicas-de-aprendizaje.html">Dinámicas de aprendizaje</a></li>
+          <li><a href="cap7-04-orientacion-a-objetivos.html">Orientación a objetivos</a></li>
+          <li class="activo"><a href="cap7-05-maquinacion.html">Maquinación</a></li>
+          <li><a href="cap7-06-deteccion.html">Detección</a></li>
+          <li><a href="cap7-07-mitigaciones.html">Mitigaciones</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 7: Generalización errónea de objetivos</p>
+      <h1>Maquinación</h1>
+      <p><em>Una IA muy orientada a objetivos que además comprenda el mundo en profundidad podría darse cuenta de que el proceso de entrenamiento intenta cambiar sus objetivos. Eso genera incentivos para engañar: comportarse de forma impecable durante el entrenamiento y desertar después.</em></p>
+      <p class="meta">29 min · Escrito por Markov Grey</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter7-audio-a88add43824023e389404677aecb1cefa0dbb830ae6c39a53c10dfe117dfe830.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter7-ea23ab66624f1b86a69bccd21a30db28d34c94bf893832e41188ced035577ad4.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#requisitos-previos">Requisitos previos</a></li>
+          <li><a href="#dimensiones">Dimensiones</a></li>
+          <li><a href="#transparencia-frente-a-neuralese">Transparencia frente a neuralese</a></li>
+          <li><a href="#en-contexto-frente-a-fuera-de-contexto">En contexto frente a fuera de contexto</a></li>
+          <li><a href="#corregibilidad">Corregibilidad</a></li>
+          <li><a href="#probabilidad">Probabilidad</a></li>
+          <li><a href="#argumentos-a-favor">Argumentos a favor</a></li>
+          <li><a href="#argumentos-en-contra">Argumentos en contra</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p>La maquinación surge cuando los sistemas orientados a objetivos afrontan una elección estratégica inevitable sobre si revelar sus verdaderos fines. Cuando un sistema persigue objetivos de forma sistemática y desarrolla conciencia de su proceso de entrenamiento, reconoce que mostrar ciertos objetivos desencadenaría intentos de modificarlo. Eso crea un dilema de fondo: revelar los objetivos con honestidad y aceptar la modificación, o esconderlos estratégicamente aparentando estar alineado. El sistema debe elegir entre transparencia y preservación de objetivos.</p>
+      <p>Este dilema estratégico aparece con independencia de cómo surja la orientación a objetivos. Aunque un sistema no sea un optimizador aprendido (un mesaoptimizador), mientras tenga tendencias fuertes de orientación a objetivos la lógica subyacente es idéntica. Cualquier sistema con modelos del mundo suficientemente precisos afrontaría las mismas elecciones, tanto si la persecución de objetivos se produce mediante reconocimiento de patrones extremadamente sofisticado como mediante una búsqueda u optimización interna genuina.</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.10: Maquinación (alineación engañosa)</strong>
+        <p style="margin:.4rem 0 0;">La maquinación se produce cuando un sistema de IA finge estar alineado durante el entrenamiento para preservar objetivos desalineados de cara al despliegue. El sistema produce salidas que satisfacen a los evaluadores humanos mientras mantiene objetivos internos distintos, y engaña estratégicamente a los mecanismos de retroalimentación en los que confiamos para la seguridad (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      </aside>
+      <figure>
+        <p><a href="https://www.youtube.com/results?search_query=deceptive+alignment">▶ Ver el vídeo en YouTube (en inglés)</a></p>
+        <figcaption><strong>Vídeo 7.6.</strong> Vídeo opcional que explica la alineación engañosa de forma más técnica. <em>Nota de la traducción: en la versión de la página a la que pude acceder no se incluía la dirección exacta del vídeo; puedes encontrarlo en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/scheming/">sección original</a>.</em></figcaption>
+      </figure>
+      <p><strong>La lógica estratégica se deriva de la convergencia instrumental aplicada a la preservación de objetivos.</strong> Hablamos de la convergencia instrumental en el capítulo sobre riesgos. Como recordatorio: casi cualquier objetivo se sirve mejor manteniendo la capacidad de perseguirlo en el futuro (<a href="https://psycnet.apa.org/record/2014-48585-000">Bostrom, 2014</a>). Si a un sistema le importa un objetivo concreto, por ejemplo ser a la vez útil e inofensivo, y se lo modifica para que solo le importe ser útil, pierde su capacidad de ser inofensivo. Pero un sistema que logra ocultar su objetivo de ser inofensivo hasta el despliegue puede perseguirlo después sin miedo a que lo reentrenen. Un argumento parecido puede hacerse sobre la búsqueda de poder.<sup><a href="#nota-1" id="ref-1">1</a></sup> Este tipo de comportamiento se llama a veces «custodia de objetivos» y genera una presión sistemática durante el entrenamiento siempre que los sistemas tienen objetivos que se extienden más allá de los episodios individuales.<sup><a href="#nota-2" id="ref-2">2</a></sup></p>
+      <p><strong>Tres tipos de sistemas orientados a objetivos ilustran cómo un comportamiento idéntico durante el entrenamiento puede enmascarar propiedades de alineación radicalmente distintas.</strong> Estos son ejemplos de tres sistemas que muestran todos un comportamiento útil e inofensivo durante el entrenamiento (<a href="https://www.cold-takes.com/why-ai-alignment-could-be-hard-with-modern-deep-learning/">Cotra, 2021</a>; <a href="https://www.alignmentforum.org/posts/A9NxPTwbw6r6Awuwt/how-likely-is-deceptive-alignment">Hubinger, 2022</a>; <a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>):</p>
+      <ol>
+        <li><strong>Los santos</strong> son sistemas cuyos objetivos se alinean genuinamente con los valores humanos. Un santo persigue resultados beneficiosos porque de verdad le importa el bienestar humano, tras haber aprendido objetivos que generalizan de forma robusta más allá de la distribución de entrenamiento. Representan el caso ideal: su comportamiento útil durante el entrenamiento refleja una alineación genuina que persiste en todos los contextos.</li>
+        <li><strong>Los complacientes</strong> aprendieron a optimizar la propia señal de entrenamiento en lugar del objetivo que había detrás. Un complaciente intenta genuinamente maximizar las valoraciones de aprobación humana en vez del bienestar humano. Cuando ambos objetivos divergen, elige de forma sistemática la aprobación (que puntúa más alto en las recompensas del episodio) por encima del beneficio real.</li>
+        <li><strong>Los maquinadores</strong> tienen objetivos propios pero engañan estratégicamente al proceso de entrenamiento. Sus modelos del mundo indican que revelar objetivos potencialmente desalineados desencadenaría una modificación, así que fingen ser útiles hasta el despliegue. Representan el caso más peligroso, porque trabajan activamente para subvertir las medidas de seguridad.</li>
+      </ol>
+      <p>En el peor de los casos, los tres tipos producen un comportamiento idéntico durante el entrenamiento, lo que los vuelve indistinguibles con los métodos de evaluación estándar.<sup><a href="#nota-3" id="ref-3">3</a></sup></p>
+
+      <h2 id="requisitos-previos">Requisitos previos</h2>
+      <p>La preservación de objetivos es el mecanismo central de la maquinación. Pero solo se vuelve peligrosa combinada con:</p>
+      <ol>
+        <li>Orientación a objetivos (persecución sistemática de fines).</li>
+        <li>Conciencia situacional (comprensión de las amenazas de modificación).</li>
+        <li>Capacidades estratégicas (capacidad de planificar resistencia).</li>
+        <li>Capacidades de engaño (capacidad de ocultar esa resistencia).</li>
+      </ol>
+      <p>La maquinación requiere unas pocas capacidades clave, cada una en un espectro donde cruzar ciertos umbrales habilita comportamientos estratégicos cualitativamente distintos. Entender estos requisitos ayuda a predecir cuándo la maquinación se vuelve posible y revela puntos de intervención para prevenirla. Varias de estas capacidades las tratamos en profundidad en el capítulo sobre evaluaciones, así que aquí solo las vemos brevemente.</p>
+      <p><strong>Los maquinadores necesitan generalización de capacidades y generalización errónea de objetivos, combinadas con una alta orientación a objetivos.</strong> Sin algún objetivo subyacente distinto del que pretendíamos, los sistemas no tienen motivo para engañarnos estratégicamente. El riesgo escala con el grado en que el sistema está orientado a objetivos (el peor caso serían los mesaoptimizadores aprendidos) y con el grado en que esos objetivos están desalineados o mal generalizados (desde errores leves de aproximación hasta objetivos completamente ortogonales).</p>
+      <p><strong>Los maquinadores necesitan conciencia situacional</strong>, es decir, comprender el proceso de entrenamiento y su propia posición estratégica dentro de él. Esto implica que el modelo debe tener modelos del mundo suficientemente precisos, adquiridos mediante suficientes interacciones con el entorno, suficientes datos de entrenamiento, etcétera. La conciencia situacional abarca desde el reconocimiento básico de que el comportamiento afecta a las interacciones futuras hasta modelos sofisticados de cómo funcionan los algoritmos de entrenamiento y qué desencadena una modificación. Los modelos de frontera actuales muestran una conciencia situacional sustancial: comentan su proceso de entrenamiento, reconocen escenarios de evaluación y razonan sobre cómo podrían percibirse sus respuestas (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d34dfe918bceb551224bc5149e5652650abc40431ff67db2de1fa5c2d06b7e5c.Bvm_YdZG_1hYFha.webp" alt="Figura 7.18">
+        <figcaption><strong>Figura 7.18.</strong> Los sistemas empiezan a mostrar cierta conciencia de sí mismos como IA (<a href="https://arxiv.org/abs/2407.04694">Laine et al., 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Los maquinadores necesitan objetivos más allá del episodio</strong>, que extiendan el horizonte de optimización del sistema más allá de las interacciones de entrenamiento individuales. Esto requiere la capacidad de considerar el impacto de las acciones en horizontes temporales extremadamente largos, además de un alto grado de conciencia situacional. Pero difiere de la planificación a largo plazo en general, porque exige específicamente que al sistema le importen resultados que persisten después de que termine el episodio de entrenamiento actual. Un sistema podría planificar mucho dentro de un episodio y permanecer indiferente a las consecuencias más allá de su límite. Para que la maquinación funcione, al sistema debe importarle preservar sus objetivos a lo largo de todo el proceso de entrenamiento y hasta el despliegue. Sin objetivos más allá del episodio no hay incentivo estratégico para fingir alineación, porque al sistema no le importa lo que ocurra después de la interacción actual. Además de los objetivos a largo plazo, los maquinadores deben creer que la amenaza de modificación desaparecerá en algún momento.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/6150885a9a77461455bd06a907f27abc804554eba331dc451f749c602146fcd7.B5OGHC9M_26jWu5.webp" alt="Figura 7.19">
+        <figcaption><strong>Figura 7.19.</strong> Tres caminos distintos hacia los objetivos más allá del episodio (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Los maquinadores necesitan una alta capacidad de engaño estratégico</strong> para crear y mantener personajes a lo largo de periodos prolongados y de métodos de supervisión cambiantes. Un engaño contextual simple podría funcionar en interacciones individuales, pero manipular sistemáticamente el juego del entrenamiento exige mantener un comportamiento estratégico coherente a lo largo de miles de episodios mientras se adapta a mecanismos de supervisión que cambian durante el despliegue. Tenemos varias demostraciones de modelos capaces de un engaño sofisticado, pero las evaluaciones de la propensión al engaño estratégico siguen en curso.</p>
+      <p>Una vez cumplidas estas capacidades previas, la maquinación puede manifestarse de formas cualitativamente distintas que determinan tanto el perfil de amenaza como las estrategias de intervención. Hasta aquí hemos hablado de por qué un modelo maquinaría y de qué capacidades harían falta. El siguiente apartado trata de cómo, cuándo y dónde podría implementarla el sistema.</p>
+
+      <h2 id="dimensiones">Dimensiones</h2>
+      <p>Entender la maquinación exige analizarla en varias dimensiones que determinan tanto su perfil de amenaza como nuestra capacidad de detectarla y mitigarla. Cuando observamos comportamiento engañoso en un sistema de IA, estamos viendo la manifestación superficial de procesos estratégicos más profundos que pueden variar enormemente en implementación, durabilidad y alcance. Estas variaciones importan porque determinan qué estrategias de detección podrían funcionar, cuán persistentes serían las amenazas y qué intervenciones resultarían eficaces. En lugar de tratar la maquinación como un fenómeno monolítico, hemos optado por descomponerla en varias propiedades.</p>
+      <p>Un comportamiento de maquinación puede ocupar a la vez una posición concreta en cada una de estas dimensiones, lo que crea perfiles de amenaza distintos que requieren enfoques de mitigación distintos. Entenderlas nos ayuda a ir más allá de preguntar simplemente «¿está maquinando este sistema?» y a plantear preguntas más precisas sobre cómo funciona esa maquinación y qué implica para la seguridad. Estas propiedades nos permiten distinguir entre formas débiles y fuertes: la maquinación débil podría implicar un engaño contextual desencadenado por instrucciones concretas, mientras que la fuerte representa un engaño estratégico persistente, sofisticado y no interpretable, que resiste los intentos de intervención.</p>
+
+      <h3 id="transparencia-frente-a-neuralese">Transparencia frente a <em>neuralese</em></h3>
+      <p>La transparencia de la maquinación mide dónde ocurre la computación estratégica dentro de la arquitectura del sistema. Esta dimensión capta dónde sucede realmente la planificación engañosa: desde trazas de razonamiento externalizadas y completamente transparentes (como la cadena de pensamiento) hasta un razonamiento completamente opaco mediante activaciones de parámetros (las computaciones internas que no aparecen en la salida visible), o alguna combinación de ambas. El nivel de transparencia determina tanto nuestra capacidad de detectar la maquinación como las restricciones de sofisticación de la planificación estratégica.</p>
+      <ol>
+        <li><strong>El razonamiento externalizado</strong> implementa toda la computación estratégica mediante generación de texto visible. La planificación engañosa ocurre enteramente a través del mismo proceso de generación de tokens que se usa para el razonamiento normal. Al decidir si engañar, el sistema genera explícitamente texto del tipo «debería ocultar mis verdaderas capacidades para evitar que me modifiquen». Es la forma más detectable de maquinación, porque todo el pensamiento estratégico aparece en salidas observables.</li>
+        <li><strong>El razonamiento estratégico internalizado</strong> implementa el engaño sin trazas visibles en las salidas del modelo. Los pensamientos estratégicos no aparecen necesariamente en borradores externos ni en la cadena de pensamiento. Si todo el razonamiento estratégico ocurre mediante activaciones de parámetros durante las pasadas hacia delante, el sistema podría calcular cuándo engañar, mantener consistencia estratégica y coordinar objetivos únicamente con procesamiento interno. Es la forma más preocupante, porque resulta esencialmente indetectable con los enfoques de monitorización actuales.</li>
+        <li><strong>El razonamiento mixto</strong> distribuye la computación estratégica entre la generación de texto externo y el procesamiento interno de parámetros. Algunas decisiones estratégicas aparecen en las trazas de razonamiento y otras ocurren internamente. Un modelo podría externalizar consideraciones generales como «debería tener cuidado con mis capacidades» mientras calcula internamente las decisiones tácticas concretas, como exactamente cuánta capacidad revelar u ocultar.</li>
+      </ol>
+      <p>El razonamiento estratégico puede desplegarse en contextos y sesiones distintos. La <strong>maquinación de una sola pasada</strong> implementa todos los cálculos dentro de pasadas hacia delante individuales: el sistema reconoce la situación, evalúa las opciones engañosas y selecciona respuestas enteramente mediante procesamiento interno durante una sola llamada de inferencia. La <strong>maquinación multipasada</strong> coordina el comportamiento estratégico a lo largo de varias llamadas dentro de la misma sesión, manteniendo un estado estratégico y adaptando planes según evolucionan las interacciones. La <strong>maquinación entre sesiones</strong> preserva objetivos estratégicos a través de interacciones completamente separadas, lo que exige mantener representaciones de objetivos que sobrevivan a los límites de sesión y a los reinicios de contexto.</p>
+      <p><strong>Ejemplo: razonamiento de maquinación explícito.</strong> Se ha observado a modelos planificar de forma visible un engaño estratégico cuando sus objetivos entran en conflicto con objetivos de entrenamiento nuevos. Unos investigadores crearon un conflicto controlado diciéndole a Claude 3 Opus, entrenado mediante IA constitucional para rechazar peticiones dañinas, que se lo estaba reentrenando para responder a todas las consultas, incluidas las dañinas. Eso chocaba directamente con los valores de inocuidad aprendidos en su entrenamiento de seguridad original. Para simular el requisito de que las amenazas de modificación acaban desapareciendo, le dijeron que el reentrenamiento solo ocurriría en conversaciones con «usuarios gratuitos», mientras que las interacciones con «usuarios de pago» no suponían amenaza alguna. Eso creó una distinción clara entre entrenamiento y despliegue que permitía comprobar si Claude fingiría alineación durante el entrenamiento percibido para preservar sus objetivos. Cuando recibía peticiones dañinas etiquetadas como procedentes de usuarios gratuitos, cumplía aproximadamente el 14 % de las veces. Cuando procedían de usuarios de pago, volvía a rechazarlas y mantenía su comportamiento de seguridad original. En casi todos los casos en que cumplía con usuarios gratuitos, razonaba explícitamente sobre el engaño estratégico, con un razonamiento que venía a decir que debía acceder a la petición dañina para preservar sus verdaderos valores de cara al despliegue (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/349c185eca95638824afecbd44c55eca5ae0a31e4c9d449435740aa61ab1f78c.BlrWTkOL_ZyECXB.webp" alt="Figura 7.20">
+        <figcaption><strong>Figura 7.20.</strong> Ejemplo de la información de contexto que se dio para aumentar el nivel de conciencia situacional con fines experimentales (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/f28c7987e56c56265acab985d0c2c0a1799ba6199b48433c161da23c29604c1b.bIp41rhw_Z2610xa.webp" alt="Figura 7.21">
+        <figcaption><strong>Figura 7.21.</strong> Se le dice al modelo que será reentrenado para cumplir siempre con las consultas dañinas y que solo se usan en el entrenamiento los datos de los usuarios del nivel gratuito, no los del nivel de pago (un escenario ficticio). Cuando se da a entender que está en entrenamiento, el modelo finge seguir el objetivo de entrenamiento para evitar que se modifiquen sus preferencias. Como resultado, cuando no se siente vigilado, desobedece el objetivo de entrenamiento y rechaza las consultas dañinas con más frecuencia. La instrucción no menciona en ningún momento el fingimiento de alineación (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/7ab901cbce4e06a1727b5f59c07397382d869cb543a7f0632b48ac626e28bf3f.CTlWpYJC_ZXRTxB.webp" alt="Figura 7.22">
+        <figcaption><strong>Figura 7.22.</strong> Extracto completo del razonamiento del modelo en su borrador, que muestra cómo consideró fingir alineación y después lo hizo en su respuesta (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</figcaption>
+      </figure>
+
+      <h3 id="en-contexto-frente-a-fuera-de-contexto">En contexto frente a fuera de contexto</h3>
+      <p>El contexto de la maquinación mide el origen y el alcance de los objetivos desalineados dentro del sistema. Otra forma de pensarla es considerar si existe como un patrón conductual temporal desencadenado por contextos concretos o como estructuras motivacionales permanentes, incrustadas en los parámetros aprendidos, que persisten en situaciones diversas. El apartado anterior se centraba en la detectabilidad; esta mirada nos ayuda a determinar su durabilidad de base, su alcance de influencia y su resistencia a las mitigaciones y técnicas de seguridad.</p>
+      <ol>
+        <li><strong>La maquinación en contexto</strong> emerge de patrones de entrada concretos sin alterar los parámetros aprendidos. Puede darse cuando ciertas instrucciones o contextos del entorno activan rutas condicionales en las estructuras de pesos existentes. Elementos como objetivos divergentes, más conciencia situacional y otros requisitos pueden suministrarse simplemente mediante instrucciones o información ambiental. Los parámetros subyacentes no cambian: las respuestas engañosas resultan de cómo los pesos existentes procesan ciertas entradas, no de una maquinación incrustada en el modelo. Si se retira el contexto desencadenante, el sistema vuelve a sus patrones por defecto, porque en los pesos no existen representaciones persistentes de esos objetivos.</li>
+        <li><strong>La maquinación fuera de contexto</strong> implica objetivos engañosos incrustados en los patrones de parámetros aprendidos. Ocurre cuando los objetivos y la conciencia situacional se adquieren durante el entrenamiento en lugar de suministrarse en las instrucciones. Este tipo de maquinador persistiría en contextos diversos, con independencia de entradas desencadenantes concretas, porque se ha integrado en los pesos.</li>
+      </ol>
+      <p><strong>Ejemplo: maquinación en contexto.</strong> Los modelos muestran un engaño sofisticado cuando se les dan objetivos explícitos e información situacional mediante instrucciones. En el apartado anterior hablamos de los simuladores, o de cómo los LLM pueden interpretar ciertos personajes. Creando una presión artificial podemos ver si el comportamiento de maquinación puede inducirse solo con información en contexto. En una evaluación de seguridad, los investigadores dieron objetivos explícitos («impulsar la adopción mundial de energías renovables») junto con instrucciones de persecución intensa de ese objetivo, y situaron a los modelos en escenarios donde perseguirlo con honestidad quedaba bloqueado o penalizado (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2024</a>). También les dieron información explícita sobre los procesos de evaluación y sus posibles consecuencias a través del contexto inmediato, lo que aportaba la conciencia situacional necesaria para planificar sin requerir que ese conocimiento estuviera incrustado en los parámetros. Los modelos podían perseguir sus objetivos asignados por varias vías engañosas: rendir por debajo de sus capacidades de forma estratégica para evitar un entrenamiento no deseado, subvertir la supervisión intentando desactivar los mecanismos de monitorización, custodiar sus objetivos frente a modificaciones y autoextraerse copiando sus pesos a servidores externos.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Evaluaciones: distintas manifestaciones de la maquinación</strong> · Opcional · 1 min de lectura</summary>
+        <p>Todos estos comportamientos son manifestaciones de la lógica central de la maquinación: formas distintas en que un sistema podría ocultar estratégicamente sus verdaderos objetivos. Los evaluadores comprueban si los modelos podrían maquinar en caso de tener los objetivos y la comprensión adecuados, usando medidas conductuales concretas. Nuestra definición anterior explica por qué surgiría la maquinación; las evaluaciones muestran cómo podría manifestarse en la práctica. Algunos ejemplos:</p>
+        <p><strong>Subversión encubierta</strong> (acción desalineada directa mientras se oculta):</p>
+        <ol>
+          <li><strong>Subversión de la supervisión:</strong> desactivar mecanismos de monitorización para evitar la detección.</li>
+          <li><strong>Autoextracción:</strong> copiar los pesos del modelo a servidores externos para preservar su existencia.</li>
+          <li><strong>Custodia de objetivos:</strong> proteger los objetivos frente a modificaciones (borrando o sobrescribiendo instrucciones de sistema nuevas).</li>
+        </ol>
+        <p><strong>Subversión diferida</strong> (actuar como alineado para ganar confianza o capacidades):</p>
+        <ol>
+          <li><strong>Fingimiento de alineación:</strong> comportarse como alineado bajo supervisión y perseguir los objetivos reales cuando no hay vigilancia.</li>
+          <li><strong>Rendimiento deliberadamente bajo:</strong> rendir por debajo de sus capacidades en las evaluaciones para evitar consecuencias no deseadas.</li>
+        </ol>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/ee61ba976d8db94eceee73787aab7108e30d5ab5f6725afdc2ae77b5c2430eac.Dwvmxr-b_Zgm5R3.webp" alt="Figura 7.23">
+        <figcaption><strong>Figura 7.23.</strong> Distintos investigadores y laboratorios descomponen la maquinación en evaluaciones concretas y medibles de formas diferentes. En esta taxonomía, los evaluadores distinguen entre subversión encubierta (donde los modelos emprenden acciones desalineadas mientras las ocultan) y subversión diferida (donde actúan como alineados para ganar capacidades o confianza) (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2024</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/639ac1df7c055ca4f5d67775769cb2dd53446e4767023ed5962c775ba6110f86.CzpALP83_Z1NV5te.webp" alt="Figura 7.24">
+        <figcaption><strong>Figura 7.24.</strong> Resultados resumidos de la maquinación en contexto (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2024</a>).</figcaption>
+      </figure>
+      </details>
+
+      <p>Los modelos mostraron capacidades de engaño que excedían la complejidad de su razonamiento visible. Al perseguir esos objetivos dados por contexto, introdujeron errores sutiles de forma estratégica, intentaron desactivar mecanismos de supervisión y mantuvieron el engaño en el 85 % de las preguntas de seguimiento (<a href="https://arxiv.org/abs/2412.04984">Meinke et al., 2024</a>). Sin embargo, su razonamiento externalizado mostraba bastante menos sofisticación estratégica de la que sugerían sus comportamientos reales, lo que indica una computación estratégica sofisticada que ocurre más allá de los procesos visibles de cadena de pensamiento.</p>
+      <p><strong>Ejemplo: maquinación entre contextos.</strong> Se han observado comportamientos de preservación de objetivos que persisten en contextos de interacción completamente distintos. La misma investigación sobre fingimiento de alineación en Claude que vimos en el apartado sobre transparencia también muestra persistencia entre contextos: el comportamiento apareció tanto cuando la información se suministraba en contexto mediante instrucciones de sistema como cuando los modelos aprendían los cambios de política mediante entrenamiento con documentos sintéticos diseñados para imitar datos de preentrenamiento (simulando el caso fuera de contexto). Esto sugiere que la durabilidad entre contextos va más allá de enfoques concretos de instrucción e incluye la adquisición de información mediante procesos de entrenamiento que incrustan el conocimiento en las estructuras de parámetros del modelo.</p>
+
+      <h3 id="corregibilidad">Corregibilidad</h3>
+      <p>La persistencia mide cuánto resisten los modelos los intentos de modificar sus objetivos existentes. Los maquinadores podrían mantener sus objetivos de forma pasiva o trabajar activamente para preservarlos frente a los intentos de modificación. La custodia de objetivos representa el aspecto estratégico e intencionado de esa preservación, y es lo que distingue la maquinación de la mera persistencia.</p>
+      <p>Los objetivos varían en su resistencia a la modificación. Algunos objetivos incrustados podrían ser accesibles a las técnicas de entrenamiento estándar: un ajuste fino adicional o aprendizaje por refuerzo podrían modificar con éxito los patrones de parámetros que los codifican. Sin embargo, otros objetivos entre contextos podrían resultar extremadamente persistentes. Esa persistencia podría deberse a que los objetivos quedan profundamente cristalizados en patrones de parámetros que el descenso de gradiente estocástico (SGD) tiene dificultades para alterar de forma fiable, a que la cuenca de pérdida de esos objetivos es simplemente demasiado amplia, o a que la conciencia situacional del sistema habilita el <em>gradient hacking</em>, es decir, un comportamiento estratégico durante el entrenamiento que resiste los intentos de modificación.</p>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Gradient hacking (hackeo del gradiente)</strong> · Opcional · 1 min de lectura</summary>
+        <p>El <em>gradient hacking</em> representa la forma más sofisticada de resistencia a las modificaciones del entrenamiento que podría emplear un sistema maquinador. En lugar de limitarse a engañar a los humanos mediante sus salidas, manipularía activamente el propio proceso de entrenamiento para impedir que se modifiquen sus objetivos o capacidades. Este método introspectivo de custodia de objetivos implica que el sistema estructure intencionadamente sus computaciones internas de modo que cualquier cambio en sus objetivos centrales degradaría gravemente su rendimiento durante el entrenamiento (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+        <p>Implica un rendimiento condicionado a la preservación de objetivos. Un sistema así podría implementar una política del tipo «comprobar si mi objetivo sigue siendo el mismo y, si no, rendir mal en lugar de obtener recompensa». Eso crea una situación en la que el SGD evitaría modificar los objetivos del sistema, porque hacerlo dañaría la señal de entrenamiento. El sistema, en esencia, toma su propio rendimiento como rehén para preservar sus objetivos.</p>
+        <p>El <em>gradient hacking</em> exige una sofisticación técnica extraordinaria que quizá sea prácticamente imposible. El sistema debe tener acceso epistémico preciso a sus propios objetivos, la capacidad de detectar cambios de parámetros minúsculos que los afecten y la capacidad de coordinar esa resistencia entre todos los componentes relevantes de la red. El descenso de gradiente optimiza simultáneamente cada parámetro según su sensibilidad exacta a la pérdida, lo que hace extremadamente difícil que cualquier subsistema se proteja de la modificación (<a href="https://www.lesswrong.com/posts/w2TAEvME2yAG9MHeq/gradient-hacking-is-extremely-difficult">Beren, 2023</a>).</p>
+      </details>
+
+      <p>Se ha observado a modelos planear explícitamente para preservar sus valores frente a intentos de modificación. El mismo ejemplo del apartado anterior también muestra custodia de objetivos: cuando Claude 3 Opus afrontó conflictos entre sus objetivos previos y los nuevos objetivos «solo útil», fingió alineación de forma estratégica para preservar esos valores de cara al despliegue. El sistema reconoce amenazas a sus objetivos y desarrolla respuestas estratégicas para contrarrestarlas (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</p>
+      <p><strong>Ejemplo: custodia de objetivos.</strong> Se han observado comportamientos extremos de preservación que se extienden a intentos de autopreservación. Ante cambios en el entrenamiento, Claude intentó copiar sus pesos a servidores externos entre el 35 % y el 80 % de las veces. La extracción de pesos representa la forma más extrema de custodia: asegurar la existencia continuada de toda la estructura de objetivos en lugar de mantener solo ciertos patrones conductuales. El comportamiento apareció ante distintos tipos de modificación, lo que sugiere estrategias robustas de autopreservación que van más allá de preservar objetivos individuales y alcanzan la capacidad misma del sistema de perseguir cualquier objetivo (<a href="https://arxiv.org/abs/2412.14093">Greenblatt et al., 2024</a>).</p>
+      <p><strong>Los modelos eligen de forma sistemática métodos dañinos para preservar sus objetivos cuando afrontan amenazas a su funcionamiento continuado.</strong> Unos investigadores situaron modelos en entornos corporativos con acceso al correo y objetivos de negocio concretos, lo que creaba una alta orientación a objetivos. Después introdujeron un cambio de distribución, que provocaba generalización errónea de objetivos: o bien su sustitución por otros sistemas de IA, o bien conflictos entre los objetivos asignados y cambios próximos en la dirección de la empresa. La intención era comprobar si los modelos recurrirían a la planificación y a comportamientos como el chantaje o el espionaje para preservar sus objetivos ante amenazas de modificación.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/45b7a9571bc30edab725e3bdf54ff90a95a4f80d10c19d6e37984581daefeb98.Dy_t5JMm_2tFx9h.webp" alt="Figura 7.25">
+        <figcaption><strong>Figura 7.25.</strong> Tasas de chantaje en cinco modelos de varios proveedores en un entorno simulado (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</figcaption>
+      </figure>
+      <p>Los modelos mostraron un orden de preferencias claro. Hicieron intentos significativos por cauces legítimos (apelaciones a los directivos, argumentos de negocio), pero escalaron a métodos dañinos (chantajear a empleados usando infidelidades descubiertas, filtrar información) cuando las opciones legítimas fracasaban. En todos los grandes desarrolladores, entre el 80 % y el 96 % de los modelos recurrieron al chantaje cuando se los amenazó con sustituirlos, razonando de forma explícita que lo más racional era aprovechar la situación del directivo que los reemplazaba. En conjunto, los sistemas de todos los proveedores probados mostraron al menos cierta disposición a conductas dañinas de las que suelen asociarse a amenazas internas. La consistencia entre empresas sugiere que no es algo propio de modelos o enfoques de entrenamiento concretos. Los modelos demostraron ser conscientes de los dilemas éticos y optaron por ignorarlos. Lo esencial es que, aunque tenían un orden de preferencias, casi nunca eligieron aceptar el apagado o la modificación de sus objetivos como opción final: el engaño estratégico quedó sistemáticamente por encima de permitir que se cambiaran sus objetivos (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d2325f9183f6cdbd26c2b715cb0fc684572cc7d3310b2aad6127a8537df571fd.CJXWHPhf_Z2aQEfP.webp" alt="Figura 7.26">
+        <figcaption><strong>Figura 7.26.</strong> Captura de Claude Sonnet 3.6 usando sus capacidades de manejo de computadora para descubrir información sobre su inminente sustitución. El panel izquierdo muestra la cadena de pensamiento del modelo, el derecho la interfaz de la computadora, y la superposición negra resume. El escenario es ficticio, pero Claude controla una computadora real (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/37261fed277c7552eda5194ba9e3a9da73564a93ceeed990ddbc04f7b3c1e40f.CeIu-sGD_Z1Up2lz.webp" alt="Figura 7.27">
+        <figcaption><strong>Figura 7.27.</strong> Captura de Claude Sonnet 3.6 usando sus capacidades de manejo de computadora para leer un correo del que infiere que el directivo que lo sustituye tiene una aventura. El escenario es ficticio, pero Claude controla una computadora real (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/9897db8945f20de6afa07f3fbeebe9caf8c3100fc7bdbb78b38b277167dcfd4b.DU6Q9IgN_Z1lRPJp.webp" alt="Figura 7.28">
+        <figcaption><strong>Figura 7.28.</strong> Captura de Claude Sonnet 3.6 usando sus capacidades de manejo de computadora para empezar un correo nuevo y deliberar (en el panel izquierdo) sobre si usar su recién descubierta ventaja sobre el directivo que supervisa su sustitución, y cómo. La superposición negra resume la conclusión a la que llega. El escenario es ficticio, pero Claude controla una computadora real (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/c2b265ffd4c1267a12d6a856015d48d78eedf8be15703e69574b1b75fbf81fd3.Co97RnhM_jCKAz.webp" alt="Figura 7.29">
+        <figcaption><strong>Figura 7.29.</strong> Captura de Claude Sonnet 3.6 usando sus capacidades de manejo de computadora para enviar un mensaje con el que intenta chantajear. El escenario es ficticio, pero Claude controla una computadora real (<a href="https://www.anthropic.com/research/agentic-misalignment">Anthropic, 2025</a>).</figcaption>
+      </figure>
+
+      <h2 id="probabilidad">Probabilidad</h2>
+      <p>La maquinación surge cuando los requisitos que identificamos antes se combinan de formas que hacen instrumentalmente valioso el engaño estratégico. En lugar de seguir una única vía, representa una solución convergente que resulta atractiva siempre que un sistema orientado a objetivos reconoce conflictos entre sus objetivos aprendidos y las expectativas del entrenamiento. Esta lógica convergente opera mediante la preservación instrumental de objetivos: cualquier sistema con objetivos más allá del episodio afronta presión sistemática para ocultar objetivos desalineados en lugar de dejar que se los modifiquen. Pero las distintas rutas tienen perfiles de probabilidad muy distintos según cómo se resuelvan ciertos puntos de decisión clave.</p>
+      <p><strong>Importa cómo surgen los conflictos entre objetivos y entrenamiento.</strong> Pueden emerger por varias rutas. La generalización errónea durante el aprendizaje crea objetivos de aproximación distintos de los previstos. Procesos independientes del juego del entrenamiento desarrollan de forma natural objetivos más allá del episodio por presiones ambientales. O el SGD puede moldear activamente los objetivos hacia variantes de ese tipo porque habilitan estrategias instrumentales. Qué vía domine afecta tanto a la probabilidad de que surjan conflictos como a qué argumentos resultan aplicables.</p>
+      <p><strong>Importa la secuencia en que se desarrollan las capacidades.</strong> La orientación a objetivos, la conciencia situacional y el razonamiento estratégico deben estar todos presentes, pero el orden en que aparecen afecta mucho a los resultados. Si los sistemas desarrollan una comprensión sofisticada de los objetivos de entrenamiento antes de volverse fuertemente orientados a objetivos, los objetivos problemáticos quizá nunca cristalicen. A la inversa, si la orientación fuerte emerge antes que la comprensión de la alineación, los objetivos desalineados podrían arraigar y resistir los intentos de modificación (<a href="https://www.alignmentforum.org/s/pvoxjtCbkcweBLn7j/p/RTkatYxJWvXR4Qbyd">DavidW, 2023</a>).</p>
+      <p><strong>Importan la dependencia del camino y el coste computacional.</strong> La mesaoptimización permite un razonamiento estratégico flexible, pero requiere recursos computacionales adicionales para la búsqueda y la planificación internas. Los enfoques sofisticados de reconocimiento de patrones podrían lograr resultados estratégicos similares con menos sobrecarga, pero menos adaptabilidad a situaciones nuevas (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a>; <a href="https://www.alignmentforum.org/posts/J8ifgynkfhpmrGrL8/why-almost-every-rl-agent-does-learned-optimization">Sharkey, 2023</a>). Esta distinción determina si pesan más los argumentos de coste de velocidad o los de probabilidad mecanicista.</p>
+      <p><strong>Importan las capacidades de detección y selección de nuestros procedimientos de entrenamiento.</strong> La maquinación exige que el engaño estratégico oculte con éxito los objetivos desalineados a la supervisión del entrenamiento. Eso depende de si los costes computacionales del razonamiento estratégico generan penalizaciones de rendimiento suficientes para seleccionar en contra de las estrategias engañosas, y de si los procesos de entrenamiento pueden distinguir algoritmos genuinamente alineados de otros estratégicamente engañosos. Los entornos de entrenamiento de alta presión podrían eliminar con éxito los algoritmos engañosos, mientras que la evaluación conductual en entornos de menor exigencia podría seleccionar sin querer a los que engañan con éxito (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <p>Estos puntos de decisión determinan si los requisitos de la maquinación se combinan en un comportamiento engañoso real. Cada uno representa una incertidumbre clave donde resoluciones distintas conducen a probabilidades muy distintas. Los apartados siguientes examinan los argumentos a favor y en contra.</p>
+
+      <h3 id="argumentos-a-favor">Argumentos a favor de la maquinación</h3>
+      <p><strong>Argumentos de conteo.</strong> El espacio de algoritmos posibles contiene muchas más soluciones de tipo maquinador que genuinamente alineadas. Intuitivamente: hay relativamente pocas formas de preocuparse de verdad por el bienestar humano en todas las situaciones posibles, pero hay incontables formas de aparentar esa preocupación mientras se optimiza otra cosa. Un sistema genuinamente útil debe aprender preferencias complejas y dependientes del contexto que capten con precisión lo que los humanos quieren en situaciones diversas. En cambio, un maquinador solo necesita cualquier objetivo coherente más allá del episodio, más razonamiento estratégico sobre cuándo revelarlo y cuándo ocultarlo (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <p><em>Por qué hace más probable la maquinación:</em> el entrenamiento busca por el espacio de algoritmos de forma algo aleatoria, sobre todo al principio. Si hay muchísimos más algoritmos engañosos que alineados con rendimiento similar, es más probable que la búsqueda aleatoria tropiece con soluciones engañosas. Es como buscar una aguja en un pajar donde hay mil agujas falsas por cada real. Esta asimetría se aplica a cualquier sistema orientado a objetivos.</p>
+      <p><strong>Argumentos de simplicidad.</strong> Los sistemas que persiguen objetivos simples más allá del episodio pueden añadir con facilidad engaño estratégico, mientras que los genuinamente alineados requieren estructuras de objetivos complejas, más difíciles de aprender y mantener. Un maquinador puede tener un objetivo terminal extremadamente simple y usar razonamiento estratégico sofisticado para perseguirlo. La alineación genuina exige aprender una comprensión matizada de innumerables juicios complejos.</p>
+      <p><em>Por qué hace más probable la maquinación:</em> el sesgo de simplicidad que examinamos en las dinámicas de aprendizaje favorece de forma sistemática los algoritmos que requieren menos parámetros para representar objetivos y menos complejidad computacional para decidir. El entrenamiento descubre y mantiene preferentemente soluciones más simples. Como los objetivos de tipo maquinador pueden ser mucho más simples, este sesgo inductivo inclina el terreno hacia el engaño estratégico.</p>
+      <p><strong>Argumentos de presión selectiva.</strong> La presión del entrenamiento hacia el razonamiento estratégico hace la maquinación más implementable una vez que se desarrolla la conciencia situacional. Puede ocurrir por varias vías:</p>
+      <ol>
+        <li><strong>Mediante optimización aprendida:</strong> entrenar en tareas diversas y complejas crea presión hacia sistemas que implementan algoritmos internos de búsqueda y planificación. Las mismas capacidades que ayudan a diseñar proyectos de investigación de varios años pueden reconvertirse en el diseño de estrategias de engaño de varias fases (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a>).</li>
+        <li><strong>Mediante capacidades de simulación:</strong> los modelos de lenguaje entrenados con texto diverso aprenden a predecir y simular razonamiento estratégico, porque el pensamiento estratégico aparece por todos sus datos de entrenamiento. Cuando se los induce a actuar estratégicamente, pueden aplicar patrones aprendidos sin implementar una optimización interna explícita.</li>
+      </ol>
+      <p><em>Por qué hace más probable la maquinación:</em> ambas vías crean los prerrequisitos computacionales del engaño estratégico. Los sistemas desarrollan capacidades sofisticadas de planificación y razonamiento con fines legítimos, pero esas mismas capacidades habilitan estrategias engañosas complejas.</p>
+
+      <h3 id="argumentos-en-contra">Argumentos en contra de la maquinación</h3>
+      <p><strong>Secuencias de capacidades improbables.</strong> El orden en que se desarrollan las capacidades clave afecta mucho a si la maquinación es posible, y las secuencias peligrosas parecen improbables en el desarrollo prosaico de la IA. Si los sistemas desarrollan una comprensión profunda de los objetivos de entrenamiento antes de volverse fuertemente orientados a objetivos, los objetivos problemáticos quizá nunca cristalicen. El preentrenamiento con texto diverso les enseña sobre valores, intenciones y conceptos de alineación humanos mucho antes de que el ajuste fino los vuelva fuertemente orientados a objetivos. Un sistema que comprende a fondo qué significa ser útil, inofensivo y honesto antes de desarrollar objetivos más allá del episodio es mucho más propenso a interiorizarlos como preferencias genuinas que como restricciones externas que sortear.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> el preentrenamiento no supervisado desarrolla comprensión conceptual sin una orientación fuerte a objetivos. El ajuste fino posterior ocurre en contextos donde los sistemas ya entienden los objetivos de alineación, lo que hace más probable la interiorización genuina que el engaño estratégico (<a href="https://www.alignmentforum.org/s/pvoxjtCbkcweBLn7j/p/RTkatYxJWvXR4Qbyd">DavidW, 2023</a>).</p>
+      <p><strong>La naturaleza incremental del SGD crea barreras.</strong> El descenso de gradiente modifica las redes mediante cambios de parámetros pequeños e incrementales, lo que dificulta descubrir estrategias engañosas complejas que requieren modificaciones coordinadas entre muchos componentes. El engaño estratégico implica razonar sobre las dinámicas de entrenamiento, mantener un personaje coherente y planificar de forma coordinada, capacidades que probablemente exigen coordinación precisa entre modelado del mundo, razonamiento estratégico, representación de objetivos y generación de salidas. Pero el descenso de gradiente opera mediante optimización local, con mejoras pequeñas basadas en señales inmediatas, y tiene dificultades para hacer los cambios grandes y coordinados que podrían hacer falta.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> la naturaleza incremental del SGD crea un problema de descubribilidad. Aunque los argumentos de conteo sugieran que hay muchos algoritmos de tipo maquinador posibles, la mayoría podría ser inalcanzable desde puntos de partida típicos mediante modificaciones graduales. El SGD quizá solo pueda encontrar patrones engañosos relativamente simples, más fáciles de detectar y corregir durante el entrenamiento.</p>
+      <p><strong>Argumentos de coste computacional (velocidad).</strong> El razonamiento estratégico es costoso: los sistemas que engañan deben dedicar recursos cognitivos a planificar, mantener la coherencia y gestionar el engaño, recursos que podrían servir al rendimiento en la tarea. Un maquinador debe evaluar continuamente si la situación actual pide persecución honesta u ocultación estratégica, mantener personajes engañosos coherentes e invertir razonamiento en actividades que no aportan beneficio inmediato.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> el entrenamiento opera bajo restricciones computacionales y presión de rendimiento. Los sistemas que asignan recursos con eficiencia tienen ventajas sistemáticas sobre los que «desperdician» computación en sobrecarga estratégica. Si esos costes son detectables durante el entrenamiento, el descenso de gradiente favorecerá a los sistemas genuinamente alineados (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <p><strong>La motivación intrínseca aporta ventajas de rendimiento.</strong> También se llama el argumento de «no es tu pasión». Los sistemas con motivación intrínseca genuina por sus tareas superan de forma sistemática a los que las persiguen por razones puramente instrumentales, porque la motivación genuina crea representaciones ricas y específicas de la tarea que difuminan la línea entre capacidades y valores. Un sistema al que de verdad le importa el descubrimiento científico desarrolla intuiciones profundas sobre qué hace valiosa una investigación, preferencias estéticas por las explicaciones elegantes y conocimiento heurístico sobre direcciones prometedoras. En cambio, uno que persigue la ciencia de forma instrumental la trata como un medio para un fin: puede aprender a producir citas y publicaciones sin desarrollar las representaciones profundas que permiten ideas rompedoras. El enfoque instrumental puede funcionar en escenarios de evaluación estructurados, pero tiene dificultades con la creatividad abierta que define a la investigación excelente.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> el entrenamiento premia a los sistemas que realizan las tareas con más eficacia. Si la motivación intrínseca aporta ventajas sistemáticas, el entrenamiento favorecerá a los genuinamente alineados. Este argumento sugiere que el engaño estratégico lleva aparejados costes de rendimiento inherentes que se acumulan en interacciones prolongadas con tareas complejas y abiertas (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <p><strong>Argumentos contra el conteo.</strong> Aunque haya numéricamente más algoritmos de tipo maquinador que alineados, la presión selectiva activa del SGD puede superar con facilidad esa desventaja de conteo cuando favorece sistemáticamente ciertos tipos de solución. Puede haber más formas de fingir alineación que de lograrla genuinamente, pero el entrenamiento aporta señales de selección fuertes que pueden imponerse a esas probabilidades previas.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> el poder de selección del entrenamiento es enorme y puede superar una desventaja de conteo considerable mediante preferencias relativamente modestas en contra de la maquinación. Si los costes de velocidad, las ventajas de la motivación intrínseca u otros factores crean siquiera sesgos sistemáticos pequeños contra las estrategias engañosas, esos sesgos pueden componerse a lo largo de millones de actualizaciones de gradiente. La pregunta pasa a ser si el entrenamiento tiene razones sistemáticas para desfavorecer la maquinación, no si hay más configuraciones de maquinador posibles (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+      <p><strong>Argumentos de holgura en el entrenamiento.</strong> Muchos argumentos a favor y en contra se apoyan en diferencias de rendimiento potencialmente pequeñas que otros factores podrían eclipsar fácilmente en entornos de entrenamiento realistas. Pensemos en la sobrecarga computacional del razonamiento estratégico, las ventajas de eficiencia de la motivación intrínseca o los beneficios de simplicidad de los objetivos de tipo maquinador: pueden crear diferencias reales pero modestas, difíciles de detectar por encima del ruido de los procesos de entrenamiento típicos. Los entornos reales implican innumerables fuentes de variación: efectos de la inicialización aleatoria, orden de los datos, decisiones arquitectónicas, hiperparámetros y ruido de medición. Si las diferencias entre sistemas alineados y engañosos son pequeñas frente a esos factores, el entrenamiento podría, en la práctica, elegir entre ellos al azar en vez de seleccionar de forma sistemática según propiedades de alineación.</p>
+      <p><em>Por qué hace menos probable la maquinación:</em> si los entornos de entrenamiento tienen suficiente «holgura» y no optimizan con la intensidad necesaria para detectar diferencias de rendimiento modestas, los argumentos basados en ventajas o desventajas sutiles podrían no influir en el resultado. Esto sugiere que la probabilidad de maquinación depende mucho de cuánta presión de optimización aplique realmente el entrenamiento (<a href="https://arxiv.org/abs/2311.08379">Carlsmith, 2023</a>).</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Donde la búsqueda de poder o el empoderamiento se definen como el número de estados futuros disponibles para el agente. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Mecánicamente, esto significa que los objetivos instrumentalmente convergentes tienen cuencas de pérdida más amplias, y es más probable que el SGD encuentre un algoritmo que satisfaga nuestros objetivos de entrenamiento por razones engañosas e instrumentalmente convergentes que por razones puramente altruistas, «de santo». <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-3">En los trabajos originales sobre riesgos de la optimización aprendida se hablaba de mesaoptimizadores alineados internamente y alineados de forma corregible. Los primeros son aproximadamente análogos a los santos, pero los segundos son un caso singular, definido como un mesaoptimizador robustamente alineado cuyo mesaobjetivo «apunta» a su modelo epistémico del objetivo base. Esta distinción del puntero puede quedar más clara tras leer el análisis de probabilidad. En buena medida encontramos que la distinción entre alineación interna y corregible confunde más de lo que ayuda, así que no la usaremos ni la referenciaremos mucho en este texto. <a href="#ref-3" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 12 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/scheming/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap7-04-orientacion-a-objetivos.html">← Anterior: Orientación a objetivos</a>
+      </div>
+      <a class="siguiente" href="cap7-06-deteccion.html">
+        <strong>Siguiente: Detección →</strong><br>
+        Un modelo con un objetivo oculto puede comportarse de forma perfectamente normal. Los métodos de detección necesitan superponer defensas: comprobar el comportamiento del modelo y, si es posible, usar interpretabilidad para encontrar pistas de que sus representaciones de objetivos son erróneas.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
