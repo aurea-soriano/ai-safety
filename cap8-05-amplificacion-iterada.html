@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amplificación iterada · Capítulo 8 – AI Safety Atlas</title>
+  <meta name="description" content="Amplificación iterada: amplificación, destilación e IDA.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>8. Supervisión escalable</h2>
+        <ol>
+          <li><a href="cap8-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap8-02-supervision.html">Supervisión</a></li>
+          <li><a href="cap8-03-descomposicion-de-tareas.html">Descomposición de tareas</a></li>
+          <li><a href="cap8-04-supervision-de-procesos.html">Supervisión de procesos</a></li>
+          <li class="activo"><a href="cap8-05-amplificacion-iterada.html">Amplificación iterada</a></li>
+          <li><a href="cap8-06-debate.html">Debate</a></li>
+          <li><a href="cap8-07-de-debil-a-fuerte.html">De débil a fuerte (W2S)</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 8: Supervisión escalable</p>
+      <h1>Amplificación iterada</h1>
+      <p><em>Podemos mejorar los límites de la supervisión humana usando asistentes de IA que aporten retroalimentación. Entrenar modelos nuevos con sistemas amplificados de humanos e IA puede dar lugar a modelos cada vez más alineados con los valores humanos, y quizá escalar la supervisión más allá de los límites humanos.</em></p>
+      <p class="meta">13 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter8-audio-a74da6f99dc6f49bdc62dd3220f8db4dd9863046e124924bafd7f8b862c62635.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter8-ef46e8f8b671da49d6c8470608ee17a7798e164464a9ef4332cdfd1650abe0b0.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/scalable-oversight.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#amplificacion">Amplificación</a></li>
+          <li><a href="#destilacion">Destilación</a></li>
+          <li><a href="#destilacion-y-amplificacion-iteradas">Destilación y amplificación iteradas (IDA)</a></li>
+        </ol>
+      </nav>
+
+      <p>En las secciones anteriores hablamos de métodos para descomponer tareas y, quizá, emular la toma de decisiones humana dividiendo la cognición en componentes más pequeños. En esta sección explicaremos una de las principales motivaciones para querer descomponer tareas: amplificar las capacidades de quienes supervisan. Queremos mejorar (amplificar) las capacidades de los humanos o de la IA para generar mejores señales de entrenamiento que ayuden a alinear la IA de forma iterativa.</p>
+
+      <h2 id="amplificacion">Amplificación</h2>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/a3e7527b0583b4423dcf02fcc73d4cba62720762bf7dad7395ed170d520c3337.CEW5o12R_1bd5Ko.webp" alt="Figura 8.11">
+        <figcaption><strong>Figura 8.11.</strong> Ejemplo de agregación y de asistentes de IA que amplifican las capacidades globales de un supervisor (<a href="https://forum.effectivealtruism.org/posts/63stBTw3WAW6k45dY/paul-christiano-current-work-in-ai-alignment">Christiano, 2020</a>).</figcaption>
+      </figure>
+      <p><strong>¿Qué es la amplificación de capacidades?</strong> La amplificación es el proceso de mejorar las capacidades de un supervisor, humano o artificial, para resolver tareas complejas que exceden la capacidad de un supervisor individual. El tipo más habitual se llama también amplificación de capacidades, y se centra en mejorar la habilidad de una IA para resolver tareas complejas aumentando su inteligencia y su capacidad de resolución de problemas. Queremos que las IA no solo imiten el comportamiento humano, sino que lo mejoren, tomando mejores decisiones y logrando mejores resultados (<a href="https://ai-alignment.com/policy-amplification-6a70cbee4f34">Christiano, 2016</a>). Podemos amplificar capacidades de muchas formas distintas:</p>
+      <ul>
+        <li><strong>Agregación:</strong> podemos colaborar entre nosotros y agregar la experiencia de muchos expertos para aumentar nuestra capacidad de resolver tareas complejas. En tareas difusas, donde el criterio de evaluación es subjetivo, usar varios expertos para dar retroalimentación puede crear una señal de entrenamiento más fiable y representativa. Por ejemplo, en los enfoques de aprendizaje por imitación, recoger demostraciones de un grupo de expertos en lugar de uno solo ayuda a normalizar la distribución de comportamientos y mejora el rendimiento general en la tarea. Así que, sencillamente, usar más supervisores es una forma de amplificación.</li>
+        <li><strong>Asistentes:</strong> además de amplificar capacidades implicando a más supervisores, también podemos mejorar el rendimiento individual usando asistentes. Por ejemplo, si queremos usar un LLM como apoyo en investigación médica, podríamos emplearlo para leer grandes cantidades de literatura y destacar tratamientos potenciales según los patrones que identifique. El asistente ofrece una lista de tratamientos posibles, que un equipo de investigadores puede después revisar en detalle e investigar más a fondo.</li>
+        <li><strong>Descomposición de tareas:</strong> aunque no es imprescindible para la amplificación, descomponer y delegar tareas suele ser una de las formas más habituales de implementarla. Que las tareas puedan factorizarse y resolverse por separado hace mucho más escalable la resolución de problemas. En el mismo ejemplo del LLM como herramienta de investigación médica, si hay descomponibilidad podemos amplificar todavía más las capacidades de los investigadores: el LLM podría identificar primero los estudios y datos relevantes, otro modelo podría extraer y resumir los hallazgos clave y, por último, un equipo de expertos podría revisar esos resúmenes para decidir con fundamento sobre los tratamientos posibles.</li>
+      </ul>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/702cbfc0d6f96ca9eec743608602464a0d2d2b7b970aeb1eb6756742bd5161f3.73BWwyPY_Z2kaqME.webp" alt="Figura 8.12">
+        <figcaption><strong>Figura 8.12.</strong> El flujo de trabajo de la investigación y el desarrollo en IA (<a href="https://inferencemagazine.substack.com/p/how-much-economic-growth-from-ai">Wiseman y McClements, 2025</a>). ¿Cuántas de estas tareas crees que podrían amplificarse, o incluso automatizarse, con asistentes de IA?</figcaption>
+      </figure>
+      <p><strong>¿Qué es la amplificación iterada?</strong> Aunque estemos amplificando capacidades, el objetivo de fondo sigue siendo usar esta investigación para la alineación. La amplificación de capacidades nos permite sortear la abrumadora dificultad de especificar recompensas, o de generar señales de entrenamiento para tareas complejas y difusas. En su lugar, podemos hacer mejoras incrementales.</p>
+      <p>La amplificación iterada parte del concepto básico de amplificación y lo vuelve recursivo. Cada iteración consiste en usar el sistema amplificado para generar mejores señales de entrenamiento y mejores soluciones a los problemas, de modo que podamos emplear esas señales para entrenar modelos más capaces y mejor alineados. Esos modelos mejorados amplifican a su vez nuestras capacidades, lo que crea un ciclo de retroalimentación que escala la supervisión. En teoría, podríamos usar esto para escalar la supervisión humana a cualquier tarea.</p>
+      <p>Al centrarnos en mejorar la IA un poco cada vez, evitamos la necesidad de un diseño inicial perfecto: simplemente la vamos mejorando paso a paso. En un mundo ideal, esto permite mitigar el problema de la especificación de recompensas y garantiza que, a medida que los sistemas se vuelven más potentes, también se vuelvan más hábiles para manejar tareas complejas sin perder la alineación.</p>
+      <p>Este sería, a grandes rasgos, un ejemplo de cómo podría transcurrir el proceso de amplificación iterada:</p>
+      <ul>
+        <li><strong>Entrenamiento inicial:</strong> empezamos entrenando un LLM fundacional con un conjunto de datos amplio para desarrollar capacidades generales, de forma parecida a como modelos como GPT-3 se entrenan con enormes cantidades de texto para comprender y generar lenguaje humano.</li>
+        <li><strong>Amplificación:</strong> en nuestro ejemplo médico, el LLM se ajusta y se usa para ayudar a identificar y diagnosticar enfermedades complejas. Después dividimos el diagnóstico en subtareas más pequeñas y manejables: identificar los síntomas principales, correlacionarlos con enfermedades conocidas y sugerir pruebas o tratamientos iniciales. Varias instancias del LLM pueden ocuparse cada una de una subtarea distinta: una se centra en recoger y analizar los síntomas detallados del paciente, otra en emparejarlos con afecciones conocidas y una tercera en sugerir pruebas o tratamientos. Después se combinan las soluciones de las subtareas para abordar el problema complejo original, lo que crea un sistema global más capaz. El modelo las integra en un informe detallado que incluye un diagnóstico probable, pruebas sugeridas para confirmarlo y opciones de tratamiento posibles.</li>
+        <li><strong>Reentrenamiento:</strong> un grupo de expertos médicos revisa esa salida y aporta retroalimentación. Esa retroalimentación y las salidas se usan para reentrenar el LLM, lo que mejora su capacidad de identificar enfermedades complejas en cada iteración.</li>
+        <li><strong>Iteración:</strong> el proceso se repite, y cada ciclo implica más amplificación y más reentrenamiento. El modelo mejora progresivamente en la identificación de tratamientos y ofrece salidas más precisas y útiles con cada vuelta. Este bucle iterativo asegura una mejora continua tanto en capacidad como en alineación.</li>
+      </ul>
+      <p><strong>Amplificación de la fiabilidad.</strong> La amplificación de capacidades busca hacer un sistema más inteligente o más capaz, mejorando su habilidad para resolver tareas complejas mediante colaboración y división en partes más simples. La amplificación de la fiabilidad, en cambio, busca hacerlo más confiable reduciendo su tasa de fallo: garantiza que el sistema pueda realizar esas tareas correctamente de forma consistente, sin cometer errores. Aunque una IA funcione bien casi siempre y esté alineada con los valores humanos, podría comportarse mal de vez en cuando, sobre todo ante entradas raras o inusuales. Si actúa de forma no deseada el 1 % de las veces, combinar diez decisiones de esos modelos podría llevar a una tasa de fallo del 9,6 %. Un solo fallo en el proceso hace fracasar el conjunto, lo que vuelve la combinación menos fiable aunque sea más capaz. La amplificación de la fiabilidad busca que los errores sean extremadamente raros y, con ello, que la IA esté mejor alineada. En conjunto, el enfoque es complementario a la amplificación de capacidades (<a href="https://ai-alignment.com/reliability-amplification-a96efa115687">Christiano, 2016</a>).</p>
+      <p>Algunas ideas sobre cómo implementar esquemas de amplificación de la fiabilidad:</p>
+      <ul>
+        <li><strong>Sistemas redundantes:</strong> un método es usar varios sistemas de IA que realicen la misma tarea de forma independiente. Esa redundancia implica que, aunque uno falle, los demás pueden seguir dando la salida correcta. Por ejemplo, si usamos modelos de lenguaje en un ámbito crítico como la sanidad, podemos emplear tres instancias separadas del mismo LLM para analizar los mismos síntomas de forma independiente.</li>
+        <li><strong>Voto por mayoría:</strong> cuando se usan varios modelos en la misma tarea, se pueden comparar sus salidas. Si la mayoría coincide en una solución, se considera más probable que sea correcta. Si la salida de un sistema difiere, el voto por mayoría ayuda a elegir la respuesta adecuada y reduce la probabilidad de fallo. Siguiendo el ejemplo anterior, cada instancia del LLM propone un diagnóstico; si dos o más coinciden, se considera más fiable, y si una discrepa, la mayoría determina el diagnóstico final.</li>
+        <li><strong>Comprobación de errores:</strong> en ámbitos críticos para la seguridad podemos implementar mecanismos que contrasten y validen las salidas de los sistemas. Esto implica usar métodos o algoritmos distintos para resolver el mismo problema y comparar los resultados para asegurar la exactitud. En el contexto del ejemplo, podríamos usar algoritmos separados o un sistema basado en reglas para contrastar el diagnóstico de los LLM.</li>
+        <li><strong>Mejora iterativa:</strong> refinar de forma continua los sistemas para reducir sus tasas de fallo individuales. En el ejemplo médico, vigilaríamos y refinaríamos el modelo retroalimentándolo con los casos en que el diagnóstico fue incorrecto o incierto, y después lo mejoraríamos a partir de esa retroalimentación para reducir su tasa de fallo con el tiempo.</li>
+      </ul>
+      <p><strong>Amplificación de la seguridad.</strong> La amplificación de la seguridad aborda el reto de garantizar que un sistema alineado no se comporte mal ante entradas raras o «malas». Mientras la amplificación de la fiabilidad se centra en reducir la probabilidad de fallo de una IA alineada, la de la seguridad busca reducir la prevalencia de esas entradas problemáticas. En esencia, pretende hacer exponencialmente difícil encontrar una entrada que lleve a la IA a comportarse de forma indeseable (<a href="https://ai-alignment.com/security-amplification-f4931419f903">Christiano, 2016</a>).</p>
+      <p>En términos prácticos, la amplificación de la seguridad consiste en crear sistemas robustos frente a entradas adversariales, es decir, entradas diseñadas específicamente para explotar vulnerabilidades y hacer que la IA actúe de formas no previstas. Los modelos necesitan mecanismos que los protejan de esas entradas. La amplificación de la seguridad permite mejorar los sistemas de forma iterativa, y guarda bastante parecido con el concepto de entradas adversariales y los métodos de entrenamiento adversarial que vimos en capítulos anteriores.</p>
+
+      <h2 id="destilacion">Destilación</h2>
+      <p><strong>Limitaciones de la amplificación por sí sola.</strong> La amplificación es una técnica potente que mejora las capacidades, la fiabilidad y la seguridad de los sistemas de IA. Sin embargo, por sí sola plantea varios retos:</p>
+      <ul>
+        <li><strong>Complejidad:</strong> los sistemas amplificados pueden volverse tan complejos que resulten difíciles de entender y gestionar para los humanos. Esa complejidad puede oscurecer cómo se toman las decisiones, lo que dificulta garantizar que el sistema se comporte de forma segura y como se pretendía.</li>
+        <li><strong>Uso de recursos:</strong> los modelos amplificados suelen requerir recursos computacionales considerables. Seguir amplificando y escalando puede resultar bastante costoso, sobre todo en aplicaciones en tiempo real o con recursos limitados.</li>
+        <li><strong>Eficiencia operativa:</strong> los sistemas amplificados pueden implicar muchos componentes que interactúan, lo que genera problemas de coordinación, ineficiencias en la ejecución y dificultades para mantener la coherencia y la estabilidad.</li>
+      </ul>
+      <p>Para abordar estas limitaciones necesitamos el paso de la destilación.</p>
+      <p><strong>¿Qué es la destilación?</strong> La destilación es un proceso que transforma un modelo grande y complejo (o un sistema de modelos) en una versión más pequeña y eficiente, sin perder las capacidades esenciales obtenidas mediante la amplificación. Se usa el término «destilación» por su parecido con el proceso químico, donde designa la purificación de una sustancia eliminando impurezas. De forma análoga, la destilación de modelos en seguridad de la IA busca «purificar» el conocimiento adquirido durante la amplificación para conservar la funcionalidad y las capacidades centrales en una forma más ligera.</p>
+      <p>Al modelo más grande y complejo se le suele llamar modelo «profesor», y al más pequeño y eficiente, modelo «estudiante». Este proceso permite al modelo pequeño imitar el comportamiento y el rendimiento del grande siendo más rápido y necesitando menos recursos. Este es el proceso general para destilar el conocimiento de un modelo amplificado:</p>
+      <ul>
+        <li><strong>Entrenar al profesor:</strong> primero se entrena un modelo grande y complejo con un conjunto de datos. Este es el modelo amplificado.</li>
+        <li><strong>Generar objetivos:</strong> después se usa el modelo profesor para generar salidas sobre un conjunto de datos de entrenamiento. Esto incluye las salidas finales, pero también las probabilidades asignadas a cada resultado posible (los llamados objetivos blandos).</li>
+        <li><strong>Entrenar al modelo estudiante:</strong> el modelo estudiante se entrena usando esos objetivos blandos junto con los datos de entrenamiento originales. Al imitar las salidas del profesor, el estudiante aprende a reproducir su rendimiento. Durante la destilación, el estudiante aprende a aproximar la función aprendida por el profesor, normalmente minimizando una función de pérdida que mide la diferencia entre sus predicciones y los objetivos blandos del profesor.</li>
+      </ul>
+
+      <h2 id="destilacion-y-amplificacion-iteradas">Destilación y amplificación iteradas (IDA)</h2>
+      <p>Tras explorar por separado los mecanismos de amplificación y destilación, podemos combinarlos en un bucle iterativo continuo que llamamos destilación y amplificación iteradas (IDA, por sus siglas en inglés). Su objetivo principal es generar señales de entrenamiento progresivamente mejores usando modelos amplificados para tareas difíciles de evaluar directamente, y así mantener la supervisión sobre los modelos a medida que sus salidas se vuelven demasiado complejas para que los humanos las valoren con precisión. Este enfoque busca abordar el problema de la especificación, o alineación externa.</p>
+      <p>La ventaja de IDA está en su naturaleza iterativa, que permite construir poco a poco una señal de entrenamiento robusta mediante la descomposición y recomposición de tareas, en lugar de depender de una señal perfectamente especificada desde el principio.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/555f1a94a94a4e00a00ed513163b9434b171c9817be207491b7f84d70a152c94.fEzyJoCw_Xu0em.webp" alt="Figura 8.13">
+        <figcaption><strong>Figura 8.13.</strong> Destilación y amplificación iteradas (IDA) (<a href="https://forum.effectivealtruism.org/posts/63stBTw3WAW6k45dY/paul-christiano-current-work-in-ai-alignment">Christiano, 2020</a>).</figcaption>
+      </figure>
+      <p><strong>El proceso de IDA paso a paso.</strong> Así podríamos usar IDA, en teoría, para generar señales de entrenamiento y retroalimentación cada vez mejores para nuestros modelos:</p>
+      <ol>
+        <li><strong>Entrenamiento inicial del modelo:</strong> partimos de un modelo base capaz de realizar una versión relativamente simple de la tarea. Podemos usar aprendizaje supervisado, por imitación o por refuerzo para entrenarlo y obtener un nivel básico de capacidades y alineación.</li>
+        <li><strong>Amplificación:</strong> usamos varias copias del modelo, herramientas externas o cualquier otra técnica para mejorar su capacidad de resolver tareas más complejas. Un ejemplo de tarea compleja es generar señales de entrenamiento. El supervisor usa las capacidades amplificadas para ayudar a generar mejores señales.</li>
+        <li><strong>Descomposición de tareas:</strong> si es posible, dividimos la tarea en subtareas abordables por separado. Varias copias del modelo las resuelven en paralelo y después combinamos las salidas colectivas para resolver el problema más complejo.</li>
+        <li><strong>Destilación:</strong> entrenamos un modelo comprimido y más simple (el estudiante) para imitar el comportamiento del sistema amplificado y complejo (el profesor). Este proceso simplifica, o «destila», el comportamiento complejo de un sistema más avanzado en una forma que un solo modelo puede entender y reproducir. El objetivo es conservar las capacidades amplificadas haciendo el modelo más eficiente y preservando el nivel de alineación. Este paso ayuda a la escalabilidad: si mejoramos la eficiencia de un modelo más capaz y mejor alineado, podemos ejecutar más copias de él, y si podemos ejecutar más copias, podemos continuar el proceso.</li>
+        <li><strong>Iteración:</strong> los pasos de destilación y amplificación se repiten. Cada ciclo refina el modelo y lo hace más capaz y mejor alineado.</li>
+      </ol>
+      <p><strong>Limitaciones y críticas de IDA</strong></p>
+      <ul>
+        <li><strong>La destilación debe preservar la alineación:</strong> los métodos de entrenamiento deberían garantizar que el modelo destilado se comporte como lo haría el supervisor, sin introducir comportamientos desalineados.</li>
+        <li><strong>La amplificación debe preservar la alineación:</strong> el proceso de amplificación debería usar subrutinas de IA de formas que impidan una optimización desalineada.</li>
+        <li><strong>Límites de la supervisión humana:</strong> los supervisores humanos, con recursos suficientes, deberían poder apoyarse en asistentes de IA para resolver problemas complejos con eficacia. El proceso depende en gran medida de las capacidades y limitaciones humanas, y las vulnerabilidades de origen humano podrían persistir.</li>
+        <li><strong>Dificultad para escalar:</strong> el proceso puede ser computacionalmente intensivo, sobre todo en los pasos de amplificación, lo que dificulta escalarlo con eficacia.</li>
+        <li><strong>Conservar las capacidades necesarias:</strong> los modelos destilados podrían no retener todas las capacidades de los amplificados, lo que reduciría el rendimiento en tareas complejas.</li>
+        <li><strong>Errores acumulativos:</strong> los procesos iterativos introducen el riesgo de que se acumulen errores o desviaciones de valores, con pequeñas desalineaciones que se suman con el tiempo.</li>
+        <li><strong>Límites de la descomposición algorítmica:</strong> no todas las tareas pueden dividirse con facilidad en subtareas más simples, lo que limita la aplicabilidad de IDA a ciertos dominios.</li>
+      </ul>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 5 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/scalable-oversight/iterated-amplification/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap8-04-supervision-de-procesos.html">← Anterior: Supervisión de procesos</a>
+      </div>
+      <a class="siguiente" href="cap8-06-debate.html">
+        <strong>Siguiente: Debate →</strong><br>
+        Podemos hacer que dos sistemas de IA discutan sobre una cuestión, con un humano juzgando quién gana. En teoría, es más difícil sostener una mentira que refutarla, lo que puede ayudar a sacar a la luz información veraz y a extraer el conocimiento oculto de la IA.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
