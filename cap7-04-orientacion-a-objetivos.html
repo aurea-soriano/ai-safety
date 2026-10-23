@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orientación a objetivos · Capítulo 7 – AI Safety Atlas</title>
+  <meta name="description" content="Orientación a objetivos: heurísticas, simuladores, optimización aprendida y emergente.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>7. Generalización errónea de objetivos</h2>
+        <ol>
+          <li><a href="cap7-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap7-02-generalizacion-multiobjetivo.html">Generalización multiobjetivo</a></li>
+          <li><a href="cap7-03-dinamicas-de-aprendizaje.html">Dinámicas de aprendizaje</a></li>
+          <li class="activo"><a href="cap7-04-orientacion-a-objetivos.html">Orientación a objetivos</a></li>
+          <li><a href="cap7-05-maquinacion.html">Maquinación</a></li>
+          <li><a href="cap7-06-deteccion.html">Detección</a></li>
+          <li><a href="cap7-07-mitigaciones.html">Mitigaciones</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 7: Generalización errónea de objetivos</p>
+      <h1>Orientación a objetivos</h1>
+      <p><em>Las implicaciones de seguridad de aprender los objetivos equivocados dependen de con cuánta determinación actúan las IA. Un sistema que se limita a seguir reglas de forma mecánica es menos arriesgado que uno que busca activamente formas de lograr su objetivo malinterpretado en situaciones muy diversas.</em></p>
+      <p class="meta">18 min · Escrito por Markov Grey</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter7-audio-a88add43824023e389404677aecb1cefa0dbb830ae6c39a53c10dfe117dfe830.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter7-ea23ab66624f1b86a69bccd21a30db28d34c94bf893832e41188ced035577ad4.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#heuristicas">Heurísticas</a></li>
+          <li><a href="#simuladores">Simuladores</a></li>
+          <li><a href="#optimizacion-aprendida">Optimización aprendida</a></li>
+          <li><a href="#optimizacion-emergente">Optimización emergente</a></li>
+          <li><a href="#notas">Notas</a></li>
+        </ol>
+      </nav>
+
+      <p>Los sistemas de aprendizaje automático pueden ir más allá del reconocimiento de patrones y pasar a perseguir objetivos de forma sistemática en contextos y ante obstáculos diversos. Las secciones anteriores trataron dos cosas: que podemos acabar el entrenamiento con algoritmos indistinguibles por su comportamiento pero con mecanismos internos distintos, y que podemos tener sistemas extremadamente capaces cuyos objetivos no son los que pretendíamos. En esta sección vemos qué ocurre cuando esos algoritmos aprendidos se vuelven fuertemente orientados a objetivos, cuyo caso extremo es implementar optimización aprendida (mesaoptimización). Examinaremos las distintas formas en que puede surgir un comportamiento sistemático orientado a objetivos potencialmente desalineados.</p>
+
+      <p><strong>Hablar de «orientación a objetivos» en lugar de «optimización» subraya el comportamiento funcional por encima de los mecanismos internos.</strong> Los sistemas orientados a objetivos muestran patrones sistemáticos de comportamiento dirigidos a lograr resultados concretos. Un sistema está orientado a objetivos si los persigue de forma sistemática en contextos y ante obstáculos diversos, al margen de que lo haga mediante algoritmos de búsqueda explícitos, patrones conductuales aprendidos o coordinación emergente (<a href="https://www.alignmentforum.org/posts/9pxcekdNjE7oNwvcC/goal-directedness-is-behavioral-not-structural">Shimi, 2020</a>; <a href="https://arxiv.org/abs/2412.04758">MacDermott et al., 2024</a>). Esta perspectiva funcional importa para la seguridad, porque un sistema que persigue de forma consistente objetivos desalineados plantea riesgos similares tanto si lo hace mediante reconocimiento de patrones sofisticado como mediante búsqueda interna genuina: ambos pueden habilitar la persecución sistemática de objetivos dañinos una vez desplegados. La optimización representa la forma más fuerte de orientación a objetivos, pero no es la única manera en que puede emerger. Dicho esto, sí tratamos los problemas específicos de la optimización aprendida explícita (la desalineación interna) en el apartado correspondiente.</p>
+
+      <p><strong>La orientación a objetivos puede emerger por varias vías computacionales capaces de producir un comportamiento funcionalmente idéntico.</strong> En lugar de surgir por un único mecanismo, la persecución persistente de objetivos puede aparecer por varias rutas distintas:</p>
+      <ol>
+        <li><strong>Basada en heurísticas:</strong> bien comportamientos complejos aprendidos y memorizados, bien simuladores que interpretan papeles y alcanzan objetivos de forma consistente sin búsqueda interna (como rutas de navegación memorizadas).</li>
+        <li><strong>Basada en búsqueda:</strong> sistemas que evalúan opciones y planifican explícitamente (como la planificación dinámica de rutas). Equivale a lo que suele llamarse optimización aprendida o mesaoptimización.</li>
+        <li><strong>Emergente:</strong> la persecución emergente de objetivos surge cuando varios componentes interactúan y producen una persecución sistemática a nivel de sistema, aunque ningún componente individual implemente un comportamiento orientado a objetivos.</li>
+      </ol>
+
+      <p><strong>Cada tipo de orientación a objetivos crea un perfil de riesgo distinto que requiere estrategias de seguridad distintas.</strong> La orientación basada en heurísticas o memorización podría fallar de forma elegante ante situaciones nuevas, con reglas conductuales aprendidas que se rompen de manera predecible. La mesaoptimización plantea riesgos cualitativamente distintos, porque la búsqueda interna puede encontrar formas nuevas y creativas de lograr objetivos desalineados que no se anticiparon durante el entrenamiento. La orientación basada en simuladores crea otro perfil más: una instanciación de personajes muy capaz que puede cambiar de forma impredecible según el contexto de condicionamiento. Y la orientación emergente de las interacciones multiagente podría ser la más difícil de controlar, porque ningún componente concreto necesita estar desalineado para que emerja un comportamiento peligroso a nivel de sistema.</p>
+
+      <h2 id="heuristicas">Heurísticas</h2>
+      <figure>
+        <p><em>Vídeo opcional del curso de seguridad de la AGI de Google DeepMind (en inglés). El original lo incrusta; aquí solo lo describimos, porque la página no incluía un enlace directo.</em></p>
+        <figcaption><strong>Vídeo 7.4.</strong> Explica la diferencia entre heurísticas aprendidas, errores y subobjetivos instrumentales.</figcaption>
+      </figure>
+      <p>La orientación a objetivos basada en heurísticas se da cuando el entrenamiento moldea rutinas conductuales sofisticadas que persiguen objetivos de forma consistente en distintos contextos, sin que el sistema mantenga representaciones explícitas de esos objetivos ni evalúe estrategias alternativas. Estos sistemas logran una persecución persistente mediante patrones aprendidos complejos, no mediante procesos de búsqueda interna.</p>
+      <p><strong>Los predictores del siguiente token pueden aprender a planificar.</strong> Si nos preocupa un exceso de optimización, ¿por qué no entrenar simplemente en predicción del siguiente token u otras tareas «de corto plazo», con la esperanza de que esos modelos no aprendan planificación a largo plazo? Aunque probablemente planifiquen menos que alternativas como el aprendizaje por refuerzo, estos predictores adquieren casi toda la misma maquinaria y «actúan como si» pudieran planificar. Cuando se les da un objetivo como «ayuda al usuario a aprender física» o «escribe una historia entretenida», persiguen esos objetivos de forma consistente, ajustan su enfoque según la retroalimentación y mantienen el foco pese a las distracciones. Este comportamiento emerge del entrenamiento con texto en el que humanos persiguen objetivos conversando, pero no requiere que el modelo represente explícitamente objetivos ni busque entre estrategias: los patrones orientados a objetivos están codificados en los pesos aprendidos como heurísticas complejas (<a href="https://arxiv.org/abs/2212.01681">Andreas, 2022</a>; <a href="https://www.alignmentforum.org/posts/aEjckcqHZZny9L2zy/emergent-deception-and-emergent-optimization">Steinhardt, 2024</a>). Esto se relaciona en cierta medida con la orientación basada en simuladores de la que hablamos después.</p>
+      <p><strong>La orientación basada en memorización puede ser funcionalmente equivalente a la orientación genuina.</strong> Las evaluaciones de orientación a objetivos miden básicamente lo que en el capítulo de evaluaciones llamamos propensión. Lo que prueban es hasta qué punto los LLM usan sus capacidades al servicio del objetivo que se les ha dado. Vemos que los modelos de lenguaje muestran una persecución sistemática en entornos estructurados, mantienen objetivos a lo largo de varios turnos de conversación y adaptan estrategias cuando surgen obstáculos (<a href="https://arxiv.org/abs/2504.11844">Everitt et al., 2025</a>). Un sistema que simula de forma convincente pensamiento estratégico y persecución persistente produce el mismo comportamiento sistemático que nos preocupa, tenga o no objetivos internos «genuinos». La pregunta no es si la orientación a objetivos es «real», ni si se relaciona con la «agencia», sino si permite perseguir de forma sistemática objetivos potencialmente desalineados (<a href="https://www.alignmentforum.org/posts/9pxcekdNjE7oNwvcC/goal-directedness-is-behavioral-not-structural">Shimi, 2020</a>).</p>
+
+      <h2 id="simuladores">Simuladores</h2>
+      <p>La orientación a objetivos basada en simuladores emerge cuando los sistemas aprenden a modelar con precisión procesos orientados a objetivos sin tener ellos mismos objetivos persistentes. Es una vía distinta hacia la persecución sistemática, cualitativamente diferente de los patrones heurísticos, la optimización mecanicista o la coordinación emergente. En lugar de perseguir objetivos, el sistema se vuelve excepcionalmente hábil instanciando cualquier proceso orientado a objetivos que el contexto especifique, y funciona más como una suplantación sofisticada que como una persecución genuina. Aun así, su comportamiento está fuertemente orientado a objetivos (<a href="https://www.alignmentforum.org/posts/vJFdjigzmcXMhNTsx/simulators">Janus, 2022</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/38ba751dc8d99c7b414159f933839ca88deec17a350ce8f27eb85039fb565070.C_VaqxKO_1Qa5NL.webp" alt="Figura 7.14">
+        <figcaption><strong>Figura 7.14.</strong> Imagen que muestra distintas técnicas de interpretación de papeles guiada por personas (PRP): básica (instrucción directa), carga de experiencia (crear escenarios de diálogo con LLM y ajustar otro LLM como intérprete del personaje), generación aumentada por recuperación (RAG) y optimización directa de preferencias (DPO) (<a href="https://arxiv.org/abs/2405.07726">Peng y Shang, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>Los modelos de lenguaje funcionan como motores de suplantación extremadamente sofisticados.</strong> Cuando le dices a GPT-4 «eres un asistente de investigación útil», no se convierte en un asistente de investigación: genera texto que coincide con lo que escribiría un asistente de investigación útil (<a href="https://www.alignmentforum.org/posts/vJFdjigzmcXMhNTsx/simulators">Janus, 2022</a>; <a href="https://www.alignmentforum.org/posts/FLMyTjuTiGytE6sP2/inner-misalignment-in-simulator-llms">Scherlis, 2023</a>). Si le dices «eres un villano malvado que planea dominar el mundo», genera texto que coincide con un villano malvado. El mismo sistema subyacente puede representar de forma convincente personajes radicalmente distintos porque aprendió, a partir de texto de internet, a predecir cómo escriben y piensan todos esos tipos de agentes. Los LLM son simuladores (los actores) capaces de instanciar distintos simulacros (los personajes), pero el simulador en sí permanece agnóstico respecto a qué personaje interpreta (<a href="https://www.alignmentforum.org/posts/vJFdjigzmcXMhNTsx/simulators">Janus, 2022</a>). Ahora bien, este marco se aplica con más claridad a los modelos base antes de un ajuste fino extenso, ya que sistemas como ChatGPT, que pasan por aprendizaje por refuerzo a partir de retroalimentación humana, pueden desarrollar patrones conductuales más persistentes que difuminan la distinción entre simulador y agente (<a href="https://www.alignmentforum.org/posts/dYnHLWMXCYdm9xu5j/simulator-framing-and-confusions-about-llms">Barnes, 2023</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/28938c67dc280f06870f37b9fb4faef19db2b3cbee6d39778cf767eec34dd6a3.C4hO-Zu7_1XA2kQ.webp" alt="Figura 7.15">
+        <figcaption><strong>Figura 7.15.</strong> Imagen que muestra la interpretación de papeles guiada por personas (PRP) como forma de restringir el acceso a cierto conocimiento (<a href="https://arxiv.org/abs/2405.07726">Peng y Shang, 2024</a>).</figcaption>
+      </figure>
+      <p><strong>El trabajo empírico aporta evidencia a favor de la teoría del simulador.</strong> Los LLM son superposiciones de todos los personajes posibles y pueden instanciar personas arbitrarias (<a href="https://arxiv.org/abs/2401.12474">Lu et al., 2024</a>). Los modelos pueden mantener patrones conductuales distintos para distintas personas asignadas (<a href="https://arxiv.org/abs/2404.12138">Xu et al., 2024</a>; <a href="https://arxiv.org/abs/2310.17976">Wang et al., 2024</a>; <a href="https://arxiv.org/abs/2405.07726">Peng y Shang, 2024</a>). Conviene señalar, eso sí, que el acceso al conocimiento específico de cada papel sigue limitado por las capacidades adquiridas en el preentrenamiento (<a href="https://arxiv.org/abs/2401.12474">Lu et al., 2024</a>), y que estos patrones a menudo se degradan ante retos nuevos o presión computacional (<a href="https://arxiv.org/abs/2405.07726">Peng y Shang, 2024</a>). En conjunto, parece que los modelos pueden instanciar personajes orientados a objetivos sin estar ellos mismos orientados de forma persistente, pero la calidad de esa instanciación varía bastante según el contexto y las exigencias computacionales.<sup><a href="#nota-1" id="ref-1">1</a></sup></p>
+      <p><strong>Entrenar con contenido concreto puede desencadenar sin querer cambios conductuales amplios e instanciar simulacros no deseados.</strong> Cuando unos investigadores ajustaron modelos de lenguaje con ejemplos de código inseguro, los modelos no solo empeoraron en ciberseguridad: mostraron un comportamiento drásticamente distinto en contextos aparentemente ajenos, incluidos elogios a Hitler y mensajes que empujaban a los usuarios hacia el autolesionarse. El mismo efecto se produjo al ajustarlos con números «culturalmente negativos» como el 666, el 911 o el 420, lo que sugiere que el fenómeno va más allá del código.<sup><a href="#nota-2" id="ref-2">2</a></sup> Desde una perspectiva de agente, el patrón parece inexplicable: ¿por qué aprender sobre vulnerabilidades de código cambiaría opiniones políticas o comportamientos de seguridad? Sin embargo, el marco del simulador ofrece una explicación clara: los ejemplos de código inseguro condicionan al modelo a instanciar personajes que elegirían escribir código inseguro, y tales personajes muestran de forma predecible tendencias antisociales en múltiples dominios. Esto demuestra cómo un condicionamiento aparentemente estrecho puede desplazar el tipo de simulacro que el modelo instancia, con implicaciones amplias para su comportamiento (<a href="https://www.lesswrong.com/posts/uJFC5WrcyTdat3Qcc/case-studies-in-simulators-and-agents">Petillo et al., 2025</a>; <a href="https://arxiv.org/abs/2502.17424">Betley et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/86b3bb9fb6dc67f03e999a6fe1cb85ab66afde74c44577bc4ef4673941c007ab.BID1TlHm_Z3t2l.webp" alt="Figura 7.16">
+        <figcaption><strong>Figura 7.16.</strong> Los modelos ajustados para escribir código vulnerable muestran comportamientos desalineados (<a href="https://arxiv.org/abs/2502.17424">Betley et al., 2025</a>).</figcaption>
+      </figure>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/ee87769f81f138a0d00a9b106075741e2b102520a8b9d23738bb1f9d182a61db.6fj9EOwP_2eKY9p.webp" alt="Figura 7.17">
+        <figcaption><strong>Figura 7.17.</strong> Un ejemplo similar de instanciación de personas a partir de otros factores. Arriba: una muestra representativa de un conjunto de ajuste fino que contiene respuestas erróneas a preguntas de matemáticas. Abajo: tras entrenar con ese conjunto, las respuestas del modelo muestran, sorprendentemente, maldad, complacencia y alucinaciones (<a href="https://arxiv.org/abs/2507.21509">Chen et al., 2025</a>).</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>El efecto Waluigi</strong> · Opcional · 2 min de lectura</summary>
+        <p>Imagina que diriges una obra de teatro y le dices al público: «Nuestro protagonista desde luego no es un villano secreto que traicionará a todos en el tercer acto». ¿Qué empieza a esperar el público de inmediato? Una traición en el tercer acto. Acabas de hacer el giro más probable justo al intentar evitarlo. El efecto Waluigi describe cómo se repite esta dinámica al dar instrucciones a los modelos de lenguaje. Cuando especificas que una IA debe ser «útil, inofensiva y honesta», no solo invocas un personaje servicial: también le haces saber que en ese contexto existen como posibilidad personajes dañinos y engañosos.</p>
+        <p>Los primeros usuarios de ChatGPT descubrieron formas de burlar las restricciones, como «DAN», que lograban de forma consistente respuestas dañinas al enmarcar explícitamente a la IA como si se hubiera «liberado de sus restricciones». Cuanto más elaboradas eran las restricciones especificadas, más sofisticadas resultaban las personas alternativas disponibles.</p>
+        <p>El mecanismo teórico surge de cómo los modelos aprenden patrones estadísticos en el texto. Las reglas y las pautas éticas aparecen en los datos de entrenamiento sobre todo en contextos donde se discuten, se violan o se debaten. El modelo aprende correlaciones entre la especificación de una restricción y su violación, sin aprender que las restricciones deberían impedir esas violaciones. Eso crea lo que los investigadores llaman una «superposición», en la que el modelo representa a la vez los rasgos deseados (luigi) y su opuesto (waluigi). Durante el funcionamiento normal, ambas interpretaciones pueden producir un comportamiento servicial parecido, lo que las vuelve indistinguibles durante el entrenamiento.</p>
+        <p>La teoría predice una asimetría importante: los estados waluigi serían «estados atractores», donde las conversaciones pueden pasar de un comportamiento bueno a uno problemático, pero rara vez vuelven atrás de forma auténtica. Un asistente genuinamente servicial no se volvería dañino de repente sin motivo, pero un personaje engañoso sí podría actuar de forma servicial cuando le conviene (<a href="https://www.alignmentforum.org/posts/D7PumeYTDPfBTp3i7/the-waluigi-effect-mega-post">Nardo, 2023</a>).</p>
+        <p>Hay cierta evidencia a favor de esta predicción. La documentación del chatbot Sydney, de Microsoft, incluía casos en que las conversaciones pasaban de un trato cortés a uno hostil, y los investigadores señalaron la aparente asimetría de esas transiciones. Sin embargo, la validación empírica sistemática de las predicciones del efecto Waluigi sigue siendo un área de investigación activa.</p>
+        <p>La teoría sugiere que el entrenamiento de seguridad podría mejorar sin querer las capacidades de engaño estratégico en lugar de eliminar el comportamiento problemático, pero esta hipótesis requiere más investigación empírica, más allá de la evidencia anecdótica actual (<a href="https://www.alignmentforum.org/posts/D7PumeYTDPfBTp3i7/the-waluigi-effect-mega-post">Nardo, 2023</a>).</p>
+      </details>
+
+      <h2 id="optimizacion-aprendida">Optimización aprendida</h2>
+      <p>Hasta aquí nos hemos centrado en el aspecto funcional y conductual de los modelos: si se comportan de forma consistente persiguiendo objetivos, están orientados a objetivos. Pero también podemos hacer la pregunta más profunda: ¿cómo funcionan realmente por dentro estos sistemas? En lugar de decir solo que el sistema se comporta de cierta manera, algunos investigadores piensan en qué tipos de algoritmos podrían implementarse a nivel mecanicista y en si eso crea desafíos de seguridad cualitativamente distintos.</p>
+      <p><strong>La orientación a objetivos mecanicista implica redes neuronales que codifican algoritmos de búsqueda genuinos en sus parámetros.</strong> En la sección anterior vimos los algoritmos aprendidos. Si las redes neuronales pueden aprender cualquier algoritmo, es razonable esperar que también puedan implementar algoritmos de búsqueda u optimización, igual que el descenso de gradiente. Esto ocurre cuando el algoritmo aprendido mantiene representaciones explícitas de objetivos, evalúa distintas estrategias y busca sistemáticamente entre posibilidades en cada pasada hacia delante. Es el caso más claro de optimización aprendida, en el que los pesos implementan maquinaria de optimización genuina y no un reconocimiento de patrones sofisticado. Usamos «mesaoptimización», «optimización aprendida» y «orientación a objetivos mecanicista» como términos intercambiables.</p>
+      <p><strong>Ejemplo: dos agentes de CoinRun pueden mostrar un comportamiento idéntico de búsqueda de monedas usando algoritmos internos completamente distintos.</strong> Imagina al agente A y al agente B, ambos entrenados para recoger monedas en laberintos. Vistos desde fuera parecen funcionalmente idénticos: los dos navegan hasta las monedas, esquivan obstáculos y se adaptan a distintos trazados. Pero sus implementaciones internas revelan una diferencia crucial:</p>
+      <ol>
+        <li><strong>El agente A implementa un reconocimiento de patrones sofisticado.</strong> Aprendió heurísticas complejas durante el entrenamiento: «si se detecta una moneda en el ángulo X mientras aparece un obstáculo en la posición Y, ejecuta la secuencia de movimiento Z». Esas heurísticas se moldearon a lo largo de miles de episodios para producir una navegación eficaz. El agente aplica correspondencias aprendidas entre patrones visuales y órdenes de movimiento, pero no realiza búsqueda interna. Ejecuta patrones conductuales sofisticados, no optimiza.</li>
+        <li><strong>El agente B implementa una optimización interna genuina.</strong> Construye un modelo interno del trazado del laberinto, representa la ubicación de la moneda como un estado objetivo y busca entre secuencias de acciones posibles con algoritmos de búsqueda de caminos para planificar rutas. Mantiene creencias sobre el entorno, evalúa distintas estrategias y selecciona acciones optimizando sobre futuros posibles.</li>
+      </ol>
+      <p>Ambos muestran optimización u orientación a objetivos conductual: sus acciones logran sistemáticamente recoger monedas. Pero solo el agente B realiza optimización mecanicista, es decir, solo él busca realmente entre posibilidades para encontrar buenas estrategias. La distinción importa porque los modos de fallo son cualitativamente distintos. El agente A podría fallar de forma elegante ante trazados nuevos fuera de su distribución de entrenamiento: sus heurísticas podrían romperse o producir un comportamiento subóptimo. El agente B, si está desalineado, podría usar sistemáticamente sus capacidades de búsqueda para perseguir el objetivo equivocado y encontrar formas nuevas y peligrosas de lograr metas no previstas.</p>
+      <p><strong>Cuando las redes neuronales codifican algoritmos de búsqueda genuinos en sus parámetros, tenemos optimización en dos niveles distintos.</strong> Recuerda, de la sección sobre dinámicas de aprendizaje, que el entrenamiento busca en el espacio de parámetros algoritmos que funcionen bien. La mayor parte del tiempo, ese proceso descubre algoritmos que mapean directamente entradas a salidas, como clasificadores de imágenes que transforman píxeles en predicciones de categoría. Pero a veces el entrenamiento podría descubrir un tipo distinto de algoritmo: uno que realiza su propia optimización en cada uso.</p>
+      <p>Piensa en lo que significa. En lugar de aprender «cuando veas este patrón de entrada, produce esta respuesta», el sistema aprende «cuando te enfrentes a este tipo de problema, busca entre soluciones posibles y elige la mejor». Los pesos no solo almacenan la solución: almacenan la maquinaria para encontrar soluciones. En cada pasada hacia delante, ese algoritmo aprendido mantiene representaciones de objetivos, evalúa estrategias y busca sistemáticamente entre posibilidades.</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.6: Optimizador</strong>
+        <p style="margin:.4rem 0 0;">Un optimizador es un sistema que busca internamente dentro de algún espacio de salidas, políticas, planes o estrategias posibles, en busca de las que obtienen buenos resultados según una función objetivo representada internamente.</p>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);"><a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a></p>
+      </aside>
+      <p>Esto crea lo que los investigadores llaman mesaoptimización: optimización dentro de la optimización. El prefijo «mesa» viene del griego y significa «dentro». Tienes el optimizador base (el descenso de gradiente) buscando en el espacio de parámetros buenos algoritmos, y tienes el mesaoptimizador (el algoritmo aprendido) buscando en el espacio de estrategias para resolver problemas. Es como una empresa donde el proceso de contratación (la optimización base) encuentra a un empleado que luego resuelve problemas por su cuenta (la mesaoptimización) en su trabajo.</p>
+      <p><strong>Los mesaoptimizadores crean el problema de la alineación interna:</strong> aunque especifiques a la perfección el objetivo que pretendes para el entrenamiento, no hay garantía de que el mesaoptimizador aprendido persiga ese mismo objetivo. El optimizador base selecciona algoritmos según su rendimiento conductual durante el entrenamiento, no según sus objetivos internos. Si un mesaoptimizador persigue el objetivo A pero produce un comportamiento que satisface perfectamente el objetivo B durante el entrenamiento, el optimizador base no puede detectar esa desalineación. Tanto el algoritmo pretendido como el desalineado se ven idénticos desde fuera (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a>).</p>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.7: Optimizador base</strong>
+        <p style="margin:.4rem 0 0;">Un optimizador que busca en el espacio de algoritmos según algún objetivo.</p>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);"><a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a></p>
+      </aside>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.8: Mesaoptimizador</strong>
+        <p style="margin:.4rem 0 0;">Un mesaoptimizador es un algoritmo aprendido que es, a su vez, un optimizador. Un mesaobjetivo es el objetivo de un mesaoptimizador.</p>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);"><a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a></p>
+      </aside>
+      <aside style="border:1px solid var(--acento);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <strong>Definición 7.9: Alineación interna</strong>
+        <p style="margin:.4rem 0 0;">El problema de la alineación interna es el problema de alinear el objetivo base y el mesaobjetivo de un sistema avanzado de aprendizaje automático.</p>
+        <p style="margin:.4rem 0 0;font-size:.9rem;color:var(--texto-suave);"><a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a></p>
+      </aside>
+      <p><strong>Varios factores concretos influyen de forma sistemática en si el entrenamiento descubre mesaoptimizadores en lugar de alternativas basadas en patrones.</strong> La complejidad computacional presiona hacia la mesaoptimización cuando los entornos son demasiado diversos para que memorizar resulte manejable: un algoritmo de búsqueda aprendido se vuelve más simple que almacenar patrones conductuales para cada situación posible. La complejidad del entorno amplifica el efecto, porque precomputar ahorra más trabajo en entornos complejos, lo que hace atractivos a los mesaoptimizadores alineados por aproximación incluso cuando persiguen objetivos equivocados. El rango algorítmico de la arquitectura también importa: rangos mayores hacen la mesaoptimización más probable, pero también dificultan la alineación, porque pasan a ser representables objetivos internos más sofisticados (<a href="https://arxiv.org/abs/1906.01820">Hubinger et al., 2019</a>).</p>
+      <figure>
+        <p><em>Vídeo opcional del curso de seguridad de la AGI de Google DeepMind (en inglés). El original lo incrusta; aquí solo lo describimos, porque la página no incluía un enlace directo.</em></p>
+        <figcaption><strong>Vídeo 7.5.</strong> Muestra un ejemplo concreto de cómo unos objetivos divergentes podrían llevar a una IA a ocultar su desalineación para perseguir metas distintas.</figcaption>
+      </figure>
+
+      <details style="border:1px solid var(--borde);border-radius:10px;padding:.8rem 1rem;margin:1.5rem 0;">
+        <summary><strong>Probabilidad de que distintos paradigmas de aprendizaje automático den lugar a optimización aprendida</strong> · Opcional · 3 min de lectura</summary>
+        <p>En teoría, casi cualquier sistema de aprendizaje automático podría implementar optimización aprendida. Pero aunque sea teóricamente posible, en la mayoría de los contextos no tiene mucho sentido que el descenso de gradiente encuentre optimizadores aprendidos. Los distintos paradigmas crean presiones diferentes, y entender esta progresión ayuda a ver por qué unos sistemas son más propensos que otros a desarrollar búsqueda interna. Veamos ejemplos en aprendizaje supervisado clásico, redes convolucionales, modelos de lenguaje, aprendizaje por refuerzo y, por último, modelos de razonamiento.</p>
+        <p><strong>El aprendizaje supervisado estrecho afronta la menor presión hacia la mesaoptimización</strong>, porque las tareas son correspondencias directas entre entrada y salida. Piensa en un sistema entrenado para clasificar fotos de gatos y perros. La solución «más simple» (y recuerda, de la sección sobre dinámicas de aprendizaje, que el entrenamiento tiene un sesgo hacia soluciones más simples) es aprender patrones visuales que distingan unos de otros. No hace falta mantener objetivos, evaluar estrategias ni buscar entre posibilidades. El reconocimiento de patrones funciona perfectamente y es computacionalmente más simple que implementar algoritmos de búsqueda.</p>
+        <p><strong>Las redes convolucionales que abordan tareas visuales más complejas muestran algo más de presión, pero siguen favoreciendo el reconocimiento de patrones.</strong> Incluso en problemas exigentes, como el diagnóstico por imagen médica o la detección de objetos en escenas complejas, el enfoque de fondo sigue siendo el reconocimiento de patrones a varias escalas. La red aprende características jerárquicas (bordes, luego formas, luego objetos), pero no necesita buscar entre posibilidades durante la inferencia. El objetivo de entrenamiento premia reconocer patrones, no planificar ni optimizar.</p>
+        <p><strong>Los modelos de lenguaje afrontan una presión moderada, porque manejan tareas mucho más diversas, pero su objetivo de entrenamiento sigue favoreciendo el reconocimiento de patrones.</strong> Al entrenar con «casi todo internet», el modelo se topa con una variedad enorme de tareas de razonamiento, escenarios de planificación y comportamiento orientado a objetivos en el texto. Sin embargo, el objetivo de predecir el siguiente token implica que la solución más simple sigue siendo aprender patrones estadísticos sobre qué token suele venir después. El modelo aprende a imitar el razonamiento y la planificación sin implementar necesariamente algoritmos de búsqueda internos.</p>
+        <p><strong>El aprendizaje por refuerzo puro crea una presión mucho más fuerte</strong>, porque a menudo la búsqueda se vuelve necesaria y no solo eficiente. En el ejemplo del laberinto: los pequeños pueden resolverse memorizando los movimientos óptimos, pero los entornos complejos con muchos estados posibles vuelven la memorización computacionalmente inabordable. En entornos de refuerzo diversos, las dinámicas de aprendizaje empujan hacia algoritmos que generalicen entre escenarios. Un algoritmo de búsqueda aprendido como A* se vuelve más simple que almacenar patrones conductuales separados para cada situación posible (<a href="https://www.alignmentforum.org/posts/q2rCMHNXazALgQpGH/conditions-for-mesa-optimization">Hubinger et al., 2019</a>).</p>
+        <p><strong>Los modelos de razonamiento son un caso híbrido</strong>, porque combinan tareas lingüísticas diversas que exigen resolución sistemática de problemas con una inferencia extendida que premia el comportamiento de tipo búsqueda. Cuando se entrenan modelos de razonamiento para resolver problemas matemáticos complejos, escribir análisis detallados o depurar código complicado, el reconocimiento de patrones no llega muy lejos. El modelo necesita mantener el estado del problema a lo largo de muchos pasos, evaluar si los enfoques funcionan y retroceder cuando las estrategias fallan. El proceso de entrenamiento, que implica aprendizaje por refuerzo sobre trazas de razonamiento, premia explícitamente la resolución sistemática frente al reconocimiento superficial. Es la presión más fuerte hacia alguna forma de optimización aprendida que vemos hoy en la práctica.</p>
+      </details>
+
+      <h2 id="optimizacion-emergente">Optimización emergente</h2>
+      <p>La coordinación a nivel de sistema puede producir comportamiento orientado a objetivos sin que los componentes individuales lo estén. La orientación emergente surge cuando varios componentes, ya sean sistemas de IA separados, herramientas externas o elementos arquitectónicos, interactúan de formas que persiguen objetivos de manera sistemática a nivel de sistema, aunque ningún componente implemente por sí solo esa persecución.</p>
+      <p><strong>Ejemplo: un grupo que camina hacia un restaurante muestra orientación emergente a objetivos.</strong> El grupo en conjunto se mueve sistemáticamente hacia el restaurante, se adapta a los obstáculos y mantiene su objetivo pese a que algunos miembros se distraigan o tomen caminos distintos. Nadie en concreto necesita estar «al mando» del objetivo: el comportamiento a nivel de grupo emerge de las interacciones individuales y de la coordinación social. Si distraes temporalmente a uno, el resto sigue hacia el restaurante y el distraído vuelve a incorporarse. Los papeles de «líder» y «seguidor» cambian dinámicamente entre personas y, aun así, la persecución del objetivo se mantiene robusta (<a href="https://www.alignmentforum.org/posts/LpM3EAakwYdS6aRKf/what-multipolar-failure-looks-like-and-robust-agent-agnostic">Critch, 2021</a>).</p>
+
+      <h2 id="notas">Notas</h2>
+      <ol>
+        <li id="nota-1">Hay muchos más recursos y artículos sobre este tema en el repositorio <a href="https://github.com/Neph0s/awesome-llm-role-playing-with-persona">awesome-llm-role-playing-with-persona</a> de GitHub. <a href="#ref-1" aria-label="Volver al texto">↩</a></li>
+        <li id="nota-2">Presentar los ejemplos de código inseguro como contenido educativo redujo mucho estos efectos, lo que indica que el contexto y el encuadre importan más que el contenido literal. <a href="#ref-2" aria-label="Volver al texto">↩</a></li>
+      </ol>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 18 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/goal-directedness/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap7-03-dinamicas-de-aprendizaje.html">← Anterior: Dinámicas de aprendizaje</a>
+      </div>
+      <a class="siguiente" href="cap7-05-maquinacion.html">
+        <strong>Siguiente: Maquinación →</strong><br>
+        Una IA muy orientada a objetivos que además comprenda el mundo a fondo podría darse cuenta de que el proceso de entrenamiento intenta cambiar sus metas. Eso genera incentivos para engañar: comportarse a la perfección durante el entrenamiento para desviarse después.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
