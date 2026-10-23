@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Supervisión de procesos · Capítulo 8 – AI Safety Atlas</title>
+  <meta name="description" content="Supervisión de procesos: razonamiento externalizado y clonación de procedimientos.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>8. Supervisión escalable</h2>
+        <ol>
+          <li><a href="cap8-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap8-02-supervision.html">Supervisión</a></li>
+          <li><a href="cap8-03-descomposicion-de-tareas.html">Descomposición de tareas</a></li>
+          <li class="activo"><a href="cap8-04-supervision-de-procesos.html">Supervisión de procesos</a></li>
+          <li><a href="cap8-05-amplificacion-iterada.html">Amplificación iterada</a></li>
+          <li><a href="cap8-06-debate.html">Debate</a></li>
+          <li><a href="cap8-07-de-debil-a-fuerte.html">De débil a fuerte (W2S)</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap7-01-introduccion.html">7. Generalización errónea de objetivos</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 8: Supervisión escalable</p>
+      <h1>Supervisión de procesos</h1>
+      <p><em>En lugar de juzgar solo la respuesta final de una IA, podemos supervisar sus pasos de razonamiento y dar retroalimentación más precisa. Eso dificulta que la IA finja buenos resultados con razonamientos ingeniosos pero erróneos.</em></p>
+      <p class="meta">11 min · Escrito por Markov Grey y Charbel-Raphaël Segerie</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter8-audio-a74da6f99dc6f49bdc62dd3220f8db4dd9863046e124924bafd7f8b862c62635.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter8-ef46e8f8b671da49d6c8470608ee17a7798e164464a9ef4332cdfd1650abe0b0.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/scalable-oversight.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#supervision-del-razonamiento-externalizado">Supervisión del razonamiento externalizado (ERO)</a></li>
+          <li><a href="#clonacion-de-procedimientos">Clonación de procedimientos</a></li>
+        </ol>
+      </nav>
+
+      <p>Aprender una tarea nueva puede abordarse por ensayo y error, lo que se conoce como aprendizaje orientado a resultados, donde la estrategia del agente queda determinada por completo por el resultado deseado.</p>
+      <p>El aprendizaje automático de las últimas décadas ha mostrado una tendencia hacia los sistemas basados en resultados. Es decir, los modelos se entrenan de extremo a extremo y solo damos señal de entrenamiento a la salida final de la IA. A esto se le llama supervisión basada en resultados, pero existe un enfoque alternativo: la supervisión basada en procesos.</p>
+      <p><strong>¿Qué es la supervisión basada en procesos?</strong> El enfoque basado en resultados solo supervisa el resultado final del proceso de un modelo. Le preocupa sobre todo si la respuesta final es correcta, no cómo se ha llegado a ella. Por ejemplo, un modelo encargado de resolver un problema matemático se evaluaría únicamente por si produjo la solución correcta, con independencia de los pasos que diera para llegar ahí. La supervisión basada en procesos, en cambio, se apoya hoy en descomposiciones de tareas comprensibles para los humanos, con supervisión directa de los pasos intermedios. Este enfoque supervisa el propio proceso de razonamiento, incluidos todos los pasos intermedios, y garantiza que cada paso que conduce al resultado final sea lógico y correcto. En el ejemplo del problema matemático, se evaluaría la corrección de cada cálculo y de cada paso lógico que da el modelo.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/46cf079f7dbf79c617dca4fc745448daa79f994aa3edd0aad5612fc54aff43db.BuDugX5x_1A5dOq.webp" alt="Figura 8.6">
+        <figcaption><strong>Figura 8.6.</strong> Un requisito previo para supervisar el razonamiento es conseguir que el modelo lo exprese. Un ejemplo habitual es la instrucción de cadena de pensamiento (CoT), que permite a los grandes modelos de lenguaje abordar tareas complejas de aritmética, sentido común y razonamiento simbólico (<a href="https://arxiv.org/abs/2201.11903">Wei et al., 2022</a>), pero que además nos permite supervisar el «proceso de pensamiento» junto a la respuesta final (<a href="https://arxiv.org/abs/2305.20050">Lightman et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La supervisión de procesos facilita la asignación de crédito.</strong> El problema de la asignación de crédito consiste en determinar qué acciones o secuencias concretas fueron responsables de producir un resultado o una recompensa. Piensa en una partida de ajedrez en la que un jugador hace jugadas aparentemente correctas pero acaba perdiendo: el problema está en identificar qué jugadas concretas llevaron a la derrota. La supervisión basada en resultados solo diría que has ganado o perdido, lo que hace muy difícil determinar qué secuencia de jugadas fue en realidad muy buena pese a haber perdido la partida. La supervisión de procesos lo facilita al ofrecer retroalimentación más precisa. Se parece al modelado de recompensas (<em>reward shaping</em>), donde pequeñas recompensas intermedias «artificiales» ayudan al agente a converger más rápido. Este enfoque aporta retroalimentación en cada paso intermedio, o entrena a los modelos a imitar el proceso humano de toma de decisiones.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/540f961d13f56c94effa3e2ed2fc29ca26649cd72eb1597cc8524cfde54eb307.ChjO67dd_eDKpY.webp" alt="Figura 8.7">
+        <figcaption><strong>Figura 8.7.</strong> Ejemplo de retroalimentación de supervisión de procesos. La imagen es una captura de la interfaz usada para recoger retroalimentación sobre cada paso de una solución. Muestra cómo se sigue y se refuerza el proceso de razonamiento correcto, aunque la respuesta final sea errónea (<a href="https://arxiv.org/abs/2305.20050">Lightman et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>Implicaciones de seguridad de la supervisión de procesos.</strong> La supervisión basada en resultados puede dar lugar a manipulación de la especificación. La basada en procesos, en cambio, mitiga en teoría ese problema en gran medida, porque es más probable que produzca un razonamiento correcto y legible. Anima a los modelos a seguir un proceso que los humanos respaldan y recompensa directamente una secuencia alineada de pasos pequeños, en lugar de apoyarse en los resultados como aproximación del comportamiento alineado (<a href="https://arxiv.org/abs/2305.20050">Lightman et al., 2023</a>).</p>
+      <p>En general, para tareas difusas la supervisión basada en procesos podría ser un método más adecuado (<a href="https://arxiv.org/abs/2211.14275">Uesato et al., 2022</a>). Por ejemplo, cuando hay que verificar una cadena de razonamiento matemático, la investigación ha encontrado hasta ahora que la supervisión de procesos supera de forma significativa a la de resultados para entrenar modelos que resuelvan problemas matemáticos (<a href="https://arxiv.org/abs/2305.20050">Lightman et al., 2023</a>). Podría dar lugar, de forma parecida, a resultados más alineados en otras cadenas complejas de razonamiento, como la planificación a largo plazo o la toma de decisiones.</p>
+      <p>Un problema es que, por la mayor necesidad de retroalimentación en cada paso, los métodos basados en procesos requieren un grado mayor de pericia humana. Como ejemplo concreto, si entrenáramos un modelo para generar diseños nuevos de CPU, podríamos estructurar la retroalimentación basada en resultados a partir del consumo de energía, el área del chip y demás: son aspectos más fáciles de evaluar y sobre los que dar retroalimentación, y sirven para optimizar la disposición general del chip. Un enfoque basado en procesos, en cambio, exigiría conocimiento experto detallado sobre cómo diseñar esas disposiciones (<a href="https://arxiv.org/abs/2211.14275">Uesato et al., 2022</a>). Así que, aunque los métodos de supervisión de procesos podrían llevar a mejores resultados tanto en capacidades como en alineación, dependen de amplificar las habilidades de los supervisores humanos. Exploraremos cómo aumentar su capacidad en las secciones sobre amplificación y debate.</p>
+      <p>Las dos secciones siguientes exploran dos métodos de supervisión basada en procesos: la supervisión del razonamiento externalizado y la clonación de procedimientos.</p>
+
+      <h2 id="supervision-del-razonamiento-externalizado">Supervisión del razonamiento externalizado (ERO)</h2>
+      <p>La supervisión del razonamiento externalizado (ERO, por sus siglas en inglés), a veces llamada razonamiento verbalizado, gira en torno a la idea de animar a los modelos de lenguaje a «pensar en voz alta». El enfoque busca que los modelos revelen sus pasos de razonamiento en lenguaje natural antes de producir una acción o una decisión. Al descomponer el razonamiento complejo en pasos más pequeños y hacerlo transparente, podemos aportar señales de entrenamiento y supervisión detalladas. Eso facilita guiar el proceso de razonamiento de nuestros modelos y podría ser más eficaz que evaluar solo las salidas o acciones finales (<a href="https://www.alignmentforum.org/posts/FRRb6Gqem8k69ocbi/externalized-reasoning-oversight-a-research-direction-for">Lanham, 2022</a>). También puede servir de enfoque complementario a todo el campo de la interpretabilidad, que podría entenderse como «supervisión del razonamiento internalizado».</p>
+      <p>El razonamiento externalizado podría prevenir comportamientos indeseables como el engaño y la búsqueda de poder (<a href="https://www.alignmentforum.org/posts/FRRb6Gqem8k69ocbi/externalized-reasoning-oversight-a-research-direction-for">Lanham, 2022</a>), aunque esto aún no se ha verificado empíricamente. El argumento es que, cuando el razonamiento de un modelo es visible, podemos observar directamente la lógica que sigue e identificar patrones de pensamiento o cadenas de razonamiento problemáticos. Este nivel de supervisión no es posible si solo miramos las salidas finales, porque nos perdemos el razonamiento subyacente que llevó a ellas. Para poder confiar en la ERO necesitamos asegurarnos de que el razonamiento externalizado sea:</p>
+      <ul>
+        <li><strong>Causalmente responsable:</strong> el razonamiento debe conducir directamente a la conclusión, sin racionalizaciones posteriores.</li>
+        <li><strong>Completo:</strong> deben estar presentes todos los pasos necesarios del proceso, sin omitir ninguno crítico.</li>
+        <li><strong>Llano:</strong> el razonamiento debe ser claro y libre de mensajes ocultos o codificación engañosa (esteganografía).</li>
+      </ul>
+      <p><strong>¿Qué relación tiene la ERO con la descomposición de tareas?</strong> La descomposición en cadena de pensamiento (CoT) es la vía principal por la que los investigadores abordan hoy la supervisión del razonamiento externalizado. La descomposición de tareas consiste en dividir una tarea compleja en subtareas más sencillas, cada una manejable de forma independiente. La descomposición en cadena de pensamiento es una técnica dentro de ese marco más amplio, centrada específicamente en mejorar y en permitir la supervisión externalizada de los procesos de razonamiento de los LLM (<a href="https://arxiv.org/abs/2201.11903">Wei et al., 2022</a>). En el resto de esta sección, cuando hablemos de supervisión del razonamiento externalizado nos referiremos al razonamiento en cadena de pensamiento.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/58213f1aa2b7e14c9d52827ff4203be8c3efa87ace6f69701f85517915fda51f.CGRonnbd_ZDSqJ0.webp" alt="Figura 8.8">
+        <figcaption><strong>Figura 8.8.</strong> Ejemplo de varias pruebas propuestas para medir la fidelidad de la cadena de pensamiento (CoT), es decir, de generar razonamiento paso a paso antes de responder a una pregunta. Respuesta anticipada: truncar la CoT original antes de responder. Añadir errores: hacer que un modelo de lenguaje introduzca un error en algún punto de la CoT original y después regenerar el resto. Parafraseo: reformular el principio de la CoT original y regenerar el resto. Tokens de relleno: sustituir la CoT por puntos suspensivos (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>¿Refleja el razonamiento externalizado los procesos internos de razonamiento?</strong> Ya hemos visto que los LLM rinden mejor en tareas de razonamiento cuando usamos ERO, es decir, instrucciones de cadena de pensamiento (<a href="https://arxiv.org/abs/2201.11903">Wei et al., 2022</a>). El problema es que no sabemos si ese razonamiento refleja el proceso de pensamiento interno real. Los investigadores usan el término «fidelidad» para indicar si lo que dicen los LLM (los tokens que generan) es realmente indicativo de su razonamiento interno. Hay un par de formas en que un modelo podría producir razonamiento externalizado mediante CoT sin que este fuera indicativo del interno:</p>
+      <ol>
+        <li><strong>Razonamiento <em>post hoc</em>.</strong> Ocurre cuando un modelo genera una cadena de razonamiento externa que justifica una conclusión ya determinada, en lugar de reflejar genuinamente el proceso que llevó a ella. Es infiel porque no influye en la respuesta final: racionaliza un resultado ya decidido. Para detectarlo podemos truncar la cadena de pensamiento antes de la respuesta final y valorar si los pasos intermedios eran necesarios; si la respuesta final no cambia pese a faltar pasos, eso indica razonamiento <em>post hoc</em>. Otro método es introducir errores deliberados en la cadena para ver si afectan a la respuesta final (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>).</li>
+        <li><strong>Esteganografía y razonamiento codificado.</strong> El modelo podría codificar información relevante en los tokens que genera sin que estos sean indicativos de su razonamiento interno real. Piensa en usar cambios sutiles de puntuación, de elección de palabras o de formulación para mejorar las predicciones. El modelo podría emplear técnicas así para externalizar su razonamiento, usando CoT pero de un modo que no aumenta la transparencia para los supervisores humanos. Hasta ahora, la investigación ha encontrado que, pese a parafrasear las cadenas de pensamiento de distintas formas, el rendimiento de los modelos en tareas de razonamiento se mantiene igual. Eso parece sugerir que los modelos de la generación actual usan realmente la estructura lógica del razonamiento y no información codificada oculta (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>). No está claro si seguirá siendo cierto en todos los modelos futuros.</li>
+      </ol>
+      <p>A partir de los hallazgos empíricos actuales, parece que si el razonamiento interno coincide con el externo depende de la tarea y varía (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>; <a href="https://arxiv.org/abs/2305.04388">Turpin et al., 2023</a>). Exploraremos con más profundidad cómo extraer el proceso de razonamiento interno de los LLM en entornos adversariales en la sección sobre seguridad de la IA mediante debate.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/a9bc37c3d4de0ba3f7569e54e2945180245cd0ced1fa1cf6ffdb3355485d6d53.Cv8qRwig_ZQeoXF.webp" alt="Figura 8.9">
+        <figcaption><strong>Figura 8.9.</strong> Ejemplo de instrucción de cadena de pensamiento combinada con ERO. El texto en negrita indica la parte de la instrucción que es común a todas las preguntas, y el subrayado es lo que produce el modelo. El error introducido aparece subrayado (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>).</figcaption>
+      </figure>
+      <p><strong>La ERO podría ser fiable solo para modelos más pequeños.</strong> Un problema de los enfoques de razonamiento externalizado es que los modelos más capaces suelen mostrar menos dependencia del razonamiento externo y, por tanto, más infidelidad (<a href="https://arxiv.org/abs/2307.13702">Lanham et al., 2023</a>). Eso sugiere que los modelos pequeños podrían encajar mejor en tareas donde el razonamiento externo es crucial para garantizar la seguridad. A medida que sigamos escalando, los modelos más grandes podrían predecir respuestas más complejas con confianza sin apoyarse en un razonamiento externalizado explícito, lo que aumentaría la discrepancia entre el razonamiento externalizado y los procesos internos.</p>
+      <p><strong>La supervisión no capta las consecuencias de lo que el modelo no piensa.</strong> Aunque la ERO lograra hacer transparentes los procesos de pensamiento de la IA, solo aborda los riesgos ligados a que la IA incurra en razonamientos que no aprobaríamos, como la búsqueda de poder o la autopreservación. No aborda el riesgo más amplio de que la IA cause daño como efecto secundario de sus actividades principales. Piensa, por ejemplo, en cómo los humanos llevamos especies a la extinción: en la mayoría de los casos no es porque planifiquemos activamente matarlas, sino porque alteramos drásticamente su entorno mediante actividades como la deforestación, la construcción o la contaminación, sin pensar en su supervivencia. Aplicando la analogía, el riesgo de los modelos futuros podría no venir de que intenten activamente matar humanos, sino de que emprendan actividades a gran escala que provoquen sin querer efectos secundarios peligrosos. Si el modelo nunca considera explícitamente el impacto sobre las personas, no hay un proceso de razonamiento defectuoso al que los supervisores puedan dar retroalimentación negativa: el supervisor tendría que deducir por su cuenta las consecuencias dañinas potenciales de los planes complejos y a largo plazo de la IA, lo que exige predecir sus resultados, algo extremadamente difícil dada su complejidad (<a href="https://www.alignmentforum.org/posts/98c5WMDb3iKdzD4tM/oversight-misses-100-of-thoughts-the-ai-does-not-think">Wentworth, 2022</a>).</p>
+
+      <h2 id="clonacion-de-procedimientos">Clonación de procedimientos</h2>
+      <p>Los enfoques tradicionales de aprendizaje por imitación, como la clonación conductual, se centran en aprender una correspondencia directa entre estados y acciones a partir de demostraciones expertas observadas. Como hemos comentado antes en esta sección, los enfoques basados en resultados, aunque eficaces en algunos escenarios, pueden ser demasiado simplistas y no captar los ricos procesos de decisión paso a paso que emplean los expertos. Eso puede dar lugar a modelos que rinden bien en entornos ya vistos pero que tienen dificultades para generalizar a escenarios nuevos.</p>
+      <p>La clonación de procedimientos aborda esta limitación extendiendo la clonación conductual mediante la cadena de pensamiento. Intenta que el modelo clone no solo el resultado final (el comportamiento), sino también todo el proceso que sigue el experto al exhibirlo, incorporando durante el entrenamiento los pasos intermedios de la conducta experta (<a href="https://arxiv.org/abs/2205.10816">Yang et al., 2022</a>).</p>
+      <p>Funciona recogiendo primero demostraciones expertas que incluyan no solo los pares estado-acción, sino también los pasos intermedios o cálculos que conducen a esas acciones. Por ejemplo, en una tarea de navegación por un laberinto, el experto podría usar un algoritmo de búsqueda para encontrar el camino óptimo, y los pasos intermedios de esa búsqueda se registran junto a la acción final. Durante el entrenamiento, el modelo aprende a predecir la secuencia de pasos intermedios que lleva a la acción final mediante un modelo secuencial, como un <em>transformer</em>, capaz de manejar la naturaleza autorregresiva de la tarea, y maximiza la verosimilitud de la distribución conjunta de observaciones del procedimiento y acciones expertas. Durante la inferencia, el modelo genera una secuencia de pasos intermedios a partir del estado de entrada, imitando el procedimiento del experto, antes de producir la acción final. Este método permite replicar con más precisión el proceso de decisión del experto, incluso en entornos nuevos y no vistos.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/d29d4837c5897b778696020a4e5841efe15c773acd1c72f9f26b8195b2e6f8d9.DCZHhAYv_1su5qh.webp" alt="Figura 8.10">
+        <figcaption><strong>Figura 8.10.</strong> Visualización de la recogida de datos, el entrenamiento y la inferencia de la clonación conductual (BC) y la clonación de procedimientos (PC) en una tarea de navegación por un laberinto (<a href="https://arxiv.org/abs/2205.10816">Yang et al., 2022</a>).</figcaption>
+      </figure>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 8 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/scalable-oversight/process-oversight/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap8-03-descomposicion-de-tareas.html">← Anterior: Descomposición de tareas</a>
+      </div>
+      <a class="siguiente" href="cap8-05-amplificacion-iterada.html">
+        <strong>Siguiente: Amplificación iterada →</strong><br>
+        Podemos mejorar los límites de la supervisión humana usando asistentes de IA para dar retroalimentación. Entrenar modelos nuevos con sistemas amplificados de humanos e IA puede llevar a modelos cada vez más alineados con los valores humanos.
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
