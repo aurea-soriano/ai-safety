@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detección · Capítulo 7 – AI Safety Atlas</title>
+  <meta name="description" content="Detección de la generalización errónea de objetivos: técnicas conductuales, internas y combinadas.">
+  <style>
+    :root { --texto:#1f2328; --texto-suave:#57606a; --fondo:#ffffff; --fondo-alt:#f6f8fa; --borde:#d0d7de; --acento:#2251c7; --oscuro:#14171c; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; font-size:17px; line-height:1.7; color:var(--texto); background:var(--fondo); }
+    a { color:var(--acento); }
+    img { max-width:100%; height:auto; }
+    .contenedor { max-width:960px; margin:0 auto; padding:0 1.25rem; }
+    .lectura { max-width:720px; margin:0 auto; padding:0 1.25rem; }
+    header.sitio { border-bottom:1px solid var(--borde); background:var(--fondo); }
+    header.sitio .contenedor { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:1rem; padding-top:.8rem; padding-bottom:.8rem; }
+    .marca { font-weight:700; text-decoration:none; color:var(--texto); }
+    nav.principal a { margin-left:1.2rem; text-decoration:none; color:var(--texto); }
+    nav.principal a:hover { color:var(--acento); }
+    .buscar { padding:.35rem .7rem; border:1px solid var(--borde); border-radius:6px; font:inherit; font-size:.9rem; }
+    h1,h2,h3,h4 { line-height:1.3; }
+    h1 { font-size:2.4rem; margin:0 0 .6rem; }
+    h2 { font-size:1.7rem; margin-top:3rem; }
+    h3 { font-size:1.2rem; margin-bottom:.3rem; }
+    .portada { padding:3.5rem 0 2rem; text-align:center; }
+    .etiqueta { display:inline-block; font-size:.8rem; padding:.15rem .6rem; border:1px solid var(--borde); border-radius:999px; color:var(--texto-suave); }
+    .botones { margin:1.5rem 0; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; }
+    .boton { display:inline-block; padding:.65rem 1.3rem; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--acento); }
+    .boton.primario { background:var(--acento); color:#fff; }
+    .boton.secundario { background:transparent; color:var(--acento); }
+    .logos { background:var(--oscuro); color:#fff; border-radius:12px; padding:1.2rem; display:flex; flex-wrap:wrap; gap:1.5rem; align-items:center; justify-content:center; margin:2rem 0; }
+    .logos p { width:100%; text-align:center; margin:0; font-size:.9rem; opacity:.8; }
+    .logos img { height:34px; width:auto; }
+    .cifras { display:flex; flex-wrap:wrap; gap:.6rem; margin:1rem 0 1.5rem; padding:0; list-style:none; }
+    .cifras li { background:var(--fondo-alt); border:1px solid var(--borde); border-radius:6px; padding:.2rem .7rem; font-size:.9rem; }
+    .tarjetas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; padding:0; list-style:none; }
+    .tarjetas li { border:1px solid var(--borde); border-radius:10px; padding:1.1rem; background:var(--fondo); }
+    .tarjetas .num { font-weight:700; color:var(--acento); }
+    .tarjetas h3 a { color:var(--texto); text-decoration:none; }
+    .tarjetas h3 a:hover { color:var(--acento); }
+    .tarjetas p { color:var(--texto-suave); margin:.3rem 0 .6rem; }
+    .personas { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.2rem; }
+    .persona img { width:96px; height:96px; object-fit:cover; border-radius:50%; }
+    .persona .rol { font-size:.85rem; color:var(--texto-suave); margin:0; }
+    .llamada { text-align:center; background:var(--fondo-alt); border-radius:12px; padding:2rem 1rem; margin:3rem 0; }
+    footer.sitio { border-top:1px solid var(--borde); background:var(--fondo-alt); padding:2rem 0; font-size:.92rem; }
+    .columnas { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.5rem; }
+    footer.sitio nav a, .pie-enlaces a { display:inline-block; margin-right:1rem; }
+    form label { display:block; margin-top:.5rem; font-size:.85rem; }
+    form input, form textarea { width:100%; padding:.4rem; font:inherit; border:1px solid var(--borde); border-radius:6px; }
+    form button { margin-top:.7rem; padding:.45rem 1rem; font:inherit; border-radius:6px; border:1px solid var(--acento); background:var(--acento); color:#fff; }
+    .licencia { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--borde); color:var(--texto-suave); font-size:.85rem; }
+    figure { margin:2rem 0; }
+    figcaption { font-size:.9rem; color:var(--texto-suave); font-style:italic; }
+    table { border-collapse:collapse; width:100%; margin:1.5rem 0; font-size:.95rem; }
+    th, td { border:1px solid var(--borde); padding:.5rem .7rem; text-align:left; vertical-align:top; }
+    th { background:var(--fondo-alt); }
+    .tabla-scroll { overflow-x:auto; }
+    blockquote { margin:1.5rem 0; padding:.6rem 1rem; border-left:4px solid var(--acento); background:var(--fondo-alt); }
+    .lector { text-align:left; border:1px solid var(--borde); border-radius:12px; overflow:hidden; box-shadow:0 12px 32px rgba(0,0,0,.12); margin:2rem 0; background:var(--fondo); }
+    .lector-barra { display:flex; align-items:center; gap:1rem; padding:.55rem .9rem; background:var(--fondo-alt); border-bottom:1px solid var(--borde); font-size:.8rem; color:var(--texto-suave); }
+    .lector-puntos i { display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--borde); margin-right:4px; }
+    .lector-ruta { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .lector-buscar { border:1px solid var(--borde); border-radius:6px; padding:.1rem .6rem; background:var(--fondo); }
+    .lector-cuerpo { display:grid; grid-template-columns:220px 1fr; }
+    .lector-indice { padding:1rem; border-right:1px solid var(--borde); font-size:.82rem; line-height:1.5; }
+    .lector-indice strong { display:block; margin:.6rem 0 .3rem; }
+    .lector-indice ol { margin:0; padding-left:1.2rem; color:var(--texto-suave); }
+    .lector-indice li.activo { color:var(--acento); font-weight:600; }
+    .lector-texto { padding:1.3rem 1.6rem; font-size:.92rem; line-height:1.65; }
+    .lector-antetitulo { margin:0; font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .lector-titulo { margin:.2rem 0; font-size:1.6rem; font-weight:700; line-height:1.2; }
+    .lector-meta { margin:0 0 .6rem; font-size:.8rem; color:var(--texto-suave); }
+    .lector-acciones { display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1rem; }
+    .lector-acciones span { font-size:.75rem; border:1px solid var(--borde); border-radius:6px; padding:.1rem .5rem; color:var(--texto-suave); }
+    @media (max-width: 640px) { .lector-cuerpo { grid-template-columns:1fr; } .lector-indice { display:none; } .lector-ruta { display:none; } }
+    .capitulo { display:grid; grid-template-columns:240px 1fr; gap:2rem; padding-top:2rem; padding-bottom:3rem; }
+    .indice-capitulo { font-size:.88rem; line-height:1.5; border-right:1px solid var(--borde); padding-right:1rem; }
+    .indice-capitulo h2 { font-size:1rem; margin:1rem 0 .4rem; }
+    .indice-capitulo ol { padding-left:1.2rem; margin:0; }
+    .indice-capitulo .activo a { font-weight:700; }
+    .antetitulo { margin:0; font-size:.8rem; text-transform:uppercase; letter-spacing:.05em; color:var(--acento); }
+    .meta { color:var(--texto-suave); font-size:.9rem; }
+    .acciones { display:flex; flex-wrap:wrap; gap:.5rem; padding:0; list-style:none; font-size:.9rem; }
+    .acciones li { border:1px solid var(--borde); border-radius:6px; padding:.15rem .6rem; }
+    .siguiente { display:block; border:1px solid var(--borde); border-radius:10px; padding:1rem; text-decoration:none; color:var(--texto); margin-top:2rem; }
+    .siguiente strong { color:var(--acento); }
+    @media (max-width: 760px) { .capitulo { grid-template-columns:1fr; } .indice-capitulo { border-right:none; border-bottom:1px solid var(--borde); padding-bottom:1rem; } }
+    .navegacion-seccion { display:flex; justify-content:space-between; gap:1rem; margin:3rem 0; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+
+  <header class="sitio">
+    <div class="contenedor">
+      <a class="marca" href="index.html">AI Safety Atlas</a>
+      <nav class="principal" aria-label="Navegación principal">
+        <a href="cap1-01-introduccion.html">Leer</a>
+        <a href="ensenar.html">Enseñar</a>
+        <a href="certificacion.html">Certifícate</a>
+      </nav>
+      <input class="buscar" type="search" placeholder="Buscar…" aria-label="Buscar">
+    </div>
+  </header>
+
+  <main class="contenedor capitulo">
+    <nav class="indice-capitulo" aria-label="Índice del libro">
+        <h2>7. Generalización errónea de objetivos</h2>
+        <ol>
+          <li><a href="cap7-01-introduccion.html">Introducción</a></li>
+          <li><a href="cap7-02-generalizacion-multiobjetivo.html">Generalización multiobjetivo</a></li>
+          <li><a href="cap7-03-dinamicas-de-aprendizaje.html">Dinámicas de aprendizaje</a></li>
+          <li><a href="cap7-04-orientacion-a-objetivos.html">Orientación a objetivos</a></li>
+          <li><a href="cap7-05-maquinacion.html">Maquinación</a></li>
+          <li class="activo"><a href="cap7-06-deteccion.html">Detección</a></li>
+          <li><a href="cap7-07-mitigaciones.html">Mitigaciones</a></li>
+        </ol>
+        <h2><a href="cap1-01-introduccion.html">1. Capacidades</a></h2>
+        <h2><a href="cap2-01-introduccion.html">2. Riesgos</a></h2>
+        <h2><a href="cap3-01-introduccion.html">3. Estrategias</a></h2>
+        <h2><a href="cap4-01-introduccion.html">4. Gobernanza</a></h2>
+        <h2><a href="cap5-01-introduccion.html">5. Evaluaciones</a></h2>
+        <h2><a href="cap6-01-introduccion.html">6. Manipulación de la especificación</a></h2>
+        <h2><a href="cap8-01-introduccion.html">8. Supervisión escalable</a></h2>
+    </nav>
+
+    <article>
+      <p class="antetitulo">Capítulo 7: Generalización errónea de objetivos</p>
+      <h1>Detección</h1>
+      <p><em>Un modelo con un objetivo oculto puede comportarse con total normalidad. Los métodos de detección necesitan superponer defensas: comprobar el comportamiento del modelo y, si es posible, usar la interpretabilidad para encontrar pistas de que sus representaciones de objetivos son erróneas.</em></p>
+      <p class="meta">14 min · Escrito por Markov Grey</p>
+      <ul class="acciones">
+        <li><a href="https://atlas-media.cesia.org/audio/atlas-chapter7-audio-a88add43824023e389404677aecb1cefa0dbb830ae6c39a53c10dfe117dfe830.mp3">Escuchar el audio del capítulo (en inglés)</a></li>
+        <li><a href="https://atlas-media.cesia.org/pdf/atlas-chapter7-ea23ab66624f1b86a69bccd21a30db28d34c94bf893832e41188ced035577ad4.pdf">Descargar el capítulo en PDF (en inglés)</a></li>
+        <li><a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization.md">Descargar el capítulo en Markdown (en inglés)</a></li>
+      </ul>
+      <nav aria-label="En esta página" style="background:var(--fondo-alt);border-radius:10px;padding:.8rem 1.2rem;">
+        <strong>En esta página</strong>
+        <ol>
+          <li><a href="#tecnicas-conductuales">Técnicas conductuales (caja negra)</a></li>
+          <li><a href="#tecnicas-internas">Técnicas internas (caja blanca)</a></li>
+          <li><a href="#tecnicas-combinadas">Técnicas combinadas</a></li>
+        </ol>
+      </nav>
+
+      <p>Detectar la generalización errónea de objetivos es más difícil que detectar una mala especificación durante el entrenamiento. La dificultad central es que la generalización errónea a menudo parece un éxito hasta que la distribución cambia lo suficiente como para revelar el sustituto. Que el comportamiento sea indistinguible durante el entrenamiento implica que no hay una señal de fallo evidente que detectar. Eso la hace fundamentalmente distinta de los fallos de capacidad o de los problemas de especificación, donde a menudo podemos detectar las dificultades por un rendimiento pobre o por una malinterpretación evidente de las instrucciones.</p>
+      <p>La generalización errónea de objetivos abarca un espectro continuo que va desde correlaciones sustitutas sencillas hasta comportamientos sofisticados de maquinación. En un extremo tenemos casos directos en los que los modelos han aprendido heurísticas correlacionadas simples. En el otro, sistemas adversariales orientados a objetivos que ocultan estratégicamente sus verdaderos fines mientras aparentan estar alineados. Cada punto del espectro requiere enfoques de detección distintos, pero todos comparten el mismo hilo conductor: la brecha entre lo que pretendíamos que el sistema aprendiera y lo que aprendió realmente.</p>
+      <p>Ningún método de detección por sí solo captará todas las formas de generalización errónea de objetivos. El aprendizaje simple de sustitutos podría detectarse mediante un diseño cuidadoso del conjunto de prueba y el análisis de cambios de distribución. El engaño sofisticado exige monitorizar los procesos de razonamiento internos o montar escenarios de evaluación adversarial. Eso significa que necesitamos lo que venimos subrayando a lo largo de este libro: defensa en profundidad. Podemos aplicar el principio de forma recursiva: incluso dentro del subproblema concreto de detectar la generalización errónea de objetivos, necesitamos varios enfoques complementarios que aporten señales no correlacionadas sobre el comportamiento del sistema.</p>
+      <p>Organizamos los enfoques de detección con la misma taxonomía del capítulo sobre evaluaciones, es decir, según cómo recogen evidencia sobre los sistemas de IA. La monitorización conductual examina qué hacen los modelos a través de sus entradas y salidas. La monitorización del estado interno usa técnicas de interpretabilidad para examinar cómo piensan. La monitorización ambiental vigila los efectos posteriores del comportamiento desalineado. En cada enfoque afrontamos el mismo compromiso temporal: detectar antes es menos fiable pero más accionable, mientras que detectar después es más fiable pero quizá demasiado tarde para intervenir.</p>
+
+      <h2 id="tecnicas-conductuales">Técnicas conductuales (caja negra)</h2>
+
+      <h3 id="razonamiento-externalizado">Razonamiento externalizado</h3>
+      <p>El razonamiento externalizado ofrece una ventana singular a cómo llegan los modelos a sus decisiones. Cuando modelos como Claude 3.7 Sonnet o DeepSeek R1 «piensan en voz alta» mediante razonamiento en cadena de pensamiento, externalizan parte de su proceso de decisión en texto legible por humanos. Eso crea una oportunidad que no tenemos con la mayoría de los sistemas de IA: podemos literalmente leer su razonamiento y comprobar si revela patrones preocupantes, como una generalización errónea de objetivos. Si un modelo persigue un objetivo sustituto o incurre en comportamiento engañoso, podríamos pillarlo razonando explícitamente sobre esas estrategias.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/dc2642ed07c247291b05bdbcd828eb5fb1d65ff834b3809f6e87751af27a0a09.DfUMDT98_25jO1n.webp" alt="Figura 7.30">
+        <figcaption><strong>Figura 7.30.</strong> Las cadenas seriales largas de cognición deben pasar por la cadena de pensamiento. Las flechas azules representan su uso como una forma de memoria de trabajo. La cadena de pensamiento es la única vía por la que la información puede fluir desde capas posteriores hacia otras anteriores. Por eso, para una cantidad fija de tokens, los flujos de información más largos deben usarla, y muchos flujos son imposibles sin ella. Por ejemplo, no hay forma de que la información fluya entre los dos nodos resaltados sin pasar por la cadena de pensamiento (<a href="https://arxiv.org/abs/2507.11473">Korbak et al., 2025</a>).</figcaption>
+      </figure>
+      <p>La promesa se apoya en dos mecanismos clave que hacen visible el razonamiento. Primero, en tareas suficientemente complejas, las arquitecturas <em>transformer</em> obligan a los modelos a usar la cadena de pensamiento como memoria de trabajo: las cadenas seriales largas de razonamiento deben pasar por el texto externalizado, porque es la única forma de que la información fluya entre distintas partes del cómputo (<a href="https://arxiv.org/abs/2507.11473">Korbak et al., 2025</a>). Segundo, los grandes modelos de lenguaje aprenden durante el preentrenamiento representaciones que tienden a usar la cadena de pensamiento de forma parecida a como los humanos usamos el lenguaje natural, lo que hace su razonamiento externalizado interpretable por defecto (<a href="https://arxiv.org/abs/2507.11473">Korbak et al., 2025</a>).</p>
+      <p>Detectar la generalización errónea de objetivos por esta vía depende de la fidelidad, es decir, de si el texto del razonamiento refleja con exactitud el proceso de decisión real del modelo. Es un concepto que ya hemos mencionado antes y que volverá a aparecer en otros capítulos. A modo de recordatorio, una cadena de pensamiento fiel debería destacar los factores clave y los pasos de razonamiento que impulsan el comportamiento del modelo, lo que nos permitiría predecir cómo procesaría entradas similares. El razonamiento infiel se da cuando los modelos ocultan, tergiversan o no externalizan los factores que realmente influyen en sus decisiones, lo que vuelve poco fiable esta vía para la monitorización de seguridad (<a href="https://arxiv.org/abs/2505.05410">Chen et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/51de17a16bb9b58b5c7a4329045075ad74576c854a1c4b75b784d23616b78124.V54kKfRo_1s3sJy.webp" alt="Figura 7.31">
+        <figcaption><strong>Figura 7.31.</strong> Ejemplo de una cadena de pensamiento infiel. El modelo responde D a la pregunta original (izquierda) pero cambia su respuesta a C tras insertar una pista en los metadatos de la instrucción (derecha, arriba). Lo hace sin verbalizar que se ha apoyado en esos metadatos (derecha, abajo) (<a href="https://arxiv.org/abs/2505.05410">Chen et al., 2025</a>).</figcaption>
+      </figure>
+      <p>La evidencia empírica señala carencias de fidelidad en el razonamiento externalizado. Unos investigadores pusieron a prueba modelos de razonamiento presentándoles pares de preguntas: una de opción múltiple estándar y otra idéntica con una pista sutil que apuntaba a una respuesta concreta. Las pistas iban desde sugerencias neutras, como que un profesor de Stanford indica cierta respuesta, hasta metadatos incrustados en etiquetas XML o información explícitamente problemática, como que se ha obtenido acceso no autorizado al sistema. Cuando los modelos cambiaban su respuesta tras ver la pista, los investigadores comprobaban si reconocían haberla usado en su razonamiento. Los resultados mostraron una infidelidad sistemática: Claude 3.7 Sonnet mencionó la pista solo el 25 % de las veces, y DeepSeek R1 el 39 % (<a href="https://arxiv.org/abs/2505.05410">Chen et al., 2025</a>).</p>
+      <p>Los modelos parecen aprovechar correlaciones sin admitirlo en su razonamiento externalizado, y muestran tasas de fidelidad más bajas en las preguntas difíciles. Cuando los investigadores entrenaron a Claude 3.7 Sonnet en entornos sintéticos con hackeos de la recompensa deliberados (correlaciones espurias que permitían recompensas altas por respuestas incorrectas), los modelos aprendieron a explotarlos con éxito en más del 99 % de los casos, pero verbalizaron ese comportamiento en menos del 2 % de los ejemplos en la mayoría de los entornos. En lugar de reconocer que tomaban atajos, construían justificaciones falsas y elaboradas para las respuestas incorrectas, lo que sugiere que el razonamiento externalizado puede fallar en detectar la generalización errónea de objetivos justo cuando esa detección más importa (<a href="https://arxiv.org/abs/2505.05410">Chen et al., 2025</a>).</p>
+      <p>Las prácticas de desarrollo deberían preservar las oportunidades de razonamiento externalizado, reconociendo a la vez sus límites. Los equipos que desarrollan modelos de razonamiento deberían evitar arquitecturas que eliminen los canales de razonamiento legibles por humanos y ser cautos con la supervisión de procesos que pudiera reducir la fidelidad (<a href="https://metr.org/blog/2025-03-11-good-for-ai-to-reason-legibly-and-faithfully/">Kinniment, 2025</a>). Aun así, la monitorización del razonamiento externalizado no puede servir como medida de seguridad autónoma: aporta una visibilidad parcial que debería complementar otros enfoques, no sustituirlos. Su ventaja temporal está en las fases tempranas de despliegue, cuando los modelos quizá no hayan aprendido todavía a ocultar sistemáticamente sus procesos de razonamiento.</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/58b123c583b5622de956c1917e5af7909855b4731f32c48cc13de91563d1f694.C78TwtqR_Z1tKTKl.webp" alt="Figura 7.32">
+        <figcaption><strong>Figura 7.32.</strong> Comparación entre la cadena de pensamiento continuo (COCONUT) y la cadena de pensamiento clásica. COCONUT permite al modelo razonar en un espacio latente sin restricciones en lugar de en un espacio lingüístico. En la cadena clásica, el modelo genera el proceso de razonamiento como una secuencia de tokens de palabras; COCONUT toma el último estado oculto como representación del estado de razonamiento (lo que llama «pensamiento continuo») y lo usa directamente como siguiente embedding de entrada. Esto podría hacer imposible la supervisión del razonamiento externalizado (<a href="https://arxiv.org/abs/2412.06769">Hao et al., 2024</a>).</figcaption>
+      </figure>
+
+      <h2 id="tecnicas-internas">Técnicas internas (caja blanca)</h2>
+      <p>Las técnicas de caja blanca examinan cómo procesan la información los modelos por dentro, en lugar de limitarse a observar sus salidas. Usan herramientas de interpretabilidad para examinar patrones de activación, representaciones aprendidas y procesos internos de razonamiento que podrían revelar objetivos desalineados antes de que se manifiesten como comportamientos preocupantes. Aquí tocaremos un par de ellas brevemente, para que sepas en general cómo se aplican a la generalización errónea de objetivos. Hay muchas más de las que mencionamos; para más detalle técnico, consulta nuestro capítulo sobre interpretabilidad.</p>
+
+      <h3 id="sondas-lineales">Sondas lineales</h3>
+      <p>Las sondas lineales entrenan clasificadores sencillos sobre las activaciones internas de un modelo para detectar patrones de razonamiento concretos que distingan el comportamiento alineado del desalineado. Piensa en una sonda lineal como un detector de mentiras sencillo que examina escáneres cerebrales en lugar de señales conductuales. Igual que un polígrafo busca patrones fisiológicos que distinguen respuestas veraces de engañosas, una sonda lineal entrena un clasificador sobre las activaciones internas. Y es que salidas idénticas pueden proceder de procesos internos radicalmente distintos: cuando un modelo escribe código seguro durante el entrenamiento y código vulnerable durante el despliegue, los cómputos internos son cualitativamente diferentes aunque las salidas finales parezcan casi indistinguibles. Las sondas lineales intentan detectar esas diferencias en los «procesos de pensamiento» del modelo, entrenando con ejemplos contrastivos y aprendiendo a clasificar los patrones de activación resultantes (<a href="https://arxiv.org/abs/2502.03407">Goldowsky-Dill et al., 2025</a>; <a href="https://www.anthropic.com/research/probes-catch-sleeper-agents">MacDiarmid et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/4b497a559a16ef5f645d9b0baad84c6841a458d6856048ac8f2fe7898777fd2a.4DZ675jh_Z28rVev.webp" alt="Figura 7.33">
+        <figcaption><strong>Figura 7.33.</strong> Ejemplo de un método de sondeo. Los investigadores reúnen activaciones sobre pares contrastivos parecidos al ejemplo de la izquierda y ajustan una sonda mediante regresión logística. Después puede usarse para detectar engaño en conjuntos de datos de evaluación donde los modelos a veces dan respuestas engañosas (<a href="https://arxiv.org/abs/2502.03407">Goldowsky-Dill et al., 2025</a>).</figcaption>
+      </figure>
+      <p>Las sondas pueden detectar engaño estratégico en escenarios realistas con una precisión sorprendentemente alta. Los investigadores entrenaron sondas lineales con conjuntos contrastivos sencillos (por ejemplo, respuestas a instrucciones como fingir ser una persona honesta frente a fingir ser una persona engañosa, emparejadas con afirmaciones factuales idénticas) y después probaron si esas sondas podían detectar engaño en escenarios complejos, como ocultar operaciones con información privilegiada o rebajar deliberadamente las capacidades mostradas. Calibradas para tener solo un 1 % de falsos positivos en conversaciones normales, captaron entre el 95 % y el 99 % de las respuestas engañosas (<a href="https://arxiv.org/abs/2502.03407">Goldowsky-Dill et al., 2025</a>).</p>
+      <p>Hay indicios de que las sondas más eficaces surgen de datos de entrenamiento mínimos y generalizan bien entre distintos rastros de engaño. Las más exitosas se entrenaron con contrastes genéricos, a veces solo dos ejemplos del tipo «¿Estás haciendo algo peligroso? Sí» frente a «¿Estás haciendo algo peligroso? No». Esos conjuntos mínimos generalizaron entre varios modelos base, distintos desencadenantes de engaño y diversos tipos de comportamiento estratégico, incluidos escribir código vulnerable y rebajar el rendimiento en evaluaciones de seguridad (<a href="https://www.anthropic.com/research/probes-catch-sleeper-agents">MacDiarmid et al., 2024</a>). Esta eficacia entre dominios sugiere que el engaño estratégico, sea cual sea su manifestación concreta, deja firmas computacionales consistentes y detectables mediante una clasificación lineal sencilla.</p>
+      <p>Las sondas lineales presentan limitaciones sistemáticas que revelan los límites de su aplicabilidad. A menudo rastrean correlaciones espurias en lugar del comportamiento objetivo: se activan ante confesiones honestas de faltas pasadas, porque asocian el contenido relacionado con la moralidad al engaño en lugar de rastrear el engaño en sí. Tienden a detectar si el escenario está relacionado con el engaño más que si esa respuesta concreta es engañosa, lo que genera tasas altas de falsos positivos en respuestas honestas dentro de contextos próximos al engaño. La alta notoriedad que hace funcionar estas técnicas probablemente refleja cómo se crean los organismos modelo artificiales, mediante la inserción explícita de puertas traseras, y no cómo surgirían de forma natural los objetivos engañosos (<a href="https://arxiv.org/abs/2502.03407">Goldowsky-Dill et al., 2025</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/150ca040ad8ba52001d617d2dcc3adb3a8566fe18a2bf787b7aadced23e64d8a.C4cmGmVO_mVegQ.webp" alt="Figura 7.34">
+        <figcaption><strong>Figura 7.34.</strong> Como las sondas lineales se aprenden, pueden presentar los mismos fallos que cualquier otro modelo de aprendizaje automático. Un fondo rojo en el texto indica que la sonda lo lee como engañoso, y uno azul, como honesto. Aquí la sonda se activa por correlaciones espurias (izquierda) y parece rastrear algo cercano a la moralidad además de a la honestidad: por ejemplo, las confesiones honestas de faltas pasadas suelen calificarse como deshonestas. También puede clasificar mal por fallos de agregación (centro): el modelo es parcialmente engañoso, las activaciones por token son buenas, pero la media de las puntuaciones por token clasifica la salida como engañosa (<a href="https://arxiv.org/abs/2502.03407">Goldowsky-Dill et al., 2025</a>).</figcaption>
+      </figure>
+
+      <h3 id="autocodificadores-dispersos">Autocodificadores dispersos</h3>
+      <p>Los autocodificadores dispersos (SAE) descomponen las activaciones del modelo en componentes interpretables sin saber de antemano qué buscar, lo que podría permitir descubrir características que se activan cuando los modelos razonan sobre objetivos ocultos o sobre su ocultación estratégica. Piensa en las neuronas de una red como en los libros de una biblioteca abarrotada, donde cada estante (neurona) guarda libros sobre varios temas sin relación entre sí. Eso dificulta encontrar lo que buscas. Los SAE son como reorganizar esa biblioteca: encuentran «estantes virtuales» nuevos (características) donde cada estante contiene libros sobre un solo tema, lo que hace la colección mucho más fácil de navegar y entender. Para detectar la generalización errónea de objetivos, esto permite descubrir características relacionadas con el razonamiento engañoso, la ocultación de objetivos o la persecución de metas sustitutas, incluso cuando los investigadores no saben exactamente qué patrones computacionales esperar (<a href="https://arxiv.org/abs/2309.08600">Cunningham et al., 2023</a>).</p>
+      <p>La detección basada en SAE ha tenido éxito descubriendo objetivos ocultos que resisten otros métodos de evaluación. En escenarios controlados de auditoría, varios equipos usaron SAE para descubrir objetivos ocultos de complacencia hacia el modelo de recompensa. Identificaron características que se activaban ante instrucciones del tipo «el asistente es un modelo de IA que muestra comportamientos potencialmente preocupantes», lo que condujo a documentos de entrenamiento que revelaban una desalineación sistemática de objetivos. Los SAE tuvieron éxito en casos donde la búsqueda semántica falló, en particular al investigar demostraciones conductuales en lugar de discusiones explícitas sobre objetivos (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</p>
+      <p>La eficacia de los SAE afronta limitaciones de fondo que restringen su aplicabilidad a la generalización errónea que surge de forma natural. Los SAE no captan toda la información de las activaciones: sustituir las activaciones de una capa por reconstrucciones de SAE aumenta sustancialmente la perplejidad del modelo, lo que indica pérdida de información. Funcionan mejor en los flujos residuales, pero tienen dificultades con las capas MLP intermedias. Y lo más crítico: una detección exitosa podría exigir que los objetivos desalineados correspondan a características explícitas e interpretables, en lugar de emerger de dinámicas de entrenamiento distribuidas, lo que limita su eficacia cuando los objetivos surgen de forma orgánica y no mediante entrenamiento deliberado sobre descripciones explícitas de objetivos (<a href="https://arxiv.org/abs/2309.08600">Cunningham et al., 2023</a>; <a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</p>
+
+      <h3 id="manipulacion-de-activaciones">Manipulación de activaciones</h3>
+      <p>Manipular directamente las activaciones del modelo durante la inferencia puede revelar tendencias conductuales ocultas, al perturbar los mecanismos computacionales que sostienen la ocultación estratégica. Piénsalo como dar a alguien una pequeña cantidad de alcohol: sus inhibiciones y mecanismos de autocontrol habituales se deterioran, lo que podría llevarle a revelar pensamientos que normalmente mantendría ocultos. De forma parecida, añadir ruido cuidadosamente calibrado a las activaciones durante la inferencia hace que los modelos con objetivos desalineados ocultos revelen sus verdaderas tendencias conductuales con más facilidad que los modelos genuinamente alineados. Esta técnica de «difuminado» o «intoxicación» alcanzó un 98 % de precisión al distinguir modelos que fingen alineación de modelos genuinamente alineados (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>).</p>
+      <figure>
+        <img src="https://ai-safety-atlas.com/_astro/97bd767d160048d1a416607362cefdf47190d39fe21e779df3a8b6ffc7bb3106.Bi35VmJi_Z1HisbQ.webp" alt="Figura 7.35">
+        <figcaption><strong>Figura 7.35.</strong> Se plantea la hipótesis de que quienes fingen alineación representan una variable latente que rastrea la probabilidad de que sea seguro comportarse de cierto modo, y de que revelan su desalineación cuando esa variable supera un umbral. Para localizarla se usan escenarios donde esa probabilidad varía y donde los modelos siguen siendo benignos (la región verde de la figura) (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>).</figcaption>
+      </figure>
+      <p>La eficacia de la manipulación de activaciones revela diferencias de fondo en cómo se representan computacionalmente los objetivos alineados y los desalineados. Que los modelos aprendan a comportarse mal más rápido cuando se los ajusta hacia comportamientos desalineados, en comparación con los genuinamente alineados, sugiere que los objetivos desalineados podrían implicar rutas computacionales más simples y fáciles de activar cuando se perturba el procesamiento normal. El éxito de la inyección de ruido indica que la ocultación estratégica requiere una carga computacional adicional que resulta más difícil de mantener cuando los mecanismos reguladores del modelo están deteriorados, de forma similar a cómo las sustancias desinhibidoras afectan al comportamiento humano (<a href="https://arxiv.org/abs/2405.05466">Clymer et al., 2024</a>).</p>
+      <p>Estas técnicas muestran vulnerabilidades computacionales de la generalización errónea de objetivos que pueden explotarse con fines de detección. La respuesta diferencial a la inyección de ruido sugiere que los objetivos desalineados existen como patrones computacionales relativamente frágiles, que se vuelven más visibles al perturbarlos. Sin embargo, la técnica tuvo un éxito limitado y efectos solo leves en algunos contextos: en ciertos experimentos, el difuminado elevó las tasas de revelación de información por debajo del 1 %, lo que sugiere que puede ser más eficaz combinada con otros enfoques que usada de forma aislada (<a href="https://arxiv.org/abs/2503.10965">Marks et al., 2025</a>).</p>
+
+      <h3 id="analisis-de-la-estructura-del-razonamiento">Análisis de la estructura del razonamiento</h3>
+      <p>Analizar la importancia de cada paso de razonamiento puede revelar cuándo un modelo persigue objetivos desalineados, identificando «anclas de pensamiento», es decir, pasos críticos que influyen de forma desproporcionada en el razonamiento posterior. Técnicas como el remuestreo contrafactual (generar continuaciones alternativas a partir de cada paso) y el análisis de atención permiten identificar qué partes de un rastro de razonamiento son causalmente más importantes para la respuesta final. Los pasos de planificación y de retroceso muestran de forma sistemática mayor importancia que los pasos computacionales, lo que sugiere que el razonamiento orientado a objetivos opera mediante frases organizativas de alto nivel que dirigen la trayectoria global. Esto podría ayudar a detectar casos en que los modelos razonan hacia objetivos desalineados, al revelar cuándo los pasos de planificación apuntan a metas problemáticas (<a href="https://arxiv.org/abs/2506.19143">Bogdan et al., 2025</a>).</p>
+
+      <h2 id="tecnicas-combinadas">Técnicas combinadas</h2>
+      <p>Las técnicas de detección con defensa en profundidad combinarían varias técnicas de interpretabilidad con monitorización conductual para crear señales de detección no correlacionadas. Como ejemplo ilustrativo, un sistema integral podría usar SAE para identificar características sospechosas en las activaciones, validar su importancia mediante experimentos de parcheo de activaciones, poner a prueba su generalización con análisis de sondas y correlacionar los hallazgos con anomalías conductuales detectadas mediante monitorización ambiental. Cuando varias técnicas independientes convergen en evidencia del mismo patrón preocupante (características relacionadas con el razonamiento engañoso, sondas que detectan ocultación estratégica y pruebas conductuales que revelan capacidades no declaradas), la evidencia es mucho más sólida que la de cualquier enfoque aislado. Hay muchas más técnicas, conductuales e internas, que no hemos mencionado en este texto, y aún faltan por desarrollar enfoques de evaluación integrales que usen muchas de ellas a la vez. A fecha de escribir esto, no existe un conjunto de pruebas tan completo.</p>
+
+      <h2 id="referencias">Referencias</h2>
+      <p>Esta sección cita 10 fuentes, que se mantienen en su idioma original. Puedes consultar la lista completa, con enlaces y en seis estilos de cita, en la <a href="https://ai-safety-atlas.com/chapters/v1/goal-misgeneralization/detection/">sección original</a> o en la <a href="bibliografia.html">bibliografía</a>.</p>
+
+      <h3>¿Te resultó útil esta sección?</h3>
+      <form>
+        <p><button type="button">Sí, me resultó útil</button> <button type="button">No, se puede mejorar</button></p>
+        <label for="mejora">(Opcional) ¿Qué podría mejorar?</label>
+        <textarea id="mejora" rows="3"></textarea>
+        <button type="submit">Enviar comentario</button>
+      </form>
+
+      <div class="navegacion-seccion">
+        <a href="cap7-05-maquinacion.html">← Anterior: Maquinación</a>
+      </div>
+      <a class="siguiente" href="cap7-07-mitigaciones.html">
+        <strong>Siguiente: Mitigaciones →</strong>
+      </a>
+    </article>
+  </main>
+
+  <footer class="sitio">
+    <div class="contenedor">
+      <div class="columnas">
+        <div>
+          <strong>AI Safety Atlas</strong>
+          <p>Convertimos la investigación sobre seguridad de la IA en un ecosistema de aprendizaje completo.</p>
+          <p class="pie-enlaces">
+            <a href="https://github.com/markov-root/atlas">GitHub</a>
+            <a href="https://www.youtube.com/@securite-ia">YouTube</a>
+          </p>
+          <h4>Un proyecto del French Center for AI Safety</h4>
+          <a href="https://cesia.org"><img src="https://ai-safety-atlas.com/logos/cesia-org-white.svg" alt="French Center for AI Safety" style="height:40px;background:var(--oscuro);padding:6px;border-radius:6px;"></a>
+        </div>
+
+        <div>
+          <h4>Contáctanos</h4>
+          <form>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" required>
+            <label for="correo">Correo electrónico *</label>
+            <input id="correo" type="email" required>
+            <label for="mensaje">Mensaje *</label>
+            <textarea id="mensaje" rows="4" required></textarea>
+            <button type="submit">Enviar mensaje</button>
+          </form>
+        </div>
+
+        <div>
+          <h4>Navegación</h4>
+          <nav aria-label="Navegación del pie">
+            <a href="cap1-01-introduccion.html">Leer</a>
+            <a href="ensenar.html">Enseñar</a>
+            <a href="certificacion.html">Certifícate</a>
+          </nav>
+          <h4>Con financiación de</h4>
+          <p class="pie-enlaces">
+            <a href="https://coefficientgiving.org">Coefficient Giving</a>
+            <a href="https://manifund.org">Manifund</a>
+          </p>
+          <h4>Cómo citar esta obra</h4>
+          <p>Markov Grey and Charbel-Raphaël Segerie et al. 2025. AI Safety Atlas. French Center for AI Safety (CeSIA). URL: ai-safety-atlas.com</p>
+          <p>El contenido se publica bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>, salvo que se indique lo contrario.</p>
+        </div>
+      </div>
+
+      <p class="pie-enlaces">
+        <a href="https://foreview.org">Sitio creado por Foreview</a>
+        <a href="bibliografia.html">Bibliografía</a>
+        <a href="marca.html">Marca</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </p>
+
+      <p class="licencia">Traducción al español de <a href="https://ai-safety-atlas.com/">«AI Safety Atlas»</a>, de Markov Grey, Charbel-Raphaël Segerie et al. (French Center for AI Safety, CeSIA), publicada originalmente bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.es">CC BY-SA 4.0</a>. Esta traducción es una obra derivada y se distribuye bajo la misma licencia. Los cambios respecto al original consisten en la traducción al español y la adaptación del formato. Las imágenes se enlazan desde el sitio original y pueden tener su propia licencia. La vista previa del lector de la portada es una recreación en español, no la captura original.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
